@@ -3348,33 +3348,26 @@ async function fetchAIInsight(){
   const personalityNote = pName ? `用戶財富人格：${pName}，請根據此人格特質給予個人化建議。` : '';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:600,
-        system:`你是一位專業的財富顧問AI，風格像高級私人銀行顧問，語氣簡潔有力、充滿洞見。用繁體中文回應，250字以內。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度，根據用戶的財富人格給個人化建議。不要用markdown符號或星號。`,
-        messages:[{role:'user',content:`我的財富概況：
-總資產 NT$${Math.round(tv).toLocaleString()}
-月現金流 NT$${Math.round(tc).toLocaleString()}
-財務自由目標 NT$${goal.toLocaleString()}/月
-財務自由進度 ${pct}%
-持有資產：${summary}
-${personalityNote}
-請給我3點精準的財務洞察和建議。`}]
+    const GEMINI_KEY = 'AIzaSyAEMYe99XrXJtkgWYoBxRwFxgA1Qgm0EUk';
+    const prompt = `我的財富概況：\n總資產 NT$${Math.round(tv).toLocaleString()}\n月現金流 NT$${Math.round(tc).toLocaleString()}\n財務自由目標 NT$${goal.toLocaleString()}/月\n財務自由進度 ${pct}%\n持有資產：${summary}\n${personalityNote}\n請給我3點精準的財務洞察和建議，並考慮我的財富人格特質。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度。不要用markdown符號或星號。250字以內。`;
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        contents: [{parts: [{text: '你是一位專業的財富顧問AI，用繁體中文回應。\n' + prompt}]}],
+        generationConfig: {maxOutputTokens: 600, temperature: 0.7}
       })
     });
     const d = await res.json();
-    const text = d.content?.[0]?.text||'無法取得分析結果';
+    const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得分析結果';
     txt.classList.remove('ai-typing');
-    txt.textContent='';
-    let i=0;
-    const type=()=>{ if(i<text.length){ txt.textContent+=text[i++]; setTimeout(type,16); } };
+    txt.textContent = '';
+    let i = 0;
+    const type = () => { if (i < text.length) { txt.textContent += text[i++]; setTimeout(type, 16); } };
     type();
-  } catch(e){
+  } catch(e) {
     txt.classList.remove('ai-typing');
-    txt.textContent='⚠ 本地測試時 AI 功能受限（CORS限制）。部署到 Netlify 並設定 API 中介後即可正常使用。';
+    txt.textContent = '⚠ AI 分析暫時無法使用，請稍後再試。';
   }
   btn.disabled=false; btn.textContent='重新分析';
 }
