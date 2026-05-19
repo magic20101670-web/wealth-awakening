@@ -1149,8 +1149,9 @@ function showSoulResult() {
       letter-spacing:0.06em">${t}</span>
   `).join('');
 
-  // 儲存結果
+  // 儲存結果到 localStorage 並同步 Firebase
   localStorage.setItem('wealthPersonality', winner);
+  savePersonalityToFirebase(winner);
 
   // 若是完整重測，修改按鈕文字
   if (window._isFullRetest) {
@@ -2012,8 +2013,8 @@ onAuthStateChanged(auth, user => {
     loadGoalSettings();
     loadDebts();
     loadDreams();
-    // 顯示財富人格徽章
-    showPersonalityBadge();
+    // 從 Firebase 載入人格設定
+    loadPersonalityFromFirebase();
   } else {
     currentUser = null;
     document.getElementById('login-screen').style.display = 'flex';
@@ -2050,6 +2051,47 @@ function startFullRetestQuiz() {
   renderSoulQuestion();
 }
 window.startFullRetestQuiz = startFullRetestQuiz;
+
+async function loadPersonalityFromFirebase() {
+  if (!currentUser) return;
+  try {
+    const snap = await getDoc(doc(db, 'users', currentUser.uid, 'settings', 'personality'));
+    if (snap.exists() && snap.data().key) {
+      const key = snap.data().key;
+      localStorage.setItem('wealthPersonality', key);
+      localStorage.setItem('soulQuizDone', '1');
+      showPersonalityBadge();
+    } else {
+      // Firebase 沒有人格資料，檢查 localStorage
+      const localKey = localStorage.getItem('wealthPersonality');
+      if (localKey) {
+        // 有本地資料，同步到 Firebase
+        await savePersonalityToFirebase(localKey);
+        showPersonalityBadge();
+      } else {
+        // 完全沒有，顯示問答
+        localStorage.removeItem('soulQuizDone');
+        const soulScreen = document.getElementById('soul-quiz-screen');
+        if (soulScreen) {
+          soulScreen.style.opacity = '1';
+          soulScreen.style.display = 'flex';
+        }
+      }
+    }
+  } catch(e) {
+    showPersonalityBadge();
+  }
+}
+
+async function savePersonalityToFirebase(key) {
+  if (!currentUser || !key) return;
+  try {
+    await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'personality'), {
+      key: key,
+      updatedAt: new Date().toISOString()
+    });
+  } catch(e) { console.error(e); }
+}
 
 function showPersonalityBadge() {
   const key = localStorage.getItem('wealthPersonality');
