@@ -634,9 +634,11 @@ select option { background: #0d2318; }
   /* ── Pages ── */
   .app-page {
     display: none;
-    padding: 72px 0 0 0;
+    padding-top: 60px;
     min-height: 100vh;
     animation: pageIn 0.25s ease both;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .app-page.active { display: block; }
   @keyframes pageIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
@@ -5066,14 +5068,17 @@ function switchTab(tab) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const page = document.getElementById('page-' + tab);
   const nav = document.getElementById('nav-' + tab);
-  if (page) page.classList.add('active');
+  if (page) {
+    page.classList.add('active');
+    // 滾回頂端
+    page.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
   if (nav) nav.classList.add('active');
   const titles = { home:'首頁', assets:'資產', goals:'目標', dreams:'夢想', profile:'我的' };
   const titleEl = document.getElementById('app-topbar-title');
   if (titleEl) titleEl.textContent = titles[tab] || 'Wealth Awakening';
-  // 切換到我的頁面時初始化人格列表
   if (tab === 'profile') initMobilePersonalityList();
-  // 切換時同步數據
   setTimeout(syncMobileUI, 100);
 }
 
