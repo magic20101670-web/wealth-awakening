@@ -704,7 +704,7 @@ select option { background: #0d2318; }
   .app-page.active { display: block; }
   @keyframes pageIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
   
-  .page-content { padding: 10px 14px 20px; }
+  .page-content { padding: 10px 14px 30px; }
 
   /* ── 卡片 v2 通用 ── */
   .v2-card {
@@ -5292,12 +5292,122 @@ function switchTab(tab) {
 }
 
 function openAddAsset() {
+  if (window.innerWidth <= 768) {
+    switchTab('assets');
+    setTimeout(() => {
+      // 在手機版顯示新增資產 modal
+      openMobileAddAsset();
+    }, 200);
+    return;
+  }
   switchTab('assets');
   setTimeout(() => {
     const form = document.getElementById('add-asset-form-mobile');
     if (form) form.scrollIntoView({ behavior: 'smooth' });
   }, 300);
 }
+
+function openMobileAddAsset() {
+  // 顯示手機版新增資產 Modal
+  const existing = document.getElementById('mobile-add-asset-modal');
+  if (existing) { existing.remove(); }
+
+  const modal = document.createElement('div');
+  modal.id = 'mobile-add-asset-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:flex-end;';
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:16px;font-weight:700;color:#f0fdf4">新增資產</div>
+        <div onclick="document.getElementById('mobile-add-asset-modal').remove()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer">✕</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">資產名稱</label>
+        <input id="m-asset-name" placeholder="例：比特幣、台積電、新竹房產" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">類別</label>
+        <select id="m-asset-cat" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+          <option value="crypto">加密貨幣 Crypto</option>
+          <option value="stock">股票 Stock</option>
+          <option value="etf">ETF</option>
+          <option value="gold">黃金 Gold</option>
+          <option value="silver">白銀 Silver</option>
+          <option value="realestate">不動產 Real Estate</option>
+          <option value="fund">基金 Fund</option>
+          <option value="deposit">定存 Deposit</option>
+          <option value="lending">放貸 Lending</option>
+          <option value="bond">債券 Bond</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">數量</label>
+          <input id="m-asset-qty" type="number" placeholder="1" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">買入價格 (NT$)</label>
+          <input id="m-asset-buy" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">現值 (NT$)</label>
+        <input id="m-asset-cur" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">月現金流 (NT$)</label>
+        <input id="m-asset-cf" type="number" placeholder="0（租金、股息等）" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
+      </div>
+      <button onclick="submitMobileAsset()" style="width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">新增資產 ＋</button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+window.openMobileAddAsset = openMobileAddAsset;
+
+async function submitMobileAsset() {
+  const name = document.getElementById('m-asset-name').value.trim();
+  const cat  = document.getElementById('m-asset-cat').value;
+  const qty  = parseFloat(document.getElementById('m-asset-qty').value) || 1;
+  const buy  = parseFloat(document.getElementById('m-asset-buy').value) || 0;
+  const cur  = parseFloat(document.getElementById('m-asset-cur').value) || buy;
+  const cf   = parseFloat(document.getElementById('m-asset-cf').value) || 0;
+  if (!name) { alert('請填寫資產名稱'); return; }
+
+  // 填入桌面版表單並提交
+  const setVal = (id, val) => { const el = document.getElementById(id); if(el){ el.value=val; el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }};
+  const setCat = (id, val) => { const el = document.getElementById(id); if(el){ el.value=val; el.dispatchEvent(new Event('change',{bubbles:true})); }};
+
+  setCat('category', cat);
+  await new Promise(r => setTimeout(r, 100));
+  setVal('manual-name', name);
+  setVal('manual-qty', qty);
+  setVal('manual-buy', buy);
+  setVal('manual-price', cur);
+  setVal('manual-cf', cf);
+
+  await new Promise(r => setTimeout(r, 100));
+  const addBtn = document.getElementById('add-btn');
+  if (addBtn) addBtn.click();
+
+  document.getElementById('mobile-add-asset-modal').remove();
+  setTimeout(() => { syncMobileUI(); syncMobileAssets(); }, 800);
+}
+window.submitMobileAsset = submitMobileAsset;
+
+function openAddDebt() {
+  const debtForm = document.getElementById('debt-form');
+  if (debtForm) {
+    debtForm.style.display = 'block';
+    if (window.innerWidth <= 768) {
+      switchTab('assets');
+      setTimeout(() => {
+        // 建立手機版債務彈窗
+        showMobileDebtForm();
+      }, 200);
+    }
+  }
+}
+window.openAddDebt = openAddDebt;
 window.switchTab = switchTab;
 window.openAddAsset = openAddAsset;
 
@@ -6042,14 +6152,62 @@ if (mobileLogout && desktopLogout) {
 
 // 定期同步 UI
 setInterval(syncMobileUI, 2000);
-// 監聽 render 完成
+// 監聽 render 完成 - 立即同步手機版
 const _origRender = window.render;
-if (_origRender) {
+if (typeof _origRender === 'function') {
   window.render = function() {
     _origRender.apply(this, arguments);
-    setTimeout(syncMobileUI, 100);
+    setTimeout(() => {
+      syncMobileUI();
+      syncMobileAssets();
+    }, 50);
   };
 }
+
+// 手機版債務表單
+function showMobileDebtForm() {
+  const existing = document.getElementById('mobile-debt-modal');
+  if (existing) { existing.remove(); }
+  
+  const modal = document.createElement('div');
+  modal.id = 'mobile-debt-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:flex-end;';
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:16px;font-weight:700;color:#f0fdf4">新增債務</div>
+        <div onclick="document.getElementById('mobile-debt-modal').remove()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer">✕</div>
+      </div>
+      <input id="m-debt-name" placeholder="債務名稱（例：房貸）" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box">
+      <input id="m-debt-amount" type="number" placeholder="總金額" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box">
+      <input id="m-debt-monthly" type="number" placeholder="每月還款額" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:16px;box-sizing:border-box">
+      <button onclick="submitMobileDebt()" style="width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">新增債務</button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+window.showMobileDebtForm = showMobileDebtForm;
+
+async function submitMobileDebt() {
+  const name = document.getElementById('m-debt-name').value.trim();
+  const amount = parseFloat(document.getElementById('m-debt-amount').value) || 0;
+  const monthly = parseFloat(document.getElementById('m-debt-monthly').value) || 0;
+  if (!name || !amount) { alert('請填寫債務名稱和金額'); return; }
+  
+  // 填入桌面版表單並提交
+  const dName = document.getElementById('debt-name');
+  const dAmount = document.getElementById('debt-amount');
+  const dMonthly = document.getElementById('debt-monthly-payment');
+  if (dName) dName.value = name;
+  if (dAmount) dAmount.value = amount;
+  if (dMonthly) dMonthly.value = monthly;
+  
+  const submitBtn = document.getElementById('debt-submit-btn') || document.querySelector('#debt-form button[onclick*="addDebt"]');
+  if (submitBtn) submitBtn.click();
+  
+  document.getElementById('mobile-debt-modal').remove();
+  setTimeout(syncMobileUI, 500);
+}
+window.submitMobileDebt = submitMobileDebt;
 </script>
 
 </body>
