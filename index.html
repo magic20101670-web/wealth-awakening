@@ -224,7 +224,7 @@ select option { background: #0d2318; }
 .debt-del-btn:hover { color:#f87171; }
 /* ── 夢想系統 ── */
 /* 許願儀式畫面 */
-.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:1000; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; overflow-y:auto; }
+.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:500; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; overflow-y:auto; }
 .dream-screen.hidden { display:none; }
 .dream-intro { text-align:center; padding:40px 24px; max-width:480px; width:100%; }
 .dream-intro-title { font-family:'DM Serif Display',serif; font-size:36px; color:#f0d060; margin-bottom:8px; }
@@ -1075,25 +1075,7 @@ select option { background: #0d2318; }
 
 @media(max-width: 768px) {
 
-  /* 讓 body 固定不滑動 */
-  html, body {
-    overflow: hidden !important;
-    height: 100% !important;
-    position: fixed !important;
-    width: 100% !important;
-  }
-
-  /* wrap 完全隱藏桌面版內容 */
-  .wrap > *:not(.app-page):not(.app-topbar):not(.app-bottom-nav) {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    pointer-events: none !important;
-  }
-
-  /* App 頁面固定佔滿螢幕 */
+  /* App 頁面固定佔滿螢幕，可自由滑動 */
   .app-topbar { display: flex !important; }
   .app-bottom-nav { display: flex !important; }
 
@@ -1104,15 +1086,29 @@ select option { background: #0d2318; }
     left: 0 !important;
     right: 0 !important;
     bottom: 70px !important;
-    overflow-y: auto !important;
+    overflow-y: scroll !important;
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
     background: #060f0a !important;
     z-index: 10 !important;
   }
 
   .app-page.active {
     display: block !important;
+  }
+
+  /* 底部導航在最上層，永遠可點 */
+  .app-bottom-nav {
+    z-index: 1000 !important;
+    position: fixed !important;
+  }
+
+  /* 頂部導航在最上層 */
+  .app-topbar {
+    z-index: 1000 !important;
+    position: fixed !important;
   }
 }
 </style>
@@ -5364,23 +5360,25 @@ function initMobileHome() {
 (function() {
   if (window.innerWidth > 768) return;
 
-  // 隱藏桌面版 wrap
+  // 隱藏桌面版 wrap 的視覺內容，但保留 DOM 讓 JS 可以讀資料
   const wrap = document.querySelector('.wrap');
   if (wrap) {
-    wrap.style.cssText = 'display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;position:absolute!important;pointer-events:none!important;';
+    wrap.style.position = 'fixed';
+    wrap.style.top = '-9999px';
+    wrap.style.left = '-9999px';
+    wrap.style.width = '1px';
+    wrap.style.height = '1px';
+    wrap.style.overflow = 'hidden';
+    wrap.style.opacity = '0';
+    wrap.style.pointerEvents = 'none';
+    wrap.style.zIndex = '-1';
   }
 
   // 隱藏 header
   const header = document.querySelector('header');
   if (header) header.style.display = 'none';
 
-  // body 不滑動
-  document.documentElement.style.overflow = 'hidden';
-  document.documentElement.style.height = '100%';
-  document.body.style.overflow = 'hidden';
-  document.body.style.height = '100%';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
+  // body 背景
   document.body.style.background = '#060f0a';
 })();
 </script>
