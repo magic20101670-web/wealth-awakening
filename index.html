@@ -5293,11 +5293,7 @@ function switchTab(tab) {
 
 function openAddAsset() {
   if (window.innerWidth <= 768) {
-    switchTab('assets');
-    setTimeout(() => {
-      // 在手機版顯示新增資產 modal
-      openMobileAddAsset();
-    }, 200);
+    showDesktopFormAsModal('add-asset-card-modal', '新增資產');
     return;
   }
   switchTab('assets');
@@ -5307,105 +5303,119 @@ function openAddAsset() {
   }, 300);
 }
 
-function openMobileAddAsset() {
-  // 顯示手機版新增資產 Modal
-  const existing = document.getElementById('mobile-add-asset-modal');
+function showDesktopFormAsModal(modalId, title) {
+  const existing = document.getElementById(modalId);
   if (existing) { existing.remove(); }
 
+  // 找到桌面版表單 card
+  const desktopCard = document.querySelector('.wrap .card:has(#add-btn)') ||
+                      document.querySelector('.wrap .card:has(.section-title)');
+  
   const modal = document.createElement('div');
-  modal.id = 'mobile-add-asset-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:flex-end;';
-  modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div style="font-size:16px;font-weight:700;color:#f0fdf4">新增資產</div>
-        <div onclick="document.getElementById('mobile-add-asset-modal').remove()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer">✕</div>
-      </div>
-      <div style="margin-bottom:10px">
-        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">資產名稱</label>
-        <input id="m-asset-name" placeholder="例：比特幣、台積電、新竹房產" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-      </div>
-      <div style="margin-bottom:10px">
-        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">類別</label>
-        <select id="m-asset-cat" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-          <option value="crypto">加密貨幣 Crypto</option>
-          <option value="stock">股票 Stock</option>
-          <option value="etf">ETF</option>
-          <option value="gold">黃金 Gold</option>
-          <option value="silver">白銀 Silver</option>
-          <option value="realestate">不動產 Real Estate</option>
-          <option value="fund">基金 Fund</option>
-          <option value="deposit">定存 Deposit</option>
-          <option value="lending">放貸 Lending</option>
-          <option value="bond">債券 Bond</option>
-        </select>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-        <div>
-          <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">數量</label>
-          <input id="m-asset-qty" type="number" placeholder="1" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-        </div>
-        <div>
-          <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">買入價格 (NT$)</label>
-          <input id="m-asset-buy" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-        </div>
-      </div>
-      <div style="margin-bottom:10px">
-        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">現值 (NT$)</label>
-        <input id="m-asset-cur" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-      </div>
-      <div style="margin-bottom:16px">
-        <label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px">月現金流 (NT$)</label>
-        <input id="m-asset-cf" type="number" placeholder="0（租金、股息等）" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;box-sizing:border-box">
-      </div>
-      <button onclick="submitMobileAsset()" style="width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">新增資產 ＋</button>
-    </div>`;
+  modal.id = modalId;
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
+  
+  // 建立手機版 wrapper，把桌面版表單放進去
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:88vh;overflow-y:auto;box-sizing:border-box;';
+  
+  // 標題列
+  const header = document.createElement('div');
+  header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;';
+  header.innerHTML = '<div style="font-size:16px;font-weight:700;color:#f0fdf4">' + title + '</div>' +
+    '<div style="font-size:22px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;" onclick="document.getElementById(\'' + modalId + '\').remove()">✕</div>';
+  wrapper.appendChild(header);
+
+  // 把桌面版表單內容複製進來
+  if (desktopCard) {
+    const clone = desktopCard.cloneNode(true);
+    // 移除 section-title（已有 header）
+    const sectionTitle = clone.querySelector('.section-title');
+    if (sectionTitle) sectionTitle.remove();
+    // 讓 clone 裡的 add-btn 觸發原本的 add-btn
+    const cloneBtn = clone.querySelector('#add-btn');
+    if (cloneBtn) {
+      cloneBtn.id = 'mobile-add-btn-clone';
+      cloneBtn.onclick = function() {
+        document.getElementById('add-btn').click();
+        setTimeout(() => {
+          document.getElementById(modalId).remove();
+          setTimeout(syncMobileUI, 500);
+          setTimeout(syncMobileAssets, 800);
+        }, 300);
+      };
+    }
+    clone.style.cssText = 'background:transparent;border:none;padding:0;margin:0;';
+    wrapper.appendChild(clone);
+  } else {
+    wrapper.innerHTML += '<div style="color:rgba(255,255,255,0.4);text-align:center;padding:20px">表單載入中...</div>';
+  }
+  
+  modal.appendChild(wrapper);
   document.body.appendChild(modal);
+  
+  // 點背景關閉
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
 }
-window.openMobileAddAsset = openMobileAddAsset;
-
-async function submitMobileAsset() {
-  const name = document.getElementById('m-asset-name').value.trim();
-  const cat  = document.getElementById('m-asset-cat').value;
-  const qty  = parseFloat(document.getElementById('m-asset-qty').value) || 1;
-  const buy  = parseFloat(document.getElementById('m-asset-buy').value) || 0;
-  const cur  = parseFloat(document.getElementById('m-asset-cur').value) || buy;
-  const cf   = parseFloat(document.getElementById('m-asset-cf').value) || 0;
-  if (!name) { alert('請填寫資產名稱'); return; }
-
-  // 填入桌面版表單並提交
-  const setVal = (id, val) => { const el = document.getElementById(id); if(el){ el.value=val; el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }};
-  const setCat = (id, val) => { const el = document.getElementById(id); if(el){ el.value=val; el.dispatchEvent(new Event('change',{bubbles:true})); }};
-
-  setCat('category', cat);
-  await new Promise(r => setTimeout(r, 100));
-  setVal('manual-name', name);
-  setVal('manual-qty', qty);
-  setVal('manual-buy', buy);
-  setVal('manual-price', cur);
-  setVal('manual-cf', cf);
-
-  await new Promise(r => setTimeout(r, 100));
-  const addBtn = document.getElementById('add-btn');
-  if (addBtn) addBtn.click();
-
-  document.getElementById('mobile-add-asset-modal').remove();
-  setTimeout(() => { syncMobileUI(); syncMobileAssets(); }, 800);
-}
-window.submitMobileAsset = submitMobileAsset;
+window.showDesktopFormAsModal = showDesktopFormAsModal;
 
 function openAddDebt() {
-  const debtForm = document.getElementById('debt-form');
-  if (debtForm) {
-    debtForm.style.display = 'block';
-    if (window.innerWidth <= 768) {
-      switchTab('assets');
-      setTimeout(() => {
-        // 建立手機版債務彈窗
-        showMobileDebtForm();
-      }, 200);
+  if (window.innerWidth <= 768) {
+    // 找到桌面版債務表單
+    const debtCard = document.querySelector('.wrap .debt-card');
+    const existing = document.getElementById('mobile-debt-form-modal');
+    if (existing) { existing.remove(); }
+    
+    const modal = document.createElement('div');
+    modal.id = 'mobile-debt-form-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
+    
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(239,68,68,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;';
+    
+    wrapper.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:16px;font-weight:700;color:#f0fdf4">新增負債</div><div style="font-size:22px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;" onclick="document.getElementById('mobile-debt-form-modal').remove()">✕</div></div>`;
+    
+    if (debtCard) {
+      const clone = debtCard.cloneNode(true);
+      clone.style.cssText = 'background:transparent;border:none;padding:0;margin:0;';
+      // 顯示 debt-form
+      const dForm = clone.querySelector('#debt-form');
+      if (dForm) dForm.style.display = 'block';
+      // 移除標題
+      const h2 = clone.querySelector('.section-title, h2, h3');
+      if (h2) h2.remove();
+      // 讓提交按鈕同步
+      const submitBtn = clone.querySelector('[onclick*="addDebt"]');
+      if (submitBtn) {
+        submitBtn.onclick = function() {
+          // 同步值到原本表單
+          const fields = ['debt-name','debt-amount','debt-monthly-payment','debt-rate','debt-months'];
+          fields.forEach(id => {
+            const src = clone.querySelector('#' + id);
+            const dst = document.getElementById(id);
+            if (src && dst) dst.value = src.value;
+          });
+          const origBtn = document.querySelector('.wrap [onclick*="addDebt"]');
+          if (origBtn) origBtn.click();
+          setTimeout(() => {
+            document.getElementById('mobile-debt-form-modal').remove();
+            syncMobileUI();
+            syncMobileDebt();
+          }, 400);
+        };
+      }
+      wrapper.appendChild(clone);
     }
+    
+    modal.appendChild(wrapper);
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+    return;
   }
+  const debtForm = document.getElementById('debt-form');
+  if (debtForm) debtForm.style.display = 'block';
 }
 window.openAddDebt = openAddDebt;
 window.switchTab = switchTab;
@@ -6109,17 +6119,11 @@ function syncMobileAssets() {
   const list = document.getElementById('mobile-assets-list');
   if (!list) return;
   
-  // 嘗試從多個來源取得資產
-  let assetData = window.assets;
+  const assetData = window.assets;
   if (!assetData || !assetData.length) {
-    // 從桌面版 grid 讀取
-    const grid = document.getElementById('assets-grid');
-    if (!grid || !grid.children.length) {
-      list.innerHTML = '<div style="text-align:center;padding:32px;color:rgba(255,255,255,0.3);font-size:13px">尚未新增資產</div>';
-      return;
-    }
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:rgba(255,255,255,0.3);font-size:13px">尚未新增資產</div>';
+    return;
   }
-  if (!assetData || !assetData.length) return;
   
   const catIcons = {
     '加密貨幣 Crypto':'₿','股票 Stock':'📈','ETF':'📊','黃金 Gold':'🥇',
