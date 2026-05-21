@@ -5471,17 +5471,12 @@ window.showWealthLevelModal = showWealthLevelModal;
 
 // 修改暱稱
 function editMobileUsername() {
-  const current = document.getElementById('mobile-username').textContent.replace(' ✏️','').trim();
-  const newName = prompt('修改你的暱稱：', current);
+  const current = document.getElementById('mobile-username').textContent.trim();
+  const newName = prompt('✏️ 修改你的暱稱', current);
   if (!newName || !newName.trim()) return;
   const name = newName.trim().slice(0, 20);
-  document.getElementById('mobile-username').textContent = name + ' ✏️';
+  document.getElementById('mobile-username').textContent = name;
   localStorage.setItem('wealthNickname', name);
-  // 同步到桌面版
-  const userNameEl = document.getElementById('user-name');
-  if (userNameEl && name) {
-    // 顯示自訂暱稱
-  }
 }
 window.editMobileUsername = editMobileUsername;
 
@@ -5524,9 +5519,9 @@ function initMobileHome() {
   if (greetEl) {
     const savedNick = localStorage.getItem('wealthNickname');
     if (savedNick) {
-      greetEl.textContent = savedNick + ' ✏️';
+      greetEl.textContent = savedNick;
     } else if (userEl && userEl.textContent) {
-      greetEl.textContent = userEl.textContent.split('@')[0] + ' ✏️';
+      greetEl.textContent = userEl.textContent.split('@')[0];
     }
   }
   // 預設顯示首頁
@@ -5587,7 +5582,10 @@ function initMobileHome() {
   <!-- Banner -->
   <div class="home-banner">
     <div class="home-greeting">早安 👋</div>
-    <div class="home-username" id="mobile-username" onclick="editMobileUsername()" style="cursor:pointer;" title="點擊修改名稱">財富覺醒者 ✏️</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="home-username" id="mobile-username" onclick="editMobileUsername()" style="cursor:pointer;">財富覺醒者</div>
+      <div onclick="editMobileUsername()" style="font-size:11px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;padding:3px 8px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✏️ 修改暱稱</div>
+    </div>
     <div class="home-freedom-row">
       <div class="home-freedom-ring">
         <svg width="90" height="90" style="transform:rotate(-90deg)">
@@ -5674,10 +5672,10 @@ function initMobileHome() {
         <div class="quick-card-val" id="mobile-count" style="color:#60a5fa">0</div>
         <div class="quick-card-sub">筆資產紀錄</div>
       </div>
-      <div class="quick-card">
-        <div class="quick-card-label">🏆 財富等級</div>
+      <div class="quick-card" onclick="showWealthLevelModal()" style="cursor:pointer;">
+        <div class="quick-card-label">🏆 財富等級 ›</div>
         <div class="quick-card-val" id="mobile-level" style="color:#f0d060;font-size:13px">Observer</div>
-        <div class="quick-card-sub" id="mobile-level-sub">覺察者</div>
+        <div class="quick-card-sub" id="mobile-level-sub">點擊查看等級說明</div>
       </div>
     </div>
 
