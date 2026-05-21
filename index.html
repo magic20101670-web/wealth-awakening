@@ -5707,17 +5707,16 @@ async function deleteMobileAsset(idx) {
 window.deleteMobileAsset = deleteMobileAsset;
 
 async function confirmDeleteMobileAsset(id, idx) {
-  // 關閉所有相關 modal
-  document.querySelectorAll('#mobile-asset-detail-modal, #mobile-delete-confirm-modal').forEach(el => el.remove());
-  // 也關閉確認框（找包含刪除文字的 fixed div）
-  document.querySelectorAll('body > div').forEach(el => {
-    if (el.style.position === 'fixed' && el.innerHTML.includes('確定要刪除')) el.remove();
+  // 先關閉所有 modal
+  ['mobile-delete-confirm-modal','mobile-asset-detail-modal'].forEach(mid => {
+    const el = document.getElementById(mid);
+    if (el) el.remove();
   });
 
-  try {
-    await deleteDoc(userDoc(id));
-  } catch(e) { console.log('delete error', e); }
+  // 刪除 Firebase
+  try { await deleteDoc(userDoc(id)); } catch(e) { console.log('delete error', e); }
 
+  // 更新本地資料
   assets = assets.filter(a => a.id !== id);
   window.assets = assets;
   render();
