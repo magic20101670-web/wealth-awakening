@@ -5472,12 +5472,50 @@ window.showWealthLevelModal = showWealthLevelModal;
 // 修改暱稱
 function editMobileUsername() {
   const current = document.getElementById('mobile-username').textContent.trim();
-  const newName = prompt('✏️ 修改你的暱稱', current);
-  if (!newName || !newName.trim()) return;
-  const name = newName.trim().slice(0, 20);
+  const existing = document.getElementById('nickname-modal');
+  if (existing) { existing.remove(); return; }
+
+  const modal = document.createElement('div');
+  modal.id = 'nickname-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(34,197,94,0.2);">
+      <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:16px;text-align:center;">✏️ 修改暱稱</div>
+      <input id="nickname-input" type="text" maxlength="20"
+        value="${current}"
+        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;"
+        placeholder="輸入你的暱稱">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+        <button onclick="document.getElementById('nickname-modal').remove()"
+          style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
+        <button onclick="saveNickname()"
+          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+
+  // 自動 focus 輸入框並選取文字
+  setTimeout(() => {
+    const input = document.getElementById('nickname-input');
+    if (input) { input.focus(); input.select(); }
+  }, 100);
+}
+
+function saveNickname() {
+  const input = document.getElementById('nickname-input');
+  if (!input) return;
+  const name = input.value.trim().slice(0, 20);
+  if (!name) return;
   document.getElementById('mobile-username').textContent = name;
   localStorage.setItem('wealthNickname', name);
+  // 標記已設定，防止被 syncMobileUI 覆蓋
+  window._nicknameSet = true;
+  document.getElementById('nickname-modal').remove();
 }
+window.saveNickname = saveNickname;
 window.editMobileUsername = editMobileUsername;
 
 // 同步財富樹到手機版
@@ -5517,9 +5555,11 @@ function initMobileHome() {
   const userEl = document.getElementById('user-name');
   const greetEl = document.getElementById('mobile-username');
   if (greetEl) {
+    // 暱稱優先使用自訂的，不被帳號名稱覆蓋
     const savedNick = localStorage.getItem('wealthNickname');
     if (savedNick) {
       greetEl.textContent = savedNick;
+      window._nicknameSet = true;
     } else if (userEl && userEl.textContent) {
       greetEl.textContent = userEl.textContent.split('@')[0];
     }
@@ -6090,7 +6130,10 @@ function syncMobileUI() {
   const mProfileEmail=document.getElementById('mobile-profile-email');
   if(userEl) {
     const email=userEl.textContent;
-    if(mUser) mUser.textContent=email?email.split('@')[0]:'財富覺醒者';
+    // 只有沒有自訂暱稱時才同步帳號名稱
+    if(mUser && !window._nicknameSet && !localStorage.getItem('wealthNickname')) {
+      mUser.textContent=email?email.split('@')[0]:'財富覺醒者';
+    }
     if(mProfileEmail) mProfileEmail.textContent=email;
   }
 
