@@ -5268,20 +5268,29 @@ setInterval(()=>{ if(currentUser) updatePrices(); }, 5*60*1000);
 // 手機版底部導航切換邏輯
 // ══════════════════════════════
 function switchTab(tab) {
-  document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+  // 隱藏所有頁面
+  document.querySelectorAll('.app-page').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  // 移除所有導航 active
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // 顯示目標頁面
   const page = document.getElementById('page-' + tab);
   const nav = document.getElementById('nav-' + tab);
   if (page) {
     page.classList.add('active');
+    page.style.display = 'block';
     page.scrollTop = 0;
-    window.scrollTo(0, 0);
   }
   if (nav) nav.classList.add('active');
-  // v2: topbar 顯示 logo + 頁面名稱
+
+  // 更新頂部標題
   const titles = { home:'Wealth <em>Awakening</em>', assets:'資產總覽', goals:'財務目標', dreams:'我的夢想', profile:'個人設定' };
   const titleEl = document.getElementById('app-topbar-title');
   if (titleEl) titleEl.innerHTML = titles[tab] || 'Wealth <em>Awakening</em>';
+
   if (tab === 'profile') initMobilePersonalityList();
   setTimeout(syncMobileUI, 100);
 }
@@ -5347,6 +5356,34 @@ function initMobileHome() {
     <div class="app-topbar-avatar" onclick="switchTab('profile')">👤</div>
   </div>
 </div>
+
+<script>
+// ══════════════════════════════════════
+// 手機版：隱藏桌面版 wrap，接管畫面
+// ══════════════════════════════════════
+(function() {
+  if (window.innerWidth > 768) return;
+
+  // 隱藏桌面版 wrap
+  const wrap = document.querySelector('.wrap');
+  if (wrap) {
+    wrap.style.cssText = 'display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;position:absolute!important;pointer-events:none!important;';
+  }
+
+  // 隱藏 header
+  const header = document.querySelector('header');
+  if (header) header.style.display = 'none';
+
+  // body 不滑動
+  document.documentElement.style.overflow = 'hidden';
+  document.documentElement.style.height = '100%';
+  document.body.style.overflow = 'hidden';
+  document.body.style.height = '100%';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+  document.body.style.background = '#060f0a';
+})();
+</script>
 
 <!-- ══════════════════════════════════════
      手機版 頁面容器
