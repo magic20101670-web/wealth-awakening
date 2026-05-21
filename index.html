@@ -5687,14 +5687,17 @@ window.refreshMobilePrices = refreshMobilePrices;
 async function deleteMobileAsset(idx) {
   const a = window.assets[idx];
   if (!a) return;
+  const existing = document.getElementById('mobile-delete-confirm-modal');
+  if (existing) existing.remove();
   const modal = document.createElement('div');
+  modal.id = 'mobile-delete-confirm-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
   modal.innerHTML = `
     <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(248,113,113,0.2);">
       <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:8px;">刪除資產</div>
       <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">確定要刪除「${a.name}」嗎？此操作無法復原。</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <button onclick="this.closest('div[style]').remove()" style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
+        <button onclick="document.getElementById('mobile-delete-confirm-modal').remove()" style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
         <button onclick="confirmDeleteMobileAsset('${a.id}',${idx})" style="padding:12px;border-radius:12px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:#f87171;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">刪除</button>
       </div>
     </div>`;
@@ -5704,19 +5707,21 @@ async function deleteMobileAsset(idx) {
 window.deleteMobileAsset = deleteMobileAsset;
 
 async function confirmDeleteMobileAsset(id, idx) {
+  // 關閉所有相關 modal
+  document.querySelectorAll('#mobile-asset-detail-modal, #mobile-delete-confirm-modal').forEach(el => el.remove());
+  // 也關閉確認框（找包含刪除文字的 fixed div）
+  document.querySelectorAll('body > div').forEach(el => {
+    if (el.style.position === 'fixed' && el.innerHTML.includes('確定要刪除')) el.remove();
+  });
+
   try {
-    const { deleteDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
-    // 用已有的 userDoc 函式
     await deleteDoc(userDoc(id));
   } catch(e) { console.log('delete error', e); }
+
   assets = assets.filter(a => a.id !== id);
   window.assets = assets;
   render();
   saveHistorySnapshot();
-  document.querySelectorAll('div[style*="position:fixed"]').forEach(el => {
-    if (el.innerHTML.includes('確定要刪除')) el.remove();
-    if (el.id === 'mobile-asset-detail-modal') el.remove();
-  });
   setTimeout(() => { syncMobileUI(); syncMobileAssets(); }, 300);
 }
 window.confirmDeleteMobileAsset = confirmDeleteMobileAsset;
