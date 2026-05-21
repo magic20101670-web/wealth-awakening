@@ -5643,15 +5643,6 @@ function initMobileHome() {
       <div id="mobile-debt-inner"></div>
     </div>
 
-    <!-- 新增資產表單 -->
-    <div id="add-asset-form-mobile">
-      <div class="mobile-section-header">
-        <div class="mobile-section-title">新增資產</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px">
-        <div id="mobile-add-asset-inner"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -6100,30 +6091,41 @@ function syncMobileAssets() {
     return;
   }
   
+  // 按 category 代碼對應
   const catIcons = {
-    '加密貨幣 Crypto':'₿','股票 Stock':'📈','ETF':'📊','黃金 Gold':'🥇',
-    '基金 Fund':'💼','不動產 Real Estate':'🏠','債券 Bond':'📜',
-    '定存 Deposit':'🏦','放貸 Lending':'💸','白銀 Silver':'🥈','其他':'💰'
+    crypto:'₿', stock:'📈', etf:'📊', gold:'🥇', silver:'🥈',
+    bond:'📜', deposit:'🏦', lending:'💸', fund:'💼',
+    insurance:'🛡️', realestate:'🏠'
   };
   const catColors = {
-    '加密貨幣 Crypto':'rgba(139,92,246,0.2)','股票 Stock':'rgba(59,130,246,0.2)',
-    'ETF':'rgba(234,179,8,0.2)','黃金 Gold':'rgba(251,191,36,0.2)',
-    '不動產 Real Estate':'rgba(249,115,22,0.2)','白銀 Silver':'rgba(148,163,184,0.2)'
+    crypto:'rgba(139,92,246,0.2)', stock:'rgba(59,130,246,0.2)',
+    etf:'rgba(234,179,8,0.2)', gold:'rgba(251,191,36,0.2)',
+    silver:'rgba(148,163,184,0.2)', realestate:'rgba(249,115,22,0.2)',
+    fund:'rgba(167,139,250,0.2)', insurance:'rgba(248,113,113,0.2)',
+    lending:'rgba(34,197,94,0.2)', deposit:'rgba(96,165,250,0.2)',
+    bond:'rgba(52,211,153,0.2)'
+  };
+  const catNames = {
+    crypto:'加密貨幣', stock:'股票', etf:'ETF', gold:'黃金',
+    silver:'白銀', bond:'債券', deposit:'定存', lending:'放貸',
+    fund:'基金', insurance:'保險', realestate:'不動產'
   };
 
-  list.innerHTML = window.assets.map(a => {
-    const val = (a.currentPrice||0) * (a.quantity||1);
-    const cost = (a.buyPrice||0) * (a.quantity||1);
+  list.innerHTML = window.assets.map((a, idx) => {
+    const val = a.category==='realestate' ? (a.currentPrice||0) : (a.currentPrice||0) * (a.quantity||1);
+    const cost = a.category==='realestate' ? (a.buyPrice||0) : (a.buyPrice||0) * (a.quantity||1);
     const pnl = val - cost;
     const pnlPct = cost > 0 ? ((pnl/cost)*100).toFixed(1) : '0.0';
     const isPos = pnl >= 0;
     const icon = catIcons[a.category] || '💰';
     const bg = catColors[a.category] || 'rgba(255,255,255,0.08)';
-    return `<div class="asset-card-mobile">
-      <div class="asset-mobile-icon" style="background:${bg}">${icon}</div>
+    const catName = catNames[a.category] || a.category;
+    const qtyUnit = a.qtyUnit || '單位';
+    return `<div class="asset-card-mobile" onclick="showMobileAssetDetail(${idx})" style="cursor:pointer;">
+      <div class="asset-mobile-icon" style="background:${bg};font-size:18px;">${icon}</div>
       <div class="asset-mobile-info">
-        <div class="asset-mobile-name">${a.name}</div>
-        <div class="asset-mobile-cat">${a.category} · ${(a.quantity||1).toLocaleString()} 單位</div>
+        <div class="asset-mobile-name">${a.name||a.symbol}</div>
+        <div class="asset-mobile-cat">${catName} · ${(a.quantity||1).toLocaleString()} ${qtyUnit}</div>
       </div>
       <div class="asset-mobile-right">
         <div class="asset-mobile-val ${isPos?'green':'red'}">NT$${Math.round(val).toLocaleString()}</div>
@@ -6132,6 +6134,85 @@ function syncMobileAssets() {
     </div>`;
   }).join('');
 }
+
+function showMobileAssetDetail(idx) {
+  const a = window.assets[idx];
+  if (!a) return;
+
+  const catNames = {
+    crypto:'加密貨幣', stock:'股票', etf:'ETF', gold:'黃金',
+    silver:'白銀', bond:'債券', deposit:'定存', lending:'放貸',
+    fund:'基金', insurance:'保險', realestate:'不動產'
+  };
+  const catIcons = {
+    crypto:'₿', stock:'📈', etf:'📊', gold:'🥇', silver:'🥈',
+    bond:'📜', deposit:'🏦', lending:'💸', fund:'💼',
+    insurance:'🛡️', realestate:'🏠'
+  };
+
+  const isRE = a.category === 'realestate';
+  const val = isRE ? (a.currentPrice||0) : (a.currentPrice||0)*(a.quantity||1);
+  const cost = isRE ? (a.buyPrice||0) : (a.buyPrice||0)*(a.quantity||1);
+  const pnl = val - cost;
+  const pnlPct = cost>0 ? ((pnl/cost)*100).toFixed(2) : '0.00';
+  const isPos = pnl >= 0;
+  const icon = catIcons[a.category] || '💰';
+  const catName = catNames[a.category] || a.category;
+  const qtyUnit = a.qtyUnit || '單位';
+
+  const existing = document.getElementById('mobile-asset-detail-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'mobile-asset-detail-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
+
+  const rows = [
+    ['類別', catName],
+    ['代號', a.symbol || '—'],
+    ['持有數量', `${(a.quantity||1).toLocaleString()} ${qtyUnit}`],
+    ['買入價格', `NT$${(a.buyPrice||0).toLocaleString()}`],
+    ['現值', `NT$${Math.round(val).toLocaleString()}`],
+    ['損益', `${isPos?'+':''}NT$${Math.round(pnl).toLocaleString()} (${isPos?'+':''}${pnlPct}%)`],
+    ['月現金流', `NT$${(a.monthlyIncome||0).toLocaleString()}`],
+  ];
+  if (a.stakeQty) rows.push(['每月質押收益', `${a.stakeQty} 顆`]);
+  if (a.annualDividend) rows.push(['年配息', `NT$${a.annualDividend.toLocaleString()}`]);
+  if (isRE && a.reType) rows.push(['房型', a.reType]);
+  if (isRE && a.reLayout) rows.push(['格局', a.reLayout]);
+  if (isRE && a.reLocation) rows.push(['地點', a.reLocation]);
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:28px;">${icon}</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:#f0fdf4;">${a.name||a.symbol}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);">${catName}</div>
+          </div>
+        </div>
+        <div onclick="document.getElementById('mobile-asset-detail-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:26px;font-weight:700;color:${isPos?'#22c55e':'#f87171'};margin-bottom:4px;">
+        NT$${Math.round(val).toLocaleString()}
+      </div>
+      <div style="font-size:13px;color:${isPos?'#22c55e':'#f87171'};margin-bottom:16px;">
+        ${isPos?'+':''}${pnlPct}% 損益
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+        ${rows.map(([label, value]) => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <span style="font-size:12px;color:rgba(255,255,255,0.4);">${label}</span>
+            <span style="font-size:13px;font-family:'DM Mono',monospace;color:#f0fdf4;font-weight:500;">${value}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+window.showMobileAssetDetail = showMobileAssetDetail;
 
 // 登出按鈕
 const mobileLogout = document.getElementById('btn-logout-mobile');
