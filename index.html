@@ -5707,11 +5707,15 @@ async function deleteMobileAsset(idx) {
 window.deleteMobileAsset = deleteMobileAsset;
 
 async function confirmDeleteMobileAsset(id, idx) {
-  // 先關閉所有 modal
-  ['mobile-delete-confirm-modal','mobile-asset-detail-modal'].forEach(mid => {
-    const el = document.getElementById(mid);
-    if (el) el.remove();
-  });
+  // 立即關閉所有 modal（不等 await）
+  const confirmModal = document.getElementById('mobile-delete-confirm-modal');
+  const detailModal = document.getElementById('mobile-asset-detail-modal');
+  if (confirmModal) confirmModal.style.display = 'none';
+  if (detailModal) detailModal.style.display = 'none';
+  setTimeout(() => {
+    if (confirmModal) confirmModal.remove();
+    if (detailModal) detailModal.remove();
+  }, 50);
 
   // 刪除 Firebase
   try { await deleteDoc(userDoc(id)); } catch(e) { console.log('delete error', e); }
