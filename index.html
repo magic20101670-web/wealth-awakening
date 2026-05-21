@@ -5521,33 +5521,90 @@ window.editMobileUsername = editMobileUsername;
 // 同步財富樹到手機版
 function syncMobileTree() {
   if (window.innerWidth > 768) return;
-  const mCanvas = document.getElementById('mobile-tree-canvas');
-  const dCanvas = document.getElementById('wealth-tree-canvas');
-  if (!mCanvas || !dCanvas) return;
 
-  // 複製桌面版 canvas 內容
-  const mCtx = mCanvas.getContext('2d');
-  mCtx.clearRect(0, 0, mCanvas.width, mCanvas.height);
-  mCtx.drawImage(dCanvas, 0, 0, mCanvas.width, mCanvas.height);
+  const wrap = document.getElementById('mobile-tree-canvas-wrap');
+  const dCanvas = document.getElementById('wealth-tree-canvas');
+  if (!wrap || !dCanvas) return;
+
+  // 直接把原始 canvas 移到手機版（不複製，真正即時）
+  if (!wrap.contains(dCanvas)) {
+    dCanvas.style.width = '100%';
+    dCanvas.style.maxWidth = '280px';
+    dCanvas.style.height = 'auto';
+    wrap.appendChild(dCanvas);
+  }
 
   // 同步統計數字
-  const days = document.getElementById('tree-days');
-  const assets = document.getElementById('tree-assets');
-  const leaves = document.getElementById('tree-leaves');
-  const freq = document.getElementById('tree-freq');
-  const badge = document.getElementById('tree-level-badge');
-  const progress = document.getElementById('tree-progress-bar');
-  const next = document.getElementById('tree-next-level');
+  const map = [
+    ['tree-days', 'mobile-tree-days'],
+    ['tree-assets', 'mobile-tree-assets'],
+    ['tree-leaves', 'mobile-tree-leaves'],
+    ['tree-freq', 'mobile-tree-freq'],
+    ['tree-next-level', 'mobile-tree-next'],
+  ];
+  map.forEach(([src, dst]) => {
+    const s = document.getElementById(src);
+    const d = document.getElementById(dst);
+    if (s && d) d.textContent = s.textContent;
+  });
 
-  if (days) { const el = document.getElementById('mobile-tree-days'); if(el) el.textContent = days.textContent; }
-  if (assets) { const el = document.getElementById('mobile-tree-assets'); if(el) el.textContent = assets.textContent; }
-  if (leaves) { const el = document.getElementById('mobile-tree-leaves'); if(el) el.textContent = leaves.textContent; }
-  if (freq) { const el = document.getElementById('mobile-tree-freq'); if(el) el.textContent = freq.textContent; }
-  if (badge) { const el = document.getElementById('mobile-tree-badge'); if(el) el.textContent = badge.textContent; }
-  if (progress) { const el = document.getElementById('mobile-tree-progress'); if(el) el.style.width = progress.style.width; }
-  if (next) { const el = document.getElementById('mobile-tree-next'); if(el) el.textContent = next.textContent; }
+  const progress = document.getElementById('tree-progress-bar');
+  const mProgress = document.getElementById('mobile-tree-progress');
+  if (progress && mProgress) mProgress.style.width = progress.style.width;
+
+  const badge = document.getElementById('tree-level-badge');
+  const mBadge = document.getElementById('mobile-tree-badge');
+  if (badge && mBadge) mBadge.textContent = badge.textContent + ' ›';
 }
 window.syncMobileTree = syncMobileTree;
+
+// 各成長時期說明 Modal
+function showTreeStagesModal() {
+  const existing = document.getElementById('tree-stages-modal');
+  if (existing) { existing.remove(); return; }
+
+  const STAGES = [
+    { name:'🌱 樹苗期', minAssets:0,  minDays:0,   leaves:0,   desc:'你剛開始財富覺醒之旅，每一步都是開始。' },
+    { name:'🌿 成長期', minAssets:1,  minDays:7,   leaves:8,   desc:'資產開始萌芽，堅持記錄讓樹慢慢成長。' },
+    { name:'🌲 茁壯期', minAssets:3,  minDays:30,  leaves:20,  desc:'樹木茁壯，你的財富意識正在深根。' },
+    { name:'🌳 繁盛期', minAssets:5,  minDays:90,  leaves:40,  desc:'財富之樹繁盛，被動收入開始發揮力量。' },
+    { name:'🏆 豐收期', minAssets:8,  minDays:180, leaves:70,  desc:'豐收時節，你的財富系統已趨於成熟。' },
+    { name:'✨ 神木期', minAssets:12, minDays:365, leaves:120, desc:'神木境界，財富昇華，成為他人的榜樣。' },
+  ];
+
+  const currentBadge = (document.getElementById('tree-level-badge')||{}).textContent || '';
+
+  const modal = document.createElement('div');
+  modal.id = 'tree-stages-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:700;color:#f0fdf4;">🌳 財富樹成長時期</div>
+        <div onclick="document.getElementById('tree-stages-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+      </div>
+      ${STAGES.map(s => {
+        const stageName = s.name.split(' ').slice(1).join(' ');
+        const isActive = currentBadge.includes(stageName);
+        return '<div style="display:flex;gap:12px;padding:13px;background:' + (isActive?'rgba(34,197,94,0.08)':'rgba(255,255,255,0.02)') + ';border:1px solid ' + (isActive?'rgba(34,197,94,0.25)':'rgba(255,255,255,0.06)') + ';border-radius:14px;margin-bottom:8px;">' +
+          '<div style="font-size:28px;flex-shrink:0;">' + s.name.split(' ')[0] + '</div>' +
+          '<div style="flex:1;">' +
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">' +
+              '<span style="font-size:13px;font-weight:700;color:' + (isActive?'#22c55e':'#f0fdf4') + ';">' + s.name + '</span>' +
+              (isActive?'<span style="font-size:9px;background:rgba(34,197,94,0.15);color:#22c55e;padding:1px 7px;border-radius:8px;font-weight:700;">目前階段</span>':'') +
+            '</div>' +
+            '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">' + s.desc + '</div>' +
+            '<div style="font-size:10px;color:rgba(34,197,94,0.5);font-family:monospace;">資產 ' + s.minAssets + ' 筆 · 記錄 ' + s.minDays + ' 天 · 樹葉 ' + s.leaves + ' 片</div>' +
+          '</div>' +
+        '</div>';
+      }).join('')}
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+window.showTreeStagesModal = showTreeStagesModal;
 
 function initMobileHome() {
   if (window.innerWidth > 768) return;
@@ -5891,11 +5948,11 @@ function initMobileHome() {
     <!-- 財富樹 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title">🌳 財富之樹</div>
-      <div id="mobile-tree-badge" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px">🌱 樹苗期</div>
+      <div id="mobile-tree-badge" onclick="showTreeStagesModal()" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px;cursor:pointer;">🌱 樹苗期 ›</div>
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;margin-bottom:10px">
-      <div style="display:flex;justify-content:center;margin-bottom:10px">
-        <canvas id="mobile-tree-canvas" width="240" height="200"></canvas>
+      <div id="mobile-tree-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:10px;min-height:200px;align-items:center">
+        <!-- 財富樹 canvas 會在切換到夢想頁時移入這裡 -->
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
         <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center">
