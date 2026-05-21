@@ -4569,8 +4569,27 @@ function updateWealthTree() {
   const now = Date.now() / 1000;
   const validTs = assets
     .map(a => a.createdAt?.seconds || 0)
-    .filter(t => t > 1000000000); // 過濾掉無效時間戳（2001年以後）
-  const firstAsset = validTs.length > 0 ? Math.min(...validTs) : now;
+    .filter(t => t > 1000000000);
+
+  let firstAsset;
+  if (validTs.length > 0) {
+    firstAsset = Math.min(...validTs);
+  } else {
+    // 沒有 createdAt 時，從 localStorage 取得首次使用日期
+    const storedFirst = localStorage.getItem('wealthFirstDate');
+    if (storedFirst) {
+      firstAsset = parseInt(storedFirst);
+    } else {
+      // 第一次，記錄今天為起始日
+      firstAsset = now;
+      localStorage.setItem('wealthFirstDate', Math.floor(now).toString());
+    }
+  }
+  // 如果有資產但沒 createdAt，也確保起始日有記錄
+  if (validTs.length === 0 && assets.length > 0) {
+    const stored = localStorage.getItem('wealthFirstDate');
+    if (!stored) localStorage.setItem('wealthFirstDate', Math.floor(now).toString());
+  }
   const days = Math.max(0, Math.floor((now - firstAsset) / 86400));
 
   // 判斷等級
@@ -5606,6 +5625,50 @@ function showTreeStagesModal() {
 }
 window.showTreeStagesModal = showTreeStagesModal;
 
+function setTreeStartDate() {
+  const existing = document.getElementById('tree-date-modal');
+  if (existing) { existing.remove(); return; }
+
+  const stored = localStorage.getItem('wealthFirstDate');
+  const currentDate = stored
+    ? new Date(parseInt(stored) * 1000).toISOString().split('T')[0]
+    : new Date().toISOString().split('T')[0];
+
+  const modal = document.createElement('div');
+  modal.id = 'tree-date-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(34,197,94,0.2);">
+      <div style="font-size:15px;font-weight:700;color:#f0fdf4;margin-bottom:6px;">⚙️ 設定開始記錄日期</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:16px;">財富樹的天數將從這天開始計算</div>
+      <input id="tree-start-date-input" type="date" value="${currentDate}"
+        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <button onclick="document.getElementById('tree-date-modal').remove()"
+          style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
+        <button onclick="saveTreeStartDate()"
+          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+window.setTreeStartDate = setTreeStartDate;
+
+function saveTreeStartDate() {
+  const input = document.getElementById('tree-start-date-input');
+  if (!input || !input.value) return;
+  const ts = Math.floor(new Date(input.value).getTime() / 1000);
+  localStorage.setItem('wealthFirstDate', ts.toString());
+  document.getElementById('tree-date-modal').remove();
+  // 重新繪製財富樹
+  if (window.drawWealthTree) drawWealthTree();
+  setTimeout(syncMobileTree, 300);
+}
+window.saveTreeStartDate = saveTreeStartDate;
+
 function initMobileHome() {
   if (window.innerWidth > 768) return;
   // 更新問候語
@@ -5978,6 +6041,9 @@ function initMobileHome() {
           <div id="mobile-tree-progress" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);width:0%;transition:width 1.2s ease"></div>
         </div>
         <div id="mobile-tree-next" style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px">累積更多資產讓樹成長</div>
+        <div style="margin-top:10px;text-align:center">
+          <span onclick="setTreeStartDate()" style="font-size:10px;color:rgba(34,197,94,0.4);cursor:pointer;border-bottom:1px dashed rgba(34,197,94,0.2);padding-bottom:1px;">⚙️ 設定開始記錄日期</span>
+        </div>
       </div>
     </div>
   </div>
