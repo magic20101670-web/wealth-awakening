@@ -1111,6 +1111,7 @@ select option { background: #0d2318; }
     position: fixed !important;
   }
 }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -5669,6 +5670,57 @@ function saveTreeStartDate() {
 }
 window.saveTreeStartDate = saveTreeStartDate;
 
+// ── 手機版價格更新 ──
+async function refreshMobilePrices() {
+  const btn = document.getElementById('mobile-refresh-btn');
+  if (btn) btn.style.animation = 'spin 1s linear infinite';
+  await updatePrices();
+  setTimeout(() => {
+    if (btn) btn.style.animation = '';
+    syncMobileUI();
+    syncMobileAssets();
+  }, 1500);
+}
+window.refreshMobilePrices = refreshMobilePrices;
+
+// ── 手機版刪除資產 ──
+async function deleteMobileAsset(idx) {
+  const a = window.assets[idx];
+  if (!a) return;
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(248,113,113,0.2);">
+      <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:8px;">刪除資產</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">確定要刪除「${a.name}」嗎？此操作無法復原。</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <button onclick="this.closest('div[style]').remove()" style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
+        <button onclick="confirmDeleteMobileAsset('${a.id}',${idx})" style="padding:12px;border-radius:12px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:#f87171;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">刪除</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+window.deleteMobileAsset = deleteMobileAsset;
+
+async function confirmDeleteMobileAsset(id, idx) {
+  try {
+    const { deleteDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+    // 用已有的 userDoc 函式
+    await deleteDoc(userDoc(id));
+  } catch(e) { console.log('delete error', e); }
+  assets = assets.filter(a => a.id !== id);
+  window.assets = assets;
+  render();
+  saveHistorySnapshot();
+  document.querySelectorAll('div[style*="position:fixed"]').forEach(el => {
+    if (el.innerHTML.includes('確定要刪除')) el.remove();
+    if (el.id === 'mobile-asset-detail-modal') el.remove();
+  });
+  setTimeout(() => { syncMobileUI(); syncMobileAssets(); }, 300);
+}
+window.confirmDeleteMobileAsset = confirmDeleteMobileAsset;
+
 function initMobileHome() {
   if (window.innerWidth > 768) return;
   // 更新問候語
@@ -5699,6 +5751,7 @@ function initMobileHome() {
   </div>
   <div class="app-topbar-right">
     <div id="app-wl-badge" class="app-topbar-badge" style="display:none"></div>
+    <div onclick="refreshMobilePrices()" style="width:30px;height:30px;border-radius:50%;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;" id="mobile-refresh-btn" title="更新價格">🔄</div>
     <div class="app-topbar-avatar" onclick="switchTab('profile')">👤</div>
   </div>
 </div>
@@ -6212,21 +6265,29 @@ function syncMobileUI() {
   // 現金流來源明細
   const cfBreakdown=document.getElementById('cf-breakdown');
   const mCfBreakdown=document.getElementById('mobile-cf-breakdown-inner');
-  if(cfBreakdown && mCfBreakdown) {
-    const rows=cfBreakdown.querySelectorAll('.cf-row:not(.cf-header)');
-    if(rows.length===0) {
-      mCfBreakdown.innerHTML='<div style="text-align:center;padding:16px;color:rgba(255,255,255,0.3);font-size:12px">尚未有現金流來源</div>';
+  if(mCfBreakdown && window.assets) {
+    const ICONS = {crypto:'₿',stock:'📈',etf:'📊',gold:'🥇',silver:'🥈',bond:'📜',deposit:'🏦',lending:'💸',fund:'💼',insurance:'🛡️',realestate:'🏠'};
+    const LABELS = {crypto:'加密貨幣',stock:'股票',etf:'ETF',gold:'黃金',silver:'白銀',bond:'債券',deposit:'定存',lending:'放貸',fund:'基金',insurance:'保險',realestate:'不動產'};
+    const byCategory = {};
+    window.assets.forEach(a => {
+      if (a.monthlyIncome > 0) {
+        byCategory[a.category] = (byCategory[a.category] || 0) + (a.monthlyIncome || 0);
+      }
+    });
+    if (Object.keys(byCategory).length === 0) {
+      mCfBreakdown.innerHTML='<div style="text-align:center;padding:16px;color:rgba(255,255,255,0.3);font-size:12px">尚無現金流來源</div>';
     } else {
-      mCfBreakdown.innerHTML=Array.from(rows).map(r=>{
-        const spans=r.querySelectorAll('span');
-        return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'+
-          '<span style="font-size:12px;color:rgba(255,255,255,0.7)">'+(spans[0]?spans[0].textContent:'')+'</span>'+
-          '<span style="font-size:12px;font-family:monospace;color:#22c55e">'+(spans[1]?spans[1].textContent:'')+'</span></div>';
+      mCfBreakdown.innerHTML = Object.entries(byCategory).map(([cat, amt]) => {
+        const icon = ICONS[cat] || '💰';
+        const label = LABELS[cat] || cat;
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)">' +
+          '<span style="font-size:12px;color:rgba(255,255,255,0.7)">' + icon + ' ' + label + '</span>' +
+          '<span style="font-size:12px;font-family:monospace;color:#22c55e">NT$' + Math.round(amt).toLocaleString() + ' / 月</span></div>';
       }).join('');
     }
-    const cfTotal=document.getElementById('cf-total-val');
-    const mCfTotal=document.getElementById('mobile-cf-total');
-    if(cfTotal && mCfTotal) mCfTotal.textContent=cfTotal.textContent;
+    const totalCF = window.assets.reduce((s,a) => s + (a.monthlyIncome||0), 0);
+    const mCfTotal = document.getElementById('mobile-cf-total');
+    if(mCfTotal) mCfTotal.textContent = 'NT$' + Math.round(totalCF).toLocaleString() + ' / 月';
   }
 
   // 財富等級列表
@@ -6470,12 +6531,15 @@ function showMobileAssetDetail(idx) {
   modal.id = 'mobile-asset-detail-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
 
+  // 判斷貨幣單位
+  const isUSDAsset = ['gold','silver','crypto','stock','etf'].includes(a.category) && a.currency !== 'TWD';
+  const buyUnit = (a.currency && a.currency !== 'TWD') ? a.currency : 'NT$';
   const rows = [
     ['類別', catName],
     ['代號', a.symbol || '—'],
     ['持有數量', `${(a.quantity||1).toLocaleString()} ${qtyUnit}`],
-    ['買入價格', `NT$${(a.buyPrice||0).toLocaleString()}`],
-    ['現值', `NT$${Math.round(val).toLocaleString()}`],
+    ['買入均價', `${buyUnit === 'NT$' ? 'NT$' : buyUnit + ' '}${(a.buyPrice||0).toLocaleString()}`],
+    ['現值 (NT$)', `NT$${Math.round(val).toLocaleString()}`],
     ['損益', `${isPos?'+':''}NT$${Math.round(pnl).toLocaleString()} (${isPos?'+':''}${pnlPct}%)`],
     ['月現金流', `NT$${(a.monthlyIncome||0).toLocaleString()}`],
   ];
@@ -6495,7 +6559,10 @@ function showMobileAssetDetail(idx) {
             <div style="font-size:11px;color:rgba(255,255,255,0.35);">${catName}</div>
           </div>
         </div>
-        <div onclick="document.getElementById('mobile-asset-detail-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div onclick="document.getElementById('mobile-asset-detail-modal').remove();deleteMobileAsset(${idx})" style="font-size:12px;color:#f87171;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);padding:4px 10px;border-radius:8px;cursor:pointer;">刪除</div>
+          <div onclick="document.getElementById('mobile-asset-detail-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+        </div>
       </div>
       <div style="font-family:'DM Mono',monospace;font-size:26px;font-weight:700;color:${isPos?'#22c55e':'#f87171'};margin-bottom:4px;">
         NT$${Math.round(val).toLocaleString()}
