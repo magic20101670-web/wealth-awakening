@@ -5420,14 +5420,114 @@ function initMobilePersonalityList() {
 }
 window.initMobilePersonalityList = initMobilePersonalityList;
 
+// 財富等級說明 Modal
+function showWealthLevelModal() {
+  const existing = document.getElementById('wealth-level-modal');
+  if (existing) { existing.remove(); return; }
+
+  const LEVELS = [
+    {icon:'🌑', name:'Observer', zh:'觀察者', req:'起點', desc:'你開始意識到財富的重要性，踏上覺醒之路。'},
+    {icon:'🌱', name:'Awakener', zh:'覺醒者', req:'NT$5,000/月', desc:'被動收入開始萌芽，財富意識已經覺醒。'},
+    {icon:'🌿', name:'Resonator', zh:'共振者', req:'NT$20,000/月', desc:'與豐盛頻率共振，財富開始加速流入。'},
+    {icon:'🌳', name:'Alchemist', zh:'煉金者', req:'NT$50,000/月', desc:'你已掌握財富煉金術，資產持續增值。'},
+    {icon:'🏛️', name:'Architect', zh:'建構者', req:'NT$100,000/月', desc:'建構多元財富系統，成為財務自由的架構師。'},
+    {icon:'✨', name:'Ascended', zh:'昇華者', req:'NT$200,000/月', desc:'財富昇華，影響力遠超金錢本身。'},
+  ];
+
+  const wlLabel = document.getElementById('wl-label');
+  const currentName = wlLabel ? wlLabel.textContent.split(' ')[0] : 'Observer';
+
+  const modal = document.createElement('div');
+  modal.id = 'wealth-level-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:700;color:#f0d060;">💰 六大財富等級</div>
+        <div onclick="document.getElementById('wealth-level-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:14px;">依月被動收入自動升級 · 點擊查看說明</div>
+      ${LEVELS.map(l => {
+        const isActive = l.name === currentName;
+        return `<div style="display:flex;gap:12px;padding:13px;background:${isActive?'rgba(240,208,96,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isActive?'rgba(240,208,96,0.25)':'rgba(255,255,255,0.06)'};border-radius:14px;margin-bottom:8px;">
+          <div style="font-size:28px;flex-shrink:0;">${l.icon}</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:700;color:${isActive?'#f0d060':'#f0fdf4'};">${l.name} ${l.zh}</span>
+              ${isActive?'<span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 7px;border-radius:8px;font-weight:700;">目前等級</span>':''}
+            </div>
+            <div style="font-size:11px;color:#22c55e;font-family:monospace;margin-bottom:4px;">${l.req}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;">${l.desc}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+window.showWealthLevelModal = showWealthLevelModal;
+
+// 修改暱稱
+function editMobileUsername() {
+  const current = document.getElementById('mobile-username').textContent.replace(' ✏️','').trim();
+  const newName = prompt('修改你的暱稱：', current);
+  if (!newName || !newName.trim()) return;
+  const name = newName.trim().slice(0, 20);
+  document.getElementById('mobile-username').textContent = name + ' ✏️';
+  localStorage.setItem('wealthNickname', name);
+  // 同步到桌面版
+  const userNameEl = document.getElementById('user-name');
+  if (userNameEl && name) {
+    // 顯示自訂暱稱
+  }
+}
+window.editMobileUsername = editMobileUsername;
+
+// 同步財富樹到手機版
+function syncMobileTree() {
+  if (window.innerWidth > 768) return;
+  const mCanvas = document.getElementById('mobile-tree-canvas');
+  const dCanvas = document.getElementById('wealth-tree-canvas');
+  if (!mCanvas || !dCanvas) return;
+
+  // 複製桌面版 canvas 內容
+  const mCtx = mCanvas.getContext('2d');
+  mCtx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+  mCtx.drawImage(dCanvas, 0, 0, mCanvas.width, mCanvas.height);
+
+  // 同步統計數字
+  const days = document.getElementById('tree-days');
+  const assets = document.getElementById('tree-assets');
+  const leaves = document.getElementById('tree-leaves');
+  const freq = document.getElementById('tree-freq');
+  const badge = document.getElementById('tree-level-badge');
+  const progress = document.getElementById('tree-progress-bar');
+  const next = document.getElementById('tree-next-level');
+
+  if (days) { const el = document.getElementById('mobile-tree-days'); if(el) el.textContent = days.textContent; }
+  if (assets) { const el = document.getElementById('mobile-tree-assets'); if(el) el.textContent = assets.textContent; }
+  if (leaves) { const el = document.getElementById('mobile-tree-leaves'); if(el) el.textContent = leaves.textContent; }
+  if (freq) { const el = document.getElementById('mobile-tree-freq'); if(el) el.textContent = freq.textContent; }
+  if (badge) { const el = document.getElementById('mobile-tree-badge'); if(el) el.textContent = badge.textContent; }
+  if (progress) { const el = document.getElementById('mobile-tree-progress'); if(el) el.style.width = progress.style.width; }
+  if (next) { const el = document.getElementById('mobile-tree-next'); if(el) el.textContent = next.textContent; }
+}
+window.syncMobileTree = syncMobileTree;
+
 function initMobileHome() {
   if (window.innerWidth > 768) return;
   // 更新問候語
   const userEl = document.getElementById('user-name');
   const greetEl = document.getElementById('mobile-username');
-  if (greetEl && userEl) {
-    const email = userEl.textContent;
-    greetEl.textContent = email ? email.split('@')[0] : '財富覺醒者';
+  if (greetEl) {
+    const savedNick = localStorage.getItem('wealthNickname');
+    if (savedNick) {
+      greetEl.textContent = savedNick + ' ✏️';
+    } else if (userEl && userEl.textContent) {
+      greetEl.textContent = userEl.textContent.split('@')[0] + ' ✏️';
+    }
   }
   // 預設顯示首頁
   switchTab('home');
@@ -5487,7 +5587,7 @@ function initMobileHome() {
   <!-- Banner -->
   <div class="home-banner">
     <div class="home-greeting">早安 👋</div>
-    <div class="home-username" id="mobile-username">財富覺醒者</div>
+    <div class="home-username" id="mobile-username" onclick="editMobileUsername()" style="cursor:pointer;" title="點擊修改名稱">財富覺醒者 ✏️</div>
     <div class="home-freedom-row">
       <div class="home-freedom-ring">
         <svg width="90" height="90" style="transform:rotate(-90deg)">
@@ -5659,7 +5759,7 @@ function initMobileHome() {
     <div class="mobile-section-header">
       <div class="mobile-section-title">財富頻率等級</div>
     </div>
-    <div id="mobile-wealth-levels" style="margin-bottom:14px"></div>
+    <div id="mobile-wealth-levels" style="margin-bottom:14px" onclick="showWealthLevelModal()"></div>
 
     <!-- 現金流卡片 -->
     <div class="mobile-section-header">
@@ -5748,7 +5848,43 @@ function initMobileHome() {
       <button onclick="openDreamComplete()" style="padding:13px;border-radius:14px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🎉 我實現了！</button>
       <button onclick="openCompletedDreams()" style="padding:13px;border-radius:14px;background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.2);color:#f0d060;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🏆 成就殿堂</button>
     </div>
-    <button onclick="openDreamManager()" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ 夢想管理</button>
+    <button onclick="openDreamManager()" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:14px">✏️ 夢想管理</button>
+
+    <!-- 財富樹 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title">🌳 財富之樹</div>
+      <div id="mobile-tree-badge" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px">🌱 樹苗期</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;justify-content:center;margin-bottom:10px">
+        <canvas id="mobile-tree-canvas" width="240" height="200"></canvas>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px">🗓️ 記錄天數</div>
+          <div id="mobile-tree-days" style="font-size:16px;font-weight:700;color:#f0fdf4">0 天</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px">💰 資產筆數</div>
+          <div id="mobile-tree-assets" style="font-size:16px;font-weight:700;color:#f0fdf4">0 筆</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px">🌿 樹葉數量</div>
+          <div id="mobile-tree-leaves" style="font-size:16px;font-weight:700;color:#f0fdf4">0 片</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center" onclick="showWealthLevelModal()">
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px">✨ 財富頻率</div>
+          <div id="mobile-tree-freq" style="font-size:14px;font-weight:700;color:#f0d060">—</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:5px">成長進度</div>
+        <div style="height:5px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden">
+          <div id="mobile-tree-progress" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);width:0%;transition:width 1.2s ease"></div>
+        </div>
+        <div id="mobile-tree-next" style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px">累積更多資產讓樹成長</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -5946,6 +6082,9 @@ function syncMobileUI() {
 
   // 夢想列表
   syncMobileDreams();
+
+  // 財富樹
+  setTimeout(syncMobileTree, 200);
 
   // 使用者資訊
   const userEl=document.getElementById('user-name');
