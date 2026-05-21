@@ -704,7 +704,7 @@ select option { background: #0d2318; }
   .app-page.active { display: block; }
   @keyframes pageIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
   
-  .page-content { padding: 10px 14px 30px; }
+  .page-content { padding: 10px 14px 90px; }
 
   /* ── 卡片 v2 通用 ── */
   .v2-card {
@@ -6106,9 +6106,20 @@ function syncMobileDreams() {
 }
 
 function syncMobileAssets() {
-  if (!window.assets || !window.assets.length) return;
   const list = document.getElementById('mobile-assets-list');
   if (!list) return;
+  
+  // 嘗試從多個來源取得資產
+  let assetData = window.assets;
+  if (!assetData || !assetData.length) {
+    // 從桌面版 grid 讀取
+    const grid = document.getElementById('assets-grid');
+    if (!grid || !grid.children.length) {
+      list.innerHTML = '<div style="text-align:center;padding:32px;color:rgba(255,255,255,0.3);font-size:13px">尚未新增資產</div>';
+      return;
+    }
+  }
+  if (!assetData || !assetData.length) return;
   
   const catIcons = {
     '加密貨幣 Crypto':'₿','股票 Stock':'📈','ETF':'📊','黃金 Gold':'🥇',
@@ -6151,7 +6162,10 @@ if (mobileLogout && desktopLogout) {
 }
 
 // 定期同步 UI
-setInterval(syncMobileUI, 2000);
+setInterval(() => {
+  syncMobileUI();
+  if (window.innerWidth <= 768) syncMobileAssets();
+}, 2000);
 // 監聽 render 完成 - 立即同步手機版
 const _origRender = window.render;
 if (typeof _origRender === 'function') {
