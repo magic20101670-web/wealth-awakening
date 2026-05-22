@@ -4274,8 +4274,23 @@ async function fetchAIInsight(){
 
   const btn = document.getElementById('ai-refresh-btn');
   const txt = document.getElementById('ai-insight-text');
+  const mTxt = document.getElementById('mobile-ai-insight-text');
+  
+  function setTxt(t) {
+    if (txt) txt.textContent = t;
+    if (mTxt) mTxt.textContent = t;
+  }
+  function addTyping() {
+    if (txt) txt.classList.add('ai-typing');
+    if (mTxt) mTxt.classList.add('ai-typing');
+  }
+  function removeTyping() {
+    if (txt) txt.classList.remove('ai-typing');
+    if (mTxt) mTxt.classList.remove('ai-typing');
+  }
+  
   if (btn) { btn.disabled=true; btn.textContent='✦ 分析中...'; }
-  txt.textContent='正在連接 Gemini AI 進行財務分析⋯'; txt.classList.add('ai-typing');
+  setTxt('正在連接 Gemini AI 進行財務分析⋯'); addTyping();
 
   const goal = +document.getElementById('goal-input').value||100000;
   const tv = assets.reduce((s,a)=>(s+(a.currentPrice||0)*(a.quantity||1)),0);
@@ -4303,24 +4318,30 @@ async function fetchAIInsight(){
     if (res.status === 400 || res.status === 403) {
       // API Key 無效，清除並重新輸入
       localStorage.removeItem('geminiApiKey');
-      txt.classList.remove('ai-typing');
-      txt.textContent = '⚠ API Key 無效，請重新輸入。';
+      removeTyping();
+      setTxt('⚠ API Key 無效，請重新輸入。');
       if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
       return;
     }
 
     const d = await res.json();
     const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得分析結果';
-    txt.classList.remove('ai-typing');
-    txt.textContent = '';
+    removeTyping();
+    if (txt) txt.textContent = '';
+    if (mTxt) mTxt.textContent = '';
     let i = 0;
-    const type = () => { if (i < text.length) { txt.textContent += text[i++]; setTimeout(type, 16); } };
+    const type = () => {
+      if (i < text.length) {
+        if (txt) txt.textContent += text[i];
+        if (mTxt) mTxt.textContent += text[i];
+        i++; setTimeout(type, 16);
+      }
+    };
     type();
   } catch(e) {
-    // 如果是 Key 問題，清除
     if (e.message && e.message.includes('API')) localStorage.removeItem('geminiApiKey');
-    txt.classList.remove('ai-typing');
-    txt.textContent = '⚠ AI 分析暫時無法使用，請稍後再試。';
+    removeTyping();
+    setTxt('⚠ AI 分析暫時無法使用，請稍後再試。');
   }
   if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
 }
@@ -6411,7 +6432,7 @@ function initMobileHome() {
         </div>
         <span onclick="fetchAIInsight()" style="font-family:ui-monospace,'DM Mono',monospace;font-size:8.5px;color:rgba(34,197,94,0.40);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer">更新分析</span>
       </div>
-      <div id="ai-insight-text" style="background:rgba(255,255,255,0.02);border:1px solid rgba(34,197,94,0.06);border-radius:8px;padding:8px 10px;font-size:11px;color:rgba(240,253,244,0.55);line-height:1.6;white-space:pre-line">點擊「更新分析」，AI 將分析您的財務狀況。</div>
+      <div id="mobile-ai-insight-text" style="background:rgba(255,255,255,0.02);border:1px solid rgba(34,197,94,0.06);border-radius:8px;padding:8px 10px;font-size:11px;color:rgba(240,253,244,0.55);line-height:1.6;white-space:pre-line">點擊「更新分析」，AI 將分析您的財務狀況。</div>
     </div>
   </div>
 </div>
