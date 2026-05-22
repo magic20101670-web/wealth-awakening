@@ -4325,9 +4325,22 @@ async function fetchAIInsight(){
     }
 
     const d = await res.json();
-    console.log('Gemini response:', JSON.stringify(d).slice(0, 200));
-    const text = d.candidates?.[0]?.content?.parts?.[0]?.text || 
-                 d.error?.message || '無法取得分析結果';
+    console.log('Gemini full response:', JSON.stringify(d));
+    
+    // 顯示詳細錯誤給使用者
+    if (d.error) {
+      const errMsg = d.error.message || JSON.stringify(d.error);
+      removeTyping();
+      setTxt('⚠ API 錯誤：' + errMsg);
+      if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
+      return;
+    }
+    
+    // 嘗試多種回應格式
+    const text = d.candidates?.[0]?.content?.parts?.[0]?.text ||
+                 d.candidates?.[0]?.text ||
+                 d.text ||
+                 (d.candidates?.length === 0 ? '內容被安全過濾，請稍後再試。' : '無法取得分析結果：' + JSON.stringify(d).slice(0, 100));
     removeTyping();
     if (txt) txt.textContent = '';
     if (mTxt) mTxt.textContent = '';
