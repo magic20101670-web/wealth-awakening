@@ -6926,39 +6926,29 @@ function syncMobileUI() {
   const avLabel=document.getElementById('av-label');
   const mCfCard=document.getElementById('mobile-cf-card');
   const isLight = document.documentElement.getAttribute('data-theme')?.startsWith('light');
-  const cfNumColor = '#22c55e';
   const cfTextColor = isLight ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.35)';
-  const avNumColor = '#fcd34d';
-  const cfTitleColor = '#22c55e';
-  const avTitleColor = '#fcd34d';
   if(mCfCard) {
     mCfCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">💧</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:'+cfTitleColor+' !important">現金流：生存之泉</div>'+
+      '<div><div style="font-size:11px;font-weight:600;color:#22c55e">現金流：生存之泉</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">持續性月現金流</div></div></div>'+
-      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+cfNumColor+';margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
+      '<div id="cf-card-num" style="font-family:monospace;font-size:22px;font-weight:700;margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">'+(cfLabel?cfLabel.textContent:'目標 NT$0 / 月')+'</div>';
-    // 強制覆蓋任何 CSS 設定的顏色
-    mCfCard.querySelectorAll('div').forEach((el,i) => {
-      if(i===2) el.style.setProperty('color', cfNumColor, 'important');
-      else if(i===1 || i===4) el.style.setProperty('color', cfTextColor, 'important');
-      else if(i===0) {}
-    });
+    const cfNum = document.getElementById('cf-card-num');
+    if(cfNum) cfNum.style.setProperty('color','#22c55e','important');
   }
   const mAvCard=document.getElementById('mobile-av-card');
   if(mAvCard) {
     mAvCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">🌲</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:'+avTitleColor+'">資產值：增長之林</div>'+
+      '<div><div style="font-size:11px;font-weight:600;color:#fcd34d">資產值：增長之林</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">一次性帳面獲利</div></div></div>'+
-      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+avNumColor+';margin-bottom:4px">'+(avDisplay?avDisplay.textContent:'NT$ 0')+'</div>'+
+      '<div id="av-card-num" style="font-family:monospace;font-size:22px;font-weight:700;margin-bottom:4px">'+(avDisplay?avDisplay.textContent:'NT$ 0')+'</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">'+(avLabel?avLabel.textContent:'總損益 +0%')+'</div>';
-    mAvCard.querySelectorAll('div').forEach((el,i) => {
-      if(i===2) el.style.setProperty('color', avNumColor, 'important');
-      else if(i===1 || i===4) el.style.setProperty('color', cfTextColor, 'important');
-    });
+    const avNum = document.getElementById('av-card-num');
+    if(avNum) avNum.style.setProperty('color','#fcd34d','important');
   }
 
   // 現金流來源明細
