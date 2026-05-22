@@ -4306,7 +4306,7 @@ async function fetchAIInsight(){
   try {
     const prompt = `你是一位專業的財富顧問AI，用繁體中文回應。\n\n我的財富概況：\n總資產 NT$${Math.round(tv).toLocaleString()}\n月現金流 NT$${Math.round(tc).toLocaleString()}\n財務自由目標 NT$${goal.toLocaleString()}/月\n財務自由進度 ${pct}%\n持有資產：${summary}\n${personalityNote}\n請給我3點精準的財務洞察和建議，並考慮我的財富人格特質。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度。不要用markdown符號或星號。250字以內。`;
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -4325,7 +4325,9 @@ async function fetchAIInsight(){
     }
 
     const d = await res.json();
-    const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得分析結果';
+    console.log('Gemini response:', JSON.stringify(d).slice(0, 200));
+    const text = d.candidates?.[0]?.content?.parts?.[0]?.text || 
+                 d.error?.message || '無法取得分析結果';
     removeTyping();
     if (txt) txt.textContent = '';
     if (mTxt) mTxt.textContent = '';
