@@ -4229,6 +4229,79 @@ function switchChart(mode, btn){
 }
 window.switchChart = switchChart;
 
+// 手機版圖表
+let mobileChartInstance = null;
+function renderMobileChart(mode) {
+  const canvas = document.getElementById('mobile-chart-canvas');
+  if (!canvas || !assets.length) return;
+  buildTrendData();
+  const data = (mode||chartMode||'total')==='total' ? trendData.total : trendData.income;
+  const label = (mode||chartMode||'total')==='total' ? '總資產' : '被動收入';
+  if (mobileChartInstance) { mobileChartInstance.destroy(); mobileChartInstance = null; }
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createLinearGradient(0,0,0,140);
+  grad.addColorStop(0,'rgba(34,197,94,0.25)');
+  grad.addColorStop(1,'rgba(34,197,94,0)');
+  const isLight = document.documentElement.getAttribute('data-theme')?.startsWith('light');
+  const tickColor = isLight ? 'rgba(0,0,0,0.4)' : 'rgba(240,253,244,0.4)';
+  const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+  mobileChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: trendData.labels,
+      datasets: [{
+        label, data,
+        borderColor: '#22c55e',
+        borderWidth: 2,
+        backgroundColor: grad,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#22c55e',
+        pointBorderColor: isLight ? '#ffffff' : '#060f0a',
+        pointBorderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isLight ? 'rgba(255,255,255,0.95)' : 'rgba(6,15,10,0.95)',
+          borderColor: 'rgba(34,197,94,0.2)',
+          borderWidth: 1,
+          titleColor: '#22c55e',
+          bodyColor: isLight ? '#0f172a' : '#f0fdf4',
+          callbacks: { label: ctx => ` NT$ ${ctx.raw.toLocaleString()}` }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 9 }, maxTicksLimit: 5 } },
+        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 9 }, callback: v => 'NT$'+Math.round(v/1000)+'K' } }
+      }
+    }
+  });
+}
+window.renderMobileChart = renderMobileChart;
+
+function switchMobileChart(mode, btn) {
+  chartMode = mode;
+  document.querySelectorAll('#page-goals .chart-tab-mobile').forEach(b => {
+    b.style.background = 'rgba(255,255,255,0.05)';
+    b.style.color = 'rgba(255,255,255,0.5)';
+    b.style.borderColor = 'rgba(255,255,255,0.1)';
+  });
+  if (btn) {
+    btn.style.background = 'rgba(34,197,94,0.15)';
+    btn.style.color = '#22c55e';
+    btn.style.borderColor = 'rgba(34,197,94,0.3)';
+  }
+  renderMobileChart(mode);
+}
+window.switchMobileChart = switchMobileChart;
+
 function buildTrendData(){
   if(!assets.length){ trendData={labels:[],total:[],income:[]}; return; }
   if(trendData.labels && trendData.labels.length) return;
@@ -6600,8 +6673,8 @@ function initMobileHome() {
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
       <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button onclick="switchChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">總資產</button>
-        <button onclick="switchChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">被動收入</button>
+        <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">總資產</button>
+        <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">被動收入</button>
       </div>
       <div id="mobile-trend-area">
         <canvas id="mobile-chart-canvas" width="300" height="160"></canvas>
@@ -6996,6 +7069,9 @@ function syncMobileUI() {
 
   // 財富樹
   setTimeout(syncMobileTree, 200);
+
+  // 手機版圖表
+  setTimeout(() => renderMobileChart(), 300);
 
   // 使用者資訊
   const userEl=document.getElementById('user-name');
