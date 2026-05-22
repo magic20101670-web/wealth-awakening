@@ -2111,7 +2111,7 @@ if (localStorage.getItem('soulQuizDone') === '1') {
     </div>
   </div>
 </div>
-<div id="app-loading" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;">
+<div id="app-loading" style="position:fixed;inset:0;background:var(--bg);z-index:1500;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;">
   <div style="text-align:center;">
     <div style="font-size:36px;margin-bottom:10px;color:var(--accent);">★</div>
     <div style="font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:0.12em;opacity:0.7;">WEALTH AWAKENING</div>
@@ -4306,7 +4306,7 @@ async function fetchAIInsight(){
   try {
     const prompt = `你是一位專業的財富顧問AI，用繁體中文回應。\n\n我的財富概況：\n總資產 NT$${Math.round(tv).toLocaleString()}\n月現金流 NT$${Math.round(tc).toLocaleString()}\n財務自由目標 NT$${goal.toLocaleString()}/月\n財務自由進度 ${pct}%\n持有資產：${summary}\n${personalityNote}\n請給我3點精準的財務洞察和建議，並考慮我的財富人格特質。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度。不要用markdown符號或星號。250字以內。`;
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -6193,16 +6193,9 @@ function hideAppLoading() {
   loading.style.opacity = '0';
   setTimeout(() => { loading.style.display = 'none'; }, 400);
 }
-// 手機版：等頁面和資料都載入完才隱藏
-if (window.innerWidth <= 768) {
-  // 最慢 2 秒一定消失
-  setTimeout(hideAppLoading, 2000);
-  // 登入後立即消失
-  window._hideLoading = hideAppLoading;
-} else {
-  // 電腦版立即消失
-  document.addEventListener('DOMContentLoaded', () => setTimeout(hideAppLoading, 100));
-}
+// 所有版本：1秒後消失，讓登入畫面可以顯示
+setTimeout(hideAppLoading, 800);
+window._hideLoading = hideAppLoading;
 
 // ── 手機版價格更新 ──
 async function refreshMobilePrices() {
