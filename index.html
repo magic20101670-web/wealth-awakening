@@ -1269,10 +1269,20 @@ body, .app-topbar, .app-bottom-nav, .app-page {
   /* 全域文字顏色 */
   .app-page * { color: inherit; }
   .home-username, .asset-mobile-name, .profile-menu-label,
-  .quick-card-val, .asset-total-val, .home-stat-mini-val { color: var(--fg) !important; }
+  .quick-card-val, .asset-total-val { color: var(--fg) !important; }
+  .home-stat-mini-val { color: var(--fg) !important; }
   .home-greeting, .quick-card-label, .asset-mobile-cat,
   .mobile-section-title, .asset-total-label { color: var(--fg3) !important; }
-  .quick-card-sub, .asset-mobile-pnl { color: var(--fg3) !important; }
+  .quick-card-sub { color: var(--fg3) !important; }
+
+  /* 保留顏色 class */
+  .app-page .green, .home-stat-mini-val.green, .quick-card-val.green { color: var(--accent) !important; }
+  .app-page .blue, .home-stat-mini-val.blue { color: #60a5fa !important; }
+  .app-page .red, .home-stat-mini-val.red, .asset-mobile-pnl.red { color: #f87171 !important; }
+  .asset-mobile-pnl.green { color: var(--accent) !important; }
+
+  /* 財富等級金色 */
+  #mobile-level { color: #f0d060 !important; }
 
   /* Banner */
   .home-banner {
@@ -6819,7 +6829,14 @@ function syncMobileUI() {
   // 首頁同步
   ['mobile-total','mobile-assets-total'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=total; });
   ['mobile-cashflow','mobile-cf2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=cf; });
-  ['mobile-pnl','mobile-pnl2','mobile-assets-pnl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=pnl; });
+  ['mobile-pnl','mobile-pnl2','mobile-assets-pnl'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) {
+      el.textContent=pnl;
+      const isPos = parseFloat(pnl.replace(/[^0-9.-]/g,'')) >= 0;
+      el.className = 'home-stat-mini-val ' + (isPos ? 'green' : 'red');
+    }
+  });
   const mCount=document.getElementById('mobile-count'); if(mCount) mCount.textContent=count;
 
   // 自由指數環
