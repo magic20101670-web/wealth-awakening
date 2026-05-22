@@ -1341,15 +1341,20 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] .asset-total-val { color: var(--fg) !important; }
 [data-theme^="light"] .asset-total-val + .asset-total-pnl { color: var(--accent) !important; }
 
-/* CF 和 AV 卡片顏色保留 */
-[data-theme^="light"] #mobile-cf-card [style*="color:#22c55e"],
-[data-theme^="light"] #mobile-cf-card2 [style*="color:#22c55e"] { color: #16a34a !important; }
-[data-theme^="light"] #mobile-av-card [style*="color:#fcd34d"],
-[data-theme^="light"] #mobile-av-card2 [style*="color:#fcd34d"] { color: #d97706 !important; }
-[data-theme^="light"] #mobile-cf-card [style*="color:#4ade80"],
-[data-theme^="light"] #mobile-cf-card2 [style*="color:#4ade80"] { color: #16a34a !important; }
-[data-theme^="light"] #mobile-av-card [style*="color:#fb923c"],
-[data-theme^="light"] #mobile-av-card2 [style*="color:#fb923c"] { color: #ea580c !important; }
+/* CF 和 AV 卡片顏色保留 - 強制覆蓋 */
+[data-theme^="light"] #mobile-cf-card *,
+[data-theme^="light"] #mobile-cf-card2 * { color: #16a34a !important; }
+[data-theme^="light"] #mobile-av-card *,
+[data-theme^="light"] #mobile-av-card2 * { color: #d97706 !important; }
+/* 副標題用較淡的顏色 */
+[data-theme^="light"] #mobile-cf-card div:nth-child(2),
+[data-theme^="light"] #mobile-cf-card2 div:nth-child(2),
+[data-theme^="light"] #mobile-cf-card div:last-child,
+[data-theme^="light"] #mobile-cf-card2 div:last-child { color: rgba(0,0,0,0.4) !important; }
+[data-theme^="light"] #mobile-av-card div:nth-child(2),
+[data-theme^="light"] #mobile-av-card2 div:nth-child(2),
+[data-theme^="light"] #mobile-av-card div:last-child,
+[data-theme^="light"] #mobile-av-card2 div:last-child { color: rgba(0,0,0,0.4) !important; }
 
 /* 亮色系紅色保留 */
 [data-theme^="light"] .red,
@@ -6921,27 +6926,39 @@ function syncMobileUI() {
   const avLabel=document.getElementById('av-label');
   const mCfCard=document.getElementById('mobile-cf-card');
   const isLight = document.documentElement.getAttribute('data-theme')?.startsWith('light');
-  const cfNumColor = isLight ? 'var(--accent,#16a34a)' : '#22c55e';
-  const cfTextColor = isLight ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)';
-  const avNumColor = isLight ? '#d97706' : '#fcd34d';
+  const cfNumColor = '#22c55e';
+  const cfTextColor = isLight ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.35)';
+  const avNumColor = '#fcd34d';
+  const cfTitleColor = '#22c55e';
+  const avTitleColor = '#fcd34d';
   if(mCfCard) {
     mCfCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">💧</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:'+cfNumColor+'">現金流：生存之泉</div>'+
+      '<div><div style="font-size:11px;font-weight:600;color:'+cfTitleColor+' !important">現金流：生存之泉</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">持續性月現金流</div></div></div>'+
       '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+cfNumColor+';margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">'+(cfLabel?cfLabel.textContent:'目標 NT$0 / 月')+'</div>';
+    // 強制覆蓋任何 CSS 設定的顏色
+    mCfCard.querySelectorAll('div').forEach((el,i) => {
+      if(i===2) el.style.setProperty('color', cfNumColor, 'important');
+      else if(i===1 || i===4) el.style.setProperty('color', cfTextColor, 'important');
+      else if(i===0) {}
+    });
   }
   const mAvCard=document.getElementById('mobile-av-card');
   if(mAvCard) {
     mAvCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">🌲</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:'+avNumColor+'">資產值：增長之林</div>'+
+      '<div><div style="font-size:11px;font-weight:600;color:'+avTitleColor+'">資產值：增長之林</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">一次性帳面獲利</div></div></div>'+
       '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+avNumColor+';margin-bottom:4px">'+(avDisplay?avDisplay.textContent:'NT$ 0')+'</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">'+(avLabel?avLabel.textContent:'總損益 +0%')+'</div>';
+    mAvCard.querySelectorAll('div').forEach((el,i) => {
+      if(i===2) el.style.setProperty('color', avNumColor, 'important');
+      else if(i===1 || i===4) el.style.setProperty('color', cfTextColor, 'important');
+    });
   }
 
   // 現金流來源明細
