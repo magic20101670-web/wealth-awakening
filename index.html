@@ -4264,10 +4264,18 @@ async function fetchAIInsight(){
     document.getElementById('ai-insight-text').textContent='請先新增資產，AI 才能分析您的財務狀況。';
     return;
   }
+
+  // 檢查是否有 Gemini API Key
+  let apiKey = localStorage.getItem('geminiApiKey');
+  if (!apiKey) {
+    apiKey = await promptGeminiKey();
+    if (!apiKey) return;
+  }
+
   const btn = document.getElementById('ai-refresh-btn');
   const txt = document.getElementById('ai-insight-text');
-  btn.disabled=true; btn.textContent='✦ 分析中...';
-  txt.textContent='正在連接 Claude AI 進行財務分析⋯'; txt.classList.add('ai-typing');
+  if (btn) { btn.disabled=true; btn.textContent='✦ 分析中...'; }
+  txt.textContent='正在連接 Gemini AI 進行財務分析⋯'; txt.classList.add('ai-typing');
 
   const goal = +document.getElementById('goal-input').value||100000;
   const tv = assets.reduce((s,a)=>(s+(a.currentPrice||0)*(a.quantity||1)),0);
@@ -4281,15 +4289,26 @@ async function fetchAIInsight(){
   const personalityNote = pName ? `用戶財富人格：${pName}，請根據此人格特質給予個人化建議。` : '';
 
   try {
-    const prompt = `我的財富概況：\n總資產 NT$${Math.round(tv).toLocaleString()}\n月現金流 NT$${Math.round(tc).toLocaleString()}\n財務自由目標 NT$${goal.toLocaleString()}/月\n財務自由進度 ${pct}%\n持有資產：${summary}\n${personalityNote}\n請給我3點精準的財務洞察和建議，並考慮我的財富人格特質。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度。不要用markdown符號或星號。250字以內。`;
-    const res = await fetch('https://wealth-ai.magic20101670.workers.dev', {
+    const prompt = `你是一位專業的財富顧問AI，用繁體中文回應。\n\n我的財富概況：\n總資產 NT$${Math.round(tv).toLocaleString()}\n月現金流 NT$${Math.round(tc).toLocaleString()}\n財務自由目標 NT$${goal.toLocaleString()}/月\n財務自由進度 ${pct}%\n持有資產：${summary}\n${personalityNote}\n請給我3點精準的財務洞察和建議，並考慮我的財富人格特質。格式：3點洞察，每點用數字開頭（1. 2. 3.），每點2-3句話。語氣：專業但有溫度。不要用markdown符號或星號。250字以內。`;
+
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        contents: [{parts: [{text: '你是一位專業的財富顧問AI，用繁體中文回應。\n' + prompt}]}],
+        contents: [{parts: [{text: prompt}]}],
         generationConfig: {maxOutputTokens: 600, temperature: 0.7}
       })
     });
+
+    if (res.status === 400 || res.status === 403) {
+      // API Key 無效，清除並重新輸入
+      localStorage.removeItem('geminiApiKey');
+      txt.classList.remove('ai-typing');
+      txt.textContent = '⚠ API Key 無效，請重新輸入。';
+      if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
+      return;
+    }
+
     const d = await res.json();
     const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得分析結果';
     txt.classList.remove('ai-typing');
@@ -4298,12 +4317,64 @@ async function fetchAIInsight(){
     const type = () => { if (i < text.length) { txt.textContent += text[i++]; setTimeout(type, 16); } };
     type();
   } catch(e) {
+    // 如果是 Key 問題，清除
+    if (e.message && e.message.includes('API')) localStorage.removeItem('geminiApiKey');
     txt.classList.remove('ai-typing');
     txt.textContent = '⚠ AI 分析暫時無法使用，請稍後再試。';
   }
-  btn.disabled=false; btn.textContent='重新分析';
+  if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
 }
 window.fetchAIInsight = fetchAIInsight;
+
+// Gemini API Key 輸入 Modal
+function promptGeminiKey() {
+  return new Promise((resolve) => {
+    const existing = document.getElementById('gemini-key-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'gemini-key-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+
+    modal.innerHTML = `
+      <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:340px;border:1px solid rgba(34,197,94,0.2);">
+        <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:6px;">✦ AI 財富洞察</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;">請輸入你的 Google Gemini API Key</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.28);margin-bottom:16px;">Key 只會儲存在你的手機，不會上傳。<br>取得方式：aistudio.google.com → Get API Key</div>
+        <input id="gemini-key-input" type="password"
+          placeholder="AIza..."
+          style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:14px;box-sizing:border-box;outline:none;margin-bottom:14px;font-family:'DM Mono',monospace;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <button onclick="document.getElementById('gemini-key-modal').remove(); window._geminiKeyResolve && window._geminiKeyResolve(null);"
+            style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
+          <button onclick="saveGeminiKey()"
+            style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+        </div>
+      </div>`;
+
+    window._geminiKeyResolve = resolve;
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+      const input = document.getElementById('gemini-key-input');
+      if (input) input.focus();
+    }, 100);
+  });
+}
+window.promptGeminiKey = promptGeminiKey;
+
+function saveGeminiKey() {
+  const input = document.getElementById('gemini-key-input');
+  if (!input || !input.value.trim()) return;
+  const key = input.value.trim();
+  localStorage.setItem('geminiApiKey', key);
+  document.getElementById('gemini-key-modal').remove();
+  if (window._geminiKeyResolve) {
+    window._geminiKeyResolve(key);
+    window._geminiKeyResolve = null;
+  }
+}
+window.saveGeminiKey = saveGeminiKey;
 
 // ── Daily Quote ──
 const QUOTES = [
