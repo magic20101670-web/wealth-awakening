@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="dark-green">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1112,6 +1112,142 @@ select option { background: #0d2318; }
   }
 }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* 主題色票 */
+.theme-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-swatch > div {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.theme-swatch:active > div { transform: scale(0.93); }
+.theme-swatch.active > div { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+.theme-swatch > span {
+  font-size: 9px;
+  color: var(--fg3);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+.theme-swatch.active > span { color: var(--accent); }
+
+/* 調色盤列 */
+.color-picker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.color-picker-row:last-child { border-bottom: none; }
+.color-picker-row > span {
+  font-size: 12px;
+  color: var(--fg2);
+}
+.color-picker-row input[type="color"] {
+  width: 36px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  padding: 2px;
+}
+/* ══════════════════════════════════════
+   8 大主題系統
+══════════════════════════════════════ */
+:root,[data-theme="dark-green"]{
+  --bg:#060f0a;--s1:#0d1f14;--s2:#0f2318;
+  --fg:#f0fdf4;--fg2:rgba(240,253,244,0.55);--fg3:rgba(240,253,244,0.30);
+  --accent:#22c55e;--accent-hi:#4ade80;--accent-lo:#16a34a;
+  --accent-dim:rgba(34,197,94,0.10);--accent-glow:rgba(34,197,94,0.20);
+  --card-bg:rgba(255,255,255,0.025);--border:rgba(34,197,94,0.10);
+}
+[data-theme="dark-purple"]{
+  --bg:#0a0614;--s1:#160c2a;--s2:#1c1036;
+  --fg:#f5f0ff;--fg2:rgba(245,240,255,0.55);--fg3:rgba(245,240,255,0.30);
+  --accent:#a78bfa;--accent-hi:#c4b5fd;--accent-lo:#7c3aed;
+  --accent-dim:rgba(167,139,250,0.10);--accent-glow:rgba(167,139,250,0.20);
+  --card-bg:rgba(255,255,255,0.025);--border:rgba(167,139,250,0.12);
+}
+[data-theme="dark-blue"]{
+  --bg:#060a14;--s1:#0c1428;--s2:#0f1a36;
+  --fg:#eff6ff;--fg2:rgba(239,246,255,0.55);--fg3:rgba(239,246,255,0.30);
+  --accent:#60a5fa;--accent-hi:#93c5fd;--accent-lo:#2563eb;
+  --accent-dim:rgba(96,165,250,0.10);--accent-glow:rgba(96,165,250,0.20);
+  --card-bg:rgba(255,255,255,0.025);--border:rgba(96,165,250,0.12);
+}
+[data-theme="dark-gold"]{
+  --bg:#0f0a02;--s1:#1e1405;--s2:#241808;
+  --fg:#fffbeb;--fg2:rgba(255,251,235,0.55);--fg3:rgba(255,251,235,0.30);
+  --accent:#f59e0b;--accent-hi:#fbbf24;--accent-lo:#d97706;
+  --accent-dim:rgba(245,158,11,0.10);--accent-glow:rgba(245,158,11,0.20);
+  --card-bg:rgba(255,255,255,0.025);--border:rgba(245,158,11,0.12);
+}
+[data-theme="light-white"]{
+  --bg:#f8fafc;--s1:#ffffff;--s2:#f1f5f9;
+  --fg:#0f172a;--fg2:rgba(15,23,42,0.60);--fg3:rgba(15,23,42,0.38);
+  --accent:#22c55e;--accent-hi:#16a34a;--accent-lo:#15803d;
+  --accent-dim:rgba(34,197,94,0.10);--accent-glow:rgba(34,197,94,0.15);
+  --card-bg:#ffffff;--border:rgba(34,197,94,0.15);
+}
+[data-theme="light-cream"]{
+  --bg:#faf8f5;--s1:#ffffff;--s2:#f3efe9;
+  --fg:#1c1408;--fg2:rgba(28,20,8,0.60);--fg3:rgba(28,20,8,0.38);
+  --accent:#ea580c;--accent-hi:#fb923c;--accent-lo:#c2410c;
+  --accent-dim:rgba(234,88,12,0.10);--accent-glow:rgba(234,88,12,0.15);
+  --card-bg:#ffffff;--border:rgba(234,88,12,0.15);
+}
+[data-theme="light-blue"]{
+  --bg:#eff6ff;--s1:#ffffff;--s2:#dbeafe;
+  --fg:#0f172a;--fg2:rgba(15,23,42,0.60);--fg3:rgba(15,23,42,0.38);
+  --accent:#3b82f6;--accent-hi:#60a5fa;--accent-lo:#2563eb;
+  --accent-dim:rgba(59,130,246,0.10);--accent-glow:rgba(59,130,246,0.15);
+  --card-bg:#ffffff;--border:rgba(59,130,246,0.15);
+}
+[data-theme="light-mint"]{
+  --bg:#f0fdf4;--s1:#ffffff;--s2:#dcfce7;
+  --fg:#052e16;--fg2:rgba(5,46,22,0.60);--fg3:rgba(5,46,22,0.38);
+  --accent:#16a34a;--accent-hi:#22c55e;--accent-lo:#15803d;
+  --accent-dim:rgba(22,163,74,0.10);--accent-glow:rgba(22,163,74,0.15);
+  --card-bg:#ffffff;--border:rgba(22,163,74,0.15);
+}
+
+/* 主題過渡動畫 */
+html { transition: background-color 0.35s ease; }
+body, .app-topbar, .app-bottom-nav, .app-page {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+/* 讓現有元素使用主題變數 */
+@media(max-width: 768px) {
+  body { background: var(--bg) !important; }
+  .app-topbar { background: color-mix(in srgb, var(--bg) 96%, transparent) !important; border-color: var(--border) !important; }
+  .app-bottom-nav { background: color-mix(in srgb, var(--bg) 98%, transparent) !important; border-color: var(--border) !important; }
+  .app-page { background: var(--bg) !important; }
+  .nav-item.active .nav-icon, .nav-item.active .nav-label { color: var(--accent) !important; }
+  .nav-item.active::before { background: var(--accent) !important; box-shadow: 0 0 6px var(--accent-glow) !important; }
+  .nav-fab { background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important; box-shadow: 0 0 0 3px var(--bg), 0 0 16px var(--accent-glow) !important; }
+  .app-topbar-logo { background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important; }
+  .app-topbar-title em { color: var(--accent) !important; }
+  .app-topbar-badge { background: var(--accent-dim) !important; border-color: var(--border) !important; color: var(--accent) !important; }
+  .quick-card, .v2-card, .asset-card-mobile, .dream-progress-card, .ai-mobile-card {
+    background: var(--card-bg) !important;
+    border-color: var(--border) !important;
+  }
+  .mobile-section-title { color: var(--fg3) !important; }
+  .home-username { color: var(--fg) !important; }
+  .home-greeting { color: var(--fg3) !important; }
+}
+
 </style>
 </head>
 <body>
@@ -5670,6 +5806,101 @@ function saveTreeStartDate() {
 }
 window.saveTreeStartDate = saveTreeStartDate;
 
+// ══════════════════════════════════════
+// 主題系統
+// ══════════════════════════════════════
+const THEMES = {
+  'dark-green':  { '--bg':'#060f0a','--s1':'#0d1f14','--s2':'#0f2318','--fg':'#f0fdf4','--accent':'#22c55e','--accent-hi':'#4ade80','--accent-lo':'#16a34a','--card-bg':'rgba(255,255,255,0.025)' },
+  'dark-purple': { '--bg':'#0a0614','--s1':'#160c2a','--s2':'#1c1036','--fg':'#f5f0ff','--accent':'#a78bfa','--accent-hi':'#c4b5fd','--accent-lo':'#7c3aed','--card-bg':'rgba(255,255,255,0.025)' },
+  'dark-blue':   { '--bg':'#060a14','--s1':'#0c1428','--s2':'#0f1a36','--fg':'#eff6ff','--accent':'#60a5fa','--accent-hi':'#93c5fd','--accent-lo':'#2563eb','--card-bg':'rgba(255,255,255,0.025)' },
+  'dark-gold':   { '--bg':'#0f0a02','--s1':'#1e1405','--s2':'#241808','--fg':'#fffbeb','--accent':'#f59e0b','--accent-hi':'#fbbf24','--accent-lo':'#d97706','--card-bg':'rgba(255,255,255,0.025)' },
+  'light-white': { '--bg':'#f8fafc','--s1':'#ffffff','--s2':'#f1f5f9','--fg':'#0f172a','--accent':'#22c55e','--accent-hi':'#16a34a','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-cream': { '--bg':'#faf8f5','--s1':'#ffffff','--s2':'#f3efe9','--fg':'#1c1408','--accent':'#ea580c','--accent-hi':'#fb923c','--accent-lo':'#c2410c','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-blue':  { '--bg':'#eff6ff','--s1':'#ffffff','--s2':'#dbeafe','--fg':'#0f172a','--accent':'#3b82f6','--accent-hi':'#60a5fa','--accent-lo':'#2563eb','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#16a34a','--accent-hi':'#22c55e','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+};
+
+function applyTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  localStorage.setItem('wa-theme', themeName);
+  // 清除自訂顏色
+  const vars = ['--bg','--s1','--s2','--fg','--accent','--accent-hi','--accent-lo','--card-bg'];
+  vars.forEach(v => document.documentElement.style.removeProperty(v));
+  // 更新色票 active 狀態
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.theme === themeName);
+  });
+  // 更新調色盤 input 顏色
+  updateColorPickers(themeName);
+}
+window.applyTheme = applyTheme;
+
+function applyCustomColor(variable, hexValue) {
+  document.documentElement.style.setProperty(variable, hexValue);
+  // 儲存自訂顏色
+  const custom = JSON.parse(localStorage.getItem('wa-custom-colors') || '{}');
+  custom[variable] = hexValue;
+  localStorage.setItem('wa-custom-colors', JSON.stringify(custom));
+}
+window.applyCustomColor = applyCustomColor;
+
+function applyCustomColorRgba(variable, hexValue, alpha) {
+  const r = parseInt(hexValue.slice(1,3),16);
+  const g = parseInt(hexValue.slice(3,5),16);
+  const b = parseInt(hexValue.slice(5,7),16);
+  const rgba = `rgba(${r},${g},${b},${alpha})`;
+  document.documentElement.style.setProperty(variable, rgba);
+  const custom = JSON.parse(localStorage.getItem('wa-custom-colors') || '{}');
+  custom[variable] = rgba;
+  localStorage.setItem('wa-custom-colors', JSON.stringify(custom));
+}
+window.applyCustomColorRgba = applyCustomColorRgba;
+
+function resetCustomTheme() {
+  localStorage.removeItem('wa-custom-colors');
+  const vars = ['--bg','--s1','--s2','--fg','--accent','--accent-hi','--accent-lo','--card-bg'];
+  vars.forEach(v => document.documentElement.style.removeProperty(v));
+  const currentTheme = localStorage.getItem('wa-theme') || 'dark-green';
+  updateColorPickers(currentTheme);
+}
+window.resetCustomTheme = resetCustomTheme;
+
+function updateColorPickers(themeName) {
+  const theme = THEMES[themeName];
+  if (!theme) return;
+  const map = {
+    'cp-bg': '--bg', 'cp-accent': '--accent', 'cp-accent-hi': '--accent-hi',
+    'cp-s1': '--s1', 'cp-fg': '--fg', 'cp-card': '--card-bg'
+  };
+  Object.entries(map).forEach(([id, cssVar]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let val = theme[cssVar] || '#000000';
+    // 如果是 rgba，轉成 hex
+    if (val.startsWith('rgba')) {
+      const m = val.match(/rgba?\((\d+),(\d+),(\d+)/);
+      if (m) val = '#' + [m[1],m[2],m[3]].map(n => parseInt(n).toString(16).padStart(2,'0')).join('');
+    }
+    if (val.startsWith('#') && val.length === 7) el.value = val;
+  });
+}
+
+// 初始化主題
+(function initTheme() {
+  const saved = localStorage.getItem('wa-theme') || 'dark-green';
+  document.documentElement.setAttribute('data-theme', saved);
+  // 套用自訂顏色
+  const custom = JSON.parse(localStorage.getItem('wa-custom-colors') || '{}');
+  Object.entries(custom).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
+  // 更新色票
+  setTimeout(() => {
+    document.querySelectorAll('.theme-swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.theme === saved);
+    });
+    updateColorPickers(saved);
+  }, 300);
+})();
+
 // ── 手機版價格更新 ──
 async function refreshMobilePrices() {
   const btn = document.getElementById('mobile-refresh-btn');
@@ -6146,6 +6377,87 @@ function initMobileHome() {
     <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:14px">
       <div id="badge" class="badge" style="margin-bottom:0">⬤ 連線中...</div>
     </div>
+    <!-- 主題設定 -->
+    <div class="mobile-section-header" style="margin-top:4px">
+      <div class="mobile-section-title">🎨 主題外觀</div>
+    </div>
+
+    <!-- 預設主題快選 -->
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">深色系</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+        <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="深綠">
+          <div style="background:linear-gradient(135deg,#060f0a 50%,#22c55e 50%);"></div>
+          <span>深綠</span>
+        </div>
+        <div class="theme-swatch" data-theme="dark-purple" onclick="applyTheme('dark-purple')" title="深紫">
+          <div style="background:linear-gradient(135deg,#0a0614 50%,#a78bfa 50%);"></div>
+          <span>深紫</span>
+        </div>
+        <div class="theme-swatch" data-theme="dark-blue" onclick="applyTheme('dark-blue')" title="深藍">
+          <div style="background:linear-gradient(135deg,#060a14 50%,#60a5fa 50%);"></div>
+          <span>深藍</span>
+        </div>
+        <div class="theme-swatch" data-theme="dark-gold" onclick="applyTheme('dark-gold')" title="暗金">
+          <div style="background:linear-gradient(135deg,#0f0a02 50%,#f59e0b 50%);"></div>
+          <span>暗金</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">亮色系</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白">
+          <div style="background:linear-gradient(135deg,#f8fafc 50%,#22c55e 50%);"></div>
+          <span>純白</span>
+        </div>
+        <div class="theme-swatch" data-theme="light-cream" onclick="applyTheme('light-cream')" title="暖米">
+          <div style="background:linear-gradient(135deg,#faf8f5 50%,#ea580c 50%);"></div>
+          <span>暖米</span>
+        </div>
+        <div class="theme-swatch" data-theme="light-blue" onclick="applyTheme('light-blue')" title="柔藍">
+          <div style="background:linear-gradient(135deg,#eff6ff 50%,#3b82f6 50%);"></div>
+          <span>柔藍</span>
+        </div>
+        <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷">
+          <div style="background:linear-gradient(135deg,#f0fdf4 50%,#16a34a 50%);"></div>
+          <span>薄荷</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 進階調色盤 -->
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:600;color:var(--fg);">🖌️ 進階自訂</div>
+        <div onclick="resetCustomTheme()" style="font-size:11px;color:var(--fg3);cursor:pointer;padding:3px 8px;border:1px solid var(--border);border-radius:8px;">重置</div>
+      </div>
+      <div id="custom-color-pickers">
+        <div class="color-picker-row">
+          <span>背景色</span>
+          <input type="color" id="cp-bg" onchange="applyCustomColor('--bg',this.value)">
+        </div>
+        <div class="color-picker-row">
+          <span>主色調</span>
+          <input type="color" id="cp-accent" onchange="applyCustomColor('--accent',this.value)">
+        </div>
+        <div class="color-picker-row">
+          <span>高亮主色</span>
+          <input type="color" id="cp-accent-hi" onchange="applyCustomColor('--accent-hi',this.value)">
+        </div>
+        <div class="color-picker-row">
+          <span>次要背景</span>
+          <input type="color" id="cp-s1" onchange="applyCustomColor('--s1',this.value)">
+        </div>
+        <div class="color-picker-row">
+          <span>文字顏色</span>
+          <input type="color" id="cp-fg" onchange="applyCustomColor('--fg',this.value)">
+        </div>
+        <div class="color-picker-row">
+          <span>卡片背景</span>
+          <input type="color" id="cp-card" onchange="applyCustomColorRgba('--card-bg',this.value,0.4)">
+        </div>
+      </div>
+    </div>
+
     <button id="btn-logout-mobile" style="width:100%;padding:14px;border-radius:14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#f87171;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">登出</button>
   </div>
 </div>
