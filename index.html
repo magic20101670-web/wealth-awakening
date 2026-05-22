@@ -5886,10 +5886,13 @@ function toggleThemePanel() {
 window.toggleThemePanel = toggleThemePanel;
 
 function applyTheme(themeName) {
+  // 設定 data-theme 讓 CSS 變數生效
+  document.documentElement.setAttribute('data-theme', themeName);
   localStorage.setItem('wa-theme', themeName);
-  // 清除自訂顏色
+  // 清除自訂顏色（讓主題 CSS 接管）
   const vars = ['--bg','--s1','--s2','--fg','--accent','--accent-hi','--accent-lo','--card-bg'];
   vars.forEach(v => document.documentElement.style.removeProperty(v));
+  localStorage.removeItem('wa-custom-colors');
   // 更新色票 active 狀態
   document.querySelectorAll('.theme-swatch').forEach(s => {
     s.classList.toggle('active', s.dataset.theme === themeName);
@@ -6438,9 +6441,6 @@ function initMobileHome() {
         <div class="profile-menu-arrow">›</div>
       </div>
     </div>
-    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:14px">
-      <div id="badge" class="badge" style="margin-bottom:0">⬤ 連線中...</div>
-    </div>
     <!-- 主題設定 -->
     <div class="mobile-section-header" style="margin-top:4px;cursor:pointer;" onclick="toggleThemePanel()" id="theme-panel-header">
       <div class="mobile-section-title">🎨 主題外觀</div>
@@ -6528,6 +6528,9 @@ function initMobileHome() {
 
     </div><!-- /theme-panel-body -->
 
+    <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:14px">
+      <div id="badge" class="badge" style="margin-bottom:0">⬤ 連線中...</div>
+    </div>
     <button id="btn-logout-mobile" style="width:100%;padding:14px;border-radius:14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#f87171;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">登出</button>
   </div>
 </div>
