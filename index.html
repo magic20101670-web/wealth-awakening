@@ -1229,23 +1229,78 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
 /* 讓現有元素使用主題變數 */
 @media(max-width: 768px) {
-  body { background: var(--bg) !important; }
-  .app-topbar { background: color-mix(in srgb, var(--bg) 96%, transparent) !important; border-color: var(--border) !important; }
-  .app-bottom-nav { background: color-mix(in srgb, var(--bg) 98%, transparent) !important; border-color: var(--border) !important; }
-  .app-page { background: var(--bg) !important; }
+  body { background: var(--bg) !important; color: var(--fg) !important; }
+
+  /* 導航列 */
+  .app-topbar {
+    background: color-mix(in srgb, var(--bg) 96%, transparent) !important;
+    border-color: var(--border) !important;
+  }
+  .app-topbar-title { color: var(--fg) !important; -webkit-text-fill-color: var(--fg) !important; }
+  .app-topbar-title em { color: var(--accent) !important; -webkit-text-fill-color: var(--accent) !important; }
+  .app-topbar-logo { background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important; }
+  .app-topbar-badge { background: var(--accent-dim) !important; border-color: var(--border) !important; color: var(--accent) !important; }
+  .app-topbar-avatar { background: var(--accent-dim) !important; border-color: var(--border) !important; }
+
+  /* 底部導航 */
+  .app-bottom-nav {
+    background: color-mix(in srgb, var(--bg) 98%, transparent) !important;
+    border-color: var(--border) !important;
+  }
+  .nav-icon, .nav-label { color: var(--fg3) !important; }
   .nav-item.active .nav-icon, .nav-item.active .nav-label { color: var(--accent) !important; }
   .nav-item.active::before { background: var(--accent) !important; box-shadow: 0 0 6px var(--accent-glow) !important; }
-  .nav-fab { background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important; box-shadow: 0 0 0 3px var(--bg), 0 0 16px var(--accent-glow) !important; }
-  .app-topbar-logo { background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important; }
-  .app-topbar-title em { color: var(--accent) !important; }
-  .app-topbar-badge { background: var(--accent-dim) !important; border-color: var(--border) !important; color: var(--accent) !important; }
-  .quick-card, .v2-card, .asset-card-mobile, .dream-progress-card, .ai-mobile-card {
+  .nav-fab {
+    background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo)) !important;
+    box-shadow: 0 0 0 3px var(--bg), 0 0 16px var(--accent-glow) !important;
+    color: var(--bg) !important;
+  }
+
+  /* 頁面 */
+  .app-page { background: var(--bg) !important; }
+
+  /* 卡片 */
+  .quick-card, .v2-card, .asset-card-mobile, .dream-progress-card, .ai-mobile-card,
+  .mobile-card-inner, .profile-header {
     background: var(--card-bg) !important;
     border-color: var(--border) !important;
   }
-  .mobile-section-title { color: var(--fg3) !important; }
-  .home-username { color: var(--fg) !important; }
-  .home-greeting { color: var(--fg3) !important; }
+
+  /* 全域文字顏色 */
+  .app-page * { color: inherit; }
+  .home-username, .asset-mobile-name, .profile-menu-label,
+  .quick-card-val, .asset-total-val, .home-stat-mini-val { color: var(--fg) !important; }
+  .home-greeting, .quick-card-label, .asset-mobile-cat,
+  .mobile-section-title, .asset-total-label { color: var(--fg3) !important; }
+  .quick-card-sub, .asset-mobile-pnl { color: var(--fg3) !important; }
+
+  /* Banner */
+  .home-banner {
+    background: linear-gradient(160deg, var(--s1) 0%, var(--bg) 100%) !important;
+    border-color: var(--border) !important;
+  }
+  .asset-page-header, .goal-mobile-header, .profile-header {
+    background: linear-gradient(160deg, var(--s1), var(--bg)) !important;
+    border-color: var(--border) !important;
+  }
+
+  /* Section header */
+  .mobile-section-header .mobile-section-more { color: var(--accent) !important; }
+
+  /* Profile menu */
+  .profile-menu-item { border-color: var(--border) !important; }
+  .profile-menu-item:active { background: var(--accent-dim) !important; }
+  .profile-menu-arrow { color: var(--fg3) !important; }
+
+  /* 色票 active border */
+  .theme-swatch.active > div { border-color: var(--accent) !important; box-shadow: 0 0 8px var(--accent-glow) !important; }
+  .theme-swatch > span { color: var(--fg3) !important; }
+  .theme-swatch.active > span { color: var(--accent) !important; }
+
+  /* 調色盤 */
+  .color-picker-row { border-color: var(--border) !important; }
+  .color-picker-row > span { color: var(--fg2) !important; }
+  .color-picker-row input[type="color"] { border-color: var(--border) !important; }
 }
 
 </style>
@@ -5820,8 +5875,17 @@ const THEMES = {
   'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#16a34a','--accent-hi':'#22c55e','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
 };
 
+function toggleThemePanel() {
+  const body = document.getElementById('theme-panel-body');
+  const arrow = document.getElementById('theme-panel-arrow');
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+window.toggleThemePanel = toggleThemePanel;
+
 function applyTheme(themeName) {
-  document.documentElement.setAttribute('data-theme', themeName);
   localStorage.setItem('wa-theme', themeName);
   // 清除自訂顏色
   const vars = ['--bg','--s1','--s2','--fg','--accent','--accent-hi','--accent-lo','--card-bg'];
@@ -6378,9 +6442,13 @@ function initMobileHome() {
       <div id="badge" class="badge" style="margin-bottom:0">⬤ 連線中...</div>
     </div>
     <!-- 主題設定 -->
-    <div class="mobile-section-header" style="margin-top:4px">
+    <div class="mobile-section-header" style="margin-top:4px;cursor:pointer;" onclick="toggleThemePanel()" id="theme-panel-header">
       <div class="mobile-section-title">🎨 主題外觀</div>
+      <div id="theme-panel-arrow" style="font-size:12px;color:var(--fg3);transition:transform 0.25s;">▼</div>
     </div>
+
+    <!-- 主題面板（預設收起）-->
+    <div id="theme-panel-body" style="display:none;">
 
     <!-- 預設主題快選 -->
     <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;">
@@ -6457,6 +6525,8 @@ function initMobileHome() {
         </div>
       </div>
     </div>
+
+    </div><!-- /theme-panel-body -->
 
     <button id="btn-logout-mobile" style="width:100%;padding:14px;border-radius:14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#f87171;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">登出</button>
   </div>
