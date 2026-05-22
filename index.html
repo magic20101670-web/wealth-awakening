@@ -1303,6 +1303,96 @@ body, .app-topbar, .app-bottom-nav, .app-page {
   .color-picker-row input[type="color"] { border-color: var(--border) !important; }
 }
 
+/* ══ 亮色系專屬修正 ══ */
+[data-theme^="light"] .app-page,
+[data-theme^="light"] .app-topbar,
+[data-theme^="light"] .app-bottom-nav { color: var(--fg) !important; }
+
+/* 亮色系所有文字 */
+[data-theme^="light"] .app-page * { color: var(--fg) !important; }
+
+/* 亮色系例外：accent 色保留 */
+[data-theme^="light"] .app-page .green,
+[data-theme^="light"] .quick-card-val.green,
+[data-theme^="light"] .asset-mobile-val.green,
+[data-theme^="light"] .asset-total-pnl,
+[data-theme^="light"] #mobile-freedom-pct,
+[data-theme^="light"] .nav-item.active .nav-icon,
+[data-theme^="light"] .nav-item.active .nav-label,
+[data-theme^="light"] .mobile-section-more,
+[data-theme^="light"] .app-topbar-title em { color: var(--accent) !important; }
+
+/* 亮色系紅色保留 */
+[data-theme^="light"] .red,
+[data-theme^="light"] .quick-card-val.red,
+[data-theme^="light"] .asset-mobile-val.red { color: #dc2626 !important; }
+
+/* 亮色系 TODAY 標題 */
+[data-theme^="light"] [style*="TODAY"] { color: var(--accent) !important; opacity: 0.7; }
+
+/* 亮色系卡片 */
+[data-theme^="light"] .quick-card,
+[data-theme^="light"] .v2-card,
+[data-theme^="light"] .asset-card-mobile,
+[data-theme^="light"] .dream-progress-card,
+[data-theme^="light"] .ai-mobile-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* 亮色系 home banner */
+[data-theme^="light"] .home-banner {
+  background: linear-gradient(160deg, var(--s2) 0%, var(--bg) 100%) !important;
+}
+
+/* 亮色系 topbar */
+[data-theme^="light"] .app-topbar {
+  background: rgba(255,255,255,0.95) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+}
+[data-theme^="light"] .app-topbar-title { color: var(--fg) !important; -webkit-text-fill-color: var(--fg) !important; }
+[data-theme^="light"] .app-topbar-badge { color: var(--accent) !important; }
+
+/* 亮色系 bottom nav */
+[data-theme^="light"] .app-bottom-nav {
+  background: rgba(255,255,255,0.97) !important;
+  border-top: 1px solid rgba(0,0,0,0.08) !important;
+}
+[data-theme^="light"] .nav-icon,
+[data-theme^="light"] .nav-label { color: rgba(0,0,0,0.35) !important; }
+
+/* 亮色系 profile */
+[data-theme^="light"] .profile-header {
+  background: linear-gradient(160deg, var(--s2), var(--bg)) !important;
+}
+[data-theme^="light"] .profile-menu-item {
+  border-bottom-color: rgba(0,0,0,0.06) !important;
+}
+
+/* 亮色系輸入框 */
+[data-theme^="light"] input, 
+[data-theme^="light"] select {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: var(--fg) !important;
+}
+[data-theme^="light"] input::placeholder { color: rgba(0,0,0,0.35) !important; }
+
+/* 亮色系 section header */
+[data-theme^="light"] .mobile-section-title { color: rgba(0,0,0,0.4) !important; }
+
+/* 亮色系 AI card 內部文字 */
+[data-theme^="light"] #ai-insight-text { 
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: var(--fg) !important;
+}
+
+/* 亮色系 badge */
+[data-theme^="light"] .badge { color: var(--fg) !important; }
+[data-theme^="light"] #badge { color: var(--fg) !important; }
+
 </style>
 </head>
 <body>
@@ -2019,6 +2109,12 @@ if (localStorage.getItem('soulQuizDone') === '1') {
       <button id="btn-register" style="background:transparent;color:#22c55e;border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">註冊新帳號</button>
       <button id="btn-forgot" style="background:none;border:none;color:rgba(134,239,172,0.5);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px;text-decoration:underline;text-underline-offset:3px">忘記密碼？</button>
     </div>
+  </div>
+</div>
+<div id="app-loading" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;">
+  <div style="text-align:center;">
+    <div style="font-size:36px;margin-bottom:10px;color:var(--accent);">★</div>
+    <div style="font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:0.12em;opacity:0.7;">WEALTH AWAKENING</div>
   </div>
 </div>
 <div class="wrap">
@@ -3235,6 +3331,7 @@ async function loadAssets() {
     window.assets = assets;
     document.getElementById('badge').textContent='⬤ Firebase 已連線';
     document.getElementById('badge').style.color='#22c55e';
+    if (window._hideLoading) setTimeout(window._hideLoading, 500);
   } catch(e) {
     document.getElementById('badge').textContent='⬤ 離線模式';
     document.getElementById('badge').style.color='#f87171';
@@ -5967,6 +6064,24 @@ function updateColorPickers(themeName) {
     updateColorPickers(saved);
   }, 300);
 })();
+
+// 隱藏 loading 畫面
+function hideAppLoading() {
+  const loading = document.getElementById('app-loading');
+  if (!loading) return;
+  loading.style.opacity = '0';
+  setTimeout(() => { loading.style.display = 'none'; }, 400);
+}
+// 手機版：等頁面和資料都載入完才隱藏
+if (window.innerWidth <= 768) {
+  // 最慢 2 秒一定消失
+  setTimeout(hideAppLoading, 2000);
+  // 登入後立即消失
+  window._hideLoading = hideAppLoading;
+} else {
+  // 電腦版立即消失
+  document.addEventListener('DOMContentLoaded', () => setTimeout(hideAppLoading, 100));
+}
 
 // ── 手機版價格更新 ──
 async function refreshMobilePrices() {
