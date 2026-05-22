@@ -1325,12 +1325,31 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] .app-page .green,
 [data-theme^="light"] .quick-card-val.green,
 [data-theme^="light"] .asset-mobile-val.green,
+[data-theme^="light"] .home-stat-mini-val.green,
 [data-theme^="light"] .asset-total-pnl,
 [data-theme^="light"] #mobile-freedom-pct,
+[data-theme^="light"] #mobile-total,
+[data-theme^="light"] #mobile-cashflow,
 [data-theme^="light"] .nav-item.active .nav-icon,
 [data-theme^="light"] .nav-item.active .nav-label,
 [data-theme^="light"] .mobile-section-more,
 [data-theme^="light"] .app-topbar-title em { color: var(--accent) !important; }
+
+[data-theme^="light"] #mobile-cashflow { color: #2563eb !important; }
+[data-theme^="light"] .home-stat-mini-val.red,
+[data-theme^="light"] #mobile-pnl.red { color: #dc2626 !important; }
+[data-theme^="light"] .asset-total-val { color: var(--fg) !important; }
+[data-theme^="light"] .asset-total-val + .asset-total-pnl { color: var(--accent) !important; }
+
+/* CF 和 AV 卡片顏色保留 */
+[data-theme^="light"] #mobile-cf-card [style*="color:#22c55e"],
+[data-theme^="light"] #mobile-cf-card2 [style*="color:#22c55e"] { color: #16a34a !important; }
+[data-theme^="light"] #mobile-av-card [style*="color:#fcd34d"],
+[data-theme^="light"] #mobile-av-card2 [style*="color:#fcd34d"] { color: #d97706 !important; }
+[data-theme^="light"] #mobile-cf-card [style*="color:#4ade80"],
+[data-theme^="light"] #mobile-cf-card2 [style*="color:#4ade80"] { color: #16a34a !important; }
+[data-theme^="light"] #mobile-av-card [style*="color:#fb923c"],
+[data-theme^="light"] #mobile-av-card2 [style*="color:#fb923c"] { color: #ea580c !important; }
 
 /* 亮色系紅色保留 */
 [data-theme^="light"] .red,
@@ -3460,6 +3479,14 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
       showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)));
       setTimeout(playWateringAnimation, 500);
       ['re-type','re-layout','re-location','re-buy','re-income'].forEach(id=>{ const el=document.getElementById(id); el.value=''; });
+      // 手機版：關閉 modal
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          const modal = document.getElementById('mobile-form-modal');
+          if (modal) { restoreDesktopCard(); modal.remove(); }
+          syncMobileUI(); syncMobileAssets();
+        }, 600);
+      }
     } catch(e){ alert('新增失敗'); }
     btn.disabled=false; btn.textContent='新增資產'; return;
   }
@@ -3557,6 +3584,14 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
     document.getElementById('gp-preview').style.display='none';
     document.getElementById('gold-passbook-fields').style.display='none';
     gpWeight=0;
+    // 手機版：關閉 modal
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        const modal = document.getElementById('mobile-form-modal');
+        if (modal) { restoreDesktopCard(); modal.remove(); }
+        syncMobileUI(); syncMobileAssets();
+      }, 600);
+    }
   } catch(e){
     console.error('新增時發生錯誤:',e);
     // 只有真正失敗（沒有新增成功）才顯示錯誤
@@ -6885,24 +6920,28 @@ function syncMobileUI() {
   const cfLabel=document.getElementById('cf-label');
   const avLabel=document.getElementById('av-label');
   const mCfCard=document.getElementById('mobile-cf-card');
+  const isLight = document.documentElement.getAttribute('data-theme')?.startsWith('light');
+  const cfNumColor = isLight ? 'var(--accent,#16a34a)' : '#22c55e';
+  const cfTextColor = isLight ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)';
+  const avNumColor = isLight ? '#d97706' : '#fcd34d';
   if(mCfCard) {
     mCfCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">💧</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:#22c55e">現金流：生存之泉</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35)">持續性月現金流</div></div></div>'+
-      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:#22c55e;margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(cfLabel?cfLabel.textContent:'目標 NT$0 / 月')+'</div>';
+      '<div><div style="font-size:11px;font-weight:600;color:'+cfNumColor+'">現金流：生存之泉</div>'+
+      '<div style="font-size:10px;color:'+cfTextColor+'">持續性月現金流</div></div></div>'+
+      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+cfNumColor+';margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
+      '<div style="font-size:10px;color:'+cfTextColor+'">'+(cfLabel?cfLabel.textContent:'目標 NT$0 / 月')+'</div>';
   }
   const mAvCard=document.getElementById('mobile-av-card');
   if(mAvCard) {
     mAvCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">🌲</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:#fcd34d">資產值：增長之林</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35)">一次性帳面獲利</div></div></div>'+
-      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:#fcd34d;margin-bottom:4px">'+(avDisplay?avDisplay.textContent:'NT$ 0')+'</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(avLabel?avLabel.textContent:'總損益 +0%')+'</div>';
+      '<div><div style="font-size:11px;font-weight:600;color:'+avNumColor+'">資產值：增長之林</div>'+
+      '<div style="font-size:10px;color:'+cfTextColor+'">一次性帳面獲利</div></div></div>'+
+      '<div style="font-family:monospace;font-size:22px;font-weight:700;color:'+avNumColor+';margin-bottom:4px">'+(avDisplay?avDisplay.textContent:'NT$ 0')+'</div>'+
+      '<div style="font-size:10px;color:'+cfTextColor+'">'+(avLabel?avLabel.textContent:'總損益 +0%')+'</div>';
   }
 
   // 現金流來源明細
