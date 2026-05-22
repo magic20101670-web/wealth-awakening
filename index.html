@@ -6201,7 +6201,11 @@ function hideAppLoading() {
   const loading = document.getElementById('app-loading');
   if (!loading) return;
   loading.style.opacity = '0';
-  setTimeout(() => { loading.style.display = 'none'; }, 400);
+  loading.style.pointerEvents = 'none';
+  setTimeout(() => { 
+    loading.style.display = 'none';
+    loading.style.zIndex = '-1';
+  }, 400);
 }
 // 所有版本：1秒後消失，讓登入畫面可以顯示
 setTimeout(hideAppLoading, 800);
