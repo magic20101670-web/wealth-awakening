@@ -5826,6 +5826,20 @@ function saveNickname() {
 window.saveNickname = saveNickname;
 window.editMobileUsername = editMobileUsername;
 
+// 動態問候語
+function updateGreeting() {
+  const el = document.getElementById('mobile-greeting');
+  if (!el) return;
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) el.textContent = '早安 ☕️';
+  else if (h >= 12 && h < 18) el.textContent = '午安 ☀️';
+  else if (h >= 18 && h < 21) el.textContent = '晚安 🌙';
+  else el.textContent = '夜深了 🛏️';
+}
+window.updateGreeting = updateGreeting;
+updateGreeting();
+setInterval(updateGreeting, 60000);
+
 // 同步財富樹到手機版
 function syncMobileTree() {
   if (window.innerWidth > 768) return;
@@ -6215,7 +6229,7 @@ function initMobileHome() {
 <div class="app-page active" id="page-home">
   <!-- Banner -->
   <div class="home-banner">
-    <div class="home-greeting">早安 👋</div>
+    <div class="home-greeting" id="mobile-greeting">早安 ☕️</div>
     <div style="display:flex;align-items:center;gap:8px">
       <div class="home-username" id="mobile-username" onclick="editMobileUsername()" style="cursor:pointer;">財富覺醒者</div>
       <div onclick="editMobileUsername()" style="font-size:11px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;padding:3px 8px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✏️ 修改暱稱</div>
