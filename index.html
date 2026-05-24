@@ -4985,75 +4985,109 @@ function _buildWealthInsight(){
   const tv    = assets.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
   const pct   = Math.min(100, Math.floor(tc/goal*100));
 
-  // 資產類別統計
   const catMap = {};
   assets.forEach(a=>{ catMap[a.category]=(catMap[a.category]||0)+1; });
   const cats = Object.keys(catMap);
   const catNames = {crypto:'加密貨幣',stock:'股票',etf:'ETF',gold:'黃金',silver:'白銀',bond:'債券',deposit:'定存',lending:'借貸',fund:'基金',insurance:'保險',realestate:'房地產'};
   const topCat = cats.sort((a,b)=>catMap[b]-catMap[a])[0];
   const topCatName = catNames[topCat]||topCat;
+  const incomeAssets = assets.filter(a=>a.monthlyIncome>0);
+  const noIncomeAssets = assets.filter(a=>!a.monthlyIncome);
 
   const pKey  = localStorage.getItem('wealthPersonality')||'';
   const pMap  = {pioneer:'財富先行者',sage:'智慧變現者',magnet:'豐盛引力者',anchor:'穩定基石者',creator:'創造登峰者'};
   const pName = pMap[pKey]||'';
-
   const mainDream = (window.dreams||[]).find(d=>d.isMain)||(window.dreams||[])[0];
 
-  // 選擇洞察角度（每次點按輪流）
+  // 每次點按輪流換角度
   window._insightRound = ((window._insightRound||0)+1) % 4;
   const round = window._insightRound;
 
-  // ── 角度 0：Freedom Degree 人話翻譯 ──
+  // 輔助：格式化金額
+  const fmt = n => 'NT$' + Math.round(n).toLocaleString();
+
+  // ── 角度 0：Freedom Degree × 下一步行動 ──
   if(round===0){
     if(pct===0){
-      return '你的月非薪資收入目前是 NT$0。\n\n這不是壞消息，這是出發點。每個達到財務自由的人，都曾有過一個 0% 的時刻。\n\n下一步：新增一筆有月現金流的資產（例如股息股或 ETF），讓 Freedom Degree 開始移動。哪怕是 NT$100，都比 NT$0 更接近自由。';
-    } else if(pct<25){
-      return `你的 Freedom Degree 是 ${pct}%，每月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n用人話說：你的資產每個月正在幫你工作，但還在起步階段。這個階段最重要的事是「持續新增」，不是等待爆發。\n\n距離 25% 里程碑還差 NT$${Math.round(goal*0.25-tc).toLocaleString()} 月現金流。`;
-    } else if(pct<50){
-      return `Freedom Degree ${pct}%——每工作 ${Math.round(100/pct*10)/10} 個月，你的資產已經幫你工作了 1 個月。\n\n你已經跨過了很多人永遠跨不過的第一道門檻。現在的每一筆新增，都在加速這個比例往 50% 推進。\n\n離「資產承擔一半生活」的里程碑，還差 NT$${Math.round(goal*0.5-tc).toLocaleString()} 月現金流。`;
-    } else if(pct<100){
-      return `Freedom Degree ${pct}%。你的資產已經承擔了你 ${pct}% 的生活，剩下的 ${100-pct}% 還需要你工作。\n\n你已經不是在「追求」財務自由，你是在「完成」財務自由。這個階段的心理狀態會發生質變——那種「我可以選擇的感覺」，會開始真實存在。`;
-    } else {
-      return `Freedom Degree 100%。\n\n你的資產產生的月現金流，已經達到你設定的財務自由目標。\n\n這是絕大多數人一生都到不了的地方。現在你面對的問題不是「夠不夠」，而是「接下來要過什麼樣的生活？」`;
+      const hasSomeAssets = incomeAssets.length===0 && assets.length>0;
+      if(hasSomeAssets){
+        return `你已有 ${assets.length} 筆資產，但目前月現金流仍是 NT$0。\n\n這代表你的資產還沒有開始替你「工作」——它們的價值存在，但還沒有轉換成持續的現金流。\n\n本週建議：檢查你持有的資產，看看是否有配息股或 ETF 尚未填入月現金流欄位。若有，更新它，Freedom Degree 就會從 0 開始移動。`;
+      }
+      return `你的月非薪資收入目前是 NT$0，Freedom Degree 0%。\n\n所有財務自由的旅程，都是從這裡開始的。第一筆不需要很大，重要的是讓數字從 0 變成任何一個正數。\n\n本週建議：新增一筆有月現金流的資產，例如高股息 ETF 或股息股。哪怕每月只有 NT$100，Freedom Degree 就不再是 0 了。`;
     }
+    if(pct<25){
+      const gap = fmt(goal*0.25 - tc);
+      return `Freedom Degree ${pct}%，月非薪資收入 ${fmt(tc)}。\n\n你的資產已經開始工作了，但現在還是剛起步的階段。這個階段最大的陷阱是「等待大突破」——財務自由不是靠一次大押注，是靠每個月穩定地新增。\n\n本週建議：距離 25% 里程碑還差 ${gap} 月現金流。思考你目前哪類資產最容易增加現金流，再多加一筆。`;
+    }
+    if(pct<50){
+      const gap = fmt(goal*0.5 - tc);
+      return `Freedom Degree ${pct}%，每 ${Math.round(100/pct*10)/10} 個月，你的資產已幫你工作了 1 個月。\n\n你已經跨過了大多數人一輩子都跨不過的起點。現在你需要的不是改變策略，而是持續執行。\n\n本週建議：距離「資產承擔一半生活」的里程碑還差 ${gap}。下一步不是追求大回報，而是找一筆能穩定貢獻現金流的資產加進去。`;
+    }
+    if(pct<100){
+      const gap = fmt(goal - tc);
+      return `Freedom Degree ${pct}%，你的資產已承擔了 ${pct}% 的生活成本。\n\n你已經不是在「追求」財務自由，你正在「完成」它。剩下的 ${100-pct}% 就是終點線。\n\n本週建議：你距離 100% 只差 ${gap} 月現金流。評估一下：你現有的資產是否可以再優化？有沒有哪筆資產可以提高配置，加快衝過終點線？`;
+    }
+    return `Freedom Degree 100%。你的月非薪資收入已達 ${fmt(tc)}，超過你設定的財務自由目標。\n\n你已經做到了大多數人一輩子都做不到的事。\n\n本週建議：重新問自己：我的目標金額設對了嗎？如果生活水準已經提升，考慮把目標往上調，繼續讓財富結構成長。`;
   }
 
-  // ── 角度 1：資產結構分析 ──
+  // ── 角度 1：資產結構 × 具體建議 ──
   if(round===1){
     if(cats.length===1){
-      return `你目前所有 ${assets.length} 筆資產都集中在${topCatName}類別。\n\n集中持有有它的優勢：你對這個領域更熟悉，也更容易追蹤。但也代表當這個市場波動，你的整體財富狀況會被放大影響。\n\n建議：考慮在另一個類別新增一筆資產，讓財富結構多一層緩衝。不需要很多，一筆就夠開始。`;
-    } else if(cats.length>=3){
-      const incomeAssets = assets.filter(a=>a.monthlyIncome>0);
-      return `你持有 ${assets.length} 筆資產，分布在 ${cats.length} 個類別（${cats.slice(0,3).map(c=>catNames[c]||c).join('、')}${cats.length>3?'等':''}）。這種多元配置讓你的財富結構更有韌性。\n\n其中 ${incomeAssets.length} 筆資產有月現金流，合計 NT$${Math.round(tc).toLocaleString()}/月。${incomeAssets.length<assets.length?`\n\n另有 ${assets.length-incomeAssets.length} 筆資產目前無現金流紀錄，若有配息記得更新，Freedom Degree 會更準確。`:''}`;
-    } else {
-      return `你持有 ${assets.length} 筆資產，分布在 ${cats.length} 個類別。總帳面資產值約 NT$${Math.round(tv).toLocaleString()}，月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n繼續增加資產種類，可以讓財富結構更能承受單一市場的波動。${cats.length<3?'\n\n建議目標：至少覆蓋 3 個不同類別的資產。':''}`;
+      const suggestion = topCat==='stock'||topCat==='etf' ? '考慮加入一筆定存或債券，在股市震盪時提供穩定現金流。' :
+                         topCat==='crypto' ? '考慮加入一筆股息 ETF，讓財富結構多一個穩定的支撐點。' :
+                         '考慮加入一筆股息股或 ETF，開始建立月現金流來源。';
+      return `你的 ${assets.length} 筆資產全部集中在${topCatName}。\n\n集中配置的風險：若這個市場大幅下跌，你的整體財富狀況會被完全拖累，沒有緩衝。財務自由不只是累積，也需要保護。\n\n本週建議：${suggestion}不需要很多資金，一筆就能讓財富結構多一層防護。`;
     }
+    if(noIncomeAssets.length > 0 && noIncomeAssets.length >= assets.length/2){
+      return `你持有 ${assets.length} 筆資產，但其中 ${noIncomeAssets.length} 筆目前沒有月現金流紀錄（${noIncomeAssets.slice(0,2).map(a=>a.name).join('、')}${noIncomeAssets.length>2?'等':''}）。\n\n這些資產的帳面價值存在，但沒有貢獻你的 Freedom Degree。它們可能有配息但還沒填入，或本身就是純增值型資產。\n\n本週建議：確認這 ${noIncomeAssets.length} 筆資產是否有定期配息。若有，把月現金流欄位補上，你的 Freedom Degree 會立刻變得更真實。`;
+    }
+    if(cats.length>=3){
+      const topIncomeAsset = incomeAssets.sort((a,b)=>(b.monthlyIncome||0)-(a.monthlyIncome||0))[0];
+      return `你的資產分布在 ${cats.length} 個類別（${cats.slice(0,3).map(c=>catNames[c]||c).join('、')}${cats.length>3?'等':''}），月現金流合計 ${fmt(tc)}。\n\n多元化的結構很好，你的財富已經有一定的韌性。目前貢獻最多現金流的是「${topIncomeAsset?.name||''}」（${fmt(topIncomeAsset?.monthlyIncome||0)}/月）。\n\n本週建議：思考是否可以在貢獻最多的那個類別再加碼，或在還沒有佈局的類別新增一筆，讓月現金流再往上走一步。`;
+    }
+    return `你持有 ${assets.length} 筆資產，分布在 ${cats.length} 個類別，月現金流 ${fmt(tc)}。\n\n財富結構還有成長空間——覆蓋更多類別可以讓你在不同市場環境下都有現金流進來。\n\n本週建議：挑選一個你目前還沒有配置的資產類別，研究並新增一筆。目標是讓你的月現金流來自至少 3 個不同來源。`;
   }
 
-  // ── 角度 2：夢想連結 ──
+  // ── 角度 2：夢想速度 × 具體建議 ──
   if(round===2){
     if(!mainDream){
-      return `你目前還沒有設定主夢想。\n\n財富覺醒的核心不只是數字，而是你的錢在替你靠近什麼。設定一個夢想，讓每一筆資產記錄都有一個更具體的方向。\n\n前往「夢想」頁面，加入你的第一個夢想。`;
+      return `你還沒有設定主夢想。\n\n數字本身沒有力量，是夢想讓數字有意義。沒有一個具體的目標，財務自由會變成一個模糊的「感覺」，很容易在累的時候放棄。\n\n本週建議：前往「夢想」頁面，設定你的第一個主夢想。不需要完美，先選一個現在最想要的，讓每一筆資產都有一個方向。`;
     }
     if(tc===0){
-      return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」。\n\n目前 Freedom Degree 是 0%，第一步是讓非薪資收入從零開始移動。每一筆有現金流的資產，都是你朝這個夢想邁出的真實一步。\n\n不是要你現在就達到夢想，而是讓你的錢開始替你往那個方向走。`;
+      return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」，但 Freedom Degree 目前是 0%。\n\n夢想和財富之間的連結還沒有被建立起來。你的錢現在還在等待指令，還不知道它要去哪裡。\n\n本週建議：新增第一筆有月現金流的資產，讓 Freedom Degree 從 0 開始移動。那個數字一旦開始動，你就會真實感受到「錢在替你靠近夢想」是什麼感覺。`;
     }
-    return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」。\n\n目前你的資產每個月替你產生 NT$${Math.round(tc).toLocaleString()} 的非薪資收入，Freedom Degree ${pct}%。\n\n這個數字每增加一點，都代表你離這個夢想更近了一步——不是靠努力工作更多，而是靠讓錢替你工作更多。`;
+    // 估算還需幾個月（假設每月新增同樣多的現金流）
+    const remaining = goal - tc;
+    const monthlyGrowth = tc / Math.max(assets.length, 1) * 0.5; // conservative estimate
+    const monthsEst = monthlyGrowth > 0 ? Math.ceil(remaining / monthlyGrowth) : null;
+    const timeHint = monthsEst && monthsEst < 120 ? `以目前的累積速度，大約 ${monthsEst} 個月後可達到財務自由目標。` : '繼續累積，每一筆都在縮短距離。';
+    return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」，Freedom Degree ${pct}%。\n\n你的資產每個月正在替你產生 ${fmt(tc)} 的非薪資收入。${timeHint}\n\n本週建議：把你最近計畫購入的資產，跟這個夢想連結在一起想。「這筆資產，讓我離 ${mainDream.name} 更近了多少？」讓投資決策有情感重量，更容易堅持。`;
   }
 
-  // ── 角度 3：人格型洞察 or 整體總結 ──
-  if(pName){
-    const personalityInsights = {
-      pioneer:`作為${pName}，你的優勢是行動力——你不需要等到準備好才開始。目前 ${pct}% 的進度正是你行動力的體現。\n\n下一步建議：在你最熟悉的領域再新增一筆資產，先行動，再優化。`,
-      sage:`作為${pName}，你重視理解背後的邏輯。目前你的資產結構（${cats.map(c=>catNames[c]||c).join('、')}）反映了你的研究偏好。\n\n提醒：智慧型投資者的最大風險是「分析癱瘓」——知道太多，反而遲遲不行動。有一個好機會，就動。`,
-      magnet:`作為${pName}，你擅長吸引財富進入你的生活。每月 NT$${Math.round(tc).toLocaleString()} 的非薪資收入，正是你豐盛能量的量化體現。\n\n繼續保持這種覺察，你的 Freedom Degree 會持續被吸引往上走。`,
-      anchor:`作為${pName}，你的核心優勢是穩定性和長期思維。${cats.length>1?`你的多元配置（${cats.slice(0,2).map(c=>catNames[c]||c).join('、')}）正是這種思維的體現。`:`繼續穩定地累積，複利的力量需要時間才能顯現。`}\n\n不要被短期波動動搖，你的策略需要的是時間，不是頻繁調整。`,
-      creator:`作為${pName}，你相信創造價值是財富的源頭。目前 ${pct}% 的 Freedom Degree，是你把創造力轉化為資產的成果。\n\n思考：你的技能或作品是否可以轉化為一筆有持續現金流的資產？版稅、課程、或任何能讓你「不在場也能收到錢」的東西，都值得嘗試。`,
-    };
-    return personalityInsights[pKey] || `你目前持有 ${assets.length} 筆資產，Freedom Degree ${pct}%，月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n繼續記錄，財富覺察會帶你走得更遠。`;
+  // ── 角度 3：弱點分析 × 最優先行動 ──
+  {
+    // 找出最值得改善的一件事
+    if(tc===0){
+      return `你的財富結構目前最大的缺口：月非薪資收入是 NT$0。\n\n這是你的 Freedom Degree 無法移動的根本原因。擁有資產但沒有現金流，就像有一輛車但沒有油。\n\n本週最優先行動：今天就更新一筆資產的月現金流欄位，或新增一筆配息型資產。Freedom Degree 從 0 變成 1% 的那一刻，你的整個財富旅程會感覺完全不同。`;
+    }
+    if(cats.length===1 && assets.length>=2){
+      return `你的財富結構目前最大的風險：所有資產都在同一個籃子裡（${topCatName}）。\n\n不是說你的選擇錯了——而是萬一那個市場出問題，你沒有任何緩衝。財務自由的本質是「不管發生什麼，你都還有選擇」。\n\n本週最優先行動：研究一個你目前沒有配置的資產類別，新增哪怕一小筆。這一步能讓你的財富多一條「備用路線」。`;
+    }
+    if(noIncomeAssets.length>0){
+      return `你的財富結構有 ${noIncomeAssets.length} 筆資產沒有月現金流紀錄，它們沒有貢獻你的 Freedom Degree。\n\n這些資產可能默默在配息，但你的系統還不知道。這是現在最容易提升 Freedom Degree 的方式：不是新增資產，而是補齊現有資產的資訊。\n\n本週最優先行動：打開「${noIncomeAssets[0].name}」，確認是否有定期配息，若有請填入月現金流欄位。`;
+    }
+    if(pName){
+      const actions = {
+        pioneer:`你目前 ${pct}% 的進度反映了你的行動力。下一個層次不是更努力，而是更聰明地配置——找一筆你一直在考慮但還沒行動的資產，這週就新增它。`,
+        sage:`你的分析能力是優勢，但知道和做到之間的距離就是財富的差距。你現在最需要的不是更多研究，而是把研究轉化為行動：這週新增一筆你已經研究過但還沒買的資產。`,
+        magnet:`你的豐盛心態是真實的資產。現在最能強化它的行動是：找一個能帶來被動收入的新機會，哪怕很小，讓更多財富流向你。`,
+        anchor:`你的穩定性是你最大的護城河。這週最值得做的事：把現有資產的資訊更新到最新狀態，確保你的 Freedom Degree 反映的是真實情況。`,
+        creator:`你最獨特的財富來源是創造力。思考一個問題：你目前的技能或內容，有沒有可能轉換成一筆每月自動進來的收入？這週花 30 分鐘認真想這件事。`,
+      };
+      return `財富人格洞察（${pName}）：\n\n你持有 ${assets.length} 筆資產，Freedom Degree ${pct}%，月非薪資收入 ${fmt(tc)}。\n\n本週最優先行動：${actions[pKey]}`;
+    }
+    return `你持有 ${assets.length} 筆資產，Freedom Degree ${pct}%，月非薪資收入 ${fmt(tc)}。\n\n從你的數據來看，現在最值得做的一件事是：讓現有資產的資訊保持最新，並思考下一筆要新增的資產是什麼。\n\n本週建議：設定一個小目標——讓月非薪資收入再增加 ${fmt(Math.max(500, tc*0.1))}。不需要很大，持續累積就是財富自由的真正秘訣。`;
   }
-
-  return `你目前持有 ${assets.length} 筆資產，Freedom Degree ${pct}%。\n\n月非薪資收入 NT$${Math.round(tc).toLocaleString()}，帳面資產總值約 NT$${Math.round(tv).toLocaleString()}。\n\n每一次記錄，都是你對未來自己說：我沒有忘記你。繼續走，你已經比大多數人走得更遠了。`;
 }
 window.fetchAIInsight = fetchAIInsight;
 
