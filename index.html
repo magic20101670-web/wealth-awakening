@@ -192,20 +192,63 @@ select option { background: #0d2318; }
 /* Celebration Modal */
 .celebrate-modal { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.3s; }
 .celebrate-modal.show { opacity:1; pointer-events:all; }
-.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(34,197,94,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; overflow:hidden; box-shadow:0 0 60px rgba(34,197,94,0.15); animation:celebPop 0.5s cubic-bezier(0.23,1,0.32,1); }
-@keyframes celebPop { 0%{transform:scale(0.7);opacity:0} 100%{transform:scale(1);opacity:1} }
+.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(34,197,94,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; overflow:hidden; box-shadow:0 0 60px rgba(34,197,94,0.15); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes celebRise { 0%{transform:translateY(60px) scale(0.88);opacity:0;filter:blur(4px)} 60%{filter:blur(0)} 100%{transform:translateY(0) scale(1);opacity:1;filter:blur(0)} }
 .celebrate-confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .confetti-piece { position:absolute; width:8px; height:8px; border-radius:2px; animation: confettiFall linear forwards; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(400px) rotate(720deg);opacity:0} }
-.celebrate-icon { font-size:56px; margin-bottom:12px; animation:iconBounce 0.6s cubic-bezier(0.23,1,0.32,1) 0.2s both; }
-@keyframes iconBounce { 0%{transform:scale(0) rotate(-20deg)} 70%{transform:scale(1.2) rotate(5deg)} 100%{transform:scale(1) rotate(0deg)} }
-.celebrate-title { font-family:'DM Serif Display',serif; font-size:26px; color:var(--text); margin-bottom:10px; }
-.celebrate-sub { font-size:14px; color:var(--muted); margin-bottom:16px; line-height:1.6; }
-.celebrate-pct { font-family:'DM Serif Display',serif; font-size:42px; color:var(--green); margin-bottom:6px; text-shadow:0 0 20px rgba(34,197,94,0.5); }
-.celebrate-pct-label { font-size:11px; color:var(--muted); letter-spacing:0.12em; margin-bottom:20px; }
-.celebrate-quote { font-size:13px; color:rgba(240,253,244,0.5); font-style:italic; margin-bottom:28px; padding:0 10px; line-height:1.7; }
-.celebrate-btn { background:var(--green); color:#052e16; border:none; border-radius:14px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; width:100%; }
+.celebrate-icon { font-size:56px; margin-bottom:12px; animation:iconEntrance 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.18s both; }
+@keyframes iconEntrance { 0%{transform:scale(0) rotate(-30deg);opacity:0} 55%{transform:scale(1.35) rotate(8deg)} 75%{transform:scale(0.92) rotate(-2deg)} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+.celebrate-icon.milestone { animation:iconEntrance 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.18s both, iconGlow 1.8s ease-in-out 0.9s infinite; }
+@keyframes iconGlow { 0%,100%{filter:drop-shadow(0 0 0px transparent)} 50%{filter:drop-shadow(0 0 16px rgba(34,197,94,0.8))} }
+.celebrate-title { font-family:'DM Serif Display',serif; font-size:26px; color:var(--text); margin-bottom:10px; animation:celebFadeUp 0.5s ease 0.32s both; }
+.celebrate-sub { font-size:14px; color:var(--muted); margin-bottom:16px; line-height:1.6; animation:celebFadeUp 0.5s ease 0.44s both; }
+.celebrate-pct { font-family:'DM Serif Display',serif; font-size:42px; color:var(--green); margin-bottom:6px; text-shadow:0 0 20px rgba(34,197,94,0.5); animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.5s both; }
+.celebrate-pct-label { font-size:11px; color:var(--muted); letter-spacing:0.12em; margin-bottom:20px; animation:celebFadeUp 0.4s ease 0.56s both; }
+.celebrate-quote { font-size:13px; color:rgba(240,253,244,0.5); font-style:italic; margin-bottom:28px; padding:0 10px; line-height:1.7; animation:celebFadeUp 0.5s ease 0.62s both; }
+@keyframes celebFadeUp { 0%{transform:translateY(18px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+.celebrate-btn { background:var(--green); color:#052e16; border:none; border-radius:14px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; width:100%; animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.72s both; }
 .celebrate-btn:hover { background:#16a34a; transform:translateY(-1px); }
+/* Wealth Insight Card */
+.insight-card { background:linear-gradient(135deg,rgba(34,197,94,0.07),rgba(34,197,94,0.02)); border:1px solid rgba(34,197,94,0.2); border-radius:16px; padding:14px 18px; display:flex; align-items:flex-start; gap:12px; position:relative; z-index:1; }
+.insight-card-label { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--green); margin-bottom:5px; font-weight:600; }
+.insight-card-text { font-size:13px; color:var(--text); line-height:1.65; }
+.insight-card-dismiss { position:absolute; top:10px; right:12px; background:none; border:none; color:var(--muted); font-size:14px; cursor:pointer; padding:2px 6px; border-radius:6px; transition:color 0.15s; }
+.insight-card-dismiss:hover { color:var(--text); }
+@keyframes insightIn { 0%{transform:translateY(-12px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+/* Monthly Recap Modal */
+.recap-modal { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.35s; }
+.recap-modal.show { opacity:1; pointer-events:all; }
+.recap-box { position:relative; background:linear-gradient(135deg,#1a1206,#221808); border:1px solid rgba(240,208,96,0.25); border-radius:28px; padding:44px 38px; text-align:center; max-width:400px; width:90%; overflow:hidden; box-shadow:0 0 60px rgba(240,208,96,0.1); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+.recap-top-label { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:rgba(240,208,96,0.5); margin-bottom:6px; }
+.recap-month-title { font-family:'DM Serif Display',serif; font-size:28px; color:#f0d060; margin-bottom:22px; }
+.recap-stat-row { display:flex; justify-content:center; gap:36px; margin-bottom:22px; }
+.recap-stat-item { text-align:center; }
+.recap-stat-val { font-family:'DM Mono',monospace; font-size:22px; font-weight:700; color:var(--green); }
+.recap-stat-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+.recap-stat-delta { font-size:11px; margin-top:3px; font-weight:600; }
+.recap-insight-text { font-size:13px; color:rgba(240,253,244,0.55); font-style:italic; line-height:1.75; margin-bottom:28px; padding:0 8px; white-space:pre-line; }
+.recap-btn { background:linear-gradient(135deg,#92400e,#d97706); color:#fff8e6; border:none; border-radius:14px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; width:100%; }
+.recap-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+/* Celebrate Reward Section */
+.celebrate-reward { margin-bottom:20px; animation:celebFadeUp 0.5s ease 0.78s both; }
+.celebrate-reward-title { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(240,208,96,0.65); margin-bottom:10px; }
+.celebrate-reward-opts { display:flex; flex-direction:column; gap:7px; margin-bottom:10px; }
+.celebrate-reward-opt { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); border-radius:11px; padding:10px 14px; font-size:13px; color:var(--muted); cursor:pointer; text-align:left; transition:all 0.18s; font-family:'DM Sans',sans-serif; line-height:1.4; }
+.celebrate-reward-opt:hover { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); color:var(--text); }
+.celebrate-reward-opt.picked { background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.5); color:#86efac; }
+.celebrate-reward-input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); border-radius:11px; padding:10px 14px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; box-sizing:border-box; transition:border-color 0.18s; }
+.celebrate-reward-input:focus { outline:none; border-color:rgba(240,208,96,0.4); background:rgba(240,208,96,0.04); }
+.celebrate-reward-input::placeholder { color:var(--muted); }
+/* WA Toast */
+.wa-toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(20px); z-index:9997; background:linear-gradient(135deg,#0d2318,#0a1a0f); border:1px solid rgba(34,197,94,0.28); border-radius:18px; padding:14px 18px 14px 16px; display:flex; align-items:flex-start; gap:11px; max-width:360px; width:calc(100% - 40px); box-shadow:0 8px 32px rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1), opacity 0.35s ease; }
+.wa-toast.show { transform:translateX(-50%) translateY(0); opacity:1; pointer-events:all; }
+.wa-toast-icon { font-size:20px; flex-shrink:0; line-height:1.4; }
+.wa-toast-body { flex:1; }
+.wa-toast-label { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--green); font-weight:600; margin-bottom:3px; }
+.wa-toast-text { font-size:13px; color:var(--text); line-height:1.55; }
+.wa-toast-close { background:none; border:none; color:var(--muted); cursor:pointer; font-size:15px; padding:0; flex-shrink:0; line-height:1; margin-top:1px; transition:color 0.15s; }
+.wa-toast-close:hover { color:var(--text); }
 /* Debt */
 .debt-card { padding:20px 24px; border-color:rgba(239,68,68,0.12); }
 .debt-add-btn { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#f87171; border-radius:10px; padding:7px 16px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
@@ -1427,6 +1470,97 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] .badge { color: var(--fg) !important; }
 [data-theme^="light"] #badge { color: var(--fg) !important; }
 
+/* ══ 亮色系電腦版修正 ══ */
+[data-theme^="light"] body { background: var(--bg) !important; color: var(--fg) !important; }
+[data-theme^="light"] .wrap { background: var(--bg) !important; }
+
+/* 電腦版卡片 */
+[data-theme^="light"] .card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06) !important;
+}
+
+/* 電腦版所有文字 */
+[data-theme^="light"] .card *,
+[data-theme^="light"] header *,
+[data-theme^="light"] .wrap * { color: var(--fg) !important; }
+
+/* 電腦版保留顏色 */
+[data-theme^="light"] .green { color: var(--accent) !important; }
+[data-theme^="light"] .red { color: #dc2626 !important; }
+[data-theme^="light"] .gold { color: #d97706 !important; }
+[data-theme^="light"] .blue { color: #2563eb !important; }
+[data-theme^="light"] .muted { color: rgba(0,0,0,0.4) !important; }
+
+/* 電腦版 header */
+[data-theme^="light"] header {
+  background: rgba(255,255,255,0.95) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* 電腦版輸入框 */
+[data-theme^="light"] input:not([type="color"]),
+[data-theme^="light"] select,
+[data-theme^="light"] textarea {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: var(--fg) !important;
+}
+[data-theme^="light"] input::placeholder,
+[data-theme^="light"] textarea::placeholder { color: rgba(0,0,0,0.3) !important; }
+
+/* 電腦版按鈕 */
+[data-theme^="light"] .btn {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+
+/* 電腦版財富指數環文字 */
+[data-theme^="light"] #freedom-pct { color: var(--accent) !important; }
+[data-theme^="light"] #cf-display { color: var(--accent) !important; }
+[data-theme^="light"] #av-display { color: #d97706 !important; }
+
+/* 電腦版 TODAY 標題 */
+[data-theme^="light"] .quote-label { color: var(--accent) !important; opacity: 0.7; }
+
+/* 電腦版 section title */
+[data-theme^="light"] .section-title { color: var(--fg) !important; }
+
+/* 電腦版 muted text */
+[data-theme^="light"] [style*="rgba(255,255,255,0.4)"],
+[data-theme^="light"] [style*="rgba(255,255,255,0.5)"],
+[data-theme^="light"] [style*="rgba(255,255,255,0.6)"],
+[data-theme^="light"] [style*="rgba(240,253,244,0.4)"],
+[data-theme^="light"] [style*="rgba(240,253,244,0.5)"] { color: rgba(0,0,0,0.4) !important; }
+
+/* 電腦版白色文字 */
+[data-theme^="light"] [style*="color:#f0fdf4"],
+[data-theme^="light"] [style*="color: #f0fdf4"],
+[data-theme^="light"] [style*="color:#f5f0ff"],
+[data-theme^="light"] [style*="color:#fffbeb"],
+[data-theme^="light"] [style*="color:#eff6ff"] { color: var(--fg) !important; }
+
+/* 電腦版 CF AV 卡片 */
+[data-theme^="light"] .cf-card { background: rgba(34,197,94,0.06) !important; border-color: rgba(34,197,94,0.15) !important; }
+[data-theme^="light"] .av-card { background: rgba(245,158,11,0.06) !important; border-color: rgba(245,158,11,0.15) !important; }
+
+/* 電腦版 chart */
+[data-theme^="light"] .chart-tab { 
+  background: rgba(0,0,0,0.05) !important; 
+  border-color: rgba(0,0,0,0.1) !important; 
+  color: rgba(0,0,0,0.5) !important; 
+}
+[data-theme^="light"] .chart-tab.active { 
+  background: rgba(34,197,94,0.12) !important; 
+  border-color: rgba(34,197,94,0.25) !important; 
+  color: var(--accent) !important; 
+}
+
+/* 財富等級卡片 */
+[data-theme^="light"] .wl-card { background: rgba(0,0,0,0.04) !important; border-color: rgba(0,0,0,0.08) !important; }
+[data-theme^="light"] .wl-card.active { background: rgba(34,197,94,0.08) !important; border-color: rgba(34,197,94,0.2) !important; }
+
 </style>
 </head>
 <body>
@@ -1535,6 +1669,74 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 <!-- ══════════════════════════════════════════
      靈魂共振問答前導畫面
 ════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     財富探索問答（Onboarding 第一階段）
+══════════════════════════════════════ -->
+<div id="wealth-explore-screen" style="position:fixed;inset:0;z-index:2100;background:#060f0a;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+  <!-- 星空背景 -->
+  <canvas id="explore-stars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.4"></canvas>
+  <!-- 光暈 -->
+  <div style="position:absolute;top:15%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(34,197,94,0.06) 0%,transparent 70%);pointer-events:none"></div>
+
+  <div id="explore-inner" style="position:relative;z-index:1;width:100%;max-width:540px;padding:28px 24px;text-align:center">
+
+    <!-- ── 開場頁 ── -->
+    <div id="explore-welcome" style="animation:soulFadeIn 0.8s ease both">
+      <div style="font-size:48px;margin-bottom:20px;animation:soulFloat 4s ease-in-out infinite">🌱</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#f0fdf4;line-height:1.3;margin-bottom:16px">
+        歡迎來到你的<br><span style="color:#22c55e">財富旅程</span>
+      </div>
+      <div style="font-size:13px;color:rgba(134,239,172,0.6);line-height:1.9;margin-bottom:12px;max-width:380px;margin-left:auto;margin-right:auto">
+        這裡不是單純記帳的地方，<br>
+        而是一個幫助你逐漸理解：
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px">
+        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">資產</span>
+        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">現金流</span>
+        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">非工資收入</span>
+        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">財富結構</span>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:32px">
+        接下來透過 5 個簡單問題，<br>幫助你了解目前的財富狀態與成長方向。
+      </div>
+      <button onclick="startWealthExplore()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(34,197,94,0.25);transition:all 0.2s;"
+        onmouseover="this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.transform='translateY(0)'">
+        開始財富探索 →
+      </button>
+      <div style="margin-top:16px">
+        <button onclick="skipWealthExplore()" style="background:none;border:none;color:rgba(255,255,255,0.2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px">跳過，直接進入</button>
+      </div>
+    </div>
+
+    <!-- ── 問題頁 ── -->
+    <div id="explore-question-wrap" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;justify-content:center">
+        <div id="explore-progress-dots" style="display:flex;gap:6px"></div>
+        <span id="explore-q-num" style="font-size:11px;color:rgba(34,197,94,0.5);font-family:'DM Mono',monospace;letter-spacing:0.1em"></span>
+      </div>
+      <div id="explore-q-icon" style="font-size:40px;margin-bottom:14px;animation:soulFloat 3s ease-in-out infinite"></div>
+      <div id="explore-q-text" style="font-family:'DM Serif Display',serif;font-size:22px;color:#f0fdf4;line-height:1.5;margin-bottom:8px;min-height:60px"></div>
+      <div id="explore-q-hint" style="font-size:12px;color:rgba(134,239,172,0.45);line-height:1.7;margin-bottom:24px;min-height:20px"></div>
+      <div id="explore-options" style="display:flex;flex-direction:column;gap:9px"></div>
+    </div>
+
+    <!-- ── 結果頁 ── -->
+    <div id="explore-result" style="display:none;animation:soulFadeIn 0.8s ease both">
+      <div id="explore-result-icon" style="font-size:52px;margin-bottom:16px;animation:soulFloat 3s ease-in-out infinite"></div>
+      <div style="font-size:11px;letter-spacing:0.18em;color:rgba(34,197,94,0.5);text-transform:uppercase;margin-bottom:8px;font-family:'DM Mono',monospace">你的財富旅程階段</div>
+      <div id="explore-result-title" style="font-family:'DM Serif Display',serif;font-size:28px;color:#22c55e;margin-bottom:16px;line-height:1.3"></div>
+      <div id="explore-result-desc" style="font-size:14px;color:rgba(240,253,244,0.65);line-height:1.9;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto"></div>
+      <button onclick="continueToSoulQuiz()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(34,197,94,0.2);transition:all 0.2s;"
+        onmouseover="this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.transform='translateY(0)'">
+        繼續我的財富旅程 →
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <div id="soul-quiz-screen" style="
   position:fixed;inset:0;z-index:2000;
   background:#060f0a;
@@ -1622,10 +1824,38 @@ body, .app-topbar, .app-bottom-nav, .app-page {
         font-family:'DM Sans',sans-serif;letter-spacing:0.04em;
         box-shadow:0 0 40px rgba(240,208,96,0.2);transition:all 0.2s;
       " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-        開始我的財富覺醒旅程 🚀
+        開始設定我的夢想 🌟
       </button>
     </div>
 
+  </div>
+</div>
+
+<!-- 夢想說明覆蓋層 -->
+<div id="dream-intro-screen" style="display:none;position:fixed;inset:0;z-index:2050;background:#060f0a;display:none;align-items:center;justify-content:center;overflow:hidden;">
+  <canvas id="dream-intro-stars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.4"></canvas>
+  <div style="position:relative;z-index:1;width:100%;max-width:520px;padding:28px 24px;text-align:center;animation:soulFadeIn 0.8s ease both">
+    <div style="font-size:52px;margin-bottom:20px;animation:soulFloat 4s ease-in-out infinite">🌟</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#f0d060;line-height:1.3;margin-bottom:20px">
+      在追求財富的過程中，<br>夢想是最重要的動力
+    </div>
+    <div style="background:rgba(240,208,96,0.07);border:1px solid rgba(240,208,96,0.15);border-radius:16px;padding:20px;margin-bottom:24px">
+      <div style="font-size:15px;color:rgba(240,253,244,0.8);line-height:1.9;font-style:italic">
+        「夢想會指引方向，<br>而資產會帶你逐步靠近它。」
+      </div>
+    </div>
+    <div style="font-size:13px;color:rgba(134,239,172,0.55);line-height:1.8;margin-bottom:32px">
+      接下來，設定一個你最想實現的夢想。<br>
+      系統將追蹤你的資產成長，<br>讓你看見每一步都在靠近它。
+    </div>
+    <button onclick="proceedToDreamSetup()" style="background:linear-gradient(135deg,#f0d060,#d4af37);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(240,208,96,0.2);transition:all 0.2s;"
+      onmouseover="this.style.transform='translateY(-2px)'"
+      onmouseout="this.style.transform='translateY(0)'">
+      設定我的夢想 →
+    </button>
+    <div style="margin-top:16px">
+      <button onclick="skipDreamIntro()" style="background:none;border:none;color:rgba(255,255,255,0.2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px">稍後再設定</button>
+    </div>
   </div>
 </div>
 
@@ -1638,6 +1868,256 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 </style>
 
 <script>
+// ══════════════════════════════════════
+// 財富探索問答系統
+// ══════════════════════════════════════
+const WEALTH_EXPLORE_QUESTIONS = [
+  {
+    icon: '💼',
+    text: '你目前主要的收入來源是什麼？',
+    hint: '',
+    opts: ['工資收入', '接案 / 自由工作收入', '經營事業收入', '投資收入', '多元收入來源', '我還不太確定自己的收入結構'],
+    stage: ['awareness','understanding','growth','growth','awakening','awareness']
+  },
+  {
+    icon: '📋',
+    text: '你目前有整理自己財務的習慣嗎？',
+    hint: '',
+    opts: ['幾乎沒有', '偶爾會記錄', '有固定記帳習慣', '有整理資產與支出', '有建立自己的財務系統'],
+    stage: ['awareness','awareness','understanding','building','awakening']
+  },
+  {
+    icon: '💧',
+    text: '你有觀察過自己的現金流嗎？',
+    hint: '',
+    opts: ['沒有特別注意過', '我只會看戶頭剩多少', '我開始注意每月收入與支出', '我有觀察資產是否產生現金流', '我很重視現金流結構'],
+    stage: ['awareness','awareness','understanding','building','awakening']
+  },
+  {
+    icon: '🏦',
+    text: '你認為真正的資產是什麼？',
+    hint: '',
+    opts: ['會增值的東西', '房子與車子', '能持續產生現金流的東西', '擁有越多越好', '我還在學習理解'],
+    stage: ['understanding','understanding','awakening','understanding','awareness']
+  },
+  {
+    icon: '🌱',
+    text: '你目前是否有「非工資收入」？',
+    hint: '非工資收入指不完全依賴工作時間所產生的收入，例如：ETF 配息、股息、租金、版權收入、App 收入等',
+    opts: ['目前沒有', '有一點點', '已經開始建立', '已有穩定非工資收入', '非工資收入已成為主要收入之一'],
+    stage: ['awareness','understanding','building','growth','awakening']
+  },
+  {
+    icon: '🎯',
+    text: '你現在最想建立的是什麼？',
+    hint: '',
+    opts: ['財務安全感', '穩定存款', '資產成長', '非工資收入', '現金流自由度', '更多人生選擇權'],
+    stage: ['awareness','understanding','growth','building','building','awakening']
+  },
+  {
+    icon: '✨',
+    text: '當你想到「財富」時，你最在意的是什麼？',
+    hint: '',
+    opts: ['不再為錢焦慮', '擁有穩定生活', '能自由安排時間', '建立長期資產', '讓資產替自己工作', '擁有更多人生選擇'],
+    stage: ['awareness','understanding','growth','building','awakening','awakening']
+  },
+  {
+    icon: '🗺️',
+    text: '你現在對自己的財富結構了解多少？',
+    hint: '',
+    opts: ['幾乎不了解', '開始接觸理財', '有基本財務觀念', '開始建立資產配置', '很清楚自己的財富結構'],
+    stage: ['awareness','awareness','understanding','building','awakening']
+  }
+];
+
+const WEALTH_STAGES = {
+  awareness: {
+    icon: '🌱',
+    title: '財富意識期',
+    desc: '你開始願意認識自己的金流與財富狀態。\n\n理解財富，是建立財富的第一步。\n\n每一次願意看見自己的財富狀態，都是一種勇氣。'
+  },
+  understanding: {
+    icon: '🌿',
+    title: '財富理解期',
+    desc: '你已開始接觸資產、負債與現金流概念。\n\n接下來的重要關鍵，是逐漸建立真正能產生現金流的資產。'
+  },
+  building: {
+    icon: '🌲',
+    title: '現金流建立期',
+    desc: '你開始建立非工資收入與資產循環。\n\n你的財富結構，正在逐漸形成。\n\n每一筆新資產，都是在讓資產替你工作。'
+  },
+  growth: {
+    icon: '🌳',
+    title: '資產成長期',
+    desc: '你已開始理解資產的真正價值。\n\n真正的資產，是能持續替你創造未來收入的系統。\n\n你正在建立屬於自己的財富引擎。'
+  },
+  awakening: {
+    icon: '✨',
+    title: '財富覺醒期',
+    desc: '你開始理解：財富不只是收入，而是整體人生選擇權與自由度的建立。\n\n你的資產，正在逐漸替你工作。\n\n你已踏上財富覺醒之路。'
+  }
+};
+
+let exploreQuestions = [];
+let exploreAnswers = [];
+let exploreCurrent = 0;
+
+// 初始化：檢查是否已完成
+(function initWealthExplore() {
+  if (localStorage.getItem('wealthExploreDone') === '1') {
+    document.getElementById('wealth-explore-screen').style.display = 'none';
+    return;
+  }
+  document.getElementById('wealth-explore-screen').style.display = 'flex';
+  // 初始化星空
+  initExploreStars();
+})();
+
+function initExploreStars() {
+  const canvas = document.getElementById('explore-stars');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const stars = Array.from({length:80}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*1.5+0.3,
+    a: Math.random()
+  }));
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.a += 0.005;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(134,239,172,${Math.abs(Math.sin(s.a))*0.6+0.1})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function startWealthExplore() {
+  // 隨機選5題
+  const shuffled = [...WEALTH_EXPLORE_QUESTIONS].sort(() => Math.random()-0.5);
+  exploreQuestions = shuffled.slice(0, 5);
+  exploreAnswers = [];
+  exploreCurrent = 0;
+
+  document.getElementById('explore-welcome').style.display = 'none';
+  document.getElementById('explore-question-wrap').style.display = 'block';
+  showExploreQuestion(0);
+}
+window.startWealthExplore = startWealthExplore;
+
+function showExploreQuestion(idx) {
+  const q = exploreQuestions[idx];
+  exploreCurrent = idx;
+
+  // 進度點
+  const dots = document.getElementById('explore-progress-dots');
+  dots.innerHTML = exploreQuestions.map((_,i) =>
+    `<div style="width:8px;height:8px;border-radius:50%;background:${i<=idx?'#22c55e':'rgba(34,197,94,0.2)'};transition:all 0.3s"></div>`
+  ).join('');
+  document.getElementById('explore-q-num').textContent = `${idx+1} / ${exploreQuestions.length}`;
+
+  // 問題內容
+  document.getElementById('explore-q-icon').textContent = q.icon;
+  document.getElementById('explore-q-text').textContent = q.text;
+  document.getElementById('explore-q-hint').textContent = q.hint || '';
+
+  // 選項
+  const opts = document.getElementById('explore-options');
+  opts.innerHTML = q.opts.map((opt, i) => `
+    <button onclick="selectExploreOption(${i})" style="
+      background:rgba(255,255,255,0.035);
+      border:1px solid rgba(34,197,94,0.12);
+      border-radius:12px;padding:12px 16px;
+      font-size:13px;color:rgba(240,253,244,0.8);
+      cursor:pointer;font-family:'DM Sans',sans-serif;
+      text-align:left;transition:all 0.2s;
+      animation:soulOptionIn 0.3s ease ${i*0.06}s both;
+      line-height:1.5;
+    "
+    onmouseover="this.style.background='rgba(34,197,94,0.1)';this.style.borderColor='rgba(34,197,94,0.3)';this.style.color='#f0fdf4'"
+    onmouseout="this.style.background='rgba(255,255,255,0.035)';this.style.borderColor='rgba(34,197,94,0.12)';this.style.color='rgba(240,253,244,0.8)'"
+    >${opt}</button>
+  `).join('');
+}
+
+function selectExploreOption(idx) {
+  const q = exploreQuestions[exploreCurrent];
+  exploreAnswers.push(q.stage[idx] || 'awareness');
+
+  if (exploreCurrent < exploreQuestions.length - 1) {
+    showExploreQuestion(exploreCurrent + 1);
+  } else {
+    showExploreResult();
+  }
+}
+window.selectExploreOption = selectExploreOption;
+
+function showExploreResult() {
+  // 計算階段
+  const stageCounts = {};
+  exploreAnswers.forEach(s => stageCounts[s] = (stageCounts[s]||0)+1);
+  const topStage = Object.entries(stageCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  const stage = WEALTH_STAGES[topStage] || WEALTH_STAGES.awareness;
+
+  // 儲存結果
+  localStorage.setItem('wealthExploreStage', topStage);
+  localStorage.setItem('wealthExploreTitle', stage.title);
+
+  document.getElementById('explore-question-wrap').style.display = 'none';
+  document.getElementById('explore-result').style.display = 'block';
+  document.getElementById('explore-result-icon').textContent = stage.icon;
+  document.getElementById('explore-result-title').textContent = stage.title;
+  document.getElementById('explore-result-desc').style.whiteSpace = 'pre-line';
+  document.getElementById('explore-result-desc').textContent = stage.desc;
+}
+
+function continueToSoulQuiz() {
+  localStorage.setItem('wealthExploreDone', '1');
+  document.getElementById('wealth-explore-screen').style.display = 'none';
+  // 顯示財富人格測驗
+  const soulScreen = document.getElementById('soul-quiz-screen');
+  if (soulScreen) soulScreen.style.display = 'flex';
+}
+window.continueToSoulQuiz = continueToSoulQuiz;
+
+function skipWealthExplore() {
+  localStorage.setItem('wealthExploreDone', '1');
+  document.getElementById('wealth-explore-screen').style.display = 'none';
+  const soulScreen = document.getElementById('soul-quiz-screen');
+  if (soulScreen) soulScreen.style.display = 'flex';
+}
+window.skipWealthExplore = skipWealthExplore;
+
+// 修改 proceedToLogin 改成顯示夢想說明頁
+function proceedToLogin() {
+  hideSoulQuiz();
+  // 顯示夢想說明頁
+  const dreamIntro = document.getElementById('dream-intro-screen');
+  if (dreamIntro) {
+    dreamIntro.style.display = 'flex';
+  }
+}
+
+function proceedToDreamSetup() {
+  const dreamIntro = document.getElementById('dream-intro-screen');
+  if (dreamIntro) dreamIntro.style.display = 'none';
+  // 開啟夢想管理
+  if (window.openDreamManager) openDreamManager();
+}
+window.proceedToDreamSetup = proceedToDreamSetup;
+
+function skipDreamIntro() {
+  const dreamIntro = document.getElementById('dream-intro-screen');
+  if (dreamIntro) dreamIntro.style.display = 'none';
+}
+window.skipDreamIntro = skipDreamIntro;
 // ── 靈魂共振問答資料 ──
 const SOUL_QUESTION_BANK = [
   {
@@ -2114,7 +2594,10 @@ function hideSoulQuiz() {
   const screen = document.getElementById('soul-quiz-screen');
   screen.style.transition = 'opacity 0.5s ease';
   screen.style.opacity = '0';
-  setTimeout(() => { screen.style.display = 'none'; }, 500);
+  setTimeout(() => {
+    screen.style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }, 500);
 }
 
 // 若已做過，直接跳過
@@ -2180,6 +2663,7 @@ if (localStorage.getItem('soulQuizDone') === '1') {
             <div style="font-size:10px;color:rgba(255,255,255,0.2);text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)">完成全部20題後將更新你的財富人格</div>
           </div>
         </span>
+        <button onclick="toggleDesktopThemePanel()" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" title="主題外觀">🎨</button>
         <button class="btn-logout" id="btn-logout">登出</button>
       </div>
     </div>
@@ -2187,6 +2671,38 @@ if (localStorage.getItem('soulQuizDone') === '1') {
 
   <!-- Daily Quote -->
   <div class="quote-card" id="quote-card">
+
+  <!-- 電腦版主題面板 -->
+  <div id="desktop-theme-panel" style="display:none;position:fixed;top:60px;right:16px;width:320px;background:#0d1f14;border:1px solid rgba(34,197,94,0.2);border-radius:16px;padding:16px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:14px;font-weight:700;color:#f0fdf4">🎨 主題外觀</div>
+      <div onclick="toggleDesktopThemePanel()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer;padding:2px 6px;">✕</div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">深色系</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
+      <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="深綠"><div style="background:linear-gradient(135deg,#060f0a 50%,#22c55e 50%);"></div><span>深綠</span></div>
+      <div class="theme-swatch" data-theme="dark-purple" onclick="applyTheme('dark-purple')" title="深紫"><div style="background:linear-gradient(135deg,#0a0614 50%,#a78bfa 50%);"></div><span>深紫</span></div>
+      <div class="theme-swatch" data-theme="dark-blue" onclick="applyTheme('dark-blue')" title="深藍"><div style="background:linear-gradient(135deg,#060a14 50%,#60a5fa 50%);"></div><span>深藍</span></div>
+      <div class="theme-swatch" data-theme="dark-gold" onclick="applyTheme('dark-gold')" title="暗金"><div style="background:linear-gradient(135deg,#0f0a02 50%,#f59e0b 50%);"></div><span>暗金</span></div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">亮色系</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+      <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白"><div style="background:linear-gradient(135deg,#f8fafc 50%,#22c55e 50%);"></div><span>純白</span></div>
+      <div class="theme-swatch" data-theme="light-cream" onclick="applyTheme('light-cream')" title="暖米"><div style="background:linear-gradient(135deg,#faf8f5 50%,#ea580c 50%);"></div><span>暖米</span></div>
+      <div class="theme-swatch" data-theme="light-blue" onclick="applyTheme('light-blue')" title="柔藍"><div style="background:linear-gradient(135deg,#eff6ff 50%,#3b82f6 50%);"></div><span>柔藍</span></div>
+      <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷"><div style="background:linear-gradient(135deg,#f0fdf4 50%,#16a34a 50%);"></div><span>薄荷</span></div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:600;color:#f0fdf4">🖌️ 進階自訂</div>
+        <div onclick="resetCustomTheme()" style="font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;padding:2px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;">重置</div>
+      </div>
+      <div class="color-picker-row"><span>背景色</span><input type="color" id="cp-bg-d" onchange="applyCustomColor('--bg',this.value)"></div>
+      <div class="color-picker-row"><span>主色調</span><input type="color" id="cp-accent-d" onchange="applyCustomColor('--accent',this.value)"></div>
+      <div class="color-picker-row"><span>次要背景</span><input type="color" id="cp-s1-d" onchange="applyCustomColor('--s1',this.value)"></div>
+      <div class="color-picker-row"><span>文字顏色</span><input type="color" id="cp-fg-d" onchange="applyCustomColor('--fg',this.value)"></div>
+    </div>
+  </div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <div class="quote-label">Today's Wealth Frequency</div>
       <div id="personality-badge-quote" style="display:none;font-size:12px;color:rgba(240,208,96,0.8);background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.18);border-radius:20px;padding:3px 12px;letter-spacing:0.04em"></div>
@@ -2222,7 +2738,7 @@ if (localStorage.getItem('soulQuizDone') === '1') {
   <div class="card freedom-card" style="position:relative;z-index:1">
     <div class="ring-stats-wrap">
       <div class="ring-wrap">
-        <div class="freedom-label" style="text-align:center;margin-bottom:12px">財富自由指數</div>
+        <div class="freedom-label" style="text-align:center;margin-bottom:12px">人生選擇權指數</div>
         <div style="position:relative;width:160px;height:160px">
           <svg width="160" height="160" style="transform:rotate(-90deg)">
             <circle cx="80" cy="80" r="66" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
@@ -2239,18 +2755,28 @@ if (localStorage.getItem('soulQuizDone') === '1') {
           </svg>
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
             <div class="freedom-pct" id="pct" style="font-size:40px;line-height:1">0%</div>
-            <div style="font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-top:3px">FREEDOM</div>
+            <div id="freedom-stage-label" style="font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-top:3px">AWAKENING</div>
           </div>
         </div>
-        <div class="freedom-desc" id="freedom-desc" style="text-align:center;font-size:12px;margin-top:10px">月現金流 NT$0 / 目標 NT$100,000</div>
+        <div class="freedom-desc" id="freedom-desc" style="text-align:center;font-size:12px;margin-top:10px">月非薪資收入 NT$0 · 目標 NT$100,000</div>
       </div>
       <div class="summary-grid" style="flex:1;margin-bottom:0">
         <div class="stat-card"><div class="stat-label">總資產</div><div class="stat-value" id="s-total">NT$0</div></div>
         <div class="stat-card"><div class="stat-label">總損益</div><div class="stat-value" id="s-pnl">NT$0</div></div>
-        <div class="stat-card"><div class="stat-label">月現金流</div><div class="stat-value blue" id="s-cf">NT$0</div></div>
+        <div class="stat-card"><div class="stat-label">月非薪資收入</div><div class="stat-value blue" id="s-cf">NT$0</div></div>
         <div class="stat-card"><div class="stat-label">持有資產</div><div class="stat-value yellow" id="s-count">0</div></div>
       </div>
     </div>
+  </div>
+
+  <!-- Wealth Insight Card -->
+  <div id="insight-card" class="insight-card" style="display:none">
+    <div style="font-size:22px;flex-shrink:0;padding-top:2px" id="insight-icon">💡</div>
+    <div style="flex:1;padding-right:24px">
+      <div class="insight-card-label" id="insight-label">本週洞察</div>
+      <div class="insight-card-text" id="insight-text"></div>
+    </div>
+    <button class="insight-card-dismiss" id="insight-dismiss">✕</button>
   </div>
 
   <!-- Cashflow + Asset Value Cards -->
@@ -2380,19 +2906,6 @@ if (localStorage.getItem('soulQuizDone') === '1') {
         </div>
       </div>
       <div class="wl-levels" id="wl-levels"></div>
-    </div>
-  </div>
-
-  <!-- Celebration Modal -->
-  <div id="celebrate-modal" class="celebrate-modal">
-    <div class="celebrate-box">
-      <div class="celebrate-confetti" id="celebrate-confetti"></div>
-      <div class="celebrate-icon" id="celebrate-icon">🎉</div>
-      <div class="celebrate-title">資產新增成功！</div>
-      <div class="celebrate-sub" id="celebrate-sub"></div>
-      <div class="celebrate-pct" id="celebrate-pct"></div>
-      <div class="celebrate-quote" id="celebrate-quote"></div>
-      <button class="celebrate-btn" id="celebrate-close">繼續前進 →</button>
     </div>
   </div>
 
@@ -2720,8 +3233,49 @@ if (localStorage.getItem('soulQuizDone') === '1') {
   <div class="section-title" style="margin-top:32px">資產列表</div>
   <div class="loading" id="loading">載入中...</div>
   <div class="assets-grid" id="assets-grid"></div>
-  <div class="empty" id="empty">尚未新增任何資產</div>
+  <div class="empty" id="empty">
+    <div style="font-size:36px;margin-bottom:12px">🌱</div>
+    <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px">你的第一個資產，還在等你召喚</div>
+    <div style="font-size:13px;color:var(--muted)">新增第一筆資產，開始你的財富覺醒旅程</div>
+  </div>
 
+</div>
+
+<!-- ── Global Modals & Toast（wrap 外，手機桌面都可見）── -->
+<div id="celebrate-modal" class="celebrate-modal">
+  <div class="celebrate-box">
+    <div class="celebrate-confetti" id="celebrate-confetti"></div>
+    <div class="celebrate-icon" id="celebrate-icon">🎉</div>
+    <div class="celebrate-title" id="celebrate-title">資產記錄下來了</div>
+    <div class="celebrate-sub" id="celebrate-sub"></div>
+    <div class="celebrate-pct" id="celebrate-pct"></div>
+    <div class="celebrate-quote" id="celebrate-quote"></div>
+    <div class="celebrate-reward" id="celebrate-reward">
+      <div class="celebrate-reward-title">🎁 今天，你值得</div>
+      <div class="celebrate-reward-opts" id="celebrate-reward-opts"></div>
+      <input class="celebrate-reward-input" id="celebrate-reward-input" type="text" placeholder="或是寫下你自己的慶祝方式..." maxlength="50" />
+    </div>
+    <button class="celebrate-btn" id="celebrate-close">繼續前進 →</button>
+  </div>
+</div>
+
+<div id="recap-modal" class="recap-modal">
+  <div class="recap-box">
+    <div class="recap-top-label">月度回顧</div>
+    <div class="recap-month-title" id="recap-month-title">X 月</div>
+    <div class="recap-stat-row" id="recap-stat-row"></div>
+    <div class="recap-insight-text" id="recap-insight-text"></div>
+    <button class="recap-btn" id="recap-close">繼續前進 →</button>
+  </div>
+</div>
+
+<div id="wa-toast" class="wa-toast">
+  <div class="wa-toast-icon" id="wa-toast-icon">🌱</div>
+  <div class="wa-toast-body">
+    <div class="wa-toast-label" id="wa-toast-label">財富覺醒</div>
+    <div class="wa-toast-text" id="wa-toast-text"></div>
+  </div>
+  <button class="wa-toast-close" id="wa-toast-close">✕</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -2937,7 +3491,10 @@ onAuthStateChanged(auth, user => {
     setTimeout(() => { if (window.syncMobileUI) syncMobileUI(); if (window.initMobileHome) initMobileHome(); }, 500);
   } else {
     currentUser = null;
-    document.getElementById('login-screen').style.display = 'flex';
+    // 只有測驗做過才直接顯示登入；新用戶讓測驗畫面先出現
+    if (localStorage.getItem('soulQuizDone') === '1') {
+      document.getElementById('login-screen').style.display = 'flex';
+    }
     document.getElementById('user-bar').style.display = 'none';
     assets = []; render();
   }
@@ -3278,7 +3835,10 @@ function updateSummary() {
   document.getElementById('s-cf').textContent=fmt(tc);
   document.getElementById('s-count').textContent=assets.length;
   document.getElementById('pct').textContent=pct+'%';
-  document.getElementById('freedom-desc').textContent=`月現金流 NT$${Math.round(tc).toLocaleString()} / 目標 NT$${goal.toLocaleString()}`;
+  document.getElementById('freedom-desc').textContent=`月非薪資收入 NT$${Math.round(tc).toLocaleString()} · 目標 NT$${goal.toLocaleString()}`;
+  const _stageLabel = pct>=100?'✦ 自由':pct>=75?'快到了':pct>=50?'流動中':pct>=25?'成長中':pct>0?'萌芽中':'AWAKENING';
+  const _sl=document.getElementById('freedom-stage-label'); if(_sl) _sl.textContent=_stageLabel;
+  const _msl=document.getElementById('mobile-freedom-stage-label'); if(_msl) _msl.textContent=_stageLabel;
   updateRing(pct);
   renderChart();
   // 計算正確月現金流（含所有資產）
@@ -3311,6 +3871,7 @@ async function loadHistory() {
     const snap = await getDocs(collection(db,'users',currentUser.uid,'history'));
     const raw = {};
     snap.docs.forEach(d=>{ raw[d.id]=d.data(); });
+    window._historyRaw = raw;
 
     // 找出最早的歷史記錄月份
     const allKeys = Object.keys(raw).sort();
@@ -3374,7 +3935,11 @@ async function loadAssets() {
   render();
   await loadHistory();
   updatePrices();
-  if(assets.length>0) setTimeout(fetchAIInsight, 800);
+  if(assets.length>0) { /* AI 分析改為手動觸發 */ }
+  checkWeeklyInsight();
+  _checkMonthlyRecap();
+  _checkVisitStreak();
+  _checkAnniversary();
 }
 
 // 手動資產名稱對應價格 symbol
@@ -3481,7 +4046,7 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
       render(); saveHistorySnapshot();
       const goal3 = +document.getElementById('goal-input').value||100000;
       let tc3 = 0; assets.forEach(a=>tc3+=a.monthlyIncome||0);
-      showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)));
+      showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)), reIncome);
       setTimeout(playWateringAnimation, 500);
       ['re-type','re-layout','re-location','re-buy','re-income'].forEach(id=>{ const el=document.getElementById(id); el.value=''; });
       // 手機版：關閉 modal
@@ -3568,7 +4133,7 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
     setTimeout(()=>updatePrices(), 300);
     const goal2 = +document.getElementById('goal-input').value||100000;
     let tc2 = 0; assets.forEach(a=>tc2+=a.monthlyIncome||0);
-    showCelebration(selName, Math.min(100,Math.floor(tc2/goal2*100)));
+    showCelebration(selName, Math.min(100,Math.floor(tc2/goal2*100)), income);
     setTimeout(playWateringAnimation, 500);
     document.getElementById('sym-input').value='';
     const scb=document.getElementById('sym-clear-btn');
@@ -4608,40 +5173,245 @@ function updateWealthLevel(monthlyIncome) {
 }
 
 // ── Celebration Modal ──
-const CELEBRATE_QUOTES = [
-  '每一筆資產，都是你對未來自己的承諾。🤝',
-  '每一次記錄，都是一次財富覺醒。✨',
-  '你的注意力流向哪裡，財富就流向哪裡。🧲',
-  '財富不是偶然，而是長期選擇的結果。🎯',
-  '先建立價值，再讓財富靠近你。🏗️',
-  '所有的豐盛，都從覺察開始。🌸',
-];
-const CELEBRATE_ICONS = ['🎉','🌟','💎','🚀','🏆','✨','🎊','💫'];
+// ── 財富覺醒慶祝系統 ──
+// 每個里程碑對應獨特的訊息，而不是通用的「新增成功」
 
-function showCelebration(assetName, newPct) {
-  // 記錄本次更新時間
+const WA_MOMENTS = {
+  first_asset: {
+    icon: '🌱',
+    title: '你做了大多數人從來不會做的事',
+    sub: '很多人說「以後再開始」，然後一直沒有開始。\n你今天，真的開始了。\n這一步，比你想像的更重要。',
+    quote: '不是每個人都有勇氣面對自己的財富。你有。',
+    showPct: false,
+    btnText: '開始我的旅程 →'
+  },
+  first_passive: {
+    icon: '✨',
+    title: '你的第一個不睡覺的工人，上工了',
+    sub: '從今天起，即使你在睡覺、在旅行、在陪家人——\n這筆錢，還是會繼續流動。\n你的收入結構，從這一刻正式改變了。',
+    quote: '你等待的那種感覺，從現在開始。',
+    showPct: false,
+    btnText: '繼續前進 →'
+  },
+  freedom_first: {
+    icon: '🌿',
+    title: '你的人生選擇權，打開了第一道縫',
+    sub: '從 0% 到有，是整個旅程裡最難跨過的一步。\n很多人永遠卡在這裡。\n你跨過來了。',
+    quote: '不管這個數字有多小，它代表：你的資產，開始替你工作了。',
+    showPct: true,
+    btnText: '繼續前進 →'
+  },
+  milestone_25: {
+    icon: '🌳',
+    title: '每 4 個月，你已經贏回了 1 個月的自由',
+    sub: '你的資產，現在默默替你承擔四分之一的生活。\n這不是小事——\n這是你一點一點，為自己親手搭建的選擇。',
+    quote: '走到 25% 的人，是真的有在行動的那群人。你是其中一個。',
+    showPct: true,
+    btnText: '繼續前進 →'
+  },
+  milestone_50: {
+    icon: '🏛️',
+    title: '你的資產，已經替你承擔了一半的人生',
+    sub: '如果你現在停止工作，\n還有一半的收入，在繼續流動。\n這個版本的你，是你過去的自己夢寐以求的。',
+    quote: '你走到了大多數人一輩子都到不了的地方。好好感受這一刻。',
+    showPct: true,
+    btnText: '繼續前進 →'
+  },
+  milestone_75: {
+    icon: '🚀',
+    title: '你幾乎做到了，真的',
+    sub: '四分之三的生活費，現在由你的資產承擔。\n你選擇了一條不同的路——\n而且你真的，一步一步走到了這裡。',
+    quote: '你不只是在想，你在做。這就是所有的差別。',
+    showPct: true,
+    btnText: '最後一段路 →'
+  },
+  milestone_100: {
+    icon: '✦',
+    title: '你自由了',
+    sub: '你的資產，已經覆蓋你的生活。\n從今天起，你工作是因為你選擇，\n不是因為你必須。\n這就是財富覺醒的意義——\n不是終點，是真正生活的起點。',
+    quote: '你做到了。不是所有人都有機會說出這句話，但你可以。',
+    showPct: true,
+    btnText: '我做到了 ✦'
+  },
+  five_pct_up: {
+    icon: '🌿',
+    title: '你的選擇權，又往前了一步',
+    sub: null,
+    quote: '每一次提升，都是你當初決定開始的那個選擇，在開花。',
+    showPct: true,
+    btnText: '繼續前進 →'
+  },
+  regular: {
+    icon: null,
+    title: '又一筆，記下來了',
+    sub: null,
+    quote: null,
+    showPct: true,
+    btnText: '繼續前進 →'
+  }
+};
+
+const WA_REGULAR_QUOTES = [
+  '有一天，你會感謝今天沒有放棄的自己。',
+  '你在做的事，大多數人從來不會做。',
+  '此刻的你，正在替未來的你搭一座橋。',
+  '別小看今天的這一筆。它正在悄悄改變你的財富結構。',
+  '每一次記錄，都是你對未來自己說：我沒有忘記你。',
+  '你的財富旅程，因為今天，又往前了一步。',
+  '所有看起來很遠的自由，都是一筆一筆記錄出來的。',
+  '你選擇看見自己的財富，這本身就是一種勇氣。',
+];
+
+const WA_REWARD_OPTS = {
+  first_asset: [
+    '📞 打電話給最支持你的人，告訴他們「我開始了」',
+    '☕ 買一杯你最愛的飲料，慢慢喝，感受這一刻',
+    '🪞 對著鏡子說出來：「我開始了，而且我會繼續下去」',
+  ],
+  first_passive: [
+    '📸 截圖存進手機——這是你財富結構改變的那一天',
+    '🍰 點一道你一直想吃但捨不得的甜點，今天值得',
+    '✉️ 在備忘錄寫一行給五年後的自己：「今天，我的第一個工人上工了」',
+  ],
+  freedom_first: [
+    '🌸 買一朵花送給自己，放在你每天看得到的地方',
+    '🎵 播一首你最喜歡的歌，讓自己完全沉浸三分鐘',
+    '📓 寫下今天的日期和這個數字，你以後會想回來看',
+  ],
+  milestone_25: [
+    '🍽️ 訂一家你一直想去的餐廳，今晚去——你值得',
+    '💆 預約一次你很久沒給自己的體驗（按摩、課程、SPA）',
+    '📱 傳訊息給一個對你重要的人：「我達到一個對我很重要的目標了」',
+  ],
+  milestone_50: [
+    '✈️ 規劃一個你想去但一直在等的旅行，今天開始查',
+    '🛍️ 買一件你想很久的東西——這一次，不用愧疚',
+    '🥂 找一個好友，喝一杯，告訴他你在做什麼',
+  ],
+  milestone_75: [
+    '📋 列一份清單：「達到 100% 之後，我要做的 10 件事」',
+    '🎁 買一件你一直在等「值得了再買」的東西——你現在值得了',
+    '📸 拍一張照記錄現在的自己，以後你會感謝這張照片',
+  ],
+  milestone_100: [
+    '🌍 訂一趟你一直說「財務自由後才去」的旅行——現在就去',
+    '📞 打給最重要的人，告訴他們你做到了',
+    '🥳 今天完全是你的——做一件只為自己快樂的事，不需要任何理由',
+  ],
+  five_pct_up: [
+    '☕ 買一杯你最喜歡的飲料，今天你值得',
+    '💪 對自己大聲說三次：「我真的很棒！」（認真說，不要笑場）',
+    '🤸 起身動一動，慶祝要用全身感受',
+  ],
+  regular: [
+    '☕ 買一杯你最喜歡的飲料，今天你值得',
+    '💪 對自己大聲說三次：「我真的很棒！」（認真說，不要笑場）',
+    '📲 在備忘錄寫下今天讓你感到驕傲的一件事',
+  ],
+};
+
+function _detectCelebrationMoment(assetName, newPct, newMonthlyIncome) {
+  const goal = +document.getElementById('goal-input').value || 100000;
+  let totalPassive = 0;
+  assets.forEach(a => totalPassive += a.monthlyIncome || 0);
+
+  // 第一筆資產
+  if (!localStorage.getItem('wa_first_asset')) {
+    localStorage.setItem('wa_first_asset', '1');
+    return 'first_asset';
+  }
+
+  // 第一筆非工資收入
+  if ((newMonthlyIncome > 0) && !localStorage.getItem('wa_first_passive')) {
+    localStorage.setItem('wa_first_passive', '1');
+    return 'first_passive';
+  }
+
+  // 100% 里程碑
+  if (newPct >= 100 && !localStorage.getItem('wa_m100')) {
+    localStorage.setItem('wa_m100', '1');
+    return 'milestone_100';
+  }
+  // 75% 里程碑
+  if (newPct >= 75 && !localStorage.getItem('wa_m75')) {
+    localStorage.setItem('wa_m75', '1');
+    return 'milestone_75';
+  }
+  // 50% 里程碑
+  if (newPct >= 50 && !localStorage.getItem('wa_m50')) {
+    localStorage.setItem('wa_m50', '1');
+    return 'milestone_50';
+  }
+  // 25% 里程碑
+  if (newPct >= 25 && !localStorage.getItem('wa_m25')) {
+    localStorage.setItem('wa_m25', '1');
+    return 'milestone_25';
+  }
+
+  // Freedom Degree 第一次 > 0%
+  if (newPct > 0 && !localStorage.getItem('wa_freedom_first')) {
+    localStorage.setItem('wa_freedom_first', '1');
+    return 'freedom_first';
+  }
+
+  // 每提升 5% 慶祝一次
+  const last5 = parseInt(localStorage.getItem('wa_last_5pct') || '0');
+  const current5 = Math.floor(newPct / 5) * 5;
+  if (current5 > last5 && newPct > 0) {
+    localStorage.setItem('wa_last_5pct', String(current5));
+    return 'five_pct_up';
+  }
+
+  return 'regular';
+}
+
+function showCelebration(assetName, newPct, newMonthlyIncome) {
   recordLastUpdate();
   const modal = document.getElementById('celebrate-modal');
   const goal = +document.getElementById('goal-input').value || 100000;
   let tc = 0; assets.forEach(a => tc += a.monthlyIncome || 0);
 
-  // icon
-  document.getElementById('celebrate-icon').textContent =
-    CELEBRATE_ICONS[Math.floor(Math.random() * CELEBRATE_ICONS.length)];
+  const momentKey = _detectCelebrationMoment(assetName, newPct, newMonthlyIncome || 0);
+  const moment = WA_MOMENTS[momentKey];
 
-  // sub text
-  document.getElementById('celebrate-sub').textContent =
-    `「${assetName}」已加入您的資產組合`;
+  // icon
+  const icons = { first_asset:'🌱', first_passive:'✨', freedom_first:'🌿',
+    milestone_25:'🌳', milestone_50:'🏛️', milestone_75:'🚀', milestone_100:'✦',
+    five_pct_up:'🌿', regular:['🎉','🌟','💎','🏆','🎊','💫'][Math.floor(Math.random()*6)] };
+  document.getElementById('celebrate-icon').textContent = moment.icon || icons.regular;
+
+  // title
+  document.getElementById('celebrate-title').textContent = moment.title;
+
+  // sub
+  let subText = moment.sub;
+  if (!subText) {
+    if (momentKey === 'five_pct_up') {
+      subText = `Freedom Degree 現在是 ${newPct}%。\n你的資產，正在替你承擔更多。`;
+    } else {
+      subText = `「${assetName}」已加入你的資產組合。`;
+    }
+  }
+  document.getElementById('celebrate-sub').textContent = subText;
 
   // pct
   const pctEl = document.getElementById('celebrate-pct');
-  pctEl.textContent = `${newPct}%`;
-  pctEl.insertAdjacentHTML('afterend',
-    `<div class="celebrate-pct-label">財務自由進度 · 月現金流 NT$${Math.round(tc).toLocaleString()}</div>`);
+  const old = document.querySelector('.celebrate-pct-label');
+  if (old) old.remove();
+  if (moment.showPct && newPct > 0) {
+    pctEl.textContent = `${newPct}%`;
+    pctEl.insertAdjacentHTML('afterend',
+      `<div class="celebrate-pct-label">人生選擇權指數 · 月被動收入 NT$${Math.round(tc).toLocaleString()}</div>`);
+  } else {
+    pctEl.textContent = '';
+  }
 
   // quote
-  const q = CELEBRATE_QUOTES[Math.floor(Math.random() * CELEBRATE_QUOTES.length)];
+  const q = moment.quote || WA_REGULAR_QUOTES[Math.floor(Math.random() * WA_REGULAR_QUOTES.length)];
   document.getElementById('celebrate-quote').textContent = `「${q}」`;
+
+  // button text
+  document.getElementById('celebrate-close').textContent = moment.btnText;
 
   // confetti
   const confetti = document.getElementById('celebrate-confetti');
@@ -4650,27 +5420,323 @@ function showCelebration(assetName, newPct) {
   for (let i = 0; i < 40; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
-    piece.style.cssText = `
-      left:${Math.random()*100}%;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      width:${Math.random()*8+4}px;
-      height:${Math.random()*8+4}px;
-      border-radius:${Math.random()>0.5?'50%':'2px'};
-      animation-duration:${Math.random()*1.5+1}s;
-      animation-delay:${Math.random()*0.5}s;
-    `;
+    piece.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${Math.random()*1.5+1}s;animation-delay:${Math.random()*0.5}s;`;
     confetti.appendChild(piece);
   }
+
+  // 慶祝建議選項
+  const rewardOpts = WA_REWARD_OPTS[momentKey] || WA_REWARD_OPTS.regular;
+  const optsEl = document.getElementById('celebrate-reward-opts');
+  optsEl.innerHTML = rewardOpts.map((opt, i) =>
+    `<button class="celebrate-reward-opt" data-idx="${i}">${opt}</button>`
+  ).join('');
+  optsEl.querySelectorAll('.celebrate-reward-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      optsEl.querySelectorAll('.celebrate-reward-opt').forEach(b => b.classList.remove('picked'));
+      btn.classList.toggle('picked');
+    });
+  });
+  document.getElementById('celebrate-reward-input').value = '';
+
+  // 有被動收入時，同步在儀表板顯示 insight card
+  if ((newMonthlyIncome || 0) > 0) {
+    setTimeout(() => triggerInsightOnPassiveAdd(), 300);
+  }
+
+  // 每次都重播動畫（reset trick）
+  const box = modal.querySelector('.celebrate-box');
+  const animEls = [box, ...box.querySelectorAll('.celebrate-icon,.celebrate-title,.celebrate-sub,.celebrate-pct,.celebrate-quote,.celebrate-btn')];
+  animEls.forEach(el => { el.style.animation='none'; void el.offsetWidth; el.style.animation=''; });
+
+  // 里程碑 icon 加光暈
+  const iconEl = document.getElementById('celebrate-icon');
+  const isMilestone = ['first_asset','first_passive','freedom_first','milestone_25','milestone_50','milestone_75','milestone_100'].includes(momentKey);
+  iconEl.classList.toggle('milestone', isMilestone);
 
   modal.classList.add('show');
 }
 
 document.getElementById('celebrate-close').addEventListener('click', () => {
   document.getElementById('celebrate-modal').classList.remove('show');
-  // 清除舊的 pct-label
   const old = document.querySelector('.celebrate-pct-label');
   if (old) old.remove();
+  document.querySelectorAll('.celebrate-reward-opt').forEach(b => b.classList.remove('picked'));
+  document.getElementById('celebrate-reward-input').value = '';
 });
+
+// ── Wealth Insight 陪伴系統 ──
+
+const WA_INSIGHT_RULES = [
+  {
+    id: 'free',
+    condition: (pct) => pct >= 100,
+    icon: '✦',
+    label: '財富覺醒',
+    text: () => '你的資產，已經能覆蓋你的生活目標。你現在工作，是因為你想要——不是因為你必須。'
+  },
+  {
+    id: 'growth_from_history',
+    condition: (pct, tc, n, h) => h && h.delta > 0,
+    icon: '📈',
+    label: '上個月',
+    text: (pct, tc, n, h) => `上個月，你的被動收入成長了 NT$${h.delta.toLocaleString()}。每一次提升，都在改變你的財富結構。`
+  },
+  {
+    id: 'half',
+    condition: (pct) => pct >= 50,
+    icon: '🏛️',
+    label: '里程碑洞察',
+    text: () => '你的資產，正在承擔你一半以上的生活費。很多人一輩子都到不了這裡。'
+  },
+  {
+    id: 'quarter',
+    condition: (pct) => pct >= 25,
+    icon: '🌳',
+    label: '里程碑洞察',
+    text: () => '每工作 4 個月，你的資產已經承擔了 1 個月的生活費。這個比例，正在往你有利的方向移動。'
+  },
+  {
+    id: 'building',
+    condition: (pct, tc) => pct >= 10,
+    icon: '🌿',
+    label: '財富結構觀察',
+    text: (pct, tc) => `你的被動收入，已經覆蓋了目標的 ${pct}%。每個月有 NT$${Math.round(tc).toLocaleString()} 不需要你去工作。`
+  },
+  {
+    id: 'first_steps',
+    condition: (pct, tc) => pct > 0,
+    icon: '🌱',
+    label: '財富結構觀察',
+    text: (pct, tc) => `你的資產，每個月正在替你產生 NT$${Math.round(tc).toLocaleString()}。不多，但方向對了。`
+  },
+  {
+    id: 'no_cashflow_assets',
+    condition: (pct, tc, n) => n >= 3 && tc === 0,
+    icon: '💭',
+    label: '結構觀察',
+    text: (pct, tc, n) => `你有 ${n} 筆資產，還沒有開始產生現金流的資產。哪一筆，是你最想讓它替你工作的？`
+  },
+  {
+    id: 'no_passive',
+    condition: (pct, tc, n) => n > 0,
+    icon: '🪞',
+    label: '你的財富鏡',
+    text: () => '你的收入，目前 100% 需要你去上班才能持續。每一筆被動收入，都是改變這個結構的第一步。'
+  },
+];
+
+function _pickInsightRule() {
+  const goal = +document.getElementById('goal-input').value || 100000;
+  let tc = 0;
+  assets.forEach(a => tc += a.monthlyIncome || 0);
+  const pct = Math.min(100, Math.floor(tc / goal * 100));
+  const n = assets.length;
+
+  let history = null;
+  if (window._historyRaw) {
+    const now = new Date();
+    const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const llm = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+    const lastKey = `${lm.getFullYear()}-${String(lm.getMonth()+1).padStart(2,'0')}`;
+    const llKey = `${llm.getFullYear()}-${String(llm.getMonth()+1).padStart(2,'0')}`;
+    if (window._historyRaw[lastKey] && window._historyRaw[llKey]) {
+      const delta = (window._historyRaw[lastKey].monthlyIncome||0) - (window._historyRaw[llKey].monthlyIncome||0);
+      if (delta > 0) history = { delta };
+    }
+  }
+
+  for (const rule of WA_INSIGHT_RULES) {
+    if (rule.condition(pct, tc, n, history)) {
+      return { icon: rule.icon, label: rule.label, text: rule.text(pct, tc, n, history) };
+    }
+  }
+  return null;
+}
+
+function showInsightCard(overrideLabel, overrideText, overrideIcon) {
+  let label, text, icon;
+  if (overrideText) {
+    label = overrideLabel || '本週洞察'; text = overrideText; icon = overrideIcon || '💡';
+  } else {
+    const rule = _pickInsightRule();
+    if (!rule) return;
+    label = rule.label; text = rule.text; icon = rule.icon;
+  }
+
+  // 桌面版
+  const card = document.getElementById('insight-card');
+  if (card) {
+    document.getElementById('insight-icon').textContent = icon;
+    document.getElementById('insight-label').textContent = label;
+    document.getElementById('insight-text').textContent = text;
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = 'insightIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both';
+    card.style.display = 'flex';
+  }
+
+  // 手機版
+  const mCard = document.getElementById('m-insight-card');
+  if (mCard) {
+    document.getElementById('m-insight-icon').textContent = icon;
+    document.getElementById('m-insight-label').textContent = label;
+    document.getElementById('m-insight-text').textContent = text;
+    mCard.style.animation = 'none';
+    void mCard.offsetWidth;
+    mCard.style.animation = 'insightIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both';
+    mCard.style.display = 'block';
+  }
+
+  localStorage.setItem('wa_insight_last_shown', Date.now().toString());
+}
+
+function checkWeeklyInsight() {
+  if (!assets.length) return;
+  const last = parseInt(localStorage.getItem('wa_insight_last_shown') || '0');
+  const daysSince = (Date.now() - last) / (1000 * 60 * 60 * 24);
+  if (daysSince >= 7) setTimeout(() => showInsightCard(), 900);
+}
+
+function triggerInsightOnPassiveAdd() {
+  if (!assets.length) return;
+  showInsightCard();
+}
+
+document.getElementById('insight-dismiss').addEventListener('click', () => {
+  document.getElementById('insight-card').style.display = 'none';
+});
+
+// ── Monthly Recap ──
+
+function _checkMonthlyRecap() {
+  if (!assets.length || !window._historyRaw) return;
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  if (localStorage.getItem('wa_recap_last_month') === currentMonth) return;
+  const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastKey = `${lm.getFullYear()}-${String(lm.getMonth()+1).padStart(2,'0')}`;
+  if (!window._historyRaw[lastKey]) return;
+  localStorage.setItem('wa_recap_last_month', currentMonth);
+  setTimeout(() => showMonthlyRecap(), 1500);
+}
+
+function showMonthlyRecap() {
+  const now = new Date();
+  const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const llm = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+  const lastKey = `${lm.getFullYear()}-${String(lm.getMonth()+1).padStart(2,'0')}`;
+  const llKey = `${llm.getFullYear()}-${String(llm.getMonth()+1).padStart(2,'0')}`;
+  const last = window._historyRaw[lastKey] || {};
+  const prev = window._historyRaw[llKey] || {};
+
+  const lastIncome = last.monthlyIncome || 0;
+  const prevIncome = prev.monthlyIncome || 0;
+  const goal = +document.getElementById('goal-input').value || 100000;
+  const lastPct = Math.min(100, Math.floor(lastIncome / goal * 100));
+  const prevPct = Math.min(100, Math.floor(prevIncome / goal * 100));
+  const incomeGrowth = lastIncome - prevIncome;
+
+  const months = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  document.getElementById('recap-month-title').textContent = `${months[lm.getMonth()]}回顧`;
+
+  const dc = incomeGrowth >= 0 ? '#22c55e' : '#f87171';
+  const ds = incomeGrowth >= 0 ? '+' : '';
+  document.getElementById('recap-stat-row').innerHTML =
+    `<div class="recap-stat-item">
+      <div class="recap-stat-val">NT$${Math.round(lastIncome).toLocaleString()}</div>
+      <div class="recap-stat-sub">月被動收入</div>
+      ${prevIncome||prev.totalValue ? `<div class="recap-stat-delta" style="color:${dc}">${ds}NT$${Math.round(incomeGrowth).toLocaleString()}</div>` : ''}
+    </div>
+    <div class="recap-stat-item">
+      <div class="recap-stat-val" style="color:#f0d060">${lastPct}%</div>
+      <div class="recap-stat-sub">人生選擇權指數</div>
+      ${prevIncome||prev.totalValue ? `<div class="recap-stat-delta" style="color:${dc}">${ds}${lastPct-prevPct}%</div>` : ''}
+    </div>`;
+
+  const insightText = lastIncome === 0
+    ? `${months[lm.getMonth()]}，你記錄了你的資產。\n覺察，是一切改變的起點。`
+    : incomeGrowth > 0
+    ? `${months[lm.getMonth()]}，你的被動收入成長了。\n每一步，都是對未來自己的投資。`
+    : incomeGrowth === 0
+    ? `${months[lm.getMonth()]}，你的收入結構保持穩定。\n持續，本身就是一種力量。`
+    : `${months[lm.getMonth()]}有些起伏。\n財富的旅程不是直線，能看見它，就已經走在前面了。`;
+  document.getElementById('recap-insight-text').textContent = insightText;
+
+  const modal = document.getElementById('recap-modal');
+  const box = modal.querySelector('.recap-box');
+  box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
+  modal.classList.add('show');
+}
+
+document.getElementById('recap-close').addEventListener('click', () => {
+  document.getElementById('recap-modal').classList.remove('show');
+});
+document.getElementById('recap-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+});
+
+// ── WA Toast 小事慶祝系統 ──
+
+function showWaToast(icon, text, label) {
+  const toast = document.getElementById('wa-toast');
+  document.getElementById('wa-toast-icon').textContent = icon;
+  document.getElementById('wa-toast-text').textContent = text;
+  document.getElementById('wa-toast-label').textContent = label || '財富覺醒';
+  toast.classList.add('show');
+  clearTimeout(window._waToastTimer);
+  window._waToastTimer = setTimeout(() => toast.classList.remove('show'), 5000);
+}
+document.getElementById('wa-toast-close').addEventListener('click', () => {
+  document.getElementById('wa-toast').classList.remove('show');
+  clearTimeout(window._waToastTimer);
+});
+
+// 觸發 1：目標設定（change = 失焦或按 Enter 才觸發，不是每個字）
+document.getElementById('goal-input').addEventListener('change', () => {
+  const goal = +document.getElementById('goal-input').value;
+  if (!goal) return;
+  showWaToast('🎯', '目標設定好了。每一個有目標的人，都比昨天的自己更近了一步。', '目標設定');
+});
+
+// 觸發 2：刪除資產（桌面版）
+const _origDeleteHandler = document.getElementById('assets-grid').onclick;
+document.getElementById('assets-grid').addEventListener('click', async e => {
+  const btn = e.target.closest('[data-id]'); if (!btn) return;
+  // 在 confirm 後才顯示（等現有 handler 跑完）
+  setTimeout(() => {
+    if (!document.getElementById('assets-grid').querySelector(`[data-id="${btn.dataset.id}"]`)) {
+      showWaToast('🔄', '你在調整，不是放棄。重新整理財富，也是一種智慧。', '財富整理');
+    }
+  }, 200);
+});
+
+// 觸發 3：連續使用紀念
+function _checkVisitStreak() {
+  const today = new Date().toDateString();
+  const lastVisit = localStorage.getItem('wa_last_visit');
+  let streak = parseInt(localStorage.getItem('wa_visit_streak') || '0');
+  if (lastVisit === today) return;
+  localStorage.setItem('wa_last_visit', today);
+  streak++;
+  localStorage.setItem('wa_visit_streak', String(streak));
+  if (streak === 3) setTimeout(() => showWaToast('🔥', '你連續 3 天回來了。這就是習慣的開始。', '使用連紀'), 2500);
+  else if (streak === 7) setTimeout(() => showWaToast('⭐', '連續 7 天。你在做大多數人做不到的事。', '一週連紀'), 2500);
+  else if (streak === 30) setTimeout(() => showWaToast('✦', '30 天連續記錄。財富覺醒，已經成為你生命的一部分。', '30 天連紀'), 2500);
+}
+
+// 觸發 4：使用週年（7 天、30 天）
+function _checkAnniversary() {
+  const joined = localStorage.getItem('wa_joined_date');
+  if (!joined) { localStorage.setItem('wa_joined_date', String(Date.now())); return; }
+  const days = (Date.now() - parseInt(joined)) / (1000 * 60 * 60 * 24);
+  if (days >= 30 && !localStorage.getItem('wa_ann_30')) {
+    localStorage.setItem('wa_ann_30', '1');
+    setTimeout(() => showWaToast('🌳', '你已經記錄超過 30 天了。堅持，是最難也最值得的事。', '30 天紀念'), 3000);
+  } else if (days >= 7 && !localStorage.getItem('wa_ann_7')) {
+    localStorage.setItem('wa_ann_7', '1');
+    setTimeout(() => showWaToast('🌱', '你回來了整整一週。這不是巧合，這是你在改變自己的證明。', '7 天紀念'), 3000);
+  }
+}
 
 // 點背景也可關閉
 document.getElementById('celebrate-modal').addEventListener('click', e => {
@@ -5830,6 +6896,7 @@ function switchTab(tab) {
   if (titleEl) titleEl.innerHTML = titles[tab] || 'Wealth <em>Awakening</em>';
 
   if (tab === 'profile') initMobilePersonalityList();
+  if (tab === 'goals') setTimeout(() => renderMobileChart(), 200);
   setTimeout(syncMobileUI, 100);
 }
 
@@ -6226,6 +7293,30 @@ function toggleThemePanel() {
 }
 window.toggleThemePanel = toggleThemePanel;
 
+function toggleDesktopThemePanel() {
+  const panel = document.getElementById('desktop-theme-panel');
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    // 更新色票 active 狀態
+    const saved = localStorage.getItem('wa-theme') || 'dark-green';
+    panel.querySelectorAll('.theme-swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.theme === saved);
+    });
+    updateColorPickers(saved);
+  }
+}
+window.toggleDesktopThemePanel = toggleDesktopThemePanel;
+
+// 點擊外部關閉電腦版面板
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('desktop-theme-panel');
+  if (!panel || panel.style.display === 'none') return;
+  const btn = e.target.closest('[onclick*="toggleDesktopThemePanel"]');
+  if (!btn && !panel.contains(e.target)) panel.style.display = 'none';
+});
+
 function applyTheme(themeName) {
   // 設定 data-theme 讓 CSS 變數生效
   document.documentElement.setAttribute('data-theme', themeName);
@@ -6481,7 +7572,7 @@ function initMobileHome() {
         </div>
         <div style="text-align:center;margin-top:-68px;position:relative;z-index:1">
           <div id="mobile-freedom-pct" style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:#22c55e">0%</div>
-          <div style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">FREEDOM</div>
+          <div id="mobile-freedom-stage-label" style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">AWAKENING</div>
         </div>
       </div>
       <div class="home-stats-mini">
@@ -6490,7 +7581,7 @@ function initMobileHome() {
           <span class="home-stat-mini-val green" id="mobile-total">NT$0</span>
         </div>
         <div class="home-stat-mini">
-          <span class="home-stat-mini-label">月現金流</span>
+          <span class="home-stat-mini-label">非薪資收入</span>
           <span class="home-stat-mini-val blue" id="mobile-cashflow">NT$0</span>
         </div>
         <div class="home-stat-mini">
@@ -6506,6 +7597,18 @@ function initMobileHome() {
     <div class="v2-card" style="padding:10px 13px;background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.14);margin-bottom:8px">
       <div style="font-family:ui-monospace,'DM Mono',monospace;font-size:8px;color:rgba(34,197,94,0.45);text-transform:uppercase;letter-spacing:0.10em;margin-bottom:5px">TODAY'S WEALTH FREQUENCY</div>
       <div id="mobile-quote" style="font-size:12.5px;font-weight:500;color:#f0fdf4;line-height:1.5;letter-spacing:-0.01em"></div>
+    </div>
+
+    <!-- 手機版 Insight Card -->
+    <div id="m-insight-card" class="v2-card" style="display:none;padding:12px 14px;margin-bottom:8px;background:linear-gradient(135deg,rgba(34,197,94,0.07),rgba(34,197,94,0.02));border-color:rgba(34,197,94,0.2);position:relative;animation:insightIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="font-size:18px;flex-shrink:0;padding-top:1px" id="m-insight-icon">💡</div>
+        <div style="flex:1;padding-right:20px">
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);font-weight:600;margin-bottom:4px" id="m-insight-label">本週洞察</div>
+          <div style="font-size:12.5px;color:#f0fdf4;line-height:1.55" id="m-insight-text"></div>
+        </div>
+        <button onclick="document.getElementById('m-insight-card').style.display='none'" style="position:absolute;top:10px;right:10px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:14px;cursor:pointer;padding:2px 6px">✕</button>
+      </div>
     </div>
 
     <!-- 主夢想進度 -->
@@ -6676,8 +7779,8 @@ function initMobileHome() {
         <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">總資產</button>
         <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">被動收入</button>
       </div>
-      <div id="mobile-trend-area">
-        <canvas id="mobile-chart-canvas" width="300" height="160"></canvas>
+      <div id="mobile-trend-area" style="height:160px;position:relative;">
+        <canvas id="mobile-chart-canvas" style="width:100%;height:160px;"></canvas>
       </div>
     </div>
 
