@@ -4946,19 +4946,122 @@ function renderChart(){
   });
 }
 
-// ── AI Insight ──
-async function fetchAIInsight(){
+// ── AI Insight（規則型洞察，不需 API Key）──
+function fetchAIInsight(){
+  const txt  = document.getElementById('ai-insight-text');
+  const mTxt = document.getElementById('mobile-ai-insight-text');
+  function setTxt(t){ if(txt) txt.textContent=t; if(mTxt) mTxt.textContent=t; }
+  function addTyping(){ if(txt) txt.classList.add('ai-typing'); if(mTxt) mTxt.classList.add('ai-typing'); }
+  function removeTyping(){ if(txt) txt.classList.remove('ai-typing'); if(mTxt) mTxt.classList.remove('ai-typing'); }
+
   if(!assets.length){
-    document.getElementById('ai-insight-text').textContent='請先新增資產，AI 才能分析您的財務狀況。';
+    setTxt('請先新增資產，才能產生財富洞察。');
     return;
   }
 
-  // 檢查是否有 Gemini API Key
-  let apiKey = localStorage.getItem('geminiApiKey');
-  if (!apiKey) {
-    apiKey = await promptGeminiKey();
-    if (!apiKey) return;
+  setTxt('分析中⋯'); addTyping();
+
+  setTimeout(() => {
+    removeTyping();
+    const insight = _buildWealthInsight();
+    // 打字機效果
+    setTxt('');
+    let i = 0;
+    const type = () => {
+      if(i < insight.length){
+        if(txt)  txt.textContent  += insight[i];
+        if(mTxt) mTxt.textContent += insight[i];
+        i++;
+        setTimeout(type, insight[i-1]==='\n' ? 40 : 14);
+      }
+    };
+    type();
+  }, 600);
+}
+
+function _buildWealthInsight(){
+  const goal  = +(document.getElementById('goal-input')?.value||100000)||100000;
+  const tc    = assets.reduce((s,a)=>s+(a.monthlyIncome||0),0);
+  const tv    = assets.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
+  const pct   = Math.min(100, Math.floor(tc/goal*100));
+
+  // 資產類別統計
+  const catMap = {};
+  assets.forEach(a=>{ catMap[a.category]=(catMap[a.category]||0)+1; });
+  const cats = Object.keys(catMap);
+  const catNames = {crypto:'加密貨幣',stock:'股票',etf:'ETF',gold:'黃金',silver:'白銀',bond:'債券',deposit:'定存',lending:'借貸',fund:'基金',insurance:'保險',realestate:'房地產'};
+  const topCat = cats.sort((a,b)=>catMap[b]-catMap[a])[0];
+  const topCatName = catNames[topCat]||topCat;
+
+  const pKey  = localStorage.getItem('wealthPersonality')||'';
+  const pMap  = {pioneer:'財富先行者',sage:'智慧變現者',magnet:'豐盛引力者',anchor:'穩定基石者',creator:'創造登峰者'};
+  const pName = pMap[pKey]||'';
+
+  const mainDream = (window.dreams||[]).find(d=>d.isMain)||(window.dreams||[])[0];
+
+  // 選擇洞察角度（每次點按輪流）
+  window._insightRound = ((window._insightRound||0)+1) % 4;
+  const round = window._insightRound;
+
+  // ── 角度 0：Freedom Degree 人話翻譯 ──
+  if(round===0){
+    if(pct===0){
+      return '你的月非薪資收入目前是 NT$0。\n\n這不是壞消息，這是出發點。每個達到財務自由的人，都曾有過一個 0% 的時刻。\n\n下一步：新增一筆有月現金流的資產（例如股息股或 ETF），讓 Freedom Degree 開始移動。哪怕是 NT$100，都比 NT$0 更接近自由。';
+    } else if(pct<25){
+      return `你的 Freedom Degree 是 ${pct}%，每月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n用人話說：你的資產每個月正在幫你工作，但還在起步階段。這個階段最重要的事是「持續新增」，不是等待爆發。\n\n距離 25% 里程碑還差 NT$${Math.round(goal*0.25-tc).toLocaleString()} 月現金流。`;
+    } else if(pct<50){
+      return `Freedom Degree ${pct}%——每工作 ${Math.round(100/pct*10)/10} 個月，你的資產已經幫你工作了 1 個月。\n\n你已經跨過了很多人永遠跨不過的第一道門檻。現在的每一筆新增，都在加速這個比例往 50% 推進。\n\n離「資產承擔一半生活」的里程碑，還差 NT$${Math.round(goal*0.5-tc).toLocaleString()} 月現金流。`;
+    } else if(pct<100){
+      return `Freedom Degree ${pct}%。你的資產已經承擔了你 ${pct}% 的生活，剩下的 ${100-pct}% 還需要你工作。\n\n你已經不是在「追求」財務自由，你是在「完成」財務自由。這個階段的心理狀態會發生質變——那種「我可以選擇的感覺」，會開始真實存在。`;
+    } else {
+      return `Freedom Degree 100%。\n\n你的資產產生的月現金流，已經達到你設定的財務自由目標。\n\n這是絕大多數人一生都到不了的地方。現在你面對的問題不是「夠不夠」，而是「接下來要過什麼樣的生活？」`;
+    }
   }
+
+  // ── 角度 1：資產結構分析 ──
+  if(round===1){
+    if(cats.length===1){
+      return `你目前所有 ${assets.length} 筆資產都集中在${topCatName}類別。\n\n集中持有有它的優勢：你對這個領域更熟悉，也更容易追蹤。但也代表當這個市場波動，你的整體財富狀況會被放大影響。\n\n建議：考慮在另一個類別新增一筆資產，讓財富結構多一層緩衝。不需要很多，一筆就夠開始。`;
+    } else if(cats.length>=3){
+      const incomeAssets = assets.filter(a=>a.monthlyIncome>0);
+      return `你持有 ${assets.length} 筆資產，分布在 ${cats.length} 個類別（${cats.slice(0,3).map(c=>catNames[c]||c).join('、')}${cats.length>3?'等':''}）。這種多元配置讓你的財富結構更有韌性。\n\n其中 ${incomeAssets.length} 筆資產有月現金流，合計 NT$${Math.round(tc).toLocaleString()}/月。${incomeAssets.length<assets.length?`\n\n另有 ${assets.length-incomeAssets.length} 筆資產目前無現金流紀錄，若有配息記得更新，Freedom Degree 會更準確。`:''}`;
+    } else {
+      return `你持有 ${assets.length} 筆資產，分布在 ${cats.length} 個類別。總帳面資產值約 NT$${Math.round(tv).toLocaleString()}，月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n繼續增加資產種類，可以讓財富結構更能承受單一市場的波動。${cats.length<3?'\n\n建議目標：至少覆蓋 3 個不同類別的資產。':''}`;
+    }
+  }
+
+  // ── 角度 2：夢想連結 ──
+  if(round===2){
+    if(!mainDream){
+      return `你目前還沒有設定主夢想。\n\n財富覺醒的核心不只是數字，而是你的錢在替你靠近什麼。設定一個夢想，讓每一筆資產記錄都有一個更具體的方向。\n\n前往「夢想」頁面，加入你的第一個夢想。`;
+    }
+    if(tc===0){
+      return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」。\n\n目前 Freedom Degree 是 0%，第一步是讓非薪資收入從零開始移動。每一筆有現金流的資產，都是你朝這個夢想邁出的真實一步。\n\n不是要你現在就達到夢想，而是讓你的錢開始替你往那個方向走。`;
+    }
+    return `你的主夢想是「${mainDream.emoji} ${mainDream.name}」。\n\n目前你的資產每個月替你產生 NT$${Math.round(tc).toLocaleString()} 的非薪資收入，Freedom Degree ${pct}%。\n\n這個數字每增加一點，都代表你離這個夢想更近了一步——不是靠努力工作更多，而是靠讓錢替你工作更多。`;
+  }
+
+  // ── 角度 3：人格型洞察 or 整體總結 ──
+  if(pName){
+    const personalityInsights = {
+      pioneer:`作為${pName}，你的優勢是行動力——你不需要等到準備好才開始。目前 ${pct}% 的進度正是你行動力的體現。\n\n下一步建議：在你最熟悉的領域再新增一筆資產，先行動，再優化。`,
+      sage:`作為${pName}，你重視理解背後的邏輯。目前你的資產結構（${cats.map(c=>catNames[c]||c).join('、')}）反映了你的研究偏好。\n\n提醒：智慧型投資者的最大風險是「分析癱瘓」——知道太多，反而遲遲不行動。有一個好機會，就動。`,
+      magnet:`作為${pName}，你擅長吸引財富進入你的生活。每月 NT$${Math.round(tc).toLocaleString()} 的非薪資收入，正是你豐盛能量的量化體現。\n\n繼續保持這種覺察，你的 Freedom Degree 會持續被吸引往上走。`,
+      anchor:`作為${pName}，你的核心優勢是穩定性和長期思維。${cats.length>1?`你的多元配置（${cats.slice(0,2).map(c=>catNames[c]||c).join('、')}）正是這種思維的體現。`:`繼續穩定地累積，複利的力量需要時間才能顯現。`}\n\n不要被短期波動動搖，你的策略需要的是時間，不是頻繁調整。`,
+      creator:`作為${pName}，你相信創造價值是財富的源頭。目前 ${pct}% 的 Freedom Degree，是你把創造力轉化為資產的成果。\n\n思考：你的技能或作品是否可以轉化為一筆有持續現金流的資產？版稅、課程、或任何能讓你「不在場也能收到錢」的東西，都值得嘗試。`,
+    };
+    return personalityInsights[pKey] || `你目前持有 ${assets.length} 筆資產，Freedom Degree ${pct}%，月非薪資收入 NT$${Math.round(tc).toLocaleString()}。\n\n繼續記錄，財富覺察會帶你走得更遠。`;
+  }
+
+  return `你目前持有 ${assets.length} 筆資產，Freedom Degree ${pct}%。\n\n月非薪資收入 NT$${Math.round(tc).toLocaleString()}，帳面資產總值約 NT$${Math.round(tv).toLocaleString()}。\n\n每一次記錄，都是你對未來自己說：我沒有忘記你。繼續走，你已經比大多數人走得更遠了。`;
+}
+window.fetchAIInsight = fetchAIInsight;
+
+// ── 以下舊版 Gemini 相關（保留但不再呼叫）──
+async function _legacyGeminiInsight(){
+  if(!assets.length) return;
+  let apiKey = localStorage.getItem('geminiApiKey');
+  if (!apiKey) return;
 
   const btn = document.getElementById('ai-refresh-btn');
   const txt = document.getElementById('ai-insight-text');
@@ -5044,11 +5147,8 @@ async function fetchAIInsight(){
   } catch(e) {
     if (e.message && e.message.includes('API')) localStorage.removeItem('geminiApiKey');
     removeTyping();
-    setTxt('⚠ AI 分析暫時無法使用，請稍後再試。');
   }
-  if (btn) { btn.disabled=false; btn.textContent='重新分析'; }
 }
-window.fetchAIInsight = fetchAIInsight;
 
 // Gemini API Key 輸入 Modal
 function promptGeminiKey() {
