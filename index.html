@@ -7671,6 +7671,9 @@ function initMobileHome() {
       <div class="dream-progress-pct" id="mobile-dream-pct">0%</div>
     </div>
 
+    <!-- 其他夢想橫滑列 -->
+    <div id="mobile-other-dreams" style="display:none;margin-top:8px;margin-bottom:2px"></div>
+
     <!-- 快捷數據 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title">財富概覽</div>
@@ -8315,6 +8318,34 @@ function syncMobileDreams() {
   if(!window.dreams) return;
   const mDreamsList=document.getElementById('mobile-dreams-list');
   if(!mDreamsList) return;
+
+  // ── 首頁其他夢想橫滑列 ──
+  const otherDreamsEl = document.getElementById('mobile-other-dreams');
+  if (otherDreamsEl) {
+    const main = dreams.find(d=>d.isMain) || dreams[0];
+    const others = dreams.filter(d => d !== main);
+    if (others.length > 0) {
+      const tc = window.assets ? window.assets.reduce((s,a)=>s+(a.monthlyIncome||0),0) : 0;
+      const goal = +(document.getElementById('goal-input')||{value:100000}).value || 100000;
+      const pct = Math.min(100, Math.floor(tc/goal*100));
+      otherDreamsEl.style.display = 'block';
+      otherDreamsEl.innerHTML =
+        '<div style="font-size:9px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;font-family:monospace">其他夢想</div>' +
+        '<div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none">' +
+        others.map(d =>
+          '<div onclick="switchTab(\'dreams\')" style="display:flex;align-items:center;gap:6px;flex-shrink:0;padding:7px 11px;background:rgba(240,208,96,0.05);border:1px solid rgba(240,208,96,0.12);border-radius:20px;cursor:pointer;transition:background 0.15s" ' +
+          'onmouseenter="this.style.background=\'rgba(240,208,96,0.1)\'" onmouseleave="this.style.background=\'rgba(240,208,96,0.05)\'">' +
+          '<span style="font-size:16px">' + d.emoji + '</span>' +
+          '<span style="font-size:11px;font-weight:500;color:rgba(240,208,96,0.8);white-space:nowrap">' + d.name + '</span>' +
+          '<span style="font-size:10px;color:rgba(240,208,96,0.35);font-family:monospace">' + pct + '%</span>' +
+          '</div>'
+        ).join('') +
+        '</div>';
+    } else {
+      otherDreamsEl.style.display = 'none';
+    }
+  }
+
   if(!dreams.length) {
     mDreamsList.innerHTML='<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px">尚未設定夢想<br><span style="font-size:11px">點擊「+ 新增」開始</span></div>';
     return;
