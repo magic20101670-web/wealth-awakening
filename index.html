@@ -588,6 +588,7 @@ select option { background: #0d2318; }
 
 /* 手機 App 全局 */
 @media(max-width: 768px) {
+  html { overflow-x: hidden; }
   body { background: var(--v2-bg); overflow-x: hidden; }
   
   .wrap { 
@@ -737,7 +738,6 @@ select option { background: #0d2318; }
   /* ── Pages v2 ── */
   .app-page {
     display: none;
-    padding-top: 54px;
     min-height: 100vh;
     animation: pageIn 0.22s ease both;
     overflow-y: auto;
@@ -746,8 +746,8 @@ select option { background: #0d2318; }
   }
   .app-page.active { display: block; }
   @keyframes pageIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-  
-  .page-content { padding: 10px 14px 90px; }
+
+  .page-content { padding: 10px 14px 90px; width: 100%; overflow-x: hidden; box-sizing: border-box; }
 
   /* ── 卡片 v2 通用 ── */
   .v2-card {
@@ -1571,7 +1571,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
   <div class="dream-intro">
     <div style="font-size:44px;margin-bottom:12px">🌟</div>
     <div class="dream-intro-title">你的夢想是什麼？</div>
-    <div class="dream-intro-sub">每一筆資產的累積，都是在為你的夢想鋪路。<br>點選 emoji，看看這個夢想的樣子 ✨</div>
+    <div class="dream-intro-sub">財富自由不是終點，而是讓你有能力去追求真正重要的事。<br><br>你的夢想，就是你最好的理財動力。<br>當你清楚知道自己在為什麼而努力，每一筆資產的累積才有意義。<br><br>點選 emoji，選擇你的夢想 ✨</div>
 
     <!-- Emoji 選擇 -->
     <div class="dream-emoji-grid" id="dream-emoji-grid">
@@ -6524,6 +6524,7 @@ async function saveDreamsAndStart() {
     await setDoc(doc(db,'users',currentUser.uid,'settings','dreamSetup'), { done: true, setupDate: new Date().toISOString() });
     document.getElementById('dream-screen').classList.add('hidden');
     renderDreamHero();
+    if (typeof syncMobileDreams === 'function') syncMobileDreams();
   } catch(e) { console.error(e); }
 }
 window.saveDreamsAndStart = saveDreamsAndStart;
@@ -6543,6 +6544,7 @@ async function loadDreams() {
       renderDreamHero();
       checkMonthlyReminder();
     }
+    if (typeof syncMobileDreams === 'function') syncMobileDreams();
   } catch(e) { console.error(e); }
 }
 
@@ -6586,6 +6588,7 @@ async function deleteDreamMini(id) {
     dreams = dreams.filter(d=>d.id!==id);
     if (dreams.length && !dreams.find(d=>d.isMain)) dreams[0].isMain=true;
     renderDreamHero();
+    if (typeof syncMobileDreams === 'function') syncMobileDreams();
   } catch(e){ console.error(e); }
 }
 window.deleteDreamMini = deleteDreamMini;
@@ -6623,6 +6626,7 @@ async function changeMainDream() {
     await Promise.all(dreams.map(d=>updateDoc(doc(db,'users',currentUser.uid,'dreams',d.id),{isMain:d.isMain})));
   } catch {}
   renderDreamHero();
+  if (typeof syncMobileDreams === 'function') syncMobileDreams();
 }
 window.changeMainDream = changeMainDream;
 
@@ -6783,6 +6787,7 @@ async function confirmDreamComplete() {
     if (dreams.length > 0 && !dreams.find(d=>d.isMain)) dreams[0].isMain=true;
     closeDreamComplete();
     renderDreamHero();
+    if (typeof syncMobileDreams === 'function') syncMobileDreams();
     showDreamCelebration(dream);
   } catch(e){ console.error(e); }
 }
