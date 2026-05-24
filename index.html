@@ -6850,7 +6850,6 @@ function updateTreeDecorations() {
   const count = completedDreams.length;
   const badge = document.getElementById('tree-level-badge');
   if (!badge) return;
-  // 在財富樹 canvas 旁邊加裝飾標籤
   let decoration = '';
   if (count >= 150) decoration = '🌌 宇宙星雲';
   else if (count >= 100) decoration = '💎 鑽石光芒';
@@ -6860,8 +6859,16 @@ function updateTreeDecorations() {
   else if (count >= 3) decoration = '⭐ 星星環繞';
   else if (count >= 1) decoration = '🌸 初綻之花';
   if (decoration && badge) {
+    const prev = localStorage.getItem('wa_tree_deco_last') || '';
     badge.textContent = decoration;
     badge.style.display='inline-flex';
+    // 第一次出現這個裝飾時，用 toast 說明來源
+    if (decoration !== prev) {
+      localStorage.setItem('wa_tree_deco_last', decoration);
+      if (prev === '' && typeof showWaToast === 'function') {
+        setTimeout(() => showWaToast('🌸', '你的夢想，為財富樹帶來了裝飾。實現越多夢想，裝飾越珍稀。', '夢想裝飾解鎖'), 800);
+      }
+    }
   }
 }
 
@@ -7202,6 +7209,17 @@ function showTreeStagesModal() {
   modal.id = 'tree-stages-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
 
+  const DREAM_DECOS = [
+    { deco:'🌸 初綻之花', count:1,   desc:'達成第一個夢想，財富樹開出第一朵花。' },
+    { deco:'⭐ 星星環繞', count:3,   desc:'三個夢想成真，星光開始圍繞你的樹。' },
+    { deco:'🌈 彩虹光芒', count:5,   desc:'五個夢想實現，彩虹為你的旅程增色。' },
+    { deco:'👑 夢想皇冠', count:10,  desc:'十個夢想達成，你已戴上夢想的皇冠。' },
+    { deco:'🔥 火焰傳說', count:50,  desc:'五十個夢想，你已成為傳說。' },
+    { deco:'💎 鑽石光芒', count:100, desc:'百個夢想，財富與夢想的最高境界。' },
+    { deco:'🌌 宇宙星雲', count:150, desc:'一百五十個夢想，你的旅程已超越想像。' },
+  ];
+  const currentDeco = localStorage.getItem('wa_tree_deco_last') || '';
+
   modal.innerHTML = `
     <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
@@ -7223,6 +7241,24 @@ function showTreeStagesModal() {
           '</div>' +
         '</div>';
       }).join('')}
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:13px;font-weight:700;color:#f0d060;margin-bottom:4px;">🌸 夢想裝飾</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:12px;">每次實現一個夢想（點「我實現了！」），就會解鎖新的財富樹裝飾。</div>
+        ${DREAM_DECOS.map(d => {
+          const isUnlocked = completedDreams.length >= d.count;
+          const isCurrent = currentDeco === d.deco;
+          return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:' + (isCurrent?'rgba(240,208,96,0.08)':isUnlocked?'rgba(255,255,255,0.03)':'rgba(255,255,255,0.01)') + ';border:1px solid ' + (isCurrent?'rgba(240,208,96,0.25)':isUnlocked?'rgba(255,255,255,0.06)':'rgba(255,255,255,0.03)') + ';border-radius:12px;margin-bottom:6px;opacity:' + (isUnlocked?'1':'0.4') + ';">' +
+            '<div style="font-size:22px;flex-shrink:0;">' + d.deco.split(' ')[0] + '</div>' +
+            '<div style="flex:1;">' +
+              '<div style="font-size:12px;font-weight:600;color:' + (isCurrent?'#f0d060':isUnlocked?'#f0fdf4':'rgba(255,255,255,0.4)') + ';">' + d.deco +
+                (isCurrent?' <span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 6px;border-radius:6px;">目前裝飾</span>':'') +
+              '</div>' +
+              '<div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;">' + d.desc + '</div>' +
+            '</div>' +
+            '<div style="font-size:10px;color:rgba(255,255,255,0.25);flex-shrink:0;">達成 ' + d.count + ' 個</div>' +
+          '</div>';
+        }).join('')}
+      </div>
     </div>`;
 
   document.body.appendChild(modal);
