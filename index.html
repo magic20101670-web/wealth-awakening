@@ -4017,6 +4017,7 @@ async function loadAssets() {
   checkWeeklyInsight();
   _checkMonthlyRecap();
   _checkVisitStreak();
+  if (window.innerWidth <= 768) { if (typeof syncMobileDreams === 'function') syncMobileDreams(); }
   _checkAnniversary();
 }
 
@@ -6640,6 +6641,7 @@ function updateWealthTree() {
 
   spawnTreeParticles(levelIdx);
   animateTree(levelIdx, leafCount, pct);
+  if (window.innerWidth <= 768 && typeof syncMobileTree === 'function') syncMobileTree();
 }
 
 // ── 債務管理 ──
@@ -7572,39 +7574,75 @@ setInterval(updateGreeting, 60000);
 function syncMobileTree() {
   if (window.innerWidth > 768) return;
 
+  // 移動 canvas
   const wrap = document.getElementById('mobile-tree-canvas-wrap');
   const dCanvas = document.getElementById('wealth-tree-canvas');
-  if (!wrap || !dCanvas) return;
-
-  // 直接把原始 canvas 移到手機版（不複製，真正即時）
-  if (!wrap.contains(dCanvas)) {
+  if (wrap && dCanvas && !wrap.contains(dCanvas)) {
     dCanvas.style.width = '100%';
     dCanvas.style.maxWidth = '280px';
     dCanvas.style.height = 'auto';
     wrap.appendChild(dCanvas);
   }
 
-  // 同步統計數字
-  const map = [
-    ['tree-days', 'mobile-tree-days'],
-    ['tree-assets', 'mobile-tree-assets'],
-    ['tree-leaves', 'mobile-tree-leaves'],
-    ['tree-freq', 'mobile-tree-freq'],
-    ['tree-next-level', 'mobile-tree-next'],
+  // 直接從 window.assets 計算，不依賴桌面版元素
+  const assets = window.assets || [];
+  const now = Date.now() / 1000;
+  const validTs = assets.map(a => a.createdAt?.seconds || (a.createdAt > 1e12 ? a.createdAt/1000 : 0)).filter(t => t > 1e9);
+  const firstTs = validTs.length > 0 ? Math.min(...validTs) : (parseInt(localStorage.getItem('wealthFirstDate') || now));
+  const days = Math.max(0, Math.floor((now - firstTs) / 86400));
+  const assetCount = assets.length;
+
+  const treeStages = [
+    { name:'🌱 樹苗期', minAssets:0,  minDays:0,   leaves:0   },
+    { name:'🌿 成長期', minAssets:1,  minDays:7,   leaves:8   },
+    { name:'🌲 茁壯期', minAssets:3,  minDays:30,  leaves:20  },
+    { name:'🌳 繁盛期', minAssets:5,  minDays:90,  leaves:40  },
+    { name:'🏆 豐收期', minAssets:8,  minDays:180, leaves:70  },
+    { name:'✨ 神木期', minAssets:12, minDays:365, leaves:120 },
   ];
-  map.forEach(([src, dst]) => {
-    const s = document.getElementById(src);
-    const d = document.getElementById(dst);
-    if (s && d) d.textContent = s.textContent;
-  });
+  let levelIdx = 0;
+  for (let i = treeStages.length - 1; i >= 0; i--) {
+    if (assetCount >= treeStages[i].minAssets && days >= treeStages[i].minDays) { levelIdx = i; break; }
+  }
+  const level = treeStages[levelIdx];
+  const nextLevel = treeStages[levelIdx + 1];
+  const leafCount = level.leaves + Math.floor(assetCount * 3) + Math.floor(days / 7);
 
-  const progress = document.getElementById('tree-progress-bar');
+  const wlArr = [
+    { icon:'🌑', name:'Observer',  zh:'觀察者', req:0      },
+    { icon:'🌱', name:'Awakener',  zh:'覺醒者', req:5000   },
+    { icon:'🌿', name:'Resonator', zh:'共振者', req:20000  },
+    { icon:'🌳', name:'Alchemist', zh:'煉金者', req:50000  },
+    { icon:'🏛️', name:'Architect', zh:'建構者', req:100000 },
+    { icon:'✨', name:'Ascended',  zh:'昇華者', req:200000 },
+  ];
+  const tc = assets.reduce((s, a) => s + (a.monthlyIncome || 0), 0);
+  let wlIdx = 0;
+  for (let i = 0; i < wlArr.length; i++) { if (tc >= wlArr[i].req) wlIdx = i; }
+  const wl = wlArr[wlIdx];
+
+  let progress = 0;
+  let nextText = '累積更多資產讓樹成長';
+  if (nextLevel) {
+    const ap = nextLevel.minAssets > 0 ? Math.min(1, assetCount / nextLevel.minAssets) : 1;
+    const dp = nextLevel.minDays > 0 ? Math.min(1, days / nextLevel.minDays) : 1;
+    progress = Math.floor(Math.min(ap, dp) * 100);
+    nextText = `下一階段：${nextLevel.name}（資產 ${nextLevel.minAssets} 筆 / 記錄 ${nextLevel.minDays} 天）`;
+  } else {
+    progress = 100;
+    nextText = '🏆 已達最高等級！';
+  }
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('mobile-tree-days',   `${days} 天`);
+  set('mobile-tree-assets', `${assetCount} 筆`);
+  set('mobile-tree-leaves', `${leafCount} 片`);
+  set('mobile-tree-freq',   `${wl.icon} ${wl.name} ${wl.zh}`);
+  set('mobile-tree-next',   nextText);
+  set('mobile-tree-badge',  level.name + ' ›');
+
   const mProgress = document.getElementById('mobile-tree-progress');
-  if (progress && mProgress) mProgress.style.width = progress.style.width;
-
-  const badge = document.getElementById('tree-level-badge');
-  const mBadge = document.getElementById('mobile-tree-badge');
-  if (badge && mBadge) mBadge.textContent = badge.textContent + ' ›';
+  if (mProgress) mProgress.style.width = progress + '%';
 }
 window.syncMobileTree = syncMobileTree;
 
@@ -7959,7 +7997,7 @@ function initMobileHome() {
 ══════════════════════════════════════ -->
 <div class="app-topbar" id="app-topbar">
   <div class="app-topbar-left">
-    <div class="app-topbar-logo">★</div>
+    <div class="app-topbar-logo">🍀</div>
     <div class="app-topbar-title" id="app-topbar-title">Wealth <em>Awakening</em></div>
   </div>
   <div class="app-topbar-right">
