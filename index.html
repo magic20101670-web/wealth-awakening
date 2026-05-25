@@ -3648,6 +3648,9 @@ function showPersonalityBadge() {
   document.getElementById('personality-badge-inner').innerHTML =
     `<span>${p.badge}</span><span style="font-weight:600">${p.name}</span><span style="color:rgba(240,208,96,0.45);font-size:11px">・${p.tag}</span>`;
   el.style.display = 'flex';
+  // 手機版 topbar
+  const mTopbar = document.getElementById('mobile-topbar-personality');
+  if (mTopbar) { mTopbar.textContent = p.badge + ' ' + p.name; mTopbar.style.display = 'inline-flex'; }
 
   // 建立彈出清單
   const list = document.getElementById('personality-popup-list');
