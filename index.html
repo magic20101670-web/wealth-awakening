@@ -240,6 +240,52 @@ select option { background: #0d2318; }
 .celebrate-reward-input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); border-radius:11px; padding:10px 14px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; box-sizing:border-box; transition:border-color 0.18s; }
 .celebrate-reward-input:focus { outline:none; border-color:rgba(240,208,96,0.4); background:rgba(240,208,96,0.04); }
 .celebrate-reward-input::placeholder { color:var(--muted); }
+/* Why I bought this — form textarea */
+.reason-textarea { width:100%; background:var(--input); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:13px; resize:none; outline:none; transition:border-color 0.2s; line-height:1.55; }
+.reason-textarea:focus { border-color:rgba(240,208,96,0.35); }
+.reason-textarea::placeholder { color:var(--muted); }
+/* Reason Recall — on asset card */
+.reason-recall { margin-top:10px; padding:9px 12px; background:rgba(240,208,96,0.05); border:1px solid rgba(240,208,96,0.15); border-radius:10px; }
+.reason-recall-label { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(240,208,96,0.55); font-weight:600; margin-bottom:4px; }
+.reason-recall-text { font-size:12px; color:rgba(240,253,244,0.75); line-height:1.55; font-style:italic; }
+.reason-recall-days { font-size:10px; color:rgba(240,208,96,0.4); margin-top:4px; }
+/* Rich Dad Perspective */
+.rd-perspective { margin-bottom:16px; text-align:left; animation:celebFadeUp 0.5s ease 0.9s both; }
+.rd-label { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:rgba(240,208,96,0.6); font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.rd-cf-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:10px; }
+.rd-cf-in    { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); color:#86efac; }
+.rd-cf-out   { background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; }
+.rd-cf-growth { background:rgba(96,165,250,0.1); border:1px solid rgba(96,165,250,0.2); color:#60a5fa; }
+.rd-cf-mixed { background:rgba(240,208,96,0.1); border:1px solid rgba(240,208,96,0.25); color:#f0d060; }
+.rd-purpose-label { font-size:11px; color:rgba(240,253,244,0.45); margin-bottom:8px; }
+.rd-purpose-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px; }
+.rd-purpose-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:8px 10px; font-size:12px; color:rgba(240,253,244,0.6); cursor:pointer; text-align:left; transition:all 0.18s; font-family:'DM Sans',sans-serif; line-height:1.35; width:100%; }
+.rd-purpose-btn:hover { background:rgba(240,208,96,0.08); border-color:rgba(240,208,96,0.3); color:#f0d060; }
+.rd-purpose-btn.picked { background:rgba(240,208,96,0.12); border-color:rgba(240,208,96,0.45); color:#f0d060; }
+.rd-btn-sub { font-size:10px; opacity:0.55; display:block; margin-top:2px; }
+.rd-insight { font-size:13px; color:rgba(240,253,244,0.7); line-height:1.75; padding:12px 14px; background:rgba(240,208,96,0.05); border:1px solid rgba(240,208,96,0.12); border-radius:12px; display:none; text-align:left; }
+.rd-insight.show { display:block; animation:insightIn 0.3s ease both; }
+.rd-hl { color:#f0d060; font-weight:500; }
+/* ESBI Quadrant */
+.esbi-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; margin-bottom:12px; }
+.esbi-cell { padding:11px 12px; background:#0b140e; position:relative; transition:background 0.3s; }
+.esbi-letter { font-size:22px; font-weight:700; font-family:'DM Mono',monospace; margin-bottom:1px; line-height:1; }
+.esbi-qname { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.3); margin-bottom:6px; }
+.esbi-income { font-size:13px; font-weight:600; font-family:'DM Mono',monospace; }
+.esbi-desc { font-size:10px; color:rgba(255,255,255,0.28); margin-top:3px; line-height:1.35; }
+.esbi-goal-tag { position:absolute; top:7px; right:7px; font-size:9px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:#4ade80; padding:2px 6px; border-radius:6px; font-weight:600; }
+.esbi-divider { height:1px; background:rgba(255,255,255,0.05); margin:0 0 10px; }
+.esbi-ratio-bar { height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-bottom:4px; }
+.esbi-ratio-fill { height:100%; background:linear-gradient(90deg,#22c55e,#86efac); border-radius:3px; transition:width 0.5s ease; }
+.esbi-active-input { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; margin-bottom:8px; }
+.esbi-input-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.esbi-input-row:last-child { margin-bottom:0; }
+.esbi-q-badge { font-size:11px; font-weight:700; font-family:'DM Mono',monospace; width:18px; flex-shrink:0; }
+.esbi-input-label { font-size:11px; color:rgba(255,255,255,0.4); flex:1; }
+.esbi-num-input { width:110px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:6px 10px; font-size:12px; color:#f0fdf4; outline:none; font-family:'DM Mono',monospace; text-align:right; }
+.esbi-num-input:focus { border-color:rgba(240,208,96,0.3); }
+.esbi-rd-msg { font-size:12px; color:rgba(240,253,244,0.5); line-height:1.65; padding:10px 12px; background:rgba(240,208,96,0.04); border:1px solid rgba(240,208,96,0.1); border-radius:10px; margin-top:10px; }
+.esbi-rd-msg strong { color:#f0d060; font-weight:500; }
 /* WA Toast */
 .wa-toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(20px); z-index:9997; background:linear-gradient(135deg,#0d2318,#0a1a0f); border:1px solid rgba(34,197,94,0.28); border-radius:18px; padding:14px 18px 14px 16px; display:flex; align-items:flex-start; gap:11px; max-width:360px; width:calc(100% - 40px); box-shadow:0 8px 32px rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1), opacity 0.35s ease; }
 .wa-toast.show { transform:translateX(-50%) translateY(0); opacity:1; pointer-events:all; }
@@ -3171,6 +3217,9 @@ if (localStorage.getItem('soulQuizDone') === '1') {
         </div>
       </div>
 
+      <div class="full" style="margin-top:4px">
+        <textarea id="reason-input" class="reason-textarea full" placeholder="📝 你為什麼做這個決定？（選填，3個月後我會提醒你）" maxlength="200" rows="2"></textarea>
+      </div>
       <button class="btn btn-green full" id="add-btn">新增資產</button>
       <div class="err full" id="form-err"></div>
     </div>
@@ -3254,6 +3303,18 @@ if (localStorage.getItem('soulQuizDone') === '1') {
       <div class="celebrate-reward-title">🎁 今天，你值得</div>
       <div class="celebrate-reward-opts" id="celebrate-reward-opts"></div>
       <input class="celebrate-reward-input" id="celebrate-reward-input" type="text" placeholder="或是寫下你自己的慶祝方式..." maxlength="50" />
+    </div>
+    <div class="rd-perspective" id="rd-perspective" style="display:none">
+      <div class="rd-label">💡 富爸爸視角</div>
+      <div id="rd-cf-tag" class="rd-cf-tag"></div>
+      <div class="rd-purpose-label">你買這個的目的是什麼？</div>
+      <div class="rd-purpose-grid">
+        <button class="rd-purpose-btn" onclick="selectRdPurpose('income',this)">💧 產生收入<span class="rd-btn-sub">每月帶來現金流</span></button>
+        <button class="rd-purpose-btn" onclick="selectRdPurpose('growth',this)">📈 等待增值<span class="rd-btn-sub">未來賣出獲利</span></button>
+        <button class="rd-purpose-btn" onclick="selectRdPurpose('protection',this)">🛡️ 保障安全<span class="rd-btn-sub">保護家庭或資產</span></button>
+        <button class="rd-purpose-btn" onclick="selectRdPurpose('lifestyle',this)">✨ 提升生活<span class="rd-btn-sub">改善生活品質</span></button>
+      </div>
+      <div class="rd-insight" id="rd-insight"></div>
     </div>
     <button class="celebrate-btn" id="celebrate-close">繼續前進 →</button>
   </div>
@@ -3485,6 +3546,7 @@ onAuthStateChanged(auth, user => {
     loadGoalSettings();
     loadDebts();
     loadDreams();
+    loadEsbiInputs();
     // 從 Firebase 載入人格設定
     loadPersonalityFromFirebase();
     // 手機版 UI 初始化
@@ -3820,6 +3882,18 @@ function render() {
         }</span><span style="color:var(--green)">${fmt(a.monthlyIncome,cur)} / 月</span></div>`:''}
         ${a.category==='insurance'&&a.premiumMonthly?`<div class="asset-row"><span>🛡️ 每月保費</span><span style="color:#f87171">-${fmt(a.premiumMonthly,cur)} / 月</span></div>`:''}
       </div>
+      ${(()=>{
+        const now = Date.now();
+        const days = a.createdAt ? Math.floor((now - a.createdAt) / 86400000) : 0;
+        if (a.reason && days >= 90) {
+          return `<div class="reason-recall">
+            <div class="reason-recall-label">💬 你當初說</div>
+            <div class="reason-recall-text">${a.reason}</div>
+            <div class="reason-recall-days">${days} 天前的你</div>
+          </div>`;
+        }
+        return '';
+      })()}
     </div>`;
   }).join('');
   updateSummary();
@@ -3847,6 +3921,7 @@ function updateSummary() {
   updateWealthLevel(totalCF);
   updateCashflowCards();
   updateWealthTree();
+  updateEsbiQuadrant();
 }
 
 // ── History Snapshot ──
@@ -4046,7 +4121,7 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
       render(); saveHistorySnapshot();
       const goal3 = +document.getElementById('goal-input').value||100000;
       let tc3 = 0; assets.forEach(a=>tc3+=a.monthlyIncome||0);
-      showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)), reIncome);
+      showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)), reIncome, 'realestate', 0);
       setTimeout(playWateringAnimation, 500);
       ['re-type','re-layout','re-location','re-buy','re-income'].forEach(id=>{ const el=document.getElementById(id); el.value=''; });
       // 手機版：關閉 modal
@@ -4125,17 +4200,21 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
     // 黃金存摺：用 XAUUSD 追蹤，記錄投入本金
     const storedSym = isGoldPassbook ? 'XAUUSD' : selSym;
     const investment = isGoldPassbook ? (parseFloat(document.getElementById('gp-investment').value)||0) : 0;
-    const ref=await addDoc(userCol(),{symbol:storedSym,name:selName,quantity:qty,qtyUnit,buyPrice:buyTWD,currentPrice:price,monthlyIncome:income,annualDividend,premiumMonthly,stakeQty,currency,category:cat,investment});
-    assets.push({id:ref.id,symbol:storedSym,name:selName,quantity:qty,qtyUnit,buyPrice:buyTWD,currentPrice:price,monthlyIncome:income,annualDividend,premiumMonthly,stakeQty,currency,category:cat,investment});
+    const reason = (document.getElementById('reason-input')?.value || '').trim();
+    const createdAt = Date.now();
+    const ref=await addDoc(userCol(),{symbol:storedSym,name:selName,quantity:qty,qtyUnit,buyPrice:buyTWD,currentPrice:price,monthlyIncome:income,annualDividend,premiumMonthly,stakeQty,currency,category:cat,investment,reason,createdAt});
+    assets.push({id:ref.id,symbol:storedSym,name:selName,quantity:qty,qtyUnit,buyPrice:buyTWD,currentPrice:price,monthlyIncome:income,annualDividend,premiumMonthly,stakeQty,currency,category:cat,investment,reason,createdAt});
     window.assets = assets;
     render(); saveHistorySnapshot();
     // 立即更新一次價格（讓損益馬上顯示）
     setTimeout(()=>updatePrices(), 300);
     const goal2 = +document.getElementById('goal-input').value||100000;
     let tc2 = 0; assets.forEach(a=>tc2+=a.monthlyIncome||0);
-    showCelebration(selName, Math.min(100,Math.floor(tc2/goal2*100)), income);
+    showCelebration(selName, Math.min(100,Math.floor(tc2/goal2*100)), income, cat, premiumMonthly);
     setTimeout(playWateringAnimation, 500);
     document.getElementById('sym-input').value='';
+    const ri = document.getElementById('reason-input');
+    if (ri) ri.value = '';
     const scb=document.getElementById('sym-clear-btn');
     if(scb) scb.style.display='none';
     document.getElementById('name-input-manual').value='';
@@ -5548,7 +5627,7 @@ function _detectCelebrationMoment(assetName, newPct, newMonthlyIncome) {
   return 'regular';
 }
 
-function showCelebration(assetName, newPct, newMonthlyIncome) {
+function showCelebration(assetName, newPct, newMonthlyIncome, category, premiumMonthly) {
   recordLastUpdate();
   const modal = document.getElementById('celebrate-modal');
   const goal = +document.getElementById('goal-input').value || 100000;
@@ -5636,6 +5715,14 @@ function showCelebration(assetName, newPct, newMonthlyIncome) {
   const isMilestone = ['first_asset','first_passive','freedom_first','milestone_25','milestone_50','milestone_75','milestone_100'].includes(momentKey);
   iconEl.classList.toggle('milestone', isMilestone);
 
+  // Rich Dad Perspective
+  if (category) {
+    initRdPerspective(category, newMonthlyIncome || 0, premiumMonthly || 0);
+  } else {
+    const box = document.getElementById('rd-perspective');
+    if (box) box.style.display = 'none';
+  }
+
   modal.classList.add('show');
 }
 
@@ -5645,7 +5732,153 @@ document.getElementById('celebrate-close').addEventListener('click', () => {
   if (old) old.remove();
   document.querySelectorAll('.celebrate-reward-opt').forEach(b => b.classList.remove('picked'));
   document.getElementById('celebrate-reward-input').value = '';
+  // Reset Rich Dad Perspective
+  document.querySelectorAll('.rd-purpose-btn').forEach(b => b.classList.remove('picked'));
+  const rdInsight = document.getElementById('rd-insight');
+  if (rdInsight) { rdInsight.classList.remove('show'); rdInsight.innerHTML = ''; }
 });
+
+// ── Rich Dad Perspective System ──
+let _rdCashflow = 'growth';
+
+function initRdPerspective(category, monthlyIncome, premiumMonthly) {
+  const box = document.getElementById('rd-perspective');
+  const tag = document.getElementById('rd-cf-tag');
+  const insight = document.getElementById('rd-insight');
+  if (!box) return;
+  document.querySelectorAll('.rd-purpose-btn').forEach(b => b.classList.remove('picked'));
+  insight.classList.remove('show');
+  insight.innerHTML = '';
+  box.style.display = 'block';
+
+  const net = (monthlyIncome || 0) - (premiumMonthly || 0);
+  if (monthlyIncome > 0 && premiumMonthly > 0) {
+    // 理財型保險：同時有收入與支出
+    _rdCashflow = 'mixed';
+    tag.className = 'rd-cf-tag rd-cf-mixed';
+    const fmt = n => 'NT$' + Math.round(n).toLocaleString();
+    const netSign = net >= 0 ? '+' : '';
+    tag.textContent = `💱 進 ${fmt(monthlyIncome)} 出 ${fmt(premiumMonthly)}，淨現金流 ${netSign}${fmt(net)}/月`;
+  } else if (monthlyIncome > 0) {
+    _rdCashflow = 'in';
+    tag.className = 'rd-cf-tag rd-cf-in';
+    tag.textContent = '💧 每月讓錢流入你的口袋';
+  } else if (premiumMonthly > 0) {
+    _rdCashflow = 'out';
+    tag.className = 'rd-cf-tag rd-cf-out';
+    tag.textContent = '💸 每月從你口袋流出';
+  } else {
+    _rdCashflow = 'growth';
+    tag.className = 'rd-cf-tag rd-cf-growth';
+    tag.textContent = '📈 增值型：持有等待升值';
+  }
+}
+
+function selectRdPurpose(purpose, btn) {
+  document.querySelectorAll('.rd-purpose-btn').forEach(b => b.classList.remove('picked'));
+  if (btn) btn.classList.add('picked');
+  const insight = document.getElementById('rd-insight');
+  insight.innerHTML = _getRdInsight(_rdCashflow, purpose);
+  insight.classList.add('show');
+}
+window.selectRdPurpose = selectRdPurpose;
+
+function _getRdInsight(cf, purpose) {
+  const map = {
+    'in_income':     '這是富爸爸最推崇的資產型態——<span class="rd-hl">每個月替你工作，不需要你動手</span>。持有越久，複利效果越強。',
+    'in_growth':     '這個資產不只配息，還可能增值。<span class="rd-hl">你同時在賺兩種收益</span>。富爸爸說：最好的資產，讓口袋每月進錢，同時本金也在長大。',
+    'in_protection': '保障型資產同時帶來現金流——這很少見，但很有力量。<span class="rd-hl">它保護你，也替你工作</span>。',
+    'in_lifestyle':  '這個選擇每月帶給你收入，同時提升生活品質。<span class="rd-hl">富爸爸說：先讓資產替你賺到享受的錢，再去享受</span>。你做到了。',
+    'growth_income':     '現在它不給你現金流，但你在等待升值。<span class="rd-hl">這是合理的策略，但需要耐心</span>。富爸爸說：增值型資產需要時間，別被短期波動嚇跑。',
+    'growth_growth':     '純增值策略——你在等待未來的價格更高。<span class="rd-hl">沒有問題，但富爸爸建議同時持有現金流資產作底盤</span>，讓你在等待期間生活不受影響。',
+    'growth_protection': '增值型資產波動通常較大，較少用來保障。<span class="rd-hl">如果目的是保障，可以考慮更穩定的工具</span>。如果主要是投資，就讓時間說話。',
+    'growth_lifestyle':  '增值型資產改善生活，通常需要在對的時機賣出。<span class="rd-hl">富爸爸的提醒：不要為了眼前的享受，賣掉正在替你長期工作的資產</span>。',
+    'out_income':     '每月支出，目的是換取未來的收入——這可能是好的負債邏輯。<span class="rd-hl">關鍵問題：未來帶給你的，會超過你現在付出的嗎？</span>',
+    'out_growth':     '每月支出，等待增值。<span class="rd-hl">這是槓桿策略——放大報酬，也放大風險</span>。富爸爸用槓桿買房，但他確保租金超過貸款成本。你的數字算過了嗎？',
+    'out_protection': '<span class="rd-hl">這是合理的保護成本</span>。富爸爸不說保險是壞的——保障家人和資產，讓你安心持續前進，是必要的選擇。買資產和負債本身沒有對錯，重點是你清楚這筆錢的意義。',
+    'out_lifestyle':  '每月支出換取生活品質——<span class="rd-hl">富爸爸說：你可以花，但要用資產的收益來花，不要用薪水來花</span>。這筆支出，你的被動收入能覆蓋嗎？',
+    // 理財型保險：同時有進有出
+    'mixed_income':     '這是理財型保險的運作方式——<span class="rd-hl">你付出保費，換取保障加上持續的現金流回報</span>。關鍵是看長期：總收入什麼時候能超過總保費？這個時間點就是你的損益平衡點。',
+    'mixed_growth':     '理財型保險通常兼顧保障與資產增值。<span class="rd-hl">你現在的淨現金流是正還是負，決定了你的短期負擔</span>。長期的增值潛力需要拉長時間軸來評估。',
+    'mixed_protection': '這是理財型保險最核心的用途——<span class="rd-hl">用保費換取保障，同時讓部分資金替你持續工作</span>。富爸爸不反對保障，他說：保障讓你安心繼續前進，是必要的成本。',
+    'mixed_lifestyle':  '理財型保險同時保障你的家人，也帶來一定的現金流回報。<span class="rd-hl">它是一種長期的財務安排，不是短期消費</span>。富爸爸說：清楚知道每一分錢的去向，這本身就是財務智慧。',
+  };
+  return map[`${cf}_${purpose}`] || '每一個財務決策都沒有絕對的對錯。<span class="rd-hl">重要的是：你清楚知道你在做什麼，為什麼這樣做</span>。這就是富爸爸說的財務智慧。';
+}
+
+// ── ESBI Quadrant System ──
+
+function loadEsbiInputs() {
+  const ids = ['e','s','b'];
+  ids.forEach(q => {
+    const saved = localStorage.getItem('esbi_' + q);
+    const el = document.getElementById('esbi-' + q + '-input');
+    if (el && saved) el.value = saved;
+  });
+}
+
+function saveAndUpdateEsbi() {
+  ['e','s','b'].forEach(q => {
+    const el = document.getElementById('esbi-' + q + '-input');
+    if (el) localStorage.setItem('esbi_' + q, el.value || '0');
+  });
+  updateEsbiQuadrant();
+}
+window.saveAndUpdateEsbi = saveAndUpdateEsbi;
+
+function updateEsbiQuadrant() {
+  const getVal = id => +(document.getElementById(id)?.value || localStorage.getItem(id.replace('esbi-','esbi_').replace('-input','')) || 0);
+  const e = getVal('esbi-e-input');
+  const s = getVal('esbi-s-input');
+  const b = getVal('esbi-b-input');
+  const i = (window.assets || []).reduce((sum, a) => sum + (a.monthlyIncome || 0), 0);
+
+  const fmtN = n => 'NT$ ' + Math.round(n).toLocaleString();
+  const setDisp = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = fmtN(val); };
+  setDisp('esbi-e-disp', e);
+  setDisp('esbi-s-disp', s);
+  setDisp('esbi-b-disp', b);
+  setDisp('esbi-i-disp', i);
+
+  // Highlight dominant quadrant
+  const vals = { e, s, b, i };
+  const dominant = Object.entries(vals).sort((a, b) => b[1] - a[1])[0][0];
+  const cells = { e: 'esbi-e-cell', s: 'esbi-s-cell', b: 'esbi-b-cell', i: 'esbi-i-cell' };
+  const bgMap = { e: 'rgba(255,255,255,0.05)', s: 'rgba(255,255,255,0.05)', b: 'rgba(240,208,96,0.08)', i: 'rgba(34,197,94,0.12)' };
+  const baseBg = { e: '#0b140e', s: '#0b140e', b: '#0b140e', i: 'rgba(34,197,94,0.05)' };
+  Object.entries(cells).forEach(([q, cellId]) => {
+    const el = document.getElementById(cellId);
+    if (!el) return;
+    const isTop = q === dominant && vals[q] > 0;
+    el.style.background = isTop ? bgMap[q] : baseBg[q];
+  });
+
+  // Ratio bar
+  const total = e + s + b + i;
+  const passive = b + i;
+  const passivePct = total > 0 ? Math.round(passive / total * 100) : 0;
+  const fill = document.getElementById('esbi-ratio-fill');
+  if (fill) fill.style.width = passivePct + '%';
+  const pctLabel = document.getElementById('esbi-passive-pct-label');
+  if (pctLabel) pctLabel.textContent = '被動 B+I ' + passivePct + '%';
+
+  // Dynamic Rich Dad message
+  const msg = document.getElementById('esbi-rd-msg');
+  if (!msg) return;
+  let text = '';
+  if (i > 0 && i >= (e + s + b)) {
+    text = '<strong>🎉 財務自由的核心：</strong>你的被動收入（I象限）已超越主動收入！讓錢替你工作，這正是富爸爸說的財富自由。';
+  } else if (passivePct >= 50) {
+    text = `<strong>富爸爸說：</strong>你已有 ${passivePct}% 的收入來自被動！超過一半的生活由資產支撐，你正在邁向右邊象限。繼續增加 B 和 I。`;
+  } else if (passivePct >= 20) {
+    text = `<strong>富爸爸說：</strong>你有 ${passivePct}% 的收入不需要你親自去賺——這是進步。財務自由的旅程就是把這個比例一直往上推。`;
+  } else if (i > 0) {
+    text = '<strong>富爸爸說：</strong>你的投資組合已開始產生被動收入。每增加一筆配息資產，都是在讓 I 象限長大。目標是讓 B+I 超過 E+S。';
+  } else {
+    text = '<strong>富爸爸說：</strong>E 和 S 用時間換錢，停工就停收入。B 和 I 讓系統和資產替你工作，睡覺時也在賺錢——增加有現金流的資產，是往右邊移動的第一步。';
+  }
+  msg.innerHTML = text;
+}
 
 // ── Wealth Insight 陪伴系統 ──
 
@@ -7727,7 +7960,7 @@ function initMobileHome() {
     <div class="app-topbar-title" id="app-topbar-title">Wealth <em>Awakening</em></div>
   </div>
   <div class="app-topbar-right">
-    <div id="app-wl-badge" class="app-topbar-badge" style="display:none"></div>
+    <div id="mobile-topbar-personality" class="app-topbar-badge" style="display:none"></div>
     <div onclick="refreshMobilePrices()" style="width:30px;height:30px;border-radius:50%;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;" id="mobile-refresh-btn" title="更新價格">🔄</div>
     <div class="app-topbar-avatar" onclick="switchTab('profile')">👤</div>
   </div>
@@ -7971,6 +8204,69 @@ function initMobileHome() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
       <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
+    </div>
+
+    <!-- ESBI 象限 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title">ESBI 收入象限</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div class="esbi-grid">
+        <div class="esbi-cell" id="esbi-e-cell">
+          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
+          <div class="esbi-qname">員工</div>
+          <div class="esbi-income" id="esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-desc">用時間換薪資<br>停工就停收入</div>
+        </div>
+        <div class="esbi-cell" id="esbi-b-cell">
+          <div class="esbi-letter" style="color:rgba(240,208,96,0.65)">B</div>
+          <div class="esbi-qname">企業主</div>
+          <div class="esbi-income" id="esbi-b-disp" style="color:#f0d060">NT$ 0</div>
+          <div class="esbi-desc">系統為你工作<br>可以放假賺錢</div>
+        </div>
+        <div class="esbi-cell" id="esbi-s-cell">
+          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
+          <div class="esbi-qname">自僱者</div>
+          <div class="esbi-income" id="esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-desc">靠自己的技能<br>但仍需親力親為</div>
+        </div>
+        <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(34,197,94,0.05)">
+          <div class="esbi-letter" style="color:#22c55e">I</div>
+          <div class="esbi-qname">投資者</div>
+          <div class="esbi-income" id="esbi-i-disp" style="color:#22c55e">NT$ 0</div>
+          <div class="esbi-desc">錢替你工作<br>睡覺也在賺錢</div>
+          <div class="esbi-goal-tag">目標</div>
+        </div>
+      </div>
+      <!-- 被動收入佔比 -->
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
+        <span>主動 E+S</span>
+        <span id="esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
+      </div>
+      <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="esbi-ratio-fill" style="width:0%"></div></div>
+      <div class="esbi-divider" style="margin-top:10px"></div>
+      <!-- 主動收入輸入 -->
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px">輸入你的主動收入（月）</div>
+      <div class="esbi-active-input">
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
+          <span class="esbi-input-label">薪資收入</span>
+          <input id="esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
+          <span class="esbi-input-label">副業 / 接案</span>
+          <input id="esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(240,208,96,0.7)">B</span>
+          <span class="esbi-input-label">企業 / 業務收入</span>
+          <input id="esbi-b-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+      </div>
+      <div class="esbi-rd-msg" id="esbi-rd-msg">
+        <strong>富爸爸說：</strong>財務自由在右邊。E和S用時間換錢，一旦停下來收入就停。B和I讓系統和資產替你工作，睡覺時也在賺錢——這才是真正的自由。
+      </div>
     </div>
 
     <!-- 目標設定 -->
@@ -8324,9 +8620,7 @@ function syncMobileUI() {
   const wlLabel=document.getElementById('wl-label');
   const wlIcon=document.getElementById('wl-icon');
   const mLevel=document.getElementById('mobile-level');
-  const appBadge=document.getElementById('app-wl-badge');
   if(wlLabel && mLevel) mLevel.textContent=wlLabel.textContent;
-  if(wlIcon && appBadge) { appBadge.textContent=(wlIcon.textContent||'')+' '+(wlLabel?wlLabel.textContent:''); appBadge.style.display='inline-flex'; }
 
   // 目標金額
   const goalInput=document.getElementById('goal-input');
