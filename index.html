@@ -1645,9 +1645,12 @@ body, .app-topbar, .app-bottom-nav, .app-page {
         <span id="dpp-title" style="font-size:13px;color:#f0d060;font-weight:600"></span>
       </div>
       <div id="dpp-photos" style="display:grid;grid-template-columns:1fr 1fr 1fr;height:155px"></div>
-      <div style="display:flex;gap:8px;padding:10px 12px 12px;background:rgba(6,15,10,0.97)">
-        <input class="dream-text-input" id="dream-input" placeholder="點照片選用，或輸入你自己的夢想..." maxlength="30" onkeydown="if(event.key==='Enter')addDreamToSetup()">
-        <button class="dream-add-btn" onclick="addDreamToSetup()">＋ 加入</button>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:10px 12px 12px;background:rgba(6,15,10,0.97)">
+        <div style="display:flex;gap:8px">
+          <input class="dream-text-input" id="dream-input" placeholder="點照片選用，或輸入你自己的夢想..." maxlength="30" onkeydown="if(event.key==='Enter')addDreamToSetup()">
+          <button class="dream-add-btn" onclick="addDreamToSetup()">＋ 加入</button>
+        </div>
+        <input class="dream-text-input" id="dream-amount-input" type="number" min="0" step="1000" placeholder="💰 這個夢想大概需要多少錢？（選填，NT$）" style="font-size:13px">
       </div>
     </div>
 
@@ -6884,9 +6887,12 @@ function addDreamToSetup() {
   const err = document.getElementById('dream-err');
   if (!name) { err.style.display='block'; err.textContent='請輸入夢想名稱'; return; }
   err.style.display='none';
-  const dream = { id: Date.now().toString(), emoji: selectedEmoji, name, isMain: dreams.length === 0, done: false };
+  const amountEl = document.getElementById('dream-amount-input');
+  const targetAmount = amountEl ? (parseFloat(amountEl.value) || 0) : 0;
+  const dream = { id: Date.now().toString(), emoji: selectedEmoji, name, isMain: dreams.length === 0, done: false, targetAmount };
   dreams.push(dream);
   input.value = '';
+  if (amountEl) amountEl.value = '';
   renderDreamSetup();
   document.getElementById('dream-hint').style.display = 'block';
   // 不重置 emoji，讓用戶可以繼續選同類別
@@ -6901,7 +6907,10 @@ function renderDreamSetup() {
   list.innerHTML = dreams.filter(d=>!d.done).map(d=>`
     <div class="dream-item-setup ${d.isMain?'is-main':''}">
       <span class="emoji">${d.emoji}</span>
-      <span class="name">${d.name}${d.isMain?' ⭐':''}</span>
+      <div style="flex:1;min-width:0">
+        <div class="name">${d.name}${d.isMain?' ⭐':''}</div>
+        ${d.targetAmount ? `<div style="font-size:10px;color:rgba(240,208,96,0.5);margin-top:1px">目標 NT$${Number(d.targetAmount).toLocaleString('zh-TW')}</div>` : ''}
+      </div>
       <button class="star-btn ${d.isMain?'main':''}" onclick="setMainDream('${d.id}')" title="設為主夢想">⭐</button>
       <button class="del" onclick="removeDreamSetup('${d.id}')">✕</button>
     </div>`).join('');
@@ -6989,7 +6998,9 @@ function renderDreamHero() {
   const main = dreams.find(d=>d.isMain) || dreams[0];
   document.getElementById('hero-emoji').textContent = main.emoji;
   document.getElementById('hero-name').textContent = main.name;
-  document.getElementById('hero-sub').textContent = '每一筆資產，都在帶你靠近這個夢想 ✨';
+  document.getElementById('hero-sub').textContent = main.targetAmount
+    ? `目標 NT$${Number(main.targetAmount).toLocaleString('zh-TW')} · 每一筆資產都在靠近 ✨`
+    : '每一筆資產，都在帶你靠近這個夢想 ✨';
   // 其他夢想小卡（含刪除按鈕）
   const others = dreams.filter(d=>d.id !== main.id);
   const miniList = document.getElementById('dream-mini-list');
@@ -8883,10 +8894,12 @@ function syncMobileDreams() {
     const tc=window.assets?window.assets.reduce((s,a)=>s+(a.monthlyIncome||0),0):0;
     const goal=+(document.getElementById('goal-input')||{value:100000}).value||100000;
     const pct=Math.min(100,Math.floor(tc/goal*100));
+    const amtLine = d.targetAmount ? '<div style="font-size:10px;color:rgba(240,208,96,0.45);margin-top:1px">💰 目標 NT$'+Number(d.targetAmount).toLocaleString('zh-TW')+'</div>' : '';
     return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(240,208,96,0.04);border:1px solid rgba(240,208,96,0.1);border-radius:12px;margin-bottom:7px">'+
       '<div style="font-size:22px;flex-shrink:0">'+d.emoji+'</div>'+
       '<div style="flex:1;min-width:0">'+
       '<div style="font-size:13px;font-weight:500;color:#f0d060">'+d.name+'</div>'+
+      amtLine+
       '<div style="height:3px;background:rgba(255,255,255,0.08);border-radius:99px;margin-top:5px;overflow:hidden">'+
       '<div style="height:100%;background:linear-gradient(90deg,#d4af37,#f0d060);border-radius:99px;width:'+pct+'%"></div></div></div>'+
       '<div style="font-size:10px;color:rgba(240,208,96,0.5);flex-shrink:0">'+pct+'%</div>'+
@@ -8907,7 +8920,8 @@ function syncMobileDreams() {
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'+
       '<div style="font-size:32px">'+main.emoji+'</div>'+
       '<div><div style="font-size:16px;font-weight:600;color:#f0d060">'+main.name+'</div>'+
-      '<div style="font-size:11px;color:rgba(255,255,255,0.4)">每一筆資產都在帶你靠近</div></div></div>'+
+      (main.targetAmount ? '<div style="font-size:11px;color:rgba(240,208,96,0.5)">💰 目標 NT$'+Number(main.targetAmount).toLocaleString('zh-TW')+'</div>' : '<div style="font-size:11px;color:rgba(255,255,255,0.4)">每一筆資產都在帶你靠近</div>')+
+      '</div></div>'+
       '<div style="height:5px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;margin-bottom:5px">'+
       '<div style="height:100%;background:linear-gradient(90deg,#d4af37,#f0d060);border-radius:99px;width:'+pct+'%"></div></div>'+
       '<div style="font-size:11px;color:rgba(240,208,96,0.5);text-align:right">'+pct+'% 達成</div></div>';
