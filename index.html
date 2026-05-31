@@ -192,7 +192,7 @@ select option { background: #0d2318; }
 /* Celebration Modal */
 .celebrate-modal { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.3s; }
 .celebrate-modal.show { opacity:1; pointer-events:all; }
-.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(34,197,94,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; overflow:hidden; box-shadow:0 0 60px rgba(34,197,94,0.15); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(34,197,94,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; max-height:90vh; overflow-y:auto; overflow-x:hidden; box-shadow:0 0 60px rgba(34,197,94,0.15); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
 @keyframes celebRise { 0%{transform:translateY(60px) scale(0.88);opacity:0;filter:blur(4px)} 60%{filter:blur(0)} 100%{transform:translateY(0) scale(1);opacity:1;filter:blur(0)} }
 .celebrate-confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .confetti-piece { position:absolute; width:8px; height:8px; border-radius:2px; animation: confettiFall linear forwards; }
@@ -207,6 +207,13 @@ select option { background: #0d2318; }
 .celebrate-pct-label { font-size:11px; color:var(--muted); letter-spacing:0.12em; margin-bottom:20px; animation:celebFadeUp 0.4s ease 0.56s both; }
 .celebrate-quote { font-size:13px; color:rgba(240,253,244,0.5); font-style:italic; margin-bottom:28px; padding:0 10px; line-height:1.7; animation:celebFadeUp 0.5s ease 0.62s both; }
 @keyframes celebFadeUp { 0%{transform:translateY(18px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+@media(max-height:700px),(max-width:390px){
+  .celebrate-box{padding:28px 20px;}
+  .celebrate-icon{font-size:40px;margin-bottom:8px;}
+  .celebrate-title{font-size:20px;}
+  .celebrate-pct{font-size:32px;}
+  .celebrate-quote{margin-bottom:16px;}
+}
 .celebrate-btn { background:var(--green); color:#052e16; border:none; border-radius:14px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; width:100%; animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.72s both; }
 .celebrate-btn:hover { background:#16a34a; transform:translateY(-1px); }
 /* Wealth Insight Card */
@@ -5070,31 +5077,177 @@ function _buildWealthInsight(){
   const tc    = assets.reduce((s,a)=>s+(a.monthlyIncome||0),0);
   const tv    = assets.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
   const pct   = Math.min(100, Math.floor(tc/goal*100));
+  const fmt2  = n => 'NT$' + Math.round(n).toLocaleString();
 
   const catMap = {};
   assets.forEach(a=>{ catMap[a.category]=(catMap[a.category]||0)+1; });
   const cats = Object.keys(catMap);
-  const catNames = {crypto:'加密貨幣',stock:'股票',etf:'ETF',gold:'黃金',silver:'白銀',bond:'債券',deposit:'定存',lending:'借貸',fund:'基金',insurance:'保險',realestate:'房地產'};
-  const topCat = cats.sort((a,b)=>catMap[b]-catMap[a])[0];
-  const topCatName = catNames[topCat]||topCat;
-  const incomeAssets = assets.filter(a=>a.monthlyIncome>0);
-  const noIncomeAssets = assets.filter(a=>!a.monthlyIncome);
-  // 增值型資產（通常不配息）
-  const growthOnlyCats = ['crypto','gold','silver'];
-  const growthAssets = noIncomeAssets.filter(a=>growthOnlyCats.includes(a.category));
-  const topIncomeAsset = [...incomeAssets].sort((a,b)=>(b.monthlyIncome||0)-(a.monthlyIncome||0))[0];
 
-  const pKey  = localStorage.getItem('wealthPersonality')||'';
-  const pMap  = {pioneer:'財富先行者',sage:'智慧變現者',magnet:'豐盛引力者',anchor:'穩定基石者',creator:'創造登峰者'};
-  const pName = pMap[pKey]||'';
-  const mainDream = (dreams||[]).find(d=>d.isMain)||(dreams||[])[0];
+  // ── 完整資產配置分析（每次都涵蓋所有持有類別）──
+  if(assets.length>0){
+    const lines = [];
+    const incomeAssets = assets.filter(a=>a.monthlyIncome>0);
+    const topIncome = [...incomeAssets].sort((a,b)=>(b.monthlyIncome||0)-(a.monthlyIncome||0))[0];
+    const mainDream = (dreams||[]).find(d=>d.isMain)||(dreams||[])[0];
+    const pKey = localStorage.getItem('wealthPersonality')||'';
 
-  // 每次點按輪流換角度（6個角度）
-  window._insightRound = ((window._insightRound||0)+1) % 6;
-  const round = window._insightRound;
+    // 開場：整體概覽
+    const stageTxt = pct>=100?'已達財務自由':pct>=75?'接近財務自由':pct>=50?'穩健成長中':pct>=25?'資產開始發力':pct>0?'起步萌芽中':'尚未起步';
+    lines.push(`📊 財富概覽｜${assets.length} 筆資產 · Freedom Degree ${pct}%（${stageTxt}）`);
+    lines.push(`月非薪資收入 ${fmt2(tc)}，目標 ${fmt2(goal)}，距離自由還差 ${fmt2(Math.max(0,goal-tc))}/月。`);
+    lines.push('');
 
+    // ── 逐類別分析 ──
+    cats.forEach(cat => {
+      const ca   = assets.filter(a=>a.category===cat);
+      const cInc = ca.reduce((s,a)=>s+(a.monthlyIncome||0),0);
+      const cVal = ca.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
+      const share = tv>0 ? Math.round(cVal/tv*100) : 0;
+      const names = ca.slice(0,2).map(a=>a.name).join('、')+(ca.length>2?` 等${ca.length}筆`:'');
+
+      if(cat==='realestate'){
+        const ryield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
+        if(cInc===0){
+          lines.push(`🏠 房地產（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+          lines.push(`月現金流 NT$0。自住房在富爸爸定義中是負債（需持續支出）；若為出租物件，請把淨租金（租金−貸款月供−管理費）填入月現金流，Freedom Degree 才能反映真實狀況。`);
+        } else {
+          const quality = parseFloat(ryield)>=4?'租金報酬率不錯':'台灣普遍的低租酬型態，增值是主要優勢';
+          lines.push(`🏠 房地產（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+          lines.push(`月租金 ${fmt2(cInc)}，年報酬率約 ${ryield}%。${quality}。槓桿是房地產最大的力量——確認租金能正向覆蓋貸款月供，才是真正的資產。`);
+        }
+      }
+
+      else if(cat==='gold'){
+        const gyield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(2) : null;
+        lines.push(`🥇 黃金（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        if(cInc>0){
+          lines.push(`月利息 ${fmt2(cInc)}（年利率 ${gyield}%）。黃金存摺的利率雖低，但兼具通膨對沖和些微現金流。${share>30?'⚠️ 黃金佔比超過 30%，過度集中在防守型資產，可能拖慢整體財富增速。':'配置比例合理，繼續讓它做通膨盾牌。'}`);
+        } else {
+          lines.push(`無月現金流（純增值型）。黃金是通膨對沖工具，不是現金流來源，不計入 Freedom Degree。${share>30?'⚠️ 佔比超過 30%，建議評估是否將部分資金移往配息資產。':'適量配置，持續做財富的「保險層」。'}若持有黃金存摺可填入利息。`);
+        }
+      }
+
+      else if(cat==='silver'){
+        lines.push(`⚪ 白銀（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`${cInc>0?`月收益 ${fmt2(cInc)}。`:'無月現金流。'}白銀兼具貴金屬保值屬性與工業需求，波動比黃金大。適合作為小比例的多元化對沖，建議佔總資產不超過 10%。`);
+      }
+
+      else if(cat==='crypto'){
+        lines.push(`₿ 加密貨幣（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`${cInc>0?`月質押/利息 ${fmt2(cInc)}，部分加密資產已產生現金流。`:'無月現金流（增值型）。'}高波動、高風險，適合用「即使歸零也能接受」的資金配置。${share>30?'⚠️ 加密貨幣佔比超過 30%，整體波動風險偏高，注意倉位控管。':''}`);
+      }
+
+      else if(cat==='stock'){
+        const syield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
+        lines.push(`📈 股票（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月現金流 ${fmt2(cInc)}${syield?`（年殖利率 ${syield}%）`:'（增值型/尚無配息）'}。個股集中度高於 ETF，注意單一公司風險；配息型個股是 Freedom Degree 的直接貢獻者。`);
+      }
+
+      else if(cat==='etf'){
+        const eyield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
+        lines.push(`📊 ETF（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月現金流 ${fmt2(cInc)}${eyield?`（年殖利率 ${eyield}%）`:''}。ETF 是分散風險的高效率工具，${cInc>0?'持續為 Freedom Degree 提供動力，是組合的核心力量。':'若為高股息 ETF，請確認配息是否已填入月現金流。'}`);
+      }
+
+      else if(cat==='bond'){
+        const byield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
+        lines.push(`🏦 債券（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月現金流 ${fmt2(cInc)}${byield?`（年殖利率 ${byield}%）`:''}。債券提供穩定、可預期的現金流，是組合的穩定器，與高波動資產（股票/加密貨幣）形成互補。`);
+      }
+
+      else if(cat==='deposit'){
+        const dyield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(2) : null;
+        lines.push(`🏧 定存（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月利息 ${fmt2(cInc)}${dyield?`（年利率 ${dyield}%）`:''}。定存安全保本，適合作為緊急預備金（建議保留 3-6 個月生活費）；超出的部分若轉進高股息 ETF 或債券，可顯著提升現金流效率。`);
+      }
+
+      else if(cat==='fund'){
+        const fyield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
+        lines.push(`💼 基金（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月現金流 ${fmt2(cInc)}${fyield?`（年配息率 ${fyield}%）`:''}。${cInc>0?'配息型基金是穩定現金流的重要來源。':'成長型基金靠淨值增長，不直接計入 Freedom Degree，但會累積資產總值。'}`);
+      }
+
+      else if(cat==='insurance'){
+        const totalPrem = ca.reduce((s,a)=>s+(a.premiumMonthly||0),0);
+        const totalDiv  = ca.reduce((s,a)=>s+(a.monthlyIncome||0),0);
+        const netCF     = totalDiv - totalPrem;
+        lines.push(`🛡️ 保險（${names}）｜佔組合 ${share}%`);
+        lines.push(`月保費支出 ${fmt2(totalPrem)}，月股息/配息 ${fmt2(totalDiv)}，淨現金流 ${netCF>=0?'+'+fmt2(netCF):fmt2(netCF)}。保險的核心功能是保障，理財型保險兼具儲蓄，但流動性低。確保保費支出不超過月收入的 10-15%。`);
+      }
+
+      else if(cat==='lending'){
+        lines.push(`💰 借貸/P2P（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
+        lines.push(`月收益 ${fmt2(cInc)}。借貸收益通常高於定存，但存在違約風險和流動性風險。建議控制在總資產 10% 以內，作為高殖利率但受控風險的補充。`);
+      }
+
+      else {
+        if(cInc>0||cVal>0){
+          lines.push(`📦 ${names}（${ca.length}筆）｜現值 ${fmt2(cVal)}，月現金流 ${fmt2(cInc)}`);
+          lines.push(`佔總資產 ${share}%。`);
+        }
+      }
+
+      lines.push('');
+    });
+
+    // ── 輪流切換的補充洞察（每次點按換一個角度）──
+    window._insightRound = ((window._insightRound||0)+1) % 4;
+    const bonus = window._insightRound;
+
+    if(bonus===0 && mainDream){
+      const remaining = Math.max(0, goal-tc);
+      const monthlyAdd = tc>0 ? tc/Math.max(assets.length,1)*0.3 : 0;
+      const mos = monthlyAdd>0 ? Math.ceil(remaining/monthlyAdd) : null;
+      const eta = mos&&mos<240 ? `照目前速度估算，約 ${mos>12?Math.round(mos/12)+'年':mos+'個月'}可達財務自由目標。` : '每一筆新資產都在縮短距離。';
+      lines.push(`💭 夢想連結：你的主夢想是「${mainDream.emoji} ${mainDream.name}」。${eta}讓每個財務決策都跟這個夢想掛鉤。`);
+      lines.push('');
+    }
+
+    if(bonus===1){
+      const pMap = {pioneer:'財富先行者',sage:'智慧變現者',magnet:'豐盛引力者',anchor:'穩定基石者',creator:'創造登峰者'};
+      const pName = pMap[pKey]||'';
+      const riskMap = {
+        pioneer:'你的行動力強，但要確保每筆資產的月現金流數據都是最新的——數字準確，決策才準確。',
+        sage:'你研究深入，但小心「分析癱瘓」。知道和擁有之間的距離，就是財富自由和繼續領薪水的差距。',
+        magnet:'你的機會嗅覺強，但確保有一個穩固的核心現金流來源，不要讓資金過於分散。',
+        anchor:'你穩健可靠，但過於保守可能讓 Freedom Degree 成長緩慢。定存超出緊急備用金的部分，考慮升級到更高殖利率的資產。',
+        creator:'你善於創造，但考慮把你的知識和技能轉換成被動收入——課程、授權、訂閱，都是你的機會。'
+      };
+      if(pName) lines.push(`👤 人格洞察（${pName}）：${riskMap[pKey]||''}`);
+      else lines.push(`👤 財富人格：完成 Profile 頁的財富人格測驗，可以獲得個人化的財務建議。`);
+      lines.push('');
+    }
+
+    if(bonus===2){
+      const noInc = assets.filter(a=>!a.monthlyIncome);
+      if(noInc.length>0){
+        lines.push(`🔍 待確認：你有 ${noInc.length} 筆資產（${noInc.slice(0,2).map(a=>a.name).join('、')}${noInc.length>2?'等':''}）月現金流為 0。若這些資產有配息，更新後 Freedom Degree 會立刻改變。`);
+        lines.push('');
+      }
+    }
+
+    if(bonus===3 && incomeAssets.length===1 && topIncome){
+      lines.push(`⚠️ 集中風險：你的現金流 100% 來自「${topIncome.name}」。若這筆資產的配息減少，Freedom Degree 會大幅下滑。建議發展第二條現金流來源。`);
+      lines.push('');
+    }
+
+    // ── 行動建議 ──
+    let action = '';
+    if(tc===0) action='新增一筆有月現金流的資產，讓 Freedom Degree 從 0 開始動。';
+    else if(incomeAssets.length===1) action=`現金流只來自一個來源——研究一個不同類型的配息資產，讓收入更穩固。`;
+    else if(pct<25) action=`距離 25% 里程碑還差 ${fmt2(Math.max(0,goal*0.25-tc))}/月，考慮加碼現有配息資產。`;
+    else if(pct<50) action=`距離 50% 里程碑還差 ${fmt2(Math.max(0,goal*0.5-tc))}/月，持續讓資產替你工作。`;
+    else action='檢視你的最低殖利率資產，評估是否有更高效率的替代方案來加速衝破 100%。';
+    lines.push(`📌 本週行動：${action}`);
+
+    return lines.join('\n');
+  }
+
+  // 無資產 fallback（理論上不會到達，fetchAIInsight 已在外部攔截）
   const fmt = n => 'NT$' + Math.round(n).toLocaleString();
+  return '請先新增資產，才能產生財富洞察。';
 
+  // dead code below — kept for reference only
   // ── 角度 0：Freedom Degree 進度 ──
   if(round===0){
     if(pct===0 && assets.length===0){
@@ -5222,6 +5375,46 @@ function _buildWealthInsight(){
     }
     // 無人格時的通用洞察
     return `${baseStats}\n\n財務自由的核心只有一個問題：你不工作的時候，有多少錢在替你工作？\n\n現在你的非薪資收入是 ${fmt(tc)}/月。每加入一筆配息資產，這個數字就往上走一點。每走一點，你就少一分「必須工作才能活下去」的壓力。\n\n本週行動：計算你這個月的薪資扣掉生活費之後的閒置資金，把其中至少 10% 投進配息型資產。讓錢去工作，你去生活。`;
+  }
+
+  // ── 角度 6：房地產深度洞察 ──
+  if(round===6){
+    const reAssets = assets.filter(a=>a.category==='realestate');
+    const reIncome = reAssets.reduce((s,a)=>s+(a.monthlyIncome||0),0);
+    const reValue  = reAssets.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
+
+    if(reAssets.length===0){
+      return `你的資產組合目前沒有房地產。\n\n房地產是富爸爸最核心的資產類別之一——不是因為「台灣房價一直漲」，而是因為它能同時做到三件事：產生租金現金流、對抗通膨、用槓桿放大報酬。\n\n但它也有台灣獨有的困難：高房價讓頭期款門檻很高，流動性低（不能隨時賣），管理成本不低（需要找房客、維修）。\n\n富爸爸的房地產邏輯：用房客的租金還貸款，最終讓房子淨現金流為正。如果一間房的租金付不完貸款，它就還不是真正的「資產」，只是負債。\n\n本週行動：計算你的理想房產——租金年報酬率（年租金÷總價）至少要幾%，才符合你的財務自由目標？`;
+    }
+
+    if(reIncome===0){
+      const nameList = reAssets.map(a=>a.name).join('、');
+      return `你持有 ${reAssets.length} 筆房地產（${nameList}），現值 ${fmt(reValue)}，但月現金流紀錄為 NT$0。\n\n兩種可能：\n① 這些房子是自住或空置 → 自住的房子在富爸爸定義下是「負債」（需要持續支出），空置的是「沉睡的資產」。\n② 有租金收入但還沒填入 → 把月租金填入月現金流，Freedom Degree 立刻反映真實情況。\n\n台灣的房地產通常呈現「高增值、低租金報酬率」的特性——房價高，但租金相對便宜。這意味著如果你需要現金流，房地產並不總是最有效率的工具；如果你看的是長期增值和通膨對沖，它才有意義。\n\n本週行動：更新你的房地產月現金流欄位（租金收入 − 貸款月供 − 管理費），讓 Freedom Degree 顯示真實數字。`;
+    }
+
+    const reYield = reValue>0 ? ((reIncome*12/reValue)*100).toFixed(1) : '—';
+    const nameList = reAssets.map(a=>a.name).join('、');
+    return `你持有 ${reAssets.length} 筆房地產（${nameList}），每月帶來 ${fmt(reIncome)} 租金現金流，年租金報酬率約 ${reYield}%。\n\n富爸爸的房地產標準：租金現金流為正（租金 > 貸款 + 管理費）才算真正的「資產」。你的房產每月 ${fmt(reIncome)} 正在替你工作。\n\n台灣的現實：2-3% 的租金報酬率很普遍，低於股票ETF的殖利率。但房地產的優勢在於槓桿——你可能只用了 20-30% 的自有資金，撬動了整個房產的增值。\n\n本週行動：計算你的房地產「實際現金報酬率」= 年租金 ÷ 你實際投入的自有資金。如果高於 6%，表示你的槓桿用得好；如果低於 3%，思考是否有優化空間（提高租金或重新融資）。`;
+  }
+
+  // ── 角度 7：黃金 / 貴金屬深度洞察 ──
+  if(round===7){
+    const metalAssets = assets.filter(a=>['gold','silver'].includes(a.category));
+    const goldAssets  = assets.filter(a=>a.category==='gold');
+    const silverAssets= assets.filter(a=>a.category==='silver');
+    const metalValue  = metalAssets.reduce((s,a)=>s+((a.currentPrice||0)*(a.quantity||1)),0);
+    const metalShare  = tv>0 ? Math.round(metalValue/tv*100) : 0;
+
+    if(metalAssets.length===0){
+      return `你的資產組合目前沒有黃金或貴金屬。\n\n黃金在財富管理中的角色不是「讓你變有錢」，而是「保護你的財富不被通膨蠶食」。每當法幣購買力下降，黃金通常往上走。\n\n富爸爸的觀點：黃金是貨幣，不是投資。它不配息、不分紅，但它是幾千年來最可靠的「財富儲存容器」。\n\n台灣常見的黃金投資方式：台灣銀行黃金存摺（最入門）、黃金 ETF（00635U）、實體金條/金幣。黃金存摺有利息，可以填入月現金流。\n\n本週行動：如果你的資產中有超過 10% 是股票或加密貨幣，考慮用 5-10% 配置黃金作為「財富保險」，降低整體波動。`;
+    }
+
+    const metalNames = metalAssets.map(a=>a.name).join('、');
+    if(metalShare>40){
+      return `你的黃金/白銀（${metalNames}）佔總資產 ${metalShare}%，現值 ${fmt(metalValue)}。\n\n這個比例偏高。黃金的角色是「防守」，不是「進攻」——它不產生現金流，也不複利增值，只是對抗通膨的盾牌。\n\n當黃金超過總資產的 20-30%，你的財富增長速度可能因此放緩，因為過多資金放在「保值但不成長」的資產裡。\n\n富爸爸的建議：讓黃金當守門員，讓配息資產和增值型資產做主力。黃金控制在 10-20% 最為平衡。\n\n本週行動：評估是否有部分黃金可以轉換成現金流型資產（如高股息 ETF），讓同樣的資金同時保值又能產生收入。`;
+    }
+
+    return `你持有 ${metalAssets.length} 筆貴金屬（${metalNames}），現值 ${fmt(metalValue)}，佔總資產 ${metalShare}%。\n\n${goldAssets.length>0?'黃金':'白銀'}的角色分析：\n• 對抗通膨：當物價上漲、法幣貶值，黃金/白銀通常上漲，保護你的財富購買力。\n• 危機保險：全球金融動盪時，貴金屬是避風港。\n• 現金流：傳統實體黃金不配息；但台灣銀行黃金存摺每年有約 0.1-0.3% 的利息，可以填入月現金流。\n\n你的配置比例（${metalShare}%）${metalShare<=20?'在合理範圍內——它在做防守的工作':metalShare<=30?'略高，但仍屬可接受範圍':'偏高，建議評估是否調整'}。\n\n本週行動：確認你的黃金/白銀是否有利息收入（如黃金存摺），若有，把它填入月現金流，讓 Freedom Degree 更準確地反映你的財富狀況。`;
   }
 }
 window.fetchAIInsight = fetchAIInsight;
