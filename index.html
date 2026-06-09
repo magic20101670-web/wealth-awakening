@@ -273,6 +273,36 @@ select option { background: #0d2318; }
 .rd-insight { font-size:13px; color:rgba(240,253,244,0.7); line-height:1.75; padding:12px 14px; background:rgba(240,208,96,0.05); border:1px solid rgba(240,208,96,0.12); border-radius:12px; display:none; text-align:left; }
 .rd-insight.show { display:block; animation:insightIn 0.3s ease both; }
 .rd-hl { color:#f0d060; font-weight:500; }
+/* Six Jars */
+.jars-section { background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px; }
+.jars-header { display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none; }
+.jars-title { font-size:14px;font-weight:600;color:#f0fdf4; }
+.jars-subtitle { font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px; }
+.jars-toggle { font-size:16px;color:rgba(255,255,255,0.4);transition:transform 0.25s; }
+.jars-toggle.open { transform:rotate(180deg); }
+.jars-body { display:none;margin-top:14px; }
+.jars-body.open { display:block; }
+.jars-income-row { display:flex;align-items:center;gap:8px;margin-bottom:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 12px; }
+.jars-income-label { font-size:12px;color:rgba(255,255,255,0.45);flex:1; }
+.jars-income-input { width:130px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:7px 10px;font-size:13px;font-family:'DM Mono',monospace;color:#f0fdf4;outline:none;text-align:right; }
+.jars-income-input:focus { border-color:rgba(240,208,96,0.35); }
+.jar-card { background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:8px; }
+.jar-card.ffa { border-color:rgba(34,197,94,0.25);background:rgba(34,197,94,0.04); }
+.jar-card-top { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px; }
+.jar-name { font-size:13px;font-weight:600;color:#f0fdf4; }
+.jar-abbr { font-size:10px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.3);margin-top:2px; }
+.jar-pct-row { display:flex;align-items:center;gap:6px; }
+.jar-pct-input { width:58px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;padding:5px 8px;font-size:13px;font-family:'DM Mono',monospace;color:#f0fdf4;outline:none;text-align:right; }
+.jar-pct-input:focus { border-color:rgba(240,208,96,0.35); }
+.jar-pct-symbol { font-size:12px;color:rgba(255,255,255,0.35); }
+.jar-desc { font-size:11px;color:rgba(255,255,255,0.38);line-height:1.55;margin-bottom:8px; }
+.jar-amount { font-size:15px;font-weight:600;font-family:'DM Mono',monospace;color:#4ade80; }
+.jar-amount.zero { color:rgba(255,255,255,0.2); }
+.jars-total-row { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:9px;margin-bottom:10px;font-size:12px; }
+.jars-total-row.ok { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#4ade80; }
+.jars-total-row.err { background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171; }
+.jars-ffa-tip { background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.18);border-radius:10px;padding:11px 13px;margin-top:4px;font-size:12px;color:rgba(240,253,244,0.75);line-height:1.6; }
+.jars-ffa-tip strong { color:#4ade80;font-weight:500; }
 /* ESBI Quadrant */
 .esbi-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; margin-bottom:12px; }
 .esbi-cell { padding:11px 12px; background:#0b140e; position:relative; transition:background 0.3s; }
@@ -2868,6 +2898,30 @@ if (localStorage.getItem('soulQuizDone') === '1') {
     </div>
   </div>
 
+  <!-- 六個罐子 -->
+  <div class="card" style="position:relative;z-index:1">
+    <div class="jars-header" onclick="toggleJars()" style="cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em">🫙 六個罐子 · 收入分配系統</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">T. Harv Eker · 有錢人想的和你不一樣</div>
+      </div>
+      <div class="jars-toggle" id="jars-toggle-icon">▾</div>
+    </div>
+    <div class="jars-body" id="jars-body" style="margin-top:16px">
+      <div class="jars-income-row">
+        <span class="jars-income-label">💰 這個月的總收入</span>
+        <input id="jars-income" type="number" class="jars-income-input" placeholder="0" oninput="updateJars()">
+        <span style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+      </div>
+      <div class="jars-total-row ok" id="jars-total-row">
+        <span id="jars-total-label">合計 100% ✓</span>
+        <span id="jars-total-diff"></span>
+      </div>
+      <div id="jars-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"></div>
+      <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none;margin-top:12px"></div>
+    </div>
+  </div>
+
   <!-- Cashflow Breakdown -->
   <div class="card" style="position:relative;z-index:1">
     <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;letter-spacing:0.04em">💰 現金流來源明細</div>
@@ -3556,6 +3610,7 @@ onAuthStateChanged(auth, user => {
     loadGoalSettings();
     loadDebts();
     loadDreams();
+    initJars();
     loadEsbiInputs();
     // 從 Firebase 載入人格設定
     loadPersonalityFromFirebase();
@@ -6006,6 +6061,150 @@ function _getRdInsight(cf, purpose) {
   return map[`${cf}_${purpose}`] || '每一個財務決策都沒有絕對的對錯。<span class="rd-hl">重要的是：你清楚知道你在做什麼，為什麼這樣做</span>。這就是富爸爸說的財務智慧。';
 }
 
+// ── Six Jars System ──
+
+const JARS_DEFAULTS = [
+  { id:'nec', abbr:'NEC', name:'必要生活支出', pct:55, emoji:'🏠',
+    desc:'房租、餐費、交通——維持生活的必要花費。如果這個數字超過 55%，代表生活負擔可能過重，值得重新審視固定支出。' },
+  { id:'ffa', abbr:'FFA', name:'財務自由帳戶', pct:10, emoji:'📈',
+    desc:'只進不出。這筆錢專門用來投資——它產生的「收益」才能花，本金永遠留著讓錢替你工作。' },
+  { id:'ltss', abbr:'LTSS', name:'長期儲蓄消費', pct:10, emoji:'✈️',
+    desc:'大型消費的備用金：旅遊、換車、換手機、裝修。專款專用，不跟日常費用混在一起。' },
+  { id:'edu', abbr:'EDU', name:'教育投資', pct:10, emoji:'📚',
+    desc:'投資你自己：線上課程、書籍、工作坊、技能培訓。你是你最重要的資產。' },
+  { id:'play', abbr:'PLAY', name:'享樂帳戶', pct:10, emoji:'🎉',
+    desc:'不帶罪惡感地花掉，而且要全部花完。享樂帳戶讓你的大腦知道「有錢是好事」。' },
+  { id:'give', abbr:'GIVE', name:'給予帳戶', pct:5, emoji:'🤝',
+    desc:'捐款、請朋友吃飯、幫助需要幫助的人。給予是財富循環的一部分。' }
+];
+
+function loadJarSettings() {
+  try {
+    const saved = localStorage.getItem('jars_pct');
+    if (saved) {
+      const pcts = JSON.parse(saved);
+      JARS_DEFAULTS.forEach((j,i) => { if (pcts[i] != null) j.pct = pcts[i]; });
+    }
+  } catch(e) {}
+}
+
+function saveJarSettings() {
+  localStorage.setItem('jars_pct', JSON.stringify(JARS_DEFAULTS.map(j => j.pct)));
+}
+
+function renderJarCards() {
+  const container = document.getElementById('jars-cards');
+  if (!container) return;
+  container.innerHTML = JARS_DEFAULTS.map(j => `
+    <div class="jar-card${j.id==='ffa' ? ' ffa' : ''}">
+      <div class="jar-card-top">
+        <div>
+          <div class="jar-name">${j.emoji} ${j.name}</div>
+          <div class="jar-abbr">${j.abbr}</div>
+        </div>
+        <div class="jar-pct-row">
+          <input type="number" class="jar-pct-input" id="jar-pct-${j.id}"
+            value="${j.pct}" min="0" max="100" oninput="onJarPctChange()">
+          <span class="jar-pct-symbol">%</span>
+        </div>
+      </div>
+      <div class="jar-desc">${j.desc}</div>
+      <div class="jar-amount zero" id="jar-amt-${j.id}">NT$ —</div>
+    </div>
+  `).join('');
+}
+
+function onJarPctChange() {
+  JARS_DEFAULTS.forEach(j => {
+    const el = document.getElementById('jar-pct-' + j.id);
+    if (el) j.pct = parseFloat(el.value) || 0;
+  });
+  saveJarSettings();
+  updateJars();
+}
+
+function updateJars() {
+  const income = parseFloat(document.getElementById('jars-income')?.value) || 0;
+  const total = JARS_DEFAULTS.reduce((s, j) => s + j.pct, 0);
+  const totalRow = document.getElementById('jars-total-row');
+  const totalLabel = document.getElementById('jars-total-label');
+  const totalDiff = document.getElementById('jars-total-diff');
+  const diff = Math.round((total - 100) * 10) / 10;
+
+  if (totalRow && totalLabel) {
+    if (Math.abs(diff) < 0.1) {
+      totalRow.className = 'jars-total-row ok';
+      totalLabel.textContent = '合計 100% ✓';
+      if (totalDiff) totalDiff.textContent = '';
+    } else {
+      totalRow.className = 'jars-total-row err';
+      totalLabel.textContent = `合計 ${Math.round(total * 10) / 10}%`;
+      if (totalDiff) totalDiff.textContent = diff > 0 ? `多了 ${diff}%` : `少了 ${Math.abs(diff)}%`;
+    }
+  }
+
+  JARS_DEFAULTS.forEach(j => {
+    const el = document.getElementById('jar-amt-' + j.id);
+    if (!el) return;
+    if (income > 0) {
+      const amt = Math.round(income * j.pct / 100);
+      el.textContent = 'NT$ ' + amt.toLocaleString();
+      el.className = 'jar-amount';
+    } else {
+      el.textContent = 'NT$ —';
+      el.className = 'jar-amount zero';
+    }
+  });
+
+  updateFfaTip(income);
+}
+
+function updateFfaTip(income) {
+  const tipEl = document.getElementById('jars-ffa-tip');
+  if (!tipEl) return;
+  const ffaPct = JARS_DEFAULTS.find(j => j.id === 'ffa')?.pct || 10;
+  const ffaAmt = Math.round(income * ffaPct / 100);
+  if (income <= 0 || ffaAmt <= 0) { tipEl.style.display = 'none'; return; }
+
+  const assets = window.assets || [];
+  const hasType = (type) => assets.some(a => a.category === type);
+
+  let tip = '';
+  if (ffaAmt < 1000) {
+    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：金額較小，先放入<strong>高利活存帳戶</strong>（如 Richart、將來銀行）累積。等到 NT$3,000 以上再開始投資，小額但持續才是最重要的習慣。`;
+  } else if (ffaAmt < 5000) {
+    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：可以開始 <strong>ETF 定期定額</strong>（如 0050）。每月固定投入，讓時間複利幫你工作。`;
+  } else if (ffaAmt < 20000) {
+    const missing = [];
+    if (!hasType('stock') && !hasType('etf')) missing.push('ETF（0050/0056）');
+    if (!hasType('gold')) missing.push('黃金');
+    if (!hasType('crypto')) missing.push('加密貨幣小倉位');
+    const suggest = missing.length > 0 ? missing[0] : 'ETF 定期定額';
+    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：這個金額可以開始分散資產。你目前沒有持有 <strong>${suggest}</strong>，是個考慮佈局的時機。`;
+  } else {
+    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：金額夠大，可以考慮多元配置。查看你的資產頁面，找出最集中的類別，用 FFA 開始再平衡。`;
+  }
+
+  tip += `<br><span style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;display:block">富爸爸說：FFA 只進不出——投資產生的收益才能花，本金永遠留著。</span>`;
+  tipEl.innerHTML = tip;
+  tipEl.style.display = 'block';
+}
+
+function toggleJars() {
+  const body = document.getElementById('jars-body');
+  const icon = document.getElementById('jars-toggle-icon');
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (icon) icon.classList.toggle('open', !isOpen);
+}
+
+function initJars() {
+  loadJarSettings();
+  renderJarCards();
+  updateJars();
+}
+
 // ── ESBI Quadrant System ──
 
 function loadEsbiInputs() {
@@ -8449,6 +8648,37 @@ function initMobileHome() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
       <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
+    </div>
+
+    <!-- 六個罐子 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title">六個罐子 · 收入分配</div>
+    </div>
+    <div class="jars-section">
+      <div class="jars-header" onclick="toggleJars()">
+        <div>
+          <div class="jars-title">🫙 六個罐子系統</div>
+          <div class="jars-subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
+        </div>
+        <div class="jars-toggle" id="jars-toggle-icon">▾</div>
+      </div>
+      <div class="jars-body" id="jars-body">
+        <!-- 月收入輸入 -->
+        <div class="jars-income-row">
+          <span class="jars-income-label">💰 這個月的總收入</span>
+          <input id="jars-income" type="number" class="jars-income-input" placeholder="0" oninput="updateJars()">
+          <span style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+        </div>
+        <!-- 合計提示 -->
+        <div class="jars-total-row ok" id="jars-total-row">
+          <span id="jars-total-label">合計 100% ✓</span>
+          <span id="jars-total-diff"></span>
+        </div>
+        <!-- 六個罐子卡片 -->
+        <div id="jars-cards"></div>
+        <!-- FFA 建議 -->
+        <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
+      </div>
     </div>
 
     <!-- ESBI 象限 -->
