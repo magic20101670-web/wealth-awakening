@@ -300,6 +300,15 @@ select option { background: #0d2318; }
 .jars-total-row.ok { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#4ade80; }
 .jars-total-row.err { background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171; }
 .jars-ffa-tip { background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.18);border-radius:10px;padding:11px 13px;margin-top:4px;font-size:12px;color:rgba(240,253,244,0.75);line-height:1.6; }
+/* ── Jar visuals ── */
+.jar-visual-row { display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:14px 0 16px;padding:14px 10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px; }
+.jar-visual-item { display:flex;flex-direction:column;align-items:center;gap:4px;cursor:default; }
+.jar-visual-item svg { width:58px;height:80px;overflow:visible; }
+.jar-visual-label { font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.06em;text-align:center; }
+.jar-visual-bal { font-size:8.5px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.45);text-align:center; }
+@keyframes jarWaveAnim { from { transform:translateX(0); } to { transform:translateX(80px); } }
+.jar-wave-g { animation:jarWaveAnim 3.5s linear infinite; }
+@media(max-width:768px){ .jar-visual-row { grid-template-columns:repeat(3,1fr); } }
 .jars-ffa-tip strong { color:#4ade80;font-weight:500; }
 .jars-deposit-btn { background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:8px;transition:all 0.2s; }
 .jars-deposit-btn:hover { background:rgba(74,222,128,0.25); }
@@ -3380,7 +3389,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
   <div class="card" style="position:relative;z-index:1">
     <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none" onclick="toggleDesktopJars()">
       <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.jars.titleDesktop">🫙 六個罐子 · 收入分配系統</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.jars.titleDesktop">💰🫙 六個罐子 · 收入分配系統</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="goals.jars.subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
@@ -3394,11 +3403,12 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
         <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
         <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
+        <div class="jars-total-row ok" id="jars-total-row" style="margin-bottom:0;flex-shrink:0;white-space:nowrap">
+          <span id="jars-total-label">合計 100% ✓</span>
+          <span id="jars-total-diff"></span>
+        </div>
       </div>
-      <div class="jars-total-row ok" id="jars-total-row">
-        <span id="jars-total-label">合計 100% ✓</span>
-        <span id="jars-total-diff"></span>
-      </div>
+      <div id="jars-visual-row" class="jar-visual-row"></div>
       <div id="jars-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"></div>
       <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
       <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none;margin-top:12px"></div>
@@ -4377,7 +4387,7 @@ const TRANSLATIONS = {
     'home.dailyQuote.label':'今日財富頻率',
     'home.personalityPrompt.title':'找出你的財富人格','home.personalityPrompt.desc':'5個問題，看看你是哪一種財富原型，讓建議更貼近你','home.personalityPrompt.cta':'立即測驗 →',
     'goals.jars.sectionTitle':'六個罐子 · 收入分配',
-    'goals.jars.title':'🫙 六個罐子系統','goals.jars.titleDesktop':'🫙 六個罐子 · 收入分配系統',
+    'goals.jars.title':'💰🫙 六個罐子系統','goals.jars.titleDesktop':'💰🫙 六個罐子 · 收入分配系統',
     'goals.jars.subtitle':'T. Harv Eker · 有錢人想的和你不一樣',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'計算',
     'goals.jars.totalOk':'合計 100% ✓','goals.jars.totalFmt':'合計 {pct}%',
@@ -4601,7 +4611,7 @@ const TRANSLATIONS = {
     'home.dailyQuote.label':'今日财富频率',
     'home.personalityPrompt.title':'找出你的财富人格','home.personalityPrompt.desc':'5个问题，看看你是哪一种财富原型，让建议更贴近你','home.personalityPrompt.cta':'立即测验 →',
     'goals.jars.sectionTitle':'六个罐子 · 收入分配',
-    'goals.jars.title':'🫙 六个罐子系统','goals.jars.titleDesktop':'🫙 六个罐子 · 收入分配系统',
+    'goals.jars.title':'💰🫙 六个罐子系统','goals.jars.titleDesktop':'💰🫙 六个罐子 · 收入分配系统',
     'goals.jars.subtitle':'T. Harv Eker · 有钱人想的和你不一样',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'计算',
     'goals.jars.totalOk':'合计 100% ✓','goals.jars.totalFmt':'合计 {pct}%',
@@ -4825,7 +4835,7 @@ const TRANSLATIONS = {
     'home.dailyQuote.label':"Today's Wealth Frequency",
     'home.personalityPrompt.title':'Discover Your Wealth Personality','home.personalityPrompt.desc':'Answer 5 quick questions to find your wealth archetype and get advice tailored to you','home.personalityPrompt.cta':'Take the Quiz →',
     'goals.jars.sectionTitle':'Six Jars · Income Allocation',
-    'goals.jars.title':'🫙 The Six Jars System','goals.jars.titleDesktop':'🫙 Six Jars · Income Allocation System',
+    'goals.jars.title':'💰🫙 The Six Jars System','goals.jars.titleDesktop':'💰🫙 Six Jars · Income Allocation System',
     'goals.jars.subtitle':'T. Harv Eker · Secrets of the Millionaire Mind',
     'goals.jars.incomeLabel':'💰 Income to Allocate','goals.jars.calculate':'Calculate',
     'goals.jars.totalOk':'Total 100% ✓','goals.jars.totalFmt':'Total {pct}%',
@@ -7546,6 +7556,111 @@ function saveJarSettings() {
   localStorage.setItem('jars_pct', JSON.stringify(JARS_DEFAULTS.map(j => j.pct)));
 }
 
+const JAR_COLORS = {
+  nec:  { main:'#F59E0B', mid:'#FCD34D' },
+  ffa:  { main:'#22C55E', mid:'#4ADE80' },
+  ltss: { main:'#3B82F6', mid:'#60A5FA' },
+  edu:  { main:'#8B5CF6', mid:'#A78BFA' },
+  play: { main:'#EC4899', mid:'#F472B6' },
+  give: { main:'#F97316', mid:'#FB923C' },
+};
+
+function renderJarSVG(jar, balance, fillPct, color, uid) {
+  const W=80, H=110;
+  const bx=8, by=35, bw=64, bh=68, br=16;
+  const nx=26, ny=22, nw=28, nh=15;
+  const cx=22, cy=11, cw=36, ch=13;
+  const maxFH = bh - 2;
+  const liqH = Math.max(fillPct * maxFH, 0);
+  const liqY = by + bh - liqH;
+  const waveY = liqY - 2;
+  const amp = fillPct < 0.05 ? 0.8 : 3;
+  const isGlowing = fillPct >= 0.98;
+  const glowStyle = isGlowing ? `filter:drop-shadow(0 0 7px ${color.main})` : '';
+  const pctLabel = `${Math.round(fillPct * 100)}%`;
+
+  return `<div class="jar-visual-item" title="${jar.emoji} ${jar.abbr}：${formatCurrency(balance)}">
+    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;${glowStyle}">
+      <defs>
+        <clipPath id="jvc${uid}">
+          <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}" ry="${br}"/>
+        </clipPath>
+        <linearGradient id="jvg${uid}" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="${color.mid}" stop-opacity="0.92"/>
+          <stop offset="1" stop-color="${color.main}" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <!-- cap -->
+      <rect x="${cx}" y="${cy}" width="${cw}" height="${ch}" rx="6" fill="${color.main}" opacity="0.78"/>
+      <rect x="${cx+4}" y="${cy+2}" width="${cw-8}" height="4" rx="2" fill="rgba(255,255,255,0.28)"/>
+
+      <!-- neck -->
+      <rect x="${nx}" y="${ny}" width="${nw}" height="${nh+2}" rx="5"
+        fill="rgba(255,255,255,0.05)" stroke="${color.main}" stroke-width="1.2" stroke-opacity="0.4"/>
+
+      <!-- body shell -->
+      <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${br}"
+        fill="rgba(255,255,255,0.04)" stroke="${color.main}" stroke-width="1.6" stroke-opacity="0.45"/>
+
+      ${fillPct > 0 ? `<!-- liquid -->
+      <g clip-path="url(#jvc${uid})">
+        <rect x="${bx}" y="${liqY}" width="${bw}" height="${liqH+4}" fill="url(#jvg${uid})"/>
+        <g class="jar-wave-g">
+          <path d="M${bx-W*2},${waveY}
+            q${W/4},${-amp} ${W/2},0 q${W/4},${amp} ${W/2},0
+            q${W/4},${-amp} ${W/2},0 q${W/4},${amp} ${W/2},0
+            q${W/4},${-amp} ${W/2},0 q${W/4},${amp} ${W/2},0
+            q${W/4},${-amp} ${W/2},0 q${W/4},${amp} ${W/2},0
+            L${bx+bw+W*2},${H+20} L${bx-W*2},${H+20} Z"
+            fill="${color.mid}" opacity="0.82"/>
+        </g>
+      </g>` : ''}
+
+      <!-- highlight left -->
+      <ellipse cx="${bx+8}" cy="${by+bh*0.45}" rx="4" ry="${bh*0.23}"
+        fill="rgba(255,255,255,0.17)" clip-path="url(#jvc${uid})"/>
+      <ellipse cx="${bx+11}" cy="${by+8}" rx="6" ry="3"
+        fill="rgba(255,255,255,0.2)" clip-path="url(#jvc${uid})"/>
+
+      <!-- pct label -->
+      <text x="${W/2}" y="${H-3}" text-anchor="middle"
+        font-size="8" font-weight="700" fill="rgba(255,255,255,0.88)"
+        font-family="'DM Mono',monospace">${pctLabel}</text>
+    </svg>
+    <div class="jar-visual-label">${jar.emoji} ${jar.abbr}</div>
+    <div class="jar-visual-bal">${formatCurrency(balance)}</div>
+  </div>`;
+}
+
+function renderJarVisuals() {
+  const container = document.getElementById('jars-visual-row');
+  if (!container) return;
+  let income = 0;
+  document.querySelectorAll('#jars-income').forEach(el => {
+    const v = parseFloat((el.value || '').replace(/[,，\s]/g,''));
+    if (v > 0) income = v;
+  });
+  // max balance for proportional fallback
+  const maxBal = Math.max(...JARS_DEFAULTS.map(j => jarBalances[j.id] || 0), 1);
+  let uid = 0;
+  container.innerHTML = JARS_DEFAULTS.map(j => {
+    const bal = jarBalances[j.id] || 0;
+    let fillPct;
+    if (income > 0) {
+      const target = income * j.pct / 100 * 6; // 6 months target
+      fillPct = target > 0 ? Math.min(bal / target, 1) : 0;
+    } else {
+      fillPct = Math.min(bal / maxBal, 1);
+    }
+    fillPct = Math.max(fillPct, 0);
+    const color = JAR_COLORS[j.id] || { main:'#888', mid:'#aaa' };
+    uid++;
+    return renderJarSVG(j, bal, fillPct, color, j.id + uid);
+  }).join('');
+}
+window.renderJarVisuals = renderJarVisuals;
+
 function renderJarCards(income) {
   const incomeVal = income || 0;
   const html = JARS_DEFAULTS.map(j => {
@@ -7610,6 +7725,7 @@ function updateJars() {
   });
 
   renderJarCards(income);
+  renderJarVisuals();
   updateFfaTip(income);
 }
 
