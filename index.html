@@ -284,6 +284,10 @@ select option { background: #0d2318; }
 .jars-income-label { font-size:12px;color:rgba(255,255,255,0.45);flex:1; }
 .jars-income-input { width:130px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:7px 10px;font-size:13px;font-family:'DM Mono',monospace;color:#f0fdf4;outline:none;text-align:right; }
 .jars-income-input:focus { border-color:rgba(240,208,96,0.35); }
+.jar-dep-cur-sel { background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:#f0fdf4;font-size:11px;padding:4px 5px;cursor:pointer;font-family:'DM Sans',sans-serif;min-width:72px;flex-shrink:0; }
+.jar-dep-convert-row { font-size:10.5px;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.18);border-radius:8px;padding:4px 10px;margin-top:-8px;margin-bottom:6px;display:none; }
+[data-theme^="light"] .jar-dep-cur-sel { background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15);color:#1a2e1a; }
+[data-theme^="light"] .jar-dep-convert-row { background:rgba(22,163,74,0.06);border-color:rgba(22,163,74,0.2);color:#15803d; }
 .jar-card { background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:8px; }
 .jar-card.ffa { border-color:rgba(34,197,94,0.25);background:rgba(34,197,94,0.04); }
 .jar-card-top { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px; }
@@ -308,6 +312,14 @@ select option { background: #0d2318; }
 .jar-visual-bal { font-size:8.5px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.45);text-align:center; }
 @keyframes jarWaveAnim { from { transform:translateX(0); } to { transform:translateX(80px); } }
 .jar-wave-g { animation:jarWaveAnim 3.5s linear infinite; }
+.tree-preview-row { margin-top:12px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px; }
+.tree-preview-row-label { font-size:10px;color:rgba(255,255,255,0.55);margin-bottom:7px;font-weight:600;letter-spacing:0.04em; }
+.tree-preview-btns { display:flex;flex-wrap:wrap;gap:5px; }
+.tree-preview-btn { font-size:10px;padding:4px 9px;border-radius:16px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);cursor:pointer;transition:all 0.18s;white-space:nowrap;user-select:none; }
+.tree-preview-btn:hover { background:rgba(34,197,94,0.22);border-color:rgba(34,197,94,0.5);color:#86efac; }
+.tree-preview-btn.tpb-active { background:rgba(34,197,94,0.28);border-color:#22c55e;color:#22c55e;font-weight:700; }
+.tree-preview-exit { font-size:10px;padding:4px 10px;border-radius:16px;border:1px solid rgba(255,100,100,0.4);background:rgba(255,100,100,0.15);color:rgba(255,160,160,0.9);cursor:pointer;margin-left:2px; }
+.tree-preview-exit:hover { background:rgba(255,100,100,0.25);color:#fca5a5; }
 @media(max-width:768px){ .jar-visual-row { grid-template-columns:repeat(3,1fr); } }
 .jars-ffa-tip strong { color:#4ade80;font-weight:500; }
 .jars-deposit-btn { background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:8px;transition:all 0.2s; }
@@ -3400,14 +3412,28 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div id="jars-desktop-body" style="margin-top:16px">
       <div class="jars-income-row">
         <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-        <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
-        <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+        <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars();updateJarDepConvertPreview()" onchange="updateJars();updateJarDepConvertPreview()">
+        <select id="jars-income-cur" class="jar-dep-cur-sel" onchange="onJarDepCurChange(this.value)">
+          <option value="TWD">NT$ TWD</option>
+          <option value="USD">$ USD</option>
+          <option value="JPY">¥ JPY</option>
+          <option value="EUR">€ EUR</option>
+          <option value="CNY">¥ CNY</option>
+          <option value="HKD">HK$ HKD</option>
+          <option value="SGD">S$ SGD</option>
+          <option value="GBP">£ GBP</option>
+          <option value="AUD">A$ AUD</option>
+          <option value="MYR">RM MYR</option>
+          <option value="KRW">₩ KRW</option>
+          <option value="CAD">C$ CAD</option>
+        </select>
         <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         <div class="jars-total-row ok" id="jars-total-row" style="margin-bottom:0;flex-shrink:0;white-space:nowrap">
           <span id="jars-total-label">合計 100% ✓</span>
           <span id="jars-total-diff"></span>
         </div>
       </div>
+      <div class="jar-dep-convert-row" id="jar-dep-convert-row">⟳ 換算中...</div>
       <div id="jars-visual-row" class="jar-visual-row"></div>
       <div id="jars-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"></div>
       <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
@@ -3437,10 +3463,26 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <div style="font-size:13px;font-weight:600;color:var(--green);letter-spacing:0.06em" data-i18n="tree.title">🌳 財富之樹</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px" id="tree-desc" data-i18n="tree.desc.growing">記錄越久，樹越茂盛</div>
       </div>
-      <div id="tree-level-badge" class="tree-level-badge" data-i18n="tree.level.0">🌱 樹苗期</div>
+      <div id="tree-level-badge" class="tree-level-badge" data-i18n="tree.level.0">🌟 覺醒種子</div>
     </div>
     <div style="display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap">
-      <canvas id="wealth-tree-canvas" width="280" height="260" style="flex-shrink:0"></canvas>
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center">
+        <canvas id="wealth-tree-canvas" width="280" height="260"></canvas>
+        <div class="tree-preview-row" style="width:100%">
+          <div class="tree-preview-row-label">👁 預覽各時期</div>
+          <div class="tree-preview-btns">
+            <span class="tree-preview-btn" data-tpb="0" onclick="previewTreeStage(0)">🌟 種子</span>
+            <span class="tree-preview-btn" data-tpb="1" onclick="previewTreeStage(1)">🌱 萌芽</span>
+            <span class="tree-preview-btn" data-tpb="2" onclick="previewTreeStage(2)">🌿 扎根</span>
+            <span class="tree-preview-btn" data-tpb="3" onclick="previewTreeStage(3)">🌲 共振</span>
+            <span class="tree-preview-btn" data-tpb="4" onclick="previewTreeStage(4)">🌳 汲盛</span>
+            <span class="tree-preview-btn" data-tpb="5" onclick="previewTreeStage(5)">✨ 豐盛</span>
+            <span class="tree-preview-btn" data-tpb="6" onclick="previewTreeStage(6)">💎 智慧</span>
+            <span class="tree-preview-btn" data-tpb="7" onclick="previewTreeStage(7)">👑 覺醒</span>
+            <span class="tree-preview-exit" onclick="exitTreePreview()" style="display:none">✕ 返回</span>
+          </div>
+        </div>
+      </div>
       <div style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:12px;padding-bottom:16px">
         <div class="tree-stat">
           <div class="tree-stat-label" data-i18n="tree.stat.days">🗓️ 記錄天數</div>
@@ -4503,9 +4545,10 @@ const TRANSLATIONS = {
     'tree.unit.days':'{n} 天','tree.unit.assets':'{n} 筆','tree.unit.leaves':'{n} 片',
     'tree.growthProgress':'成長進度','tree.nextDefault':'累積更多資產讓樹成長','tree.nextLevelFmt':'下一階段：{level}（資產 {assets} 筆 / 記錄 {days} 天）','tree.maxLevel':'🏆 已達最高等級！',
     'tree.setStartDate':'⚙️ 設定開始記錄日期',
-    'tree.level.0':'🌱 樹苗期','tree.level.1':'🌿 成長期','tree.level.2':'🌲 茁壯期','tree.level.3':'🌳 繁盛期','tree.level.4':'🏆 豐收期','tree.level.5':'✨ 神木期',
-    'tree.stageDesc.0':'你剛開始財富覺醒之旅，每一步都是開始。','tree.stageDesc.1':'資產開始萌芽，堅持記錄讓樹慢慢成長。','tree.stageDesc.2':'樹木茁壯，你的財富意識正在深根。',
-    'tree.stageDesc.3':'財富之樹繁盛，被動收入開始發揮力量。','tree.stageDesc.4':'豐收時節，你的財富系統已趨於成熟。','tree.stageDesc.5':'神木境界，財富昇華，成為他人的榜樣。',
+    'tree.level.0':'🌟 覺醒種子','tree.level.1':'🌱 萌芽期','tree.level.2':'🌿 扎根期','tree.level.3':'🌲 共振期','tree.level.4':'🌳 汲盛期','tree.level.5':'✨ 豐盛期','tree.level.6':'💎 智慧期','tree.level.7':'👑 覺醒之樹',
+    'tree.stageDesc.0':'財富意識已覺醒，一顆種子正在蓄積能量。','tree.stageDesc.1':'第一筆資產萌芽，堅持澆灌讓樹慢慢成長。','tree.stageDesc.2':'根系正在深扎，財富的基礎越來越穩固。',
+    'tree.stageDesc.3':'財富之樹開始共振，被動收入正在發芽。','tree.stageDesc.4':'汲取宇宙豐盛能量，資產快速擴展。','tree.stageDesc.5':'進入豐盛期，金色果實開始在樹上綻放。',
+    'tree.stageDesc.6':'智慧如樹冠廣佈，財富昇華成為豐盛的象徵。','tree.stageDesc.7':'覺醒之樹巍然矗立，你已成為財富的化身。',
     'tree.modal.title':'🌳 財富樹成長時期','tree.modal.currentStage':'目前階段','tree.modal.statFmt':'資產 {assets} 筆 · 記錄 {days} 天 · 樹葉 {leaves} 片',
     'tree.modal.decoTitle':'🌸 夢想裝飾','tree.modal.decoDesc':'每次實現一個夢想（點「我實現了！」），就會解鎖新的財富樹裝飾。','tree.modal.currentDeco':'目前裝飾','tree.modal.decoCountFmt':'達成 {count} 個',
     'tree.deco.bloom.name':'🌸 初綻之花','tree.deco.bloom.desc':'達成第一個夢想，財富樹開出第一朵花。',
@@ -4727,9 +4770,10 @@ const TRANSLATIONS = {
     'tree.unit.days':'{n} 天','tree.unit.assets':'{n} 笔','tree.unit.leaves':'{n} 片',
     'tree.growthProgress':'成长进度','tree.nextDefault':'累积更多资产让树成长','tree.nextLevelFmt':'下一阶段：{level}（资产 {assets} 笔 / 记录 {days} 天）','tree.maxLevel':'🏆 已达最高等级！',
     'tree.setStartDate':'⚙️ 设定开始记录日期',
-    'tree.level.0':'🌱 树苗期','tree.level.1':'🌿 成长期','tree.level.2':'🌲 茁壮期','tree.level.3':'🌳 繁盛期','tree.level.4':'🏆 丰收期','tree.level.5':'✨ 神木期',
-    'tree.stageDesc.0':'你刚开始财富觉醒之旅，每一步都是开始。','tree.stageDesc.1':'资产开始萌芽，坚持记录让树慢慢成长。','tree.stageDesc.2':'树木茁壮，你的财富意识正在深根。',
-    'tree.stageDesc.3':'财富之树繁盛，被动收入开始发挥力量。','tree.stageDesc.4':'丰收时节，你的财富系统已趋于成熟。','tree.stageDesc.5':'神木境界，财富升华，成为他人的榜样。',
+    'tree.level.0':'🌟 觉醒种子','tree.level.1':'🌱 萌芽期','tree.level.2':'🌿 扎根期','tree.level.3':'🌲 共振期','tree.level.4':'🌳 汲盛期','tree.level.5':'✨ 丰盛期','tree.level.6':'💎 智慧期','tree.level.7':'👑 觉醒之树',
+    'tree.stageDesc.0':'财富意识已觉醒，一颗种子正在蓄积能量。','tree.stageDesc.1':'第一笔资产萌芽，坚持浇灌让树慢慢成长。','tree.stageDesc.2':'根系正在深扎，财富的基础越来越稳固。',
+    'tree.stageDesc.3':'财富之树开始共振，被动收入正在发芽。','tree.stageDesc.4':'汲取宇宙丰盛能量，资产快速扩展。','tree.stageDesc.5':'进入丰盛期，金色果实开始在树上绽放。',
+    'tree.stageDesc.6':'智慧如树冠广布，财富升华成为丰盛的象征。','tree.stageDesc.7':'觉醒之树巍然矗立，你已成为财富的化身。',
     'tree.modal.title':'🌳 财富树成长时期','tree.modal.currentStage':'目前阶段','tree.modal.statFmt':'资产 {assets} 笔 · 记录 {days} 天 · 树叶 {leaves} 片',
     'tree.modal.decoTitle':'🌸 梦想装饰','tree.modal.decoDesc':'每次实现一个梦想（点「我实现了！」），就会解锁新的财富树装饰。','tree.modal.currentDeco':'目前装饰','tree.modal.decoCountFmt':'达成 {count} 个',
     'tree.deco.bloom.name':'🌸 初绽之花','tree.deco.bloom.desc':'达成第一个梦想，财富树开出第一朵花。',
@@ -4951,9 +4995,10 @@ const TRANSLATIONS = {
     'tree.unit.days':'{n} days','tree.unit.assets':'{n} assets','tree.unit.leaves':'{n} leaves',
     'tree.growthProgress':'Growth Progress','tree.nextDefault':'Add more assets to grow your tree','tree.nextLevelFmt':'Next: {level} ({assets} assets / {days} days)','tree.maxLevel':'🏆 Max level reached!',
     'tree.setStartDate':'⚙️ Set Start Date',
-    'tree.level.0':'🌱 Sprout','tree.level.1':'🌿 Growth','tree.level.2':'🌲 Thriving','tree.level.3':'🌳 Flourishing','tree.level.4':'🏆 Harvest','tree.level.5':'✨ Ascension',
-    'tree.stageDesc.0':'You\'re just beginning your wealth awakening journey. Every step counts.','tree.stageDesc.1':'Your assets are sprouting. Keep tracking and let your tree grow.','tree.stageDesc.2':'Your tree is thriving, and your wealth awareness is taking root.',
-    'tree.stageDesc.3':'Your wealth tree is flourishing, and passive income is starting to take effect.','tree.stageDesc.4':'Harvest season. Your wealth system is maturing.','tree.stageDesc.5':'Sacred Tree status. Your wealth has ascended, an inspiration to others.',
+    'tree.level.0':'🌟 Awakened Seed','tree.level.1':'🌱 Sprouting','tree.level.2':'🌿 Taking Root','tree.level.3':'🌲 Resonating','tree.level.4':'🌳 Absorbing','tree.level.5':'✨ Abundant','tree.level.6':'💎 Wisdom','tree.level.7':'👑 Awakened Tree',
+    'tree.stageDesc.0':'Your wealth consciousness has awakened. A seed is gathering energy.','tree.stageDesc.1':'Your first asset is sprouting. Keep watering your tree to help it grow.','tree.stageDesc.2':'Roots are deepening. Your wealth foundation grows stronger.',
+    'tree.stageDesc.3':'Your wealth tree begins to resonate. Passive income is taking root.','tree.stageDesc.4':'Drawing in cosmic abundance. Assets are expanding rapidly.','tree.stageDesc.5':'Entering abundance. Golden fruits begin blooming on your tree.',
+    'tree.stageDesc.6':'Wisdom spreads like a canopy. Your wealth has become a symbol of abundance.','tree.stageDesc.7':'The Awakened Tree stands tall. You have become the embodiment of wealth.',
     'tree.modal.title':'🌳 Wealth Tree Growth Stages','tree.modal.currentStage':'Current','tree.modal.statFmt':'{assets} assets · {days} days · {leaves} leaves',
     'tree.modal.decoTitle':'🌸 Dream Decorations','tree.modal.decoDesc':'Each time you achieve a dream (tap "I Did It!"), you unlock a new wealth tree decoration.','tree.modal.currentDeco':'Current','tree.modal.decoCountFmt':'{count} dreams',
     'tree.deco.bloom.name':'🌸 First Bloom','tree.deco.bloom.desc':'Achieve your first dream and your wealth tree blooms its first flower.',
@@ -7634,21 +7679,20 @@ function renderJarSVG(jar, balance, fillPct, color, uid) {
 }
 
 function renderJarVisuals() {
-  const container = document.getElementById('jars-visual-row');
-  if (!container) return;
+  const containers = document.querySelectorAll('#jars-visual-row');
+  if (!containers.length) return;
   let income = 0;
   document.querySelectorAll('#jars-income').forEach(el => {
     const v = parseFloat((el.value || '').replace(/[,，\s]/g,''));
     if (v > 0) income = v;
   });
-  // max balance for proportional fallback
   const maxBal = Math.max(...JARS_DEFAULTS.map(j => jarBalances[j.id] || 0), 1);
   let uid = 0;
-  container.innerHTML = JARS_DEFAULTS.map(j => {
+  const html = JARS_DEFAULTS.map(j => {
     const bal = jarBalances[j.id] || 0;
     let fillPct;
     if (income > 0) {
-      const target = income * j.pct / 100 * 6; // 6 months target
+      const target = income * j.pct / 100 * 6;
       fillPct = target > 0 ? Math.min(bal / target, 1) : 0;
     } else {
       fillPct = Math.min(bal / maxBal, 1);
@@ -7658,6 +7702,7 @@ function renderJarVisuals() {
     uid++;
     return renderJarSVG(j, bal, fillPct, color, j.id + uid);
   }).join('');
+  containers.forEach(c => { c.innerHTML = html; });
 }
 window.renderJarVisuals = renderJarVisuals;
 
@@ -7709,7 +7754,11 @@ function updateJars() {
     if (raw > 0) income = raw;
   });
 
-  document.querySelectorAll('#jars-income-unit').forEach(el => { el.textContent = currencySymbol(); });
+  // 主幣別改變時，同步更新存入幣別 select（如果使用者沒有手動覆寫）
+  if (!_jarDepCurUserOverride) {
+    jarDepositCurrency = currentCurrency;
+    document.querySelectorAll('#jars-income-cur').forEach(el => { el.value = currentCurrency; });
+  }
 
   const total = JARS_DEFAULTS.reduce((s, j) => s + j.pct, 0);
   const diff = Math.round((total - 100) * 10) / 10;
@@ -7760,6 +7809,65 @@ function updateFfaTip(income) {
   tipEl.style.display = 'block';
 }
 
+// ── 六個罐子 存入幣別換算系統 ──
+let jarDepositCurrency = currentCurrency || 'TWD';
+let _jarDepCurUserOverride = false;
+const _jarDepFxCache = {};
+
+const JAR_DEP_CUR_SYMBOLS = {
+  TWD:'NT$', USD:'US$', JPY:'¥', EUR:'€', CNY:'¥', HKD:'HK$',
+  SGD:'S$', GBP:'£', AUD:'A$', MYR:'RM', KRW:'₩', CAD:'C$'
+};
+
+async function fetchJarDepFxRate(fromCur) {
+  if (fromCur === 'TWD') return 1;
+  const key = fromCur + '-TWD';
+  const c = _jarDepFxCache[key];
+  if (c && Date.now() - c.ts < 30 * 60 * 1000) return c.rate;
+  // Fallback values while fetching
+  const fallback = { USD: usdTwd, MYR: usdTwd / usdMyr };
+  try {
+    const res = await fetch(`https://api.frankfurter.app/latest?from=${fromCur}&to=TWD`);
+    const d = await res.json();
+    const rate = d.rates && d.rates.TWD;
+    if (rate > 0) {
+      _jarDepFxCache[key] = { rate, ts: Date.now() };
+      return rate;
+    }
+  } catch {}
+  return fallback[fromCur] || 1;
+}
+
+function onJarDepCurChange(val) {
+  _jarDepCurUserOverride = (val !== currentCurrency);
+  jarDepositCurrency = val;
+  document.querySelectorAll('#jars-income-cur').forEach(el => { el.value = val; });
+  updateJarDepConvertPreview();
+}
+
+async function updateJarDepConvertPreview() {
+  let rawAmt = 0;
+  document.querySelectorAll('#jars-income').forEach(el => {
+    const v = parseFloat((el.value || '').replace(/[,，\s]/g, ''));
+    if (v > 0) rawAmt = v;
+  });
+  const tags = document.querySelectorAll('#jar-dep-convert-row');
+  if (jarDepositCurrency === 'TWD' || rawAmt <= 0) {
+    tags.forEach(t => t.style.display = 'none');
+    return;
+  }
+  tags.forEach(t => { t.textContent = '⟳ 匯率載入中...'; t.style.display = 'block'; });
+  const rate = await fetchJarDepFxRate(jarDepositCurrency);
+  const twdAmt = Math.round(rawAmt * rate);
+  const sym = JAR_DEP_CUR_SYMBOLS[jarDepositCurrency] || jarDepositCurrency;
+  tags.forEach(t => {
+    t.textContent = `💱 ${sym}${rawAmt.toLocaleString()} ≈ NT$ ${twdAmt.toLocaleString()}（1 ${jarDepositCurrency} = NT$ ${rate.toFixed(2)}）`;
+    t.style.display = 'block';
+  });
+}
+window.onJarDepCurChange = onJarDepCurChange;
+window.updateJarDepConvertPreview = updateJarDepConvertPreview;
+
 // 將輸入的收入（不論是每月固定收入或一次性獲利）依比例存入六個罐子的實際餘額
 async function depositJarsIncome() {
   if (!currentUser) return;
@@ -7770,9 +7878,13 @@ async function depositJarsIncome() {
   });
   if (incomeRaw <= 0) return;
 
-  const incomeTWD = currentCurrency === 'USD' ? incomeRaw * usdTwd
-    : currentCurrency === 'MYR' ? incomeRaw * usdTwd / usdMyr
-    : incomeRaw;
+  let incomeTWD;
+  if (jarDepositCurrency === 'TWD') {
+    incomeTWD = incomeRaw;
+  } else {
+    const rate = await fetchJarDepFxRate(jarDepositCurrency);
+    incomeTWD = Math.round(incomeRaw * rate);
+  }
 
   JARS_DEFAULTS.forEach(j => {
     const amt = Math.round(incomeTWD * j.pct / 100);
@@ -8790,12 +8902,14 @@ function updateCashflowCards() {
 
 // ── Wealth Tree ──
 const TREE_LEVELS = [
-  { nameKey:'tree.level.0', descKey:'tree.stageDesc.0', minAssets:0,  minDays:0,   leaves:0   },
-  { nameKey:'tree.level.1', descKey:'tree.stageDesc.1', minAssets:1,  minDays:7,   leaves:8   },
-  { nameKey:'tree.level.2', descKey:'tree.stageDesc.2', minAssets:3,  minDays:30,  leaves:20  },
-  { nameKey:'tree.level.3', descKey:'tree.stageDesc.3', minAssets:5,  minDays:90,  leaves:40  },
-  { nameKey:'tree.level.4', descKey:'tree.stageDesc.4', minAssets:8,  minDays:180, leaves:70  },
-  { nameKey:'tree.level.5', descKey:'tree.stageDesc.5', minAssets:12, minDays:365, leaves:120 },
+  { nameKey:'tree.level.0', descKey:'tree.stageDesc.0', minAssets:0,  minDays:0,    leaves:0   },
+  { nameKey:'tree.level.1', descKey:'tree.stageDesc.1', minAssets:1,  minDays:8,    leaves:6   },
+  { nameKey:'tree.level.2', descKey:'tree.stageDesc.2', minAssets:2,  minDays:31,   leaves:16  },
+  { nameKey:'tree.level.3', descKey:'tree.stageDesc.3', minAssets:4,  minDays:91,   leaves:30  },
+  { nameKey:'tree.level.4', descKey:'tree.stageDesc.4', minAssets:6,  minDays:181,  leaves:50  },
+  { nameKey:'tree.level.5', descKey:'tree.stageDesc.5', minAssets:10, minDays:366,  leaves:80  },
+  { nameKey:'tree.level.6', descKey:'tree.stageDesc.6', minAssets:15, minDays:1096, leaves:120 },
+  { nameKey:'tree.level.7', descKey:'tree.stageDesc.7', minAssets:20, minDays:1826, leaves:180 },
 ];
 
 // ── 夢想裝飾（財富樹徽章覆蓋）──
@@ -8812,157 +8926,266 @@ const DREAM_DECOS = [
 // ── Wealth Tree Animated ──
 
 
-function spawnTreeParticles(levelIdx){
+function spawnTreeParticles(gp){
   treeParticles=[];
-  const count=20+levelIdx*15;
+  const count=Math.floor(12+gp*16);
   for(let i=0;i<count;i++){
     treeParticles.push({
       angle:Math.random()*Math.PI*2,
-      dist:30+Math.random()*(40+levelIdx*20),
+      dist:18+Math.random()*(28+gp*16),
       speed:(Math.random()*0.003+0.001)*(Math.random()<0.5?1:-1),
-      size:Math.random()*2.5+1,
-      alpha:Math.random()*0.6+0.3,
-      gold:Math.random()<0.15,
+      size:Math.random()*2.2+0.8,
+      alpha:Math.random()*0.5+0.25,
+      gold:Math.random()<(0.1+gp*0.02),
       phase:Math.random()*Math.PI*2,
       drift:Math.random()*0.008+0.003
     });
   }
 }
 
-function drawWealthTree(levelIdx, leafCount, pct){
+function drawWealthTree(levelIdx, leafCount, pct, gp){
   const canvas=document.getElementById('wealth-tree-canvas');
   if(!canvas) return;
   const ctx=canvas.getContext('2d');
   const W=canvas.width,H=canvas.height,cx=W/2,gy=H-18;
   ctx.clearRect(0,0,W,H);
-  const l=levelIdx,breathe=Math.sin(treeT*0.04)*0.4+0.6;
-  const trH=55+l*22,topY=gy-trH,cR=30+l*12;
+  if(gp===undefined) gp=Math.min(levelIdx,7);
+  const si=Math.floor(Math.min(gp,7)), sf=gp-si;
+  const breathe=Math.sin(treeT*0.04)*0.3+0.7;
 
-  // 底部暖光暈
-  const grd=ctx.createRadialGradient(cx,gy,0,cx,gy,50+l*20);
-  grd.addColorStop(0,`rgba(${l>=3?'200,140,30':'30,180,80'},${0.18*breathe})`);
-  grd.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=grd;ctx.beginPath();ctx.ellipse(cx,gy,50+l*20,(50+l*20)*0.35,0,0,Math.PI*2);ctx.fill();
+  // Stage value tables: [trunkH, crownR, leafLayers, fruitCnt, rootFade, domeOpacity]
+  const TV=[
+    [0,   0,  0,   0,  0,   1  ],  // 0 覺醒種子
+    [20,  16, 1,   0,  1,   0  ],  // 1 萌芽期
+    [40,  28, 1.5, 0,  0.9, 0  ],  // 2 扎根期
+    [58,  42, 2,   0,  0.4, 0  ],  // 3 共振期
+    [74,  56, 2.5, 0,  0,   0  ],  // 4 汲盛期
+    [90,  68, 3,   5,  0,   0  ],  // 5 豐盛期
+    [104, 80, 3.5, 11, 0,   0  ],  // 6 智慧期
+    [116, 90, 4,   18, 0,   0  ],  // 7 覺醒之樹
+  ];
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function lv(col){
+    const a=TV[Math.min(si,7)][col], b=TV[Math.min(si+1,7)][col];
+    return lerp(a,b,sf);
+  }
+  const trunkH=lv(0), crownR=lv(1), leafLayers=lv(2), fruitCnt=lv(3), rootFade=lv(4), domeOp=lv(5);
+  const topY=gy-trunkH;
+  const isGolden=gp>=5;
 
-  // 地面旋轉光環
-  for(let r=0;r<1+l;r++){
-    const rr=38+r*20+l*7;
+  // ── 1. Background atmospheric glow ──
+  const bgClr=isGolden?'100,50,0':'0,50,20';
+  const bgG=ctx.createRadialGradient(cx,gy-Math.max(trunkH,30)*0.5,0,cx,gy-Math.max(trunkH,30)*0.5,75+gp*12);
+  bgG.addColorStop(0,`rgba(${bgClr},${(0.05+gp*0.01)*breathe})`);
+  bgG.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bgG;ctx.fillRect(0,0,W,H);
+
+  // ── 2. Ground glow ellipse ──
+  const glwClr=isGolden?'200,140,30':'30,160,70';
+  const gg=ctx.createRadialGradient(cx,gy,0,cx,gy,42+gp*9);
+  gg.addColorStop(0,`rgba(${glwClr},${(0.14+gp*0.014)*breathe})`);
+  gg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gg;ctx.beginPath();ctx.ellipse(cx,gy,42+gp*9,(42+gp*9)*0.28,0,0,Math.PI*2);ctx.fill();
+
+  // ── 3. Rotating ground rings ──
+  const ringN=Math.floor(gp*0.65);
+  for(let r=0;r<ringN;r++){
+    const rr=34+r*17+gp*5.5;
     ctx.save();ctx.translate(cx,gy);ctx.rotate(treeT*0.008*(r%2===0?1:-1));
-    ctx.strokeStyle=`rgba(${l>=4?'253,200,70':'34,197,94'},${(0.2-r*0.05)*breathe})`;
-    ctx.lineWidth=l>=4?2:1.2;
+    ctx.strokeStyle=`rgba(${isGolden?'253,200,70':'34,197,94'},${(0.16-r*0.04)*breathe})`;
+    ctx.lineWidth=isGolden?1.5:1;
     ctx.beginPath();ctx.ellipse(0,0,rr,rr*0.22,0,0,Math.PI*2);ctx.stroke();
     ctx.restore();
   }
-  ctx.fillStyle=`rgba(${l>=4?'253,200,70':'34,197,94'},${(0.08+l*0.015)*breathe})`;
-  ctx.beginPath();ctx.ellipse(cx,gy,42+l*10,9+l*2,0,0,Math.PI*2);ctx.fill();
 
-  if(l===0){
-    const sw=Math.sin(treeT*0.05)*0.08;
-    ctx.save();ctx.translate(cx,gy);ctx.rotate(sw);
-    const sg=ctx.createLinearGradient(0,0,0,-55);
-    sg.addColorStop(0,'rgba(253,200,70,0.8)');sg.addColorStop(1,'rgba(74,222,128,0.6)');
-    ctx.strokeStyle=sg;ctx.lineWidth=3;ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(0,-20,-2,-38,0,-52);ctx.stroke();
-    [[-1,-0.4],[-0.3,-0.8],[0.9,-0.35],[0.2,-0.75]].forEach(([dx,dy])=>{
-      ctx.fillStyle='rgba(74,222,128,0.8)';
-      ctx.beginPath();ctx.ellipse(dx*20,dy*20-28,10,6,dx*0.6+sw,0,Math.PI*2);ctx.fill();
-    });
-    ctx.fillStyle='rgba(167,243,208,0.9)';ctx.beginPath();ctx.arc(0,-58,5,0,Math.PI*2);ctx.fill();
+  // ── 4. Glass dome (stage 0 only) ──
+  if(domeOp>0.01){
+    const dH=72,dW=42;
+    ctx.save();ctx.globalAlpha=domeOp;
+    ctx.beginPath();ctx.arc(cx,gy-dH*0.55,dW,-Math.PI*0.96,-Math.PI*0.04);
+    ctx.lineTo(cx+dW,gy);ctx.lineTo(cx-dW,gy);ctx.closePath();
+    ctx.fillStyle='rgba(150,220,200,0.06)';ctx.fill();
+    ctx.strokeStyle='rgba(150,220,200,0.28)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx-dW*0.62,gy-dH*0.58,dW*0.28,-Math.PI*0.72,-Math.PI*0.18);
+    ctx.strokeStyle='rgba(255,255,255,0.17)';ctx.lineWidth=5;ctx.stroke();
+    ctx.beginPath();ctx.ellipse(cx,gy,dW+3,7,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(150,220,200,0.09)';ctx.fill();
     ctx.restore();
-    const cg=ctx.createRadialGradient(cx,gy-52,0,cx,gy-52,30);
-    cg.addColorStop(0,`rgba(74,222,128,${0.12*breathe})`);cg.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=cg;ctx.beginPath();ctx.arc(cx,gy-52,30,0,Math.PI*2);ctx.fill();
-  } else {
-    const sw=Math.sin(treeT*0.03)*0.025*Math.max(1,3-l);
-    ctx.save();ctx.translate(cx,gy);ctx.rotate(sw);
-    const tg=ctx.createLinearGradient(0,0,0,-trH);
-    tg.addColorStop(0,`rgba(${l>=3?'220,160,40':'200,180,60'},0.9)`);
-    tg.addColorStop(0.4,'rgba(100,180,80,0.6)');tg.addColorStop(1,'rgba(60,140,70,0.2)');
-    ctx.strokeStyle=tg;ctx.lineWidth=8+l*3.5;ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-3,-trH*0.4,3,-trH*0.7,0,-trH);ctx.stroke();
-
-    const bc=Math.min(l*2,8);
-    for(let b=0;b<bc;b++){
-      const sd=b%2===0?-1:1,by=-trH*(0.3+b*0.1),bl=18+l*5-b*2;
-      const bsw=Math.sin(treeT*0.04+b*0.7)*0.06*(4-Math.min(b,3));
-      ctx.save();ctx.translate(sd*3,by);ctx.rotate(bsw);
-      const bg=ctx.createLinearGradient(0,0,sd*bl,-bl*0.4);
-      bg.addColorStop(0,'rgba(180,140,50,0.7)');bg.addColorStop(1,'rgba(60,150,70,0.2)');
-      ctx.strokeStyle=bg;ctx.lineWidth=Math.max(1.5,4-b*0.6);ctx.lineCap='round';
-      ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(sd*bl*0.6,-bl*0.2,sd*bl,-bl*0.45);ctx.stroke();
-      ctx.restore();
-    }
-
-    ctx.save();ctx.translate(0,-trH);ctx.rotate(Math.sin(treeT*0.025)*0.018*Math.max(1,3-l));
-    const cg=ctx.createRadialGradient(0,0,0,0,0,cR*1.5);
-    cg.addColorStop(0,`rgba(34,197,94,${(0.1+l*0.02)*breathe})`);cg.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=cg;ctx.beginPath();ctx.arc(0,0,cR*1.5,0,Math.PI*2);ctx.fill();
-
-    const lg=6+l*4;
-    for(let i=0;i<lg;i++){
-      const a=(i/lg)*Math.PI*2+Math.sin(treeT*0.02+i)*0.04,r=cR*(0.4+Math.sin(i*2.3)*0.35);
-      const lx2=Math.cos(a)*r,ly2=Math.sin(a)*r*0.75,gs=8+l*3+(i%3)*4;
-      const cols=['#166534','#15803d','#16a34a','#22c55e','#4ade80'];
-      ctx.fillStyle=cols[Math.min(l,cols.length-1)];
-      ctx.beginPath();ctx.ellipse(lx2,ly2,gs,gs*0.65,a+Math.sin(treeT*0.02+i)*0.05,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='rgba(134,239,172,0.2)';
-      ctx.beginPath();ctx.ellipse(lx2-gs*0.2,ly2-gs*0.2,gs*0.45,gs*0.3,a,0,Math.PI*2);ctx.fill();
-    }
-
-    const pc=20+l*20;
-    for(let i=0;i<pc;i++){
-      const a=i*137.508*Math.PI/180+treeT*0.005,r=4+(i%7)*(cR/7);
-      ctx.fillStyle=i%7===0?'rgba(253,224,71,0.85)':i%3===0?'rgba(167,243,208,0.65)':'rgba(74,222,128,0.32)';
-      ctx.beginPath();ctx.arc(Math.cos(a)*r,Math.sin(a)*r*0.78,i%7===0?3.2:i%3===0?2:1.3,0,Math.PI*2);ctx.fill();
-    }
-
-    const sc=Math.min(l+1,7);
-    for(let i=0;i<sc;i++){
-      const a=(i/sc)*Math.PI*2+treeT*0.008,r=cR*(0.5+(i%2)*0.4);
-      ctx.fillStyle='rgba(253,224,71,0.8)';ctx.font=`${10+(i%2)*4}px serif`;
-      ctx.fillText('✦',Math.cos(a)*r-5,Math.sin(a)*r*0.72+4);
-    }
-    ctx.restore();
-    ctx.restore();
-
-    // 外圍漂浮粒子
-    for(let i=0;i<l*5;i++){
-      const a=(i/(l*5))*Math.PI*2+treeT*0.01*(i%2===0?1:-0.7);
-      const px=cx+Math.cos(a)*(cR+l*8+i%4*10);
-      const py=topY+Math.sin(a)*(cR+l*6+i%4*8)*0.7;
-      const alpha=Math.sin(treeT*0.05+i)*0.3+0.5;
-      ctx.fillStyle=i%3===0?`rgba(253,224,71,${alpha*0.6})`:`rgba(74,222,128,${alpha*0.3})`;
-      ctx.beginPath();ctx.arc(px,py,i%3===0?2:1.2,0,Math.PI*2);ctx.fill();
-    }
-
-    if(pct>=100){
-      for(let ring=0;ring<4;ring++){
-        ctx.save();ctx.translate(cx,topY);ctx.rotate(treeT*0.012*(ring%2===0?1:-0.8));
-        ctx.strokeStyle=`rgba(253,200,70,${(0.55-ring*0.1)*breathe})`;ctx.lineWidth=2-ring*0.4;
-        ctx.beginPath();ctx.ellipse(0,0,cR+16+ring*13,(cR+16+ring*13)*0.82,0,0,Math.PI*2);ctx.stroke();
-        ctx.restore();
-      }
-      for(let i=0;i<12;i++){
-        const a=(i/12)*Math.PI*2+treeT*0.015;
-        ctx.fillStyle=`rgba(253,224,71,${0.7+Math.sin(treeT*0.08+i)*0.25})`;ctx.font='13px serif';
-        ctx.fillText('✦',cx+Math.cos(a)*(cR+35)-6,topY+Math.sin(a)*(cR+35)*0.78+5);
-      }
-    } else if(pct>=50){
-      ctx.save();ctx.translate(cx,topY);ctx.rotate(treeT*0.01);
-      ctx.strokeStyle=`rgba(253,200,70,${(pct-50)/120*breathe})`;ctx.lineWidth=1.2;
-      ctx.beginPath();ctx.ellipse(0,0,cR+20,(cR+20)*0.82,0,0,Math.PI*2);ctx.stroke();
-      ctx.restore();
-    }
   }
 
-  // 浮動粒子
+  // ── 5. Seed (stage 0, fades by gp=0.75) ──
+  const seedA=Math.max(0,1-gp/0.75);
+  if(seedA>0.01){
+    const pulse=0.9+Math.sin(treeT*0.06)*0.1;
+    ctx.save();ctx.globalAlpha=seedA;
+    const sg=ctx.createRadialGradient(cx,gy-20,0,cx,gy-20,26*pulse);
+    sg.addColorStop(0,'rgba(253,200,70,0.38)');sg.addColorStop(0.5,'rgba(253,200,70,0.1)');sg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(cx,gy-20,26*pulse,0,Math.PI*2);ctx.fill();
+    ctx.save();ctx.translate(cx,gy-20);ctx.scale(pulse,pulse);
+    ctx.beginPath();ctx.ellipse(0,0,10,13,-0.25,0,Math.PI*2);
+    const sb=ctx.createRadialGradient(-3,-4,0,0,0,13);
+    sb.addColorStop(0,'#FDE68A');sb.addColorStop(0.45,'#F59E0B');sb.addColorStop(1,'#92400E');
+    ctx.fillStyle=sb;ctx.fill();
+    ctx.strokeStyle='rgba(120,70,20,0.7)';ctx.lineWidth=1.5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(0,13);ctx.quadraticCurveTo(4,20,2,28);ctx.stroke();
+    ctx.restore();ctx.restore();
+  }
+
+  // ── 6. Tree (stage 1+) ──
+  if(trunkH>0.5){
+    const treeA=Math.min(1,gp);
+    ctx.save();ctx.globalAlpha=treeA;
+    ctx.translate(cx,gy);
+    ctx.rotate(Math.sin(treeT*0.025)*0.012*Math.max(1,3-gp));
+
+    // Roots
+    if(rootFade>0.05){
+      const numR=Math.floor(2+gp*0.8);
+      for(let r=0;r<numR;r++){
+        const sd=r%2===0?1:-1,rlen=12+gp*5;
+        ctx.save();ctx.globalAlpha=treeA*rootFade*0.5;
+        ctx.strokeStyle='rgba(120,70,25,0.8)';
+        ctx.lineWidth=Math.max(1,2.5-r*0.5);ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(0,0);
+        ctx.quadraticCurveTo(sd*rlen*0.5,rlen*0.4,sd*rlen,rlen*0.65);
+        ctx.stroke();ctx.restore();
+      }
+    }
+
+    // Trunk
+    const tg=ctx.createLinearGradient(-5,0,5,0);
+    tg.addColorStop(0,`rgba(${isGolden?'175,98,22':'125,75,22'},0.9)`);
+    tg.addColorStop(0.4,`rgba(${isGolden?'218,138,38':'168,108,42'},0.95)`);
+    tg.addColorStop(1,`rgba(${isGolden?'138,72,14':'92,52,16'},0.8)`);
+    ctx.strokeStyle=tg;ctx.lineWidth=6+gp*2.5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-2,-trunkH*0.38,2,-trunkH*0.72,0,-trunkH);ctx.stroke();
+
+    // Branches
+    const numB=Math.floor(gp*2);
+    for(let b=0;b<numB;b++){
+      const sd=b%2===0?-1:1,by=-trunkH*(0.3+Math.floor(b/2)*0.17),bl=16+gp*4-b*2;
+      const bsw=Math.sin(treeT*0.038+b*0.75)*0.05*Math.max(1,4-b);
+      ctx.save();ctx.translate(sd*2,by);ctx.rotate(bsw);
+      const bg=ctx.createLinearGradient(0,0,sd*bl,-bl*0.38);
+      bg.addColorStop(0,`rgba(${isGolden?'175,108,28':'138,82,26'},0.75)`);
+      bg.addColorStop(1,'rgba(50,120,40,0.18)');
+      ctx.strokeStyle=bg;ctx.lineWidth=Math.max(1.2,3.5-b*0.4);ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(0,0);
+      ctx.quadraticCurveTo(sd*bl*0.52,-bl*0.22,sd*bl,-bl*0.42);
+      ctx.stroke();ctx.restore();
+    }
+
+    // Crown
+    if(crownR>1){
+      ctx.save();ctx.translate(0,-trunkH);
+      ctx.rotate(Math.sin(treeT*0.02)*0.01*Math.max(1,3-gp));
+
+      // Halo glow
+      const haloClr=isGolden?'80,160,40':'34,197,94';
+      const halo=ctx.createRadialGradient(0,0,0,0,0,crownR*1.65);
+      halo.addColorStop(0,`rgba(${haloClr},${(0.09+gp*0.016)*breathe})`);
+      halo.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=halo;ctx.beginPath();ctx.arc(0,0,crownR*1.65,0,Math.PI*2);ctx.fill();
+
+      // Leaf clusters
+      const layers=Math.max(1,Math.round(leafLayers));
+      const baseL=5+Math.floor(gp*3.5);
+      const greens=['#14532d','#166534','#15803d','#16a34a','#22c55e','#4ade80'];
+      for(let layer=0;layer<layers;layer++){
+        const lr=crownR*(0.44+layer*0.28);
+        const lc=Math.floor(baseL*(0.5+layer*0.25));
+        for(let i=0;i<lc;i++){
+          const ang=(i/lc)*Math.PI*2+Math.sin(treeT*0.016+i*0.45)*0.05+layer*0.6;
+          const lx=Math.cos(ang)*lr*(0.68+Math.sin(i*2.2)*0.25);
+          const ly=Math.sin(ang)*lr*(0.62+Math.sin(i*1.75)*0.22);
+          const ls=(6+gp*1.8+(i%3)*2.5)*(0.75+sf*0.25);
+          ctx.fillStyle=greens[Math.min(Math.floor(layer+gp*0.4),greens.length-1)];
+          ctx.beginPath();ctx.ellipse(lx,ly,ls,ls*0.68,ang+Math.sin(treeT*0.018+i)*0.04,0,Math.PI*2);ctx.fill();
+          ctx.fillStyle=`rgba(134,239,172,${0.08+gp*0.014})`;
+          ctx.beginPath();ctx.ellipse(lx-ls*0.22,ly-ls*0.22,ls*0.38,ls*0.26,ang,0,Math.PI*2);ctx.fill();
+        }
+      }
+
+      // Sparkle particles
+      const sparkN=Math.floor(12+gp*15);
+      for(let i=0;i<sparkN;i++){
+        const ang=i*137.508*Math.PI/180+treeT*0.005,r=3+(i%8)*(crownR/8);
+        const isG=i%7===0,isB=i%3===0;
+        ctx.fillStyle=isG?`rgba(253,224,71,${0.75+Math.sin(treeT*0.06+i)*0.2})`
+          :isB?`rgba(167,243,208,${0.5+Math.sin(treeT*0.05+i)*0.18})`
+          :`rgba(74,222,128,${0.2+Math.sin(treeT*0.04+i)*0.08})`;
+        ctx.beginPath();ctx.arc(Math.cos(ang)*r,Math.sin(ang)*r*0.78,isG?2.8:isB?1.8:1.1,0,Math.PI*2);ctx.fill();
+      }
+
+      // Floating ✦ stars
+      const starN=Math.min(Math.floor(gp+0.5),7);
+      for(let i=0;i<starN;i++){
+        const a=(i/starN)*Math.PI*2+treeT*0.009,r=crownR*(0.42+(i%2)*0.46);
+        ctx.fillStyle=`rgba(253,224,71,${0.7+Math.sin(treeT*0.07+i)*0.25})`;
+        ctx.font=`${9+(i%2)*4}px serif`;
+        ctx.fillText('✦',Math.cos(a)*r-5,Math.sin(a)*r*0.75+4);
+      }
+
+      // Golden fruits (stage 5+)
+      if(fruitCnt>0.5){
+        const fc=Math.round(fruitCnt);
+        for(let i=0;i<fc;i++){
+          const fa=(i/fc)*Math.PI*2+Math.sin(treeT*0.025+i*0.8)*0.06;
+          const fr=crownR*(0.28+(i%3)*0.23);
+          const fx=Math.cos(fa)*fr,fy=Math.sin(fa)*fr*0.78;
+          const pulse=0.88+Math.sin(treeT*0.055+i*1.3)*0.12;
+          const fgG=ctx.createRadialGradient(fx,fy,0,fx,fy,8*pulse);
+          fgG.addColorStop(0,'rgba(253,200,70,0.4)');fgG.addColorStop(1,'rgba(0,0,0,0)');
+          ctx.fillStyle=fgG;ctx.beginPath();ctx.arc(fx,fy,8*pulse,0,Math.PI*2);ctx.fill();
+          const fbG=ctx.createRadialGradient(fx-1.5,fy-1.5,0,fx,fy,5*pulse);
+          fbG.addColorStop(0,'#FDE68A');fbG.addColorStop(0.5,'#F59E0B');fbG.addColorStop(1,'#B45309');
+          ctx.fillStyle=fbG;ctx.beginPath();ctx.arc(fx,fy,4.5*pulse,0,Math.PI*2);ctx.fill();
+          ctx.strokeStyle='rgba(74,108,30,0.8)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(fx,fy-4.5*pulse);ctx.quadraticCurveTo(fx+2,fy-7,fx+3,fy-9);ctx.stroke();
+        }
+      }
+
+      // Crown glow rings (stage 5+)
+      if(gp>=5){
+        const rc=Math.floor((gp-4)*1.4);
+        for(let r=0;r<rc;r++){
+          ctx.save();ctx.rotate(treeT*0.009*(r%2===0?1:-0.75));
+          ctx.strokeStyle=`rgba(253,200,70,${(0.42-r*0.07)*breathe})`;
+          ctx.lineWidth=1.5-r*0.22;
+          ctx.beginPath();ctx.ellipse(0,0,crownR+13+r*14,(crownR+13+r*14)*0.82,0,0,Math.PI*2);ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      ctx.restore(); // crown
+    }
+    ctx.restore(); // tree
+    ctx.restore(); // treeA
+  }
+
+  // ── 7. Ambient floating particles ──
   treeParticles.forEach(p=>{
     p.angle+=p.speed;
     const px=cx+Math.cos(p.angle)*p.dist,py=topY+Math.sin(p.angle)*p.dist*0.7;
     const a=p.alpha*(Math.sin(treeT*p.drift+p.phase)*0.35+0.65);
-    ctx.fillStyle=p.gold?`rgba(253,224,71,${a})`:`rgba(74,222,128,${a*0.6})`;
+    ctx.fillStyle=p.gold?`rgba(253,224,71,${a})`:`rgba(74,222,128,${a*0.55})`;
     ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);ctx.fill();
   });
+
+  // ── 8. Goal-reached outer rings ──
+  if(pct>=100&&gp>=3){
+    for(let ring=0;ring<4;ring++){
+      ctx.save();ctx.translate(cx,topY);ctx.rotate(treeT*0.01*(ring%2===0?1:-0.8));
+      ctx.strokeStyle=`rgba(253,200,70,${(0.48-ring*0.08)*breathe})`;ctx.lineWidth=1.6-ring*0.3;
+      ctx.beginPath();ctx.ellipse(0,0,crownR+18+ring*14,(crownR+18+ring*14)*0.82,0,0,Math.PI*2);ctx.stroke();
+      ctx.restore();
+    }
+  }else if(pct>=50&&gp>=2){
+    ctx.save();ctx.translate(cx,topY);ctx.rotate(treeT*0.01);
+    ctx.strokeStyle=`rgba(253,200,70,${(pct-50)/120*breathe})`;ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.ellipse(0,0,crownR+18,(crownR+18)*0.82,0,0,Math.PI*2);ctx.stroke();
+    ctx.restore();
+  }
 }
 
 // ── 澆花動畫 ──
@@ -9114,14 +9337,38 @@ function playWateringAnimation() {
   animFrame();
 }
 
-function animateTree(levelIdx, leafCount, pct){
+function animateTree(levelIdx, leafCount, pct, gp){
   if(treeRaf) cancelAnimationFrame(treeRaf);
   function loop(){
     treeT++;
-    drawWealthTree(levelIdx, leafCount, pct);
+    drawWealthTree(levelIdx, leafCount, pct, gp);
     treeRaf=requestAnimationFrame(loop);
   }
   loop();
+}
+
+// ── 財富之樹 預覽系統 ──
+let _treePreviewActive = false;
+
+function previewTreeStage(idx) {
+  _treePreviewActive = true;
+  const gp = idx;
+  const sampleLeaves = TREE_LEVELS[idx].leaves + 8;
+  // 所有 .tree-preview-btn 的 active 狀態
+  document.querySelectorAll('.tree-preview-btn').forEach(btn => {
+    btn.classList.toggle('tpb-active', +btn.dataset.tpb === idx);
+  });
+  // 所有「返回」按鈕顯示
+  document.querySelectorAll('.tree-preview-exit').forEach(el => el.style.display = 'inline');
+  spawnTreeParticles(gp);
+  animateTree(idx, sampleLeaves, 50, gp);
+}
+
+function exitTreePreview() {
+  _treePreviewActive = false;
+  document.querySelectorAll('.tree-preview-btn').forEach(btn => btn.classList.remove('tpb-active'));
+  document.querySelectorAll('.tree-preview-exit').forEach(el => el.style.display = 'none');
+  updateWealthTree();
 }
 
 
@@ -9201,8 +9448,17 @@ function updateWealthTree() {
   }
   document.getElementById('tree-progress-bar').style.width = progress + '%';
 
-  spawnTreeParticles(levelIdx);
-  animateTree(levelIdx, leafCount, pct);
+  // Calculate continuous global progress (float 0.0–7.0) for smooth tree growth
+  let gp;
+  if(!nextLevel){
+    gp=TREE_LEVELS.length-1;
+  }else{
+    const assetProg=nextLevel.minAssets>0?Math.min(1,assetCount/nextLevel.minAssets):1;
+    const dayProg=nextLevel.minDays>0?Math.min(1,days/nextLevel.minDays):1;
+    gp=levelIdx+Math.min(assetProg,dayProg);
+  }
+  spawnTreeParticles(gp);
+  animateTree(levelIdx, leafCount, pct, gp);
   if (window.innerWidth <= 768 && typeof syncMobileTree === 'function') syncMobileTree();
 }
 
@@ -11177,15 +11433,31 @@ function initMobileHome() {
         <!-- 月收入輸入 -->
         <div class="jars-income-row">
           <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
-          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars();updateJarDepConvertPreview()" onchange="updateJars();updateJarDepConvertPreview()">
+          <select id="jars-income-cur" class="jar-dep-cur-sel" onchange="onJarDepCurChange(this.value)">
+            <option value="TWD">NT$ TWD</option>
+            <option value="USD">$ USD</option>
+            <option value="JPY">¥ JPY</option>
+            <option value="EUR">€ EUR</option>
+            <option value="CNY">¥ CNY</option>
+            <option value="HKD">HK$ HKD</option>
+            <option value="SGD">S$ SGD</option>
+            <option value="GBP">£ GBP</option>
+            <option value="AUD">A$ AUD</option>
+            <option value="MYR">RM MYR</option>
+            <option value="KRW">₩ KRW</option>
+            <option value="CAD">C$ CAD</option>
+          </select>
           <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         </div>
+        <div class="jar-dep-convert-row" id="jar-dep-convert-row">⟳ 換算中...</div>
         <!-- 合計提示 -->
         <div class="jars-total-row ok" id="jars-total-row">
           <span id="jars-total-label">合計 100% ✓</span>
           <span id="jars-total-diff"></span>
         </div>
+        <!-- 罐子圖式 -->
+        <div id="jars-visual-row" class="jar-visual-row"></div>
         <!-- 六個罐子卡片 -->
         <div id="jars-cards"></div>
         <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
@@ -11358,11 +11630,25 @@ function initMobileHome() {
     <!-- 財富樹 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title" data-i18n="tree.title">🌳 財富之樹</div>
-      <div id="mobile-tree-badge" onclick="showTreeStagesModal()" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px;cursor:pointer;" data-i18n="tree.level.0">🌱 樹苗期 ›</div>
+      <div id="mobile-tree-badge" onclick="showTreeStagesModal()" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px;cursor:pointer;" data-i18n="tree.level.0">🌟 覺醒種子 ›</div>
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;margin-bottom:10px">
-      <div id="mobile-tree-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:10px;min-height:200px;align-items:center">
+      <div id="mobile-tree-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:6px;min-height:200px;align-items:center">
         <!-- 財富樹 canvas 會在切換到夢想頁時移入這裡 -->
+      </div>
+      <div class="tree-preview-row" style="margin-bottom:10px">
+        <div class="tree-preview-row-label">👁 預覽各時期</div>
+        <div class="tree-preview-btns">
+          <span class="tree-preview-btn" data-tpb="0" onclick="previewTreeStage(0)">🌟 種子</span>
+          <span class="tree-preview-btn" data-tpb="1" onclick="previewTreeStage(1)">🌱 萌芽</span>
+          <span class="tree-preview-btn" data-tpb="2" onclick="previewTreeStage(2)">🌿 扎根</span>
+          <span class="tree-preview-btn" data-tpb="3" onclick="previewTreeStage(3)">🌲 共振</span>
+          <span class="tree-preview-btn" data-tpb="4" onclick="previewTreeStage(4)">🌳 汲盛</span>
+          <span class="tree-preview-btn" data-tpb="5" onclick="previewTreeStage(5)">✨ 豐盛</span>
+          <span class="tree-preview-btn" data-tpb="6" onclick="previewTreeStage(6)">💎 智慧</span>
+          <span class="tree-preview-btn" data-tpb="7" onclick="previewTreeStage(7)">👑 覺醒</span>
+          <span class="tree-preview-exit" onclick="exitTreePreview()" style="display:none">✕ 返回</span>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
         <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;text-align:center">
