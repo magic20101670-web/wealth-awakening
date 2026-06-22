@@ -138,6 +138,16 @@ select option { background: #0d2318; }
 .quote-card { position:relative; z-index:1; margin-bottom:20px; padding:20px 28px; border-radius:20px; background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(34,197,94,0.04)); border:1px solid rgba(212,175,55,0.12); }
 .quote-label { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:rgba(212,175,55,0.6); font-family:'DM Mono',monospace; margin-bottom:8px; }
 .quote-text { display:block; font-family:'DM Serif Display',serif; font-size:17px; color:var(--text); line-height:1.7; margin-bottom:6px; }
+.freq-card-scene { perspective:800px; cursor:pointer; min-height:80px; }
+.freq-card-scene-mobile { min-height:56px; }
+.freq-card-inner { position:relative; width:100%; height:100%; min-height:inherit; transition:transform 0.7s cubic-bezier(0.4,0,0.2,1); transform-style:preserve-3d; }
+.freq-card-inner.flipped { transform:rotateY(180deg); }
+.freq-card-front,.freq-card-back { position:absolute; top:0; left:0; width:100%; height:100%; min-height:inherit; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:14px; }
+.freq-card-front { background:linear-gradient(135deg,rgba(240,208,96,0.1),rgba(212,175,55,0.05)); border:1px dashed rgba(240,208,96,0.3); }
+.freq-card-front:hover { background:linear-gradient(135deg,rgba(240,208,96,0.18),rgba(212,175,55,0.1)); }
+.freq-card-back { transform:rotateY(180deg); background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(212,175,55,0.05)); border:1px solid rgba(212,175,55,0.15); padding:14px 18px; text-align:center; }
+@keyframes cardGlow { 0%{box-shadow:0 0 8px rgba(240,208,96,0.2)} 50%{box-shadow:0 0 20px rgba(240,208,96,0.4)} 100%{box-shadow:0 0 8px rgba(240,208,96,0.2)} }
+.freq-card-front { animation:cardGlow 2.5s ease-in-out infinite; }
 .quote-author { display:block; font-size:11px; color:var(--muted); letter-spacing:0.06em; }
 
 /* Wealth Level Card */
@@ -168,6 +178,9 @@ select option { background: #0d2318; }
 .cashflow-amount { font-family:'DM Mono',monospace;font-size:26px;font-weight:500;color:var(--green);margin-bottom:10px; }
 .cashflow-bar-wrap { height:4px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden; }
 .cashflow-bar-fill { height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);transition:width 1s cubic-bezier(0.23,1,0.32,1); }
+#cf-breakdown-popup { position:fixed;z-index:8888;min-width:280px;max-width:360px;background:#0d1f14;border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.18s ease,transform 0.18s ease;transform:translateY(-4px); }
+#cf-breakdown-popup.cf-popup-visible { opacity:1;pointer-events:auto;transform:translateY(0); }
+[data-theme^="light"] #cf-breakdown-popup { background:#ffffff;border-color:rgba(22,163,74,0.25);box-shadow:0 12px 40px rgba(0,0,0,0.15); }
 /* Cashflow Breakdown */
 .cf-breakdown { display:flex;flex-direction:column;gap:10px;margin-bottom:14px; }
 .cf-row { display:flex;justify-content:space-between;align-items:center;font-size:13px; }
@@ -1889,6 +1902,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 .ffa-goto-btn{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);border-radius:12px;cursor:pointer;margin-top:10px;width:100%;font-family:'DM Sans',sans-serif}
 .ffa-goto-label{font-size:13px;color:#facc15;font-weight:600;flex:1;text-align:left}
 
+
 </style>
 </head>
 <body>
@@ -3143,9 +3157,10 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       <div class="logo-sub">個人財富覺醒系統</div>
     </div>
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-      <div id="wealth-level-badge" class="wealth-level-badge" style="display:none">
+      <div id="wealth-level-badge" class="wealth-level-badge" style="display:none;cursor:pointer;position:relative" onclick="toggleWealthLevelCard(event)">
         <span id="wl-icon">🌱</span>
         <span id="wl-label">Observer</span>
+        <div id="wl-popup" style="display:none;position:absolute;top:calc(100% + 10px);left:0;background:#0d1f13;border:1px solid rgba(212,175,55,0.25);border-radius:16px;padding:18px;width:520px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.5);"></div>
       </div>
       <div id="badge" class="badge" data-i18n="badge.connecting">⬤ 連線中...</div>
       <div class="user-bar" id="user-bar" style="display:none">
@@ -3223,9 +3238,18 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div class="color-picker-row">
       <span data-i18n="profile.currency" style="white-space:nowrap;margin-right:10px">顯示幣別</span>
       <select id="currency-select-desktop" onchange="setCurrency(this.value)" style="background:var(--card-bg);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-family:'DM Sans',sans-serif">
-        <option value="TWD" data-i18n="currency.TWD">台幣 TWD (NT$)</option>
-        <option value="MYR" data-i18n="currency.MYR">馬幣 MYR (RM)</option>
-        <option value="USD" data-i18n="currency.USD">美元 USD ($)</option>
+        <option value="TWD">台幣 TWD (NT$)</option>
+        <option value="USD">美元 USD ($)</option>
+        <option value="JPY">日圓 JPY (¥)</option>
+        <option value="EUR">歐元 EUR (€)</option>
+        <option value="CNY">人民幣 CNY (¥)</option>
+        <option value="HKD">港幣 HKD (HK$)</option>
+        <option value="SGD">新幣 SGD (S$)</option>
+        <option value="GBP">英鎊 GBP (£)</option>
+        <option value="AUD">澳幣 AUD (A$)</option>
+        <option value="MYR">馬幣 MYR (RM)</option>
+        <option value="KRW">韓圜 KRW (₩)</option>
+        <option value="CAD">加幣 CAD (C$)</option>
       </select>
     </div>
   </div>
@@ -3235,7 +3259,18 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
           <div class="quote-label" data-i18n="home.dailyQuote.label">Today's Wealth Frequency</div>
           <div id="personality-badge-quote" style="display:none;font-size:12px;color:rgba(240,208,96,0.8);background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.18);border-radius:20px;padding:3px 12px;letter-spacing:0.04em"></div>
         </div>
-        <div class="quote-text" id="quote-text"></div>
+        <div class="freq-card-scene" id="freq-card-scene" onclick="drawDailyCard()">
+          <div class="freq-card-inner" id="freq-card-inner">
+            <div class="freq-card-front">
+              <div style="font-size:32px;margin-bottom:8px">🔮</div>
+              <div style="font-size:13px;color:rgba(240,208,96,0.9);font-weight:600" data-i18n="home.dailyQuote.draw">點擊抽取今日頻率</div>
+            </div>
+            <div class="freq-card-back">
+              <div style="font-size:18px;margin-bottom:6px">✨</div>
+              <div class="quote-text" id="quote-text" style="margin-bottom:0"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="ring-wrap" style="flex:1;justify-content:center">
         <div class="freedom-label" data-i18n="home.freedomIndex" style="text-align:center;margin-bottom:12px">人生選擇權指數</div>
@@ -3261,7 +3296,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <div class="freedom-desc" id="freedom-desc" style="text-align:center;font-size:12px;margin-top:10px">月非薪資收入 NT$0 · 目標 NT$100,000</div>
       </div>
       <div class="quote-cashflow-col" style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px">
-        <div class="card cashflow-card" style="padding:14px 16px;margin-bottom:0">
+        <div class="card cashflow-card" id="cashflow-spring-card" style="padding:14px 16px;margin-bottom:0;cursor:default" title="滑鼠移入查看明細">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
             <div class="cashflow-icon" style="width:30px;height:30px;font-size:15px;border-radius:10px">💧</div>
             <div>
@@ -3412,28 +3447,14 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div id="jars-desktop-body" style="margin-top:16px">
       <div class="jars-income-row">
         <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-        <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars();updateJarDepConvertPreview()" onchange="updateJars();updateJarDepConvertPreview()">
-        <select id="jars-income-cur" class="jar-dep-cur-sel" onchange="onJarDepCurChange(this.value)">
-          <option value="TWD">NT$ TWD</option>
-          <option value="USD">$ USD</option>
-          <option value="JPY">¥ JPY</option>
-          <option value="EUR">€ EUR</option>
-          <option value="CNY">¥ CNY</option>
-          <option value="HKD">HK$ HKD</option>
-          <option value="SGD">S$ SGD</option>
-          <option value="GBP">£ GBP</option>
-          <option value="AUD">A$ AUD</option>
-          <option value="MYR">RM MYR</option>
-          <option value="KRW">₩ KRW</option>
-          <option value="CAD">C$ CAD</option>
-        </select>
+        <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
+        <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
         <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         <div class="jars-total-row ok" id="jars-total-row" style="margin-bottom:0;flex-shrink:0;white-space:nowrap">
           <span id="jars-total-label">合計 100% ✓</span>
           <span id="jars-total-diff"></span>
         </div>
       </div>
-      <div class="jar-dep-convert-row" id="jar-dep-convert-row">⟳ 換算中...</div>
       <div id="jars-visual-row" class="jar-visual-row"></div>
       <div id="jars-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"></div>
       <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
@@ -3441,16 +3462,16 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     </div>
   </div>
 
-  <!-- Cashflow Breakdown -->
-  <div class="card" style="position:relative;z-index:1">
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;letter-spacing:0.04em" data-i18n="cf.title">💰 現金流來源明細</div>
+  <!-- Cashflow Breakdown Popup（hover 現金流：生存之泉 才顯示） -->
+  <div id="cf-breakdown-popup">
+    <div style="font-size:12px;font-weight:700;color:#86efac;margin-bottom:12px;letter-spacing:0.04em" data-i18n="cf.title">💰 現金流來源明細</div>
     <div id="cf-breakdown" class="cf-breakdown">
       <div class="cf-row cf-header">
         <span data-i18n="cf.source">來源</span>
         <span data-i18n="cf.monthly">每月</span>
       </div>
     </div>
-    <div class="cf-total-row">
+    <div class="cf-total-row" style="margin-bottom:0">
       <span data-i18n="cf.total">合計</span>
       <span id="cf-total-val" style="color:var(--green);font-family:'DM Mono',monospace">NT$ 0 / 月</span>
     </div>
@@ -3525,7 +3546,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
   </div>
 
   <!-- Wealth Level -->
-  <div class="card wealth-level-card" style="padding:16px 20px">
+  <div class="card wealth-level-card" id="wealth-level-card" style="padding:16px 20px;display:none">
     <div style="display:flex;align-items:center;gap:10px">
       <span style="font-size:14px">👑</span>
       <div style="flex:1">
@@ -3908,6 +3929,27 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
+function toggleWealthLevelCard(e) {
+  if (e) e.stopPropagation();
+  var popup = document.getElementById('wl-popup');
+  if (!popup) return;
+  if (popup.style.display === 'block') {
+    popup.style.display = 'none';
+  } else {
+    var src = document.getElementById('wealth-level-card');
+    if (src) popup.innerHTML = src.innerHTML;
+    popup.style.display = 'block';
+  }
+}
+document.addEventListener('click', function(e) {
+  var popup = document.getElementById('wl-popup');
+  var badge = document.getElementById('wealth-level-badge');
+  if (popup && popup.style.display === 'block' && !popup.contains(e.target) && !badge.contains(e.target)) {
+    popup.style.display = 'none';
+  }
+});
+window.toggleWealthLevelCard = toggleWealthLevelCard;
+
 function showPersonalityPopup() {}
 function hidePersonalityPopup() {}
 function togglePersonalityPopup(e) {
@@ -4426,7 +4468,7 @@ const TRANSLATIONS = {
     'home.assetValue.title':'資產值：增長之林','home.assetValue.sub':'一次性帳面獲利 — 資產增長指標',
     'home.assetValue.pnlFmt':'總損益 {pct}',
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'萌芽中','home.stage.growing':'成長中','home.stage.flowing':'流動中','home.stage.almost':'快到了','home.stage.free':'✦ 自由',
-    'home.dailyQuote.label':'今日財富頻率',
+    'home.dailyQuote.label':'今日財富頻率','home.dailyQuote.draw':'點擊抽取今日頻率',
     'home.personalityPrompt.title':'找出你的財富人格','home.personalityPrompt.desc':'5個問題，看看你是哪一種財富原型，讓建議更貼近你','home.personalityPrompt.cta':'立即測驗 →',
     'goals.jars.sectionTitle':'六個罐子 · 收入分配',
     'goals.jars.title':'💰🫙 六個罐子系統','goals.jars.titleDesktop':'💰🫙 六個罐子 · 收入分配系統',
@@ -4651,7 +4693,7 @@ const TRANSLATIONS = {
     'home.assetValue.title':'资产值：增长之林','home.assetValue.sub':'一次性账面获利 — 资产增长指标',
     'home.assetValue.pnlFmt':'总损益 {pct}',
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'萌芽中','home.stage.growing':'成长中','home.stage.flowing':'流动中','home.stage.almost':'快到了','home.stage.free':'✦ 自由',
-    'home.dailyQuote.label':'今日财富频率',
+    'home.dailyQuote.label':'今日财富频率','home.dailyQuote.draw':'点击抽取今日频率',
     'home.personalityPrompt.title':'找出你的财富人格','home.personalityPrompt.desc':'5个问题，看看你是哪一种财富原型，让建议更贴近你','home.personalityPrompt.cta':'立即测验 →',
     'goals.jars.sectionTitle':'六个罐子 · 收入分配',
     'goals.jars.title':'💰🫙 六个罐子系统','goals.jars.titleDesktop':'💰🫙 六个罐子 · 收入分配系统',
@@ -4876,7 +4918,7 @@ const TRANSLATIONS = {
     'home.assetValue.title':'Asset Value: Forest of Growth','home.assetValue.sub':'One-time paper gain — asset growth indicator',
     'home.assetValue.pnlFmt':'Total P&L {pct}',
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'Sprouting','home.stage.growing':'Growing','home.stage.flowing':'Flowing','home.stage.almost':'Almost there','home.stage.free':'✦ Free',
-    'home.dailyQuote.label':"Today's Wealth Frequency",
+    'home.dailyQuote.label':"Today's Wealth Frequency",'home.dailyQuote.draw':'Tap to draw today\'s frequency',
     'home.personalityPrompt.title':'Discover Your Wealth Personality','home.personalityPrompt.desc':'Answer 5 quick questions to find your wealth archetype and get advice tailored to you','home.personalityPrompt.cta':'Take the Quiz →',
     'goals.jars.sectionTitle':'Six Jars · Income Allocation',
     'goals.jars.title':'💰🫙 The Six Jars System','goals.jars.titleDesktop':'💰🫙 Six Jars · Income Allocation System',
@@ -5143,39 +5185,47 @@ function applyTranslations() {
   try { if (window.syncMobileUI) window.syncMobileUI(); } catch (e) { console.error('syncMobileUI failed:', e); }
 }
 
-// ── 顯示幣別匯率（TWD/MYR/USD，6小時快取）──
-let usdMyr = 4.7; // 預設值，啟動時自動更新
-const FX_DISPLAY_CACHE_KEY = 'wealthFxDisplayRates';
+// ── 顯示幣別匯率（12 種幣別，Frankfurter API，6小時快取）──
+let usdMyr = 4.7; // 保留相容性
+const FX_DISPLAY_CACHE_KEY = 'wealthFxDisplayRates2';
+// _fxFromTWD: 1 TWD = ? 各幣別，預設值
+const _fxFromTWD = { USD:0.0317, JPY:4.78, EUR:0.029, CNY:0.23, HKD:0.247, SGD:0.043, GBP:0.025, AUD:0.049, MYR:0.149, KRW:43.5, CAD:0.044 };
+
 async function fetchDisplayFxRates() {
   try {
     const cached = JSON.parse(localStorage.getItem(FX_DISPLAY_CACHE_KEY) || 'null');
-    if (cached && Date.now() - cached.ts < 6 * 60 * 60 * 1000) {
-      if (cached.usdMyr) usdMyr = cached.usdMyr;
+    if (cached && cached.rates && Date.now() - cached.ts < 6 * 60 * 60 * 1000) {
+      Object.assign(_fxFromTWD, cached.rates);
+      usdMyr = (_fxFromTWD.MYR || 4.7) / (_fxFromTWD.USD || 0.0317);
       return;
     }
   } catch {}
   try {
-    const d = await (await fetch('https://api.twelvedata.com/price?symbol=USD/MYR&apikey=0951bf8e44414a5287b72f739dc3ad70')).json();
-    const r = parseFloat(d.price);
-    if (r > 2 && r < 10) usdMyr = r;
+    const targets = 'USD,JPY,EUR,CNY,HKD,SGD,GBP,AUD,MYR,KRW,CAD';
+    const d = await (await fetch(`https://api.frankfurter.app/latest?from=TWD&to=${targets}`)).json();
+    if (d.rates) {
+      Object.assign(_fxFromTWD, d.rates);
+      usdMyr = (_fxFromTWD.MYR || 4.7) / (_fxFromTWD.USD || 0.0317);
+      localStorage.setItem(FX_DISPLAY_CACHE_KEY, JSON.stringify({ rates: _fxFromTWD, ts: Date.now() }));
+    }
   } catch {}
-  try { localStorage.setItem(FX_DISPLAY_CACHE_KEY, JSON.stringify({ usdMyr, ts: Date.now() })); } catch {}
 }
 fetchDisplayFxRates();
 
 // 將一個 TWD 金額換算為使用者選擇的顯示幣別（純數字，不含符號）
 function convertCurrency(amountTWD) {
   const num = +amountTWD || 0;
-  if (currentCurrency === 'USD') return num / usdTwd;
-  if (currentCurrency === 'MYR') return num / usdTwd * usdMyr;
-  return num;
+  if (currentCurrency === 'TWD') return num;
+  const rate = _fxFromTWD[currentCurrency];
+  return rate ? num * rate : num;
 }
 window.convertCurrency = convertCurrency;
 
 // 將一個 TWD 金額換算並格式化為使用者選擇的顯示幣別
 function formatCurrency(amountTWD) {
   const val = convertCurrency(amountTWD);
-  const decimals = currentCurrency === 'TWD' ? 0 : 2;
+  const noDecimals = ['TWD','JPY','KRW','CNY'];
+  const decimals = noDecimals.includes(currentCurrency) ? 0 : 2;
   return currencySymbol() + val.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
@@ -5190,11 +5240,10 @@ function fitStatValue(el) {
   }
 }
 
-// 回傳目前顯示幣別的符號（NT$ / RM / US$）
+// 回傳目前顯示幣別的符號
+const _curSymbols = { TWD:'NT$', USD:'US$', JPY:'¥', EUR:'€', CNY:'¥', HKD:'HK$', SGD:'S$', GBP:'£', AUD:'A$', MYR:'RM', KRW:'₩', CAD:'C$' };
 function currencySymbol() {
-  if (currentCurrency === 'USD') return 'US$';
-  if (currentCurrency === 'MYR') return 'RM';
-  return 'NT$';
+  return _curSymbols[currentCurrency] || currentCurrency;
 }
 
 async function setLanguage(lang) {
@@ -5252,6 +5301,38 @@ window.t = t;
 // which close over later-declared `const`/`let` bindings (JARS_DEFAULTS, dreams) that
 // are still in their temporal dead zone during this synchronous top-level pass.
 setTimeout(applyTranslations, 0);
+
+// ── 現金流來源明細 popup hover ──
+(function initCfPopup() {
+  let _cfPopupTimer = null;
+  function showCfPopup() {
+    clearTimeout(_cfPopupTimer);
+    const trigger = document.getElementById('cashflow-spring-card');
+    const popup = document.getElementById('cf-breakdown-popup');
+    if (!trigger || !popup) return;
+    const rect = trigger.getBoundingClientRect();
+    // 定位在卡片正下方，靠左對齊
+    popup.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+    popup.style.left = Math.max(8, rect.left + window.scrollX) + 'px';
+    popup.style.width = Math.max(rect.width, 280) + 'px';
+    popup.classList.add('cf-popup-visible');
+  }
+  function hideCfPopup(delay) {
+    _cfPopupTimer = setTimeout(() => {
+      const popup = document.getElementById('cf-breakdown-popup');
+      if (popup) popup.classList.remove('cf-popup-visible');
+    }, delay || 120);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.getElementById('cashflow-spring-card');
+    const popup = document.getElementById('cf-breakdown-popup');
+    if (!trigger || !popup) return;
+    trigger.addEventListener('mouseenter', showCfPopup);
+    trigger.addEventListener('mouseleave', () => hideCfPopup(120));
+    popup.addEventListener('mouseenter', () => clearTimeout(_cfPopupTimer));
+    popup.addEventListener('mouseleave', () => hideCfPopup(80));
+  });
+})();
 
 // ── State ──
 
@@ -5557,6 +5638,7 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
       let tc3 = 0; assets.forEach(a=>tc3+=a.monthlyIncome||0);
       showCelebration(name, Math.min(100,Math.floor(tc3/goal3*100)), reIncome, 'realestate', 0);
       setTimeout(playWateringAnimation, 500);
+      setTimeout(() => { if (window.foxReact) window.foxReact(reIncome > 0 ? 'assetWithIncome' : 'assetNoIncome', name); }, 1500);
       ['re-type','re-layout','re-location','re-buy','re-income'].forEach(id=>{ const el=document.getElementById(id); el.value=''; });
       // 關閉新增資產 modal（如果有開啟）
       if (document.getElementById('mobile-form-modal')) {
@@ -5646,6 +5728,7 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
     let tc2 = 0; assets.forEach(a=>tc2+=a.monthlyIncome||0);
     showCelebration(selName, Math.min(100,Math.floor(tc2/goal2*100)), income, cat, premiumMonthly);
     setTimeout(playWateringAnimation, 500);
+    setTimeout(() => { if (window.foxReact) window.foxReact(income > 0 ? 'assetWithIncome' : 'assetNoIncome', selName); }, 1500);
     document.getElementById('sym-input').value='';
     const ri = document.getElementById('reason-input');
     if (ri) ri.value = '';
@@ -7153,13 +7236,62 @@ const QUOTES = [
   { 'zh-TW':'財富不是比較，而是與自己的未來對齊。🧭', 'zh-CN':'财富不是比较，而是与自己的未来对齐。🧭', 'en':"Wealth isn't about comparison — it's about aligning with your own future. 🧭" },
   { 'zh-TW':'當內在穩定，外在資產才會持續成長。⚖️', 'zh-CN':'当内在稳定，外在资产才会持续成长。⚖️', 'en':"When you're stable within, your outer assets can keep growing. ⚖️" },
   { 'zh-TW':'覺察你的金錢流動，也是在覺察你的人生方向。🌊', 'zh-CN':'觉察你的金钱流动，也是在觉察你的人生方向。🌊', 'en':'Being aware of your money flow is being aware of your life direction. 🌊' },
+  { 'zh-TW':'讓資產為你說話，而不是用時間換薪水。🗣️', 'zh-CN':'让资产为你说话，而不是用时间换薪水。🗣️', 'en':'Let your assets speak for you instead of trading time for a paycheck. 🗣️' },
+  { 'zh-TW':'富有的習慣，從每一個微小的選擇開始。🔗', 'zh-CN':'富有的习惯，从每一个微小的选择开始。🔗', 'en':'Wealthy habits start from every tiny choice you make. 🔗' },
+  { 'zh-TW':'現金流是你財務生命的脈搏，保持它跳動。💓', 'zh-CN':'现金流是你财务生命的脉搏，保持它跳动。💓', 'en':'Cash flow is the pulse of your financial life — keep it beating. 💓' },
+  { 'zh-TW':'別等到準備好才開始，開始了才會準備好。🏃', 'zh-CN':'别等到准备好才开始，开始了才会准备好。🏃', 'en':"Don't wait until you're ready to start — start and you'll become ready. 🏃" },
+  { 'zh-TW':'每一塊錢都是一個小兵，派它去幫你打仗。⚔️', 'zh-CN':'每一块钱都是一个小兵，派它去帮你打仗。⚔️', 'en':'Every dollar is a tiny soldier — send it out to fight for you. ⚔️' },
+  { 'zh-TW':'恐懼讓人守住窮，勇氣讓人走向富。🦁', 'zh-CN':'恐惧让人守住穷，勇气让人走向富。🦁', 'en':'Fear keeps you poor; courage leads you to wealth. 🦁' },
+  { 'zh-TW':'花時間學習金錢的語言，它會回報你一輩子。📖', 'zh-CN':'花时间学习金钱的语言，它会回报你一辈子。📖', 'en':'Spend time learning the language of money — it will repay you for life. 📖' },
+  { 'zh-TW':'複利需要的不是天才，而是耐心。🐢', 'zh-CN':'复利需要的不是天才，而是耐心。🐢', 'en':"Compounding doesn't need genius — it needs patience. 🐢" },
+  { 'zh-TW':'你今天種下的種子，決定五年後的收穫。🌾', 'zh-CN':'你今天种下的种子，决定五年后的收获。🌾', 'en':'The seeds you plant today determine your harvest in five years. 🌾' },
+  { 'zh-TW':'負債是鎖鏈，現金流是鑰匙。🔑', 'zh-CN':'负债是锁链，现金流是钥匙。🔑', 'en':'Debt is the chain; cash flow is the key. 🔑' },
+  { 'zh-TW':'與其羨慕別人的結果，不如複製他們的習慣。🪜', 'zh-CN':'与其羡慕别人的结果，不如复制他们的习惯。🪜', 'en':"Instead of envying others' results, replicate their habits. 🪜" },
+  { 'zh-TW':'財富的祕密藏在你每天重複做的事情裡。🔄', 'zh-CN':'财富的秘密藏在你每天重复做的事情里。🔄', 'en':'The secret of wealth hides in the things you repeat every day. 🔄' },
+  { 'zh-TW':'讓你的錢比你更努力工作，這才是聰明。🧠', 'zh-CN':'让你的钱比你更努力工作，这才是聪明。🧠', 'en':"Make your money work harder than you do — that's smart. 🧠" },
+  { 'zh-TW':'小溪匯聚成河，小額投資終成財富。🏞️', 'zh-CN':'小溪汇聚成河，小额投资终成财富。🏞️', 'en':'Small streams form rivers; small investments build wealth. 🏞️' },
+  { 'zh-TW':'最好的投資時機是十年前，其次是現在。⏰', 'zh-CN':'最好的投资时机是十年前，其次是现在。⏰', 'en':'The best time to invest was ten years ago. The second best is now. ⏰' },
 ];
-function showDailyQuote() {
+function getDailyQuote() {
   const now = new Date();
-  const dayOfYear = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
-  const q = QUOTES[dayOfYear % QUOTES.length];
-  document.getElementById('quote-text').textContent = q[currentLang] || q['zh-TW'];
+  const todayKey = now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate();
+  let idx = localStorage.getItem('freqCardIdx_' + todayKey);
+  if (idx === null) {
+    idx = Math.floor(Math.random() * QUOTES.length);
+    localStorage.setItem('freqCardIdx_' + todayKey, idx);
+  }
+  return QUOTES[parseInt(idx)];
 }
+function showDailyQuote() {
+  const todayKey = (() => { const n=new Date(); return n.getFullYear()+'-'+(n.getMonth()+1)+'-'+n.getDate(); })();
+  const drawn = localStorage.getItem('freqCardDrawn_' + todayKey);
+  if (drawn) {
+    const q = getDailyQuote();
+    document.getElementById('quote-text').textContent = q[currentLang] || q['zh-TW'];
+    document.getElementById('freq-card-inner').classList.add('flipped');
+    document.getElementById('freq-card-scene').style.cursor = 'default';
+    const mi = document.getElementById('freq-card-inner-mobile');
+    if (mi) { mi.classList.add('flipped'); }
+    const ms = document.getElementById('freq-card-scene-mobile');
+    if (ms) ms.style.cursor = 'default';
+  }
+}
+function drawDailyCard() {
+  const todayKey = (() => { const n=new Date(); return n.getFullYear()+'-'+(n.getMonth()+1)+'-'+n.getDate(); })();
+  if (localStorage.getItem('freqCardDrawn_' + todayKey)) return;
+  const q = getDailyQuote();
+  document.getElementById('quote-text').textContent = q[currentLang] || q['zh-TW'];
+  const mQ = document.getElementById('mobile-quote');
+  if (mQ) mQ.textContent = q[currentLang] || q['zh-TW'];
+  document.getElementById('freq-card-inner').classList.add('flipped');
+  document.getElementById('freq-card-scene').style.cursor = 'default';
+  const mi = document.getElementById('freq-card-inner-mobile');
+  if (mi) { mi.classList.add('flipped'); }
+  const ms = document.getElementById('freq-card-scene-mobile');
+  if (ms) ms.style.cursor = 'default';
+  localStorage.setItem('freqCardDrawn_' + todayKey, '1');
+}
+window.drawDailyCard = drawDailyCard;
 showDailyQuote();
 
 // ── Wealth Level ──
@@ -7754,11 +7886,7 @@ function updateJars() {
     if (raw > 0) income = raw;
   });
 
-  // 主幣別改變時，同步更新存入幣別 select（如果使用者沒有手動覆寫）
-  if (!_jarDepCurUserOverride) {
-    jarDepositCurrency = currentCurrency;
-    document.querySelectorAll('#jars-income-cur').forEach(el => { el.value = currentCurrency; });
-  }
+  document.querySelectorAll('#jars-income-unit').forEach(el => { el.textContent = currencySymbol(); });
 
   const total = JARS_DEFAULTS.reduce((s, j) => s + j.pct, 0);
   const diff = Math.round((total - 100) * 10) / 10;
@@ -9493,6 +9621,7 @@ document.getElementById('debt-submit').addEventListener('click', async ()=>{
     clearDebtForm();
     updateSummary();
     renderDreamHero();
+    setTimeout(() => { if (window.foxReact) window.foxReact('debt', name); }, 800);
     // 關閉新增負債 modal（如果有開啟）
     if (document.getElementById('mobile-form-modal')) {
       setTimeout(() => {
@@ -11250,8 +11379,18 @@ function initMobileHome() {
   <div class="page-content">
     <!-- 今日金句 -->
     <div class="v2-card" style="padding:10px 13px;background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.14);margin-bottom:8px">
-      <div style="font-family:ui-monospace,'DM Mono',monospace;font-size:8px;color:rgba(34,197,94,0.45);text-transform:uppercase;letter-spacing:0.10em;margin-bottom:5px">TODAY'S WEALTH FREQUENCY</div>
-      <div id="mobile-quote" style="font-size:12.5px;font-weight:500;color:#f0fdf4;line-height:1.5;letter-spacing:-0.01em"></div>
+      <div style="font-family:ui-monospace,'DM Mono',monospace;font-size:8px;color:rgba(34,197,94,0.45);text-transform:uppercase;letter-spacing:0.10em;margin-bottom:5px" data-i18n="home.dailyQuote.label">TODAY'S WEALTH FREQUENCY</div>
+      <div class="freq-card-scene freq-card-scene-mobile" id="freq-card-scene-mobile" onclick="drawDailyCard()">
+        <div class="freq-card-inner" id="freq-card-inner-mobile">
+          <div class="freq-card-front" style="padding:12px 8px">
+            <div style="font-size:24px;margin-bottom:4px">🔮</div>
+            <div style="font-size:12px;color:rgba(240,208,96,0.9);font-weight:600" data-i18n="home.dailyQuote.draw">點擊抽取今日頻率</div>
+          </div>
+          <div class="freq-card-back" style="padding:10px 8px">
+            <div id="mobile-quote" style="font-size:12.5px;font-weight:500;color:#f0fdf4;line-height:1.5;letter-spacing:-0.01em"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 手機版 Insight Card -->
@@ -11433,24 +11572,10 @@ function initMobileHome() {
         <!-- 月收入輸入 -->
         <div class="jars-income-row">
           <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars();updateJarDepConvertPreview()" onchange="updateJars();updateJarDepConvertPreview()">
-          <select id="jars-income-cur" class="jar-dep-cur-sel" onchange="onJarDepCurChange(this.value)">
-            <option value="TWD">NT$ TWD</option>
-            <option value="USD">$ USD</option>
-            <option value="JPY">¥ JPY</option>
-            <option value="EUR">€ EUR</option>
-            <option value="CNY">¥ CNY</option>
-            <option value="HKD">HK$ HKD</option>
-            <option value="SGD">S$ SGD</option>
-            <option value="GBP">£ GBP</option>
-            <option value="AUD">A$ AUD</option>
-            <option value="MYR">RM MYR</option>
-            <option value="KRW">₩ KRW</option>
-            <option value="CAD">C$ CAD</option>
-          </select>
+          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
+          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
           <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         </div>
-        <div class="jar-dep-convert-row" id="jar-dep-convert-row">⟳ 換算中...</div>
         <!-- 合計提示 -->
         <div class="jars-total-row ok" id="jars-total-row">
           <span id="jars-total-label">合計 100% ✓</span>
@@ -11885,9 +12010,18 @@ function initMobileHome() {
       <div class="color-picker-row">
         <span data-i18n="profile.currency">顯示幣別</span>
         <select id="currency-select" onchange="setCurrency(this.value)" style="background:var(--card-bg);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-family:'DM Sans',sans-serif">
-          <option value="TWD" data-i18n="currency.TWD">台幣 TWD (NT$)</option>
-          <option value="MYR" data-i18n="currency.MYR">馬幣 MYR (RM)</option>
-          <option value="USD" data-i18n="currency.USD">美元 USD ($)</option>
+          <option value="TWD">台幣 TWD (NT$)</option>
+          <option value="USD">美元 USD ($)</option>
+          <option value="JPY">日圓 JPY (¥)</option>
+          <option value="EUR">歐元 EUR (€)</option>
+          <option value="CNY">人民幣 CNY (¥)</option>
+          <option value="HKD">港幣 HKD (HK$)</option>
+          <option value="SGD">新幣 SGD (S$)</option>
+          <option value="GBP">英鎊 GBP (£)</option>
+          <option value="AUD">澳幣 AUD (A$)</option>
+          <option value="MYR">馬幣 MYR (RM)</option>
+          <option value="KRW">韓圜 KRW (₩)</option>
+          <option value="CAD">加幣 CAD (C$)</option>
         </select>
       </div>
     </div>
@@ -12071,7 +12205,10 @@ function syncMobileUI() {
   // 金句
   const quoteEl=document.getElementById('quote-text');
   const mQ=document.getElementById('mobile-quote');
-  if(quoteEl && mQ) mQ.textContent=quoteEl.textContent;
+  if(quoteEl && mQ && quoteEl.textContent) mQ.textContent=quoteEl.textContent;
+  const dci=document.getElementById('freq-card-inner');
+  const mci=document.getElementById('freq-card-inner-mobile');
+  if(dci && mci && dci.classList.contains('flipped') && !mci.classList.contains('flipped')) mci.classList.add('flipped');
 
   // 主夢想
   const heroEmoji=document.getElementById('hero-emoji');
@@ -12568,6 +12705,379 @@ async function submitMobileDebt() {
   setTimeout(syncMobileUI, 500);
 }
 window.submitMobileDebt = submitMobileDebt;
+
+
+</script>
+
+
+<!-- ===== FOX GUIDE POPUP ===== -->
+<div id="fox-guide" style="display:none;position:fixed;z-index:10001;background:#0d1f13;border:2px solid rgba(212,175,55,0.3);border-radius:14px;padding:12px;width:320px;max-height:320px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <div style="font-size:14px;font-weight:700;color:#f0d060;">🦊 有什麼想了解的嗎？</div>
+    <button onclick="closeGuide()" style="background:none;border:none;color:#aaa;font-size:18px;cursor:pointer;padding:0;line-height:1;">×</button>
+  </div>
+  <div id="fox-guide-content">
+    <div id="fox-guide-topics"></div>
+  </div>
+</div>
+
+<!-- ===== FOX WIDGET HTML ===== -->
+<div id="fox-widget">
+  <div style="position:relative;width:210px;">
+    <div class="fox-bubble" id="fox-bubble">
+      <button class="fox-bclose" onclick="foxDismissTip()">×</button>
+      <span id="fox-tip"></span>
+    </div>
+    <div class="fox-char" id="fox-char">
+      <img id="fox-img" src="最後等待!!111.gif" style="width:210px;display:block;">
+    </div>
+  </div>
+</div>
+
+<style>
+#fox-widget{position:fixed;z-index:9999;user-select:none;pointer-events:none;}
+.fox-char{pointer-events:all;cursor:grab;}
+.fox-char:active{cursor:grabbing;}
+.fox-bubble{
+  display:none;position:absolute;bottom:calc(100% - 20px);left:50%;
+  transform:translateX(-50%);background:#fffdf0;border:2px solid #e8a000;
+  border-radius:14px;padding:8px 28px 8px 12px;width:170px;
+  max-height:100px;overflow-y:auto;
+  font-size:12px;line-height:1.4;color:#333;
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);pointer-events:all;
+}
+.fox-bubble::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:8px solid transparent;border-top-color:#e8a000;
+}
+.fox-bclose{
+  position:absolute;top:6px;right:8px;background:none;border:none;
+  font-size:16px;cursor:pointer;color:#aaa;line-height:1;padding:0;
+}
+.fox-bclose:hover{color:#555;}
+</style>
+
+<script>
+/* ===== FOX WIDGET ===== */
+(function(){
+'use strict';
+
+/*
+  時間軸（每次漫步 10 秒）：
+  t=0s   播放「開始走路」GIF
+  t=2s   開始移動位置
+  t=5s   切換「走路停下」GIF，繼續移動
+  t=8s   到達目標，停止移動
+  t=10s  切換「等待」GIF → IDLE
+*/
+const MOVE_DELAY      = 2000;   // 開始走路GIF播2秒後才移動
+const MOVE_DURATION   = 6000;   // 總移動時間6秒
+const GIF_SWITCH_AT   = 5000;   // 5秒時切換到走路停下GIF
+const TOTAL_ROAM_MS   = 10000;  // 整個漫步週期10秒
+const IDLE_MIN_MS     = 7000;
+const IDLE_MAX_MS     = 14000;
+const FOX_W = 210, FOX_H = 320;
+
+const TIPS = [
+  '每月收入至少存10%，時間是你最好的朋友！',
+  '財務自由帳戶每月固定存入，讓錢幫你工作 💰',
+  '先還高利息的債務，省下的利息就是獲利！',
+  '六個罐子系統幫你掌握每一分錢的流向！',
+  '投資前先備好3到6個月的緊急備用金！',
+  '記錄每天支出，找出那些不知不覺的漏財！',
+  '複利是財富最強大的力量，越早開始越好！',
+  '消費前問自己：這是需要，還是只是想要？',
+  '設定具體的財務目標，夢想才會變成計畫！',
+  '被動收入超過支出的那一天，就是財務自由！',
+];
+
+const S = { IDLE:0, WALK_START:1, WALK_STOP:2 };
+let state = S.IDLE;
+let posX = window.innerWidth * 0.67;
+let posY = window.innerHeight * 0.72;
+let targetX = posX, targetY = posY;
+let startX = posX, startY = posY;
+let facing = -1;
+let raf = null, tipTimer = null;
+let timers = [];
+let moveStartTime = null;
+
+const widget = document.getElementById('fox-widget');
+const char   = document.getElementById('fox-char');
+const foxImg = document.getElementById('fox-img');
+const bubble = document.getElementById('fox-bubble');
+const tipEl  = document.getElementById('fox-tip');
+
+widget.style.left = posX + 'px';
+widget.style.top  = posY + 'px';
+
+// Preload
+['最後等待!!111.gif','最後開始走路!!-1111.gif','最後走路停下-111.gif']
+  .forEach(s => { const i = new Image(); i.src = s; });
+
+function clearAllTimers() {
+  timers.forEach(t => clearTimeout(t));
+  timers = [];
+  if (raf) { cancelAnimationFrame(raf); raf = null; }
+}
+
+function goIdle() {
+  clearAllTimers();
+  state = S.IDLE;
+  foxImg.src = '最後等待!!111.gif';
+  scheduleTip();
+  if (!roamPaused) {
+    timers.push(setTimeout(startRoam,
+      IDLE_MIN_MS + Math.random() * (IDLE_MAX_MS - IDLE_MIN_MS)));
+  }
+}
+
+function moveStep(ts) {
+  const elapsed = ts - moveStartTime;
+  if (elapsed >= MOVE_DURATION) {
+    posX = targetX; posY = targetY;
+    widget.style.left = posX + 'px';
+    widget.style.top  = posY + 'px';
+    raf = null;
+    return;
+  }
+  const t = elapsed / MOVE_DURATION;
+  posX = startX + (targetX - startX) * t;
+  posY = startY + (targetY - startY) * t;
+  widget.style.left = posX + 'px';
+  widget.style.top  = posY + 'px';
+  raf = requestAnimationFrame(moveStep);
+}
+
+function startRoam() {
+  clearAllTimers();
+  const m = 20;
+  const maxX = Math.max(m, window.innerWidth  - FOX_W - m);
+  const maxY = Math.max(m, window.innerHeight - FOX_H - m);
+  const FIXED_DIST = 300;
+  let tx, ty, attempts = 0;
+  do {
+    const angle = Math.random() * Math.PI * 2;
+    tx = posX + Math.cos(angle) * FIXED_DIST;
+    ty = posY + Math.sin(angle) * FIXED_DIST;
+    tx = Math.max(m, Math.min(maxX, tx));
+    ty = Math.max(m, Math.min(maxY, ty));
+    attempts++;
+  } while (attempts < 20);
+  startX = posX; startY = posY;
+  targetX = tx; targetY = ty;
+
+  const dx = targetX - posX;
+  if (Math.abs(dx) > 3) {
+    facing = dx > 0 ? 1 : -1;
+    foxImg.style.transform = facing === 1 ? '' : 'scaleX(-1)';
+  }
+
+  // t=0: 播放開始走路
+  state = S.WALK_START;
+  foxImg.src = '最後開始走路!!-1111.gif';
+  hideBubble();
+
+  // t=2s: 開始移動
+  timers.push(setTimeout(() => {
+    moveStartTime = performance.now();
+    raf = requestAnimationFrame(moveStep);
+  }, MOVE_DELAY));
+
+  // t=5s: 切換走路停下GIF（移動繼續）
+  timers.push(setTimeout(() => {
+    state = S.WALK_STOP;
+    foxImg.src = '最後走路停下-111.gif';
+  }, GIF_SWITCH_AT));
+
+  // t=10s: 回到等待
+  timers.push(setTimeout(goIdle, TOTAL_ROAM_MS));
+}
+
+function scheduleTip() {
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(showTip, 4000 + Math.random() * 4000);
+}
+
+function showTip() {
+  tipEl.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  bubble.style.display = 'block';
+}
+
+function hideBubble() {
+  bubble.style.display = 'none';
+  clearTimeout(tipTimer);
+}
+
+// Drag
+let drag = false, dox = 0, doy = 0;
+char.addEventListener('mousedown', e => {
+  drag = true; dox = e.clientX - posX; doy = e.clientY - posY;
+  clearAllTimers(); clearTimeout(tipTimer);
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!drag) return;
+  posX = e.clientX - dox; posY = e.clientY - doy;
+  widget.style.left = posX + 'px'; widget.style.top = posY + 'px';
+});
+document.addEventListener('mouseup', () => {
+  if (!drag) return; drag = false;
+  goIdle();
+});
+
+// Click: first click show guide, if guide open → close
+char.addEventListener('click', () => {
+  const guide = document.getElementById('fox-guide');
+  if (guide.style.display === 'block') {
+    guide.style.display = 'none';
+    return;
+  }
+  hideBubble();
+  openGuide();
+});
+
+// Right-click context menu
+let roamPaused = false;
+const ctxMenu = document.createElement('div');
+ctxMenu.id = 'fox-ctx-menu';
+ctxMenu.style.cssText = 'display:none;position:fixed;z-index:10000;background:#fffdf0;border:2px solid #e8a000;border-radius:10px;padding:6px 0;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:140px;font-size:14px;';
+ctxMenu.innerHTML = '<div id="fox-ctx-toggle" style="padding:8px 16px;cursor:pointer;color:#333;">⏸ 停止移動</div>';
+document.body.appendChild(ctxMenu);
+const ctxToggle = document.getElementById('fox-ctx-toggle');
+
+ctxToggle.addEventListener('mouseenter', () => { ctxToggle.style.background = '#fff3d0'; });
+ctxToggle.addEventListener('mouseleave', () => { ctxToggle.style.background = 'none'; });
+
+char.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  ctxToggle.textContent = roamPaused ? '▶ 繼續移動' : '⏸ 停止移動';
+  ctxMenu.style.display = 'block';
+  ctxMenu.style.left = e.clientX + 'px';
+  ctxMenu.style.top  = e.clientY + 'px';
+});
+
+ctxToggle.addEventListener('click', () => {
+  roamPaused = !roamPaused;
+  ctxMenu.style.display = 'none';
+  if (roamPaused) {
+    clearAllTimers();
+    goIdle();
+  } else {
+    goIdle();
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!ctxMenu.contains(e.target)) ctxMenu.style.display = 'none';
+});
+
+// 狐狸對使用者操作的反應
+const REACT_MSGS = {
+  assetWithIncome: [
+    '太棒了！{name} 每月帶來非工資收入，你的錢開始替你工作了！🎉',
+    '又多一筆非工資收入！{name} 正在幫你靠近財務自由 💪',
+    '富爸爸會為你驕傲！{name} 讓你的被動收入又成長了 🌱',
+    '每一筆非工資收入都是自由的磚塊，{name} 又加了一塊！🧱',
+  ],
+  assetNoIncome: [
+    '{name} 已加入你的資產清單！持續累積，財富正在成長 📈',
+    '新資產 {name} 入袋！記住，最好的資產是會幫你賺錢的資產 💡',
+    '很好！{name} 記錄下來了。下一步想想怎麼讓它產生現金流 🤔',
+  ],
+  debt: [
+    '記錄負債是勇敢的第一步！先還高利息的，省下的利息就是獲利 📝',
+    '知道自己欠多少，才能做出聰明的還款計畫。你在正確的路上！💪',
+    '負債不可怕，不知道自己有負債才可怕。面對它，才能消滅它！🔥',
+  ],
+};
+
+function foxReact(type, name) {
+  const msgs = REACT_MSGS[type];
+  if (!msgs) return;
+  const msg = msgs[Math.floor(Math.random() * msgs.length)].replace('{name}', name || '');
+  tipEl.textContent = msg;
+  bubble.style.display = 'block';
+  clearTimeout(tipTimer);
+  tipTimer = setTimeout(hideBubble, 6000);
+}
+
+// 功能導覽系統
+const GUIDE_TOPICS = [
+  { icon:'🦊', title:'為什麼需要財富覺醒？', featured: true,
+    answer:'嗨！歡迎來到財富覺醒 👋\n\n你是不是每個月薪水一進來，繳完房租、吃飯、買東西，就不知道錢跑去哪了？\n\n這很正常，大部分人都是這樣。但問題是——如果有一天你不想上班了，或是沒辦法工作了，你的收入就歸零了。\n\n財富覺醒想幫你改變這件事。\n\n簡單來說，這個平台幫你：\n\n① 搞清楚你的錢 — 你有哪些資產？每個月有多少錢是不用工作也會進來的？\n\n② 學會分配收入 — 不是叫你省吃儉用，而是讓每一塊錢都有它該去的地方。該花的花，該存的存，該投資的投資。\n\n③ 看到你的進步 — 一個數字告訴你離「不用為錢煩惱」還有多遠，每新增一筆收入來源，這個數字就會成長。\n\n你不需要懂投資、不需要很有錢，你只需要「開始記錄」。\n\n點擊下方的功能，我會一個一個告訴你怎麼用 👇' },
+  { icon:'🎯', title:'Freedom Degree（財務自由度）',
+    answer:'Freedom Degree 是你的「財務自由進度條」。它計算你的非工資收入佔每月支出的比例。當這個數字到達 100%，代表你不用工作也能維持生活——這就是富爸爸說的「財務自由」。每新增一筆有現金流的資產，這個數字就會往上爬。' },
+  { icon:'🏦', title:'六個罐子系統',
+    answer:'六個罐子來自《有錢人想的和你不一樣》。每月收入按比例分配到 6 個帳戶：生活必需（NEC 55%）、財務自由（FFA 10%）、長期儲蓄（LTSS 10%）、教育（EDU 10%）、玩樂（PLAY 10%）、給予（GIVE 5%）。這不是記帳工具，是「讓每一塊錢都有任務」的系統。FFA 帳戶裡的錢只進不出，專門用來買入會產生現金流的資產。比例可以自行調整，更符合你的實際需求。' },
+  { icon:'📊', title:'ESBI 象限',
+    answer:'ESBI 是富爸爸最核心的概念。E（員工）用時間換錢、S（自僱者）擁有一份工作、B（企業主）擁有一個系統、I（投資者）讓錢替你工作。大多數人一輩子待在 E 和 S，但真正的財務自由在 B 和 I。這個功能追蹤你在四個象限的收入比例，目標是讓 B+I 的比例持續成長。' },
+  { icon:'🌳', title:'財富之樹',
+    answer:'財富之樹是你的「財富成長視覺化」。你每天打開 app、每新增一筆資產，樹就會慢慢長大。從種子 → 幼苗 → 成長期 → 茂盛期 → 繁盛期 → 豐收期，6 個階段代表你的財富旅程。它不只看金額，也看你的持續投入。就像真正的樹，需要時間和耐心，但一旦長成，它會替你遮風擋雨。' },
+  { icon:'💰', title:'現金流來源明細',
+    answer:'這裡顯示你所有資產每月帶來的非工資收入明細。富爸爸說：「資產就是把錢放進你口袋的東西。」這個功能讓你一眼看到哪些資產在替你賺錢、各佔多少比例。如果某個類別的現金流特別高，代表你在那個領域有優勢，可以考慮加碼。' },
+  { icon:'✨', title:'AI 財富洞察',
+    answer:'AI 會分析你目前持有的所有資產，用富爸爸的觀點給你個人化的建議。它會看你的資產類別分佈、現金流狀況、Freedom Degree 進度，然後告訴你下一步該做什麼。不是通用的理財建議，是針對「你的」資產組合量身打造的洞察。' },
+  { icon:'💎', title:'夢想系統',
+    answer:'設定你的主夢想和目標金額。每一筆資產的現金流都在幫你靠近這個夢想。這個功能把抽象的「財務自由」變成具體的「我要去峇里島看日落」。當你的非工資收入累積到足以實現夢想，就是你的財務自由時刻。富爸爸說：「人們不會為了抽象的數字努力，但會為了具體的夢想拼命。」' },
+  { icon:'📝', title:'債務管理',
+    answer:'記錄你的負債和每月還款金額。這些會從你的現金流中扣除，影響 Freedom Degree。富爸爸區分「好債」和「壞債」——好債是借錢買入會產生現金流的資產（例如房貸出租），壞債是借錢消費（信用卡、車貸）。這個功能幫你看清楚負債全貌，優先還掉高利息的壞債。' },
+  { icon:'👤', title:'財富人格測驗',
+    answer:'5 種財富人格：先行者🦅、智慧者🦉、磁吸者🌟、穩固者🏔️、創造者🔥。每種人格有不同的理財天賦和盲點。了解自己的人格，才知道該用什麼策略累積財富。先行者適合快速行動、智慧者適合深度研究、磁吸者適合社群投資、穩固者適合穩定配息、創造者適合打造系統。' },
+  { icon:'👑', title:'財富頻率等級',
+    answer:'從 Observer（觀察者）到 Ascended（昇華者），6 個等級代表你的非工資收入水平。每月非工資收入越高，等級越高。這不是遊戲化的虛榮指標——每個等級對應一個真實的財務里程碑。到達 Resonator（共振者）代表你已經建立穩定的現金流；到達 Ascended 代表你的非工資收入已經可以支撐一個舒適的生活。' },
+];
+
+function openGuide() {
+  const guide = document.getElementById('fox-guide');
+  const content = document.getElementById('fox-guide-content');
+  content.innerHTML = '<div id="fox-guide-topics"></div>';
+  const topics = document.getElementById('fox-guide-topics');
+  topics.innerHTML = GUIDE_TOPICS.map((t, i) =>
+    `<div onclick="showGuideAnswer(${i})" style="display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;background:${t.featured ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.06)'};border:1px solid ${t.featured ? 'rgba(212,175,55,0.4)' : 'rgba(212,175,55,0.15)'};border-radius:12px;cursor:pointer;transition:background 0.2s;">
+      <span style="font-size:18px">${t.icon}</span>
+      <span style="font-size:13px;color:${t.featured ? '#f0d060' : '#e8e0c8'};font-weight:${t.featured ? '700' : '500'}">${t.title}</span>
+    </div>`
+  ).join('');
+  guide.style.display = 'block';
+  const rect = widget.getBoundingClientRect();
+  guide.style.right = (window.innerWidth - rect.right) + 'px';
+  guide.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+}
+
+function showGuideAnswer(idx) {
+  const t = GUIDE_TOPICS[idx];
+  const content = document.getElementById('fox-guide-content');
+  content.innerHTML =
+    `<div onclick="openGuide()" style="display:inline-flex;align-items:center;gap:4px;color:rgba(212,175,55,0.6);font-size:12px;cursor:pointer;margin-bottom:12px;">← 返回</div>
+     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+       <span style="font-size:22px">${t.icon}</span>
+       <span style="font-size:15px;font-weight:700;color:#f0d060">${t.title}</span>
+     </div>
+     <div style="font-size:13px;line-height:1.8;color:#d4ccb0;white-space:pre-wrap">${t.answer}</div>`;
+}
+
+function closeGuide() {
+  document.getElementById('fox-guide').style.display = 'none';
+}
+
+goIdle();
+
+// 第一次使用：狐狸自動打開平台介紹
+if (!localStorage.getItem('foxGuideShown')) {
+  setTimeout(() => {
+    openGuide();
+    showGuideAnswer(0);
+    localStorage.setItem('foxGuideShown', '1');
+  }, 3000);
+}
+
+window.foxDismissTip = hideBubble;
+window.foxReact = foxReact;
+window.showGuideAnswer = showGuideAnswer;
+window.openGuide = openGuide;
+window.closeGuide = closeGuide;
+})();
 </script>
 
 </body>
