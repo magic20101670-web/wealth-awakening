@@ -24,7 +24,7 @@ body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-s
 .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; overflow-x:hidden; display:block; }
 
 /* Header */
-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+header { display: flex; flex-direction: row; align-items: center; gap: 20px; margin-bottom: 20px; }
 .logo { font-family: 'DM Serif Display', serif; font-size: 42px; letter-spacing: -1px; background: linear-gradient(135deg,#86efac,#22c55e,#16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
 .logo-sub { color: var(--muted); font-size: 13px; margin-top: 6px; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; }
 .badge { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.2); color: var(--green); font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 20px; }
@@ -136,7 +136,7 @@ select option { background: #0d2318; }
 
 /* Daily Quote */
 .quote-card { position:relative; z-index:1; margin-bottom:20px; padding:20px 28px; border-radius:20px; background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(34,197,94,0.04)); border:1px solid rgba(212,175,55,0.12); }
-.quote-label { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:rgba(212,175,55,0.6); font-family:'DM Mono',monospace; margin-bottom:8px; }
+.quote-label { position:absolute; top:14px; left:20px; font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:rgba(212,175,55,0.6); font-family:'DM Mono',monospace; margin:0; }
 .quote-text { display:block; font-family:'DM Serif Display',serif; font-size:17px; color:var(--text); line-height:1.7; margin-bottom:6px; }
 .freq-card-scene { perspective:800px; cursor:pointer; min-height:80px; }
 .freq-card-scene-mobile { min-height:56px; }
@@ -189,7 +189,9 @@ select option { background: #0d2318; }
 .cf-total-row { display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text); }
 /* Ring + Stats layout */
 .ring-stats-wrap { display:flex; align-items:center; gap:40px; flex-wrap:wrap; }
-.ring-wrap { flex-shrink:0; display:flex; flex-direction:column; align-items:center; }
+.ring-wrap { flex-shrink:0; display:flex; flex-direction:column; align-items:center; cursor:pointer; }
+.ring-wrap:hover #freedom-desc { display:block !important; }
+.ring-wrap:hover .freedom-label { display:block !important; }
 /* AI Insight */
 .ai-insight-card { border-color:rgba(34,197,94,0.15); background:linear-gradient(135deg,rgba(34,197,94,0.04),rgba(0,0,0,0)); }
 .ai-icon { width:34px; height:34px; background:var(--green-dim); border:1px solid rgba(34,197,94,0.3); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:16px; flex-shrink:0; animation: aiPulse 3s ease-in-out infinite; }
@@ -693,6 +695,15 @@ select option { background: #0d2318; }
 .expense-total-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:12px 16px; background:var(--green-dim); border:1px solid rgba(34,197,94,0.15); border-radius:12px; }
 .btn-apply-total { background:var(--green); color:#052e16; border:none; border-radius:8px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
 .btn-apply-total:hover { background:#16a34a; }
+.exp-custom-item { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.exp-custom-name { flex:1; min-width:0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:6px 10px; font-size:13px; color:#f0fdf4; font-family:'DM Sans',sans-serif; outline:none; }
+.exp-custom-name:focus { border-color:rgba(255,255,255,0.25); }
+.exp-custom-amount { width:110px; flex-shrink:0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:6px 10px; font-size:13px; color:#f0fdf4; font-family:'DM Mono',monospace; outline:none; }
+.exp-custom-amount:focus { border-color:rgba(255,255,255,0.25); }
+.btn-remove-exp { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.18); color:rgba(239,68,68,0.6); border-radius:6px; padding:4px 8px; font-size:12px; cursor:pointer; transition:all 0.2s; flex-shrink:0; line-height:1; }
+.btn-remove-exp:hover { background:rgba(239,68,68,0.18); color:rgba(239,68,68,0.9); }
+.btn-add-exp-item { display:block; width:100%; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12); color:rgba(255,255,255,0.35); border-radius:8px; padding:7px 14px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; margin:4px 0 12px; text-align:left; }
+.btn-add-exp-item:hover { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.65); border-color:rgba(255,255,255,0.25); }
 .milestones-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
 .milestone-card { border-radius:14px; padding:16px 18px; border:1px solid var(--border); position:relative; overflow:hidden; transition:border-color 0.3s; }
 .milestone-card.reached { border-color:rgba(34,197,94,0.4); background:rgba(34,197,94,0.06); }
@@ -2018,6 +2029,9 @@ body, .app-topbar, .app-bottom-nav, .app-page {
         <div class="expense-item"><label data-i18n="goal.exp.learnShort">📚 學習</label><input id="setup-exp-learn" type="number" placeholder="0" min="0" step="any" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
         <div class="expense-item"><label data-i18n="goal.exp.otherShort">📦 其他</label><input id="setup-exp-other" type="number" placeholder="0" min="0" step="any" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
       </div>
+      <!-- 自定義支出項目 -->
+      <div id="setup-exp-custom-list"></div>
+      <button class="btn-add-exp-item" onclick="addCustomExpItem()">＋ 新增支出項目（保險、房貸等）</button>
       <div class="expense-total-row" style="margin-bottom:16px">
         <span style="color:rgba(255,255,255,0.4);font-size:12px" data-i18n="goal.calcArrow">計算總計 →</span>
         <span id="setup-exp-total-display" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--green)">NT$ 0</span>
@@ -3152,20 +3166,22 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
 
   <!-- Header -->
   <header>
-    <div>
+    <!-- Logo -->
+    <div style="flex-shrink:0">
       <div class="logo">Wealth Awakening</div>
       <div class="logo-sub">個人財富覺醒系統</div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-      <div id="wealth-level-badge" class="wealth-level-badge" style="display:none;cursor:pointer;position:relative" onclick="toggleWealthLevelCard(event)">
-        <span id="wl-icon">🌱</span>
-        <span id="wl-label">Observer</span>
-        <div id="wl-popup" style="display:none;position:absolute;top:calc(100% + 10px);left:0;background:#0d1f13;border:1px solid rgba(212,175,55,0.25);border-radius:16px;padding:18px;width:520px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.5);"></div>
-      </div>
-      <div id="badge" class="badge" data-i18n="badge.connecting">⬤ 連線中...</div>
+    <!-- User bar（最右） -->
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0">
+      <div id="badge" class="badge" data-i18n="badge.connecting" style="display:none">⬤ 連線中...</div>
       <div class="user-bar" id="user-bar" style="display:none">
         <img class="user-avatar" id="user-avatar" src="" alt="">
         <span class="user-name" id="user-name"></span>
+        <div id="wealth-level-badge" class="wealth-level-badge" style="display:none;cursor:pointer;position:relative" onclick="toggleWealthLevelCard(event)">
+          <span id="wl-icon">🌱</span>
+          <span id="wl-label">Observer</span>
+          <div id="wl-popup" style="display:none;position:absolute;top:calc(100% + 10px);left:0;background:#0d1f13;border:1px solid rgba(212,175,55,0.25);border-radius:16px;padding:18px;width:520px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.5);"></div>
+        </div>
         <span id="personality-badge-nav" style="display:none;align-items:center;gap:6px;font-size:12px;color:rgba(240,208,96,0.85);background:rgba(240,208,96,0.07);border:1px solid rgba(240,208,96,0.18);border-radius:20px;padding:4px 12px;cursor:pointer;white-space:nowrap;position:relative;"
           onclick="togglePersonalityPopup(event)">
           <span id="personality-badge-inner"></span>
@@ -3253,79 +3269,90 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       </select>
     </div>
   </div>
-    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div class="quote-label" data-i18n="home.dailyQuote.label">Today's Wealth Frequency</div>
-          <div id="personality-badge-quote" style="display:none;font-size:12px;color:rgba(240,208,96,0.8);background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.18);border-radius:20px;padding:3px 12px;letter-spacing:0.04em"></div>
-        </div>
-        <div class="freq-card-scene" id="freq-card-scene" onclick="drawDailyCard()">
-          <div class="freq-card-inner" id="freq-card-inner">
-            <div class="freq-card-front">
-              <div style="font-size:32px;margin-bottom:8px">🔮</div>
-              <div style="font-size:13px;color:rgba(240,208,96,0.9);font-weight:600" data-i18n="home.dailyQuote.draw">點擊抽取今日頻率</div>
-            </div>
-            <div class="freq-card-back">
-              <div style="font-size:18px;margin-bottom:6px">✨</div>
-              <div class="quote-text" id="quote-text" style="margin-bottom:0"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ring-wrap" style="flex:1;justify-content:center">
-        <div class="freedom-label" data-i18n="home.freedomIndex" style="text-align:center;margin-bottom:12px">人生選擇權指數</div>
-        <div style="position:relative;width:160px;height:160px">
-          <svg width="160" height="160" style="transform:rotate(-90deg)">
-            <circle cx="80" cy="80" r="66" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
-            <circle id="ring-fill" cx="80" cy="80" r="66" fill="none"
-              stroke="url(#ringGrad)" stroke-width="10" stroke-linecap="round"
-              stroke-dasharray="414.69" stroke-dashoffset="414.69"
-              style="transition:stroke-dashoffset 1.2s cubic-bezier(0.23,1,0.32,1);filter:drop-shadow(0 0 10px rgba(34,197,94,0.8))"/>
-            <defs>
-              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#16a34a"/>
-                <stop offset="100%" stop-color="#86efac"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-            <div class="freedom-pct" id="pct" style="font-size:40px;line-height:1">0%</div>
-            <div id="freedom-stage-label" data-i18n="home.stage.awakening" style="font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-top:3px">AWAKENING</div>
-          </div>
-        </div>
-        <div class="freedom-desc" id="freedom-desc" style="text-align:center;font-size:12px;margin-top:10px">月非薪資收入 NT$0 · 目標 NT$100,000</div>
-      </div>
-      <div class="quote-cashflow-col" style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px">
-        <div class="card cashflow-card" id="cashflow-spring-card" style="padding:14px 16px;margin-bottom:0;cursor:default" title="滑鼠移入查看明細">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div class="cashflow-icon" style="width:30px;height:30px;font-size:15px;border-radius:10px">💧</div>
-            <div>
-              <div class="cashflow-title" data-i18n="home.cashflow.title" style="font-size:12px">現金流：生存之泉</div>
-              <div class="cashflow-sub" data-i18n="home.cashflow.sub" style="font-size:10px">持續性月現金流 — 生存穩定度指標</div>
-            </div>
-          </div>
-          <div class="cashflow-amount" id="cf-display" style="font-size:20px;margin-bottom:6px">NT$ 0</div>
-          <div class="cashflow-bar-wrap">
-            <div class="cashflow-bar-fill" id="cf-bar" style="width:0%"></div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px" id="cf-label">目標 NT$0 / 月</div>
-        </div>
+    <div class="quote-label" data-i18n="home.dailyQuote.label">今日財富頻率</div>
+    <div id="personality-badge-quote" style="display:none;position:absolute;top:14px;left:220px;font-size:12px;color:rgba(240,208,96,0.8);background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.18);border-radius:20px;padding:3px 12px;letter-spacing:0.04em"></div>
+    <div style="display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:16px;align-items:start">
 
-        <div class="card cashflow-card asset-val-card" style="padding:14px 16px;margin-bottom:0">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div class="cashflow-icon" style="width:30px;height:30px;font-size:15px;border-radius:10px;background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.2);">🌲</div>
-            <div>
-              <div class="cashflow-title" data-i18n="home.assetValue.title" style="font-size:12px;color:#fcd34d">資產值：增長之林</div>
-              <div class="cashflow-sub" data-i18n="home.assetValue.sub" style="font-size:10px">一次性帳面獲利 — 資產增長指標</div>
+      <!-- 左欄：翻牌 + 環形指數 -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="freq-card-scene" id="freq-card-scene" onclick="drawDailyCard()" style="width:100%;height:72px">
+          <div class="freq-card-inner" id="freq-card-inner" style="height:72px">
+            <div class="freq-card-front" style="height:72px">
+              <div style="font-size:24px;margin-bottom:4px">🔮</div>
+              <div style="font-size:12px;color:rgba(240,208,96,0.9);font-weight:600" data-i18n="home.dailyQuote.draw">點擊抽取今日頻率</div>
+            </div>
+            <div class="freq-card-back" style="height:72px;padding:10px 14px;text-align:left;align-items:flex-start">
+              <div class="quote-text" id="quote-text" style="margin-bottom:0;font-size:12px;line-height:1.5;color:var(--text)"></div>
             </div>
           </div>
-          <div class="cashflow-amount" id="av-display" style="font-size:20px;margin-bottom:6px;color:#fcd34d">NT$ 0</div>
-          <div class="cashflow-bar-wrap">
-            <div class="cashflow-bar-fill" id="av-bar" style="width:0%;background:linear-gradient(90deg,#b45309,#fcd34d)"></div>
+        </div>
+        <div class="ring-wrap" style="align-items:flex-end;padding:10px 12px 8px">
+          <div class="freedom-label" data-i18n="home.freedomIndex" style="font-size:10px;margin-bottom:6px;text-align:right;display:none">人生選擇權指數</div>
+          <div style="position:relative;width:110px;height:110px">
+            <svg width="110" height="110" style="transform:rotate(-90deg)">
+              <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+              <circle id="ring-fill" cx="55" cy="55" r="46" fill="none"
+                stroke="url(#ringGrad)" stroke-width="8" stroke-linecap="round"
+                stroke-dasharray="289.03" stroke-dashoffset="289.03"
+                style="transition:stroke-dashoffset 1.2s cubic-bezier(0.23,1,0.32,1);filter:drop-shadow(0 0 10px rgba(34,197,94,0.8))"/>
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#16a34a"/>
+                  <stop offset="100%" stop-color="#86efac"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <div class="freedom-pct" id="pct" style="font-size:28px;line-height:1">0%</div>
+              <div id="freedom-stage-label" data-i18n="home.stage.awakening" style="font-size:8px;color:var(--muted);letter-spacing:0.1em;margin-top:2px">AWAKENING</div>
+            </div>
           </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px" id="av-label">總損益 +0%</div>
+          <div class="freedom-desc" id="freedom-desc" style="font-size:10px;margin-top:6px;display:none">月非薪資收入 NT$0 · 目標 NT$100,000</div>
         </div>
       </div>
+
+      <!-- 右欄：現金流卡並排（上）＋ 4格統計（下） -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <!-- 資產值 左、現金流 右 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="card cashflow-card asset-val-card" style="padding:14px 16px;margin-bottom:0">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <div class="cashflow-icon" style="width:30px;height:30px;font-size:15px;border-radius:10px;background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.2);">🌲</div>
+              <div>
+                <div class="cashflow-title" data-i18n="home.assetValue.title" style="font-size:12px;color:#fcd34d">資產值：增長之林</div>
+                <div class="cashflow-sub" data-i18n="home.assetValue.sub" style="font-size:10px">一次性帳面獲利 — 資產增長指標</div>
+              </div>
+            </div>
+            <div class="cashflow-amount" id="av-display" style="font-size:20px;margin-bottom:6px;color:#fcd34d">NT$ 0</div>
+            <div class="cashflow-bar-wrap">
+              <div class="cashflow-bar-fill" id="av-bar" style="width:0%;background:linear-gradient(90deg,#b45309,#fcd34d)"></div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px" id="av-label">總損益 +0%</div>
+          </div>
+          <div class="card cashflow-card" id="cashflow-spring-card" style="padding:14px 16px;margin-bottom:0;cursor:default" title="滑鼠移入查看明細">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <div class="cashflow-icon" style="width:30px;height:30px;font-size:15px;border-radius:10px">💧</div>
+              <div>
+                <div class="cashflow-title" data-i18n="home.cashflow.title" style="font-size:12px">現金流：生存之泉</div>
+                <div class="cashflow-sub" data-i18n="home.cashflow.sub" style="font-size:10px">持續性月現金流 — 生存穩定度指標</div>
+              </div>
+            </div>
+            <div class="cashflow-amount" id="cf-display" style="font-size:20px;margin-bottom:6px">NT$ 0</div>
+            <div class="cashflow-bar-wrap">
+              <div class="cashflow-bar-fill" id="cf-bar" style="width:0%"></div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px" id="cf-label">目標 NT$0 / 月</div>
+          </div>
+        </div>
+        <!-- 4格統計 -->
+        <div class="summary-grid" style="margin:0;gap:10px;grid-template-columns:repeat(4,1fr)">
+          <div class="stat-card" style="padding:12px 14px;border-radius:12px"><div class="stat-label" style="font-size:10px;margin-bottom:4px" data-i18n="home.stat.total">總資產</div><div class="stat-value" style="font-size:17px" id="s-total">NT$0</div></div>
+          <div class="stat-card" style="padding:12px 14px;border-radius:12px"><div class="stat-label" style="font-size:10px;margin-bottom:4px" data-i18n="home.stat.pnl">總損益</div><div class="stat-value" style="font-size:17px" id="s-pnl">NT$0</div></div>
+          <div class="stat-card" style="padding:12px 14px;border-radius:12px"><div class="stat-label" style="font-size:10px;margin-bottom:4px" data-i18n="home.stat.monthlyCashflow">月非薪資收入</div><div class="stat-value blue" style="font-size:17px" id="s-cf">NT$0</div></div>
+          <div class="stat-card" style="padding:12px 14px;border-radius:12px"><div class="stat-label" style="font-size:10px;margin-bottom:4px" data-i18n="home.stat.holdings">持有資產</div><div class="stat-value yellow" style="font-size:17px" id="s-count">0</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -3401,16 +3428,6 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
   <!-- Particle Canvas -->
   <canvas id="particle-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.45"></canvas>
 
-  <!-- Asset Stats -->
-  <div class="card freedom-card" style="position:relative;z-index:1">
-    <div class="summary-grid" style="margin-bottom:0">
-      <div class="stat-card"><div class="stat-label" data-i18n="home.stat.total">總資產</div><div class="stat-value" id="s-total">NT$0</div></div>
-      <div class="stat-card"><div class="stat-label" data-i18n="home.stat.pnl">總損益</div><div class="stat-value" id="s-pnl">NT$0</div></div>
-      <div class="stat-card"><div class="stat-label" data-i18n="home.stat.monthlyCashflow">月非薪資收入</div><div class="stat-value blue" id="s-cf">NT$0</div></div>
-      <div class="stat-card"><div class="stat-label" data-i18n="home.stat.holdings">持有資產</div><div class="stat-value yellow" id="s-count">0</div></div>
-    </div>
-  </div>
-
   <!-- Wealth Insight Card -->
   <div id="insight-card" class="insight-card" style="display:none">
     <div style="font-size:22px;flex-shrink:0;padding-top:2px" id="insight-icon">💡</div>
@@ -3460,6 +3477,68 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
       <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none;margin-top:12px"></div>
     </div>
+  </div>
+
+  <!-- ESBI 收入象限 -->
+  <div class="card" style="position:relative;z-index:1">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.esbi.sectionTitle">ESBI 收入象限</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Robert Kiyosaki · Rich Dad Poor Dad</div>
+      </div>
+    </div>
+    <div class="esbi-grid">
+      <div class="esbi-cell" id="d-esbi-e-cell">
+        <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
+        <div class="esbi-qname" data-i18n="esbi.e.name">員工</div>
+        <div class="esbi-income" id="d-esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+        <div class="esbi-desc" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
+      </div>
+      <div class="esbi-cell" id="d-esbi-b-cell">
+        <div class="esbi-letter" style="color:rgba(240,208,96,0.65)">B</div>
+        <div class="esbi-qname" data-i18n="esbi.b.name">企業主</div>
+        <div class="esbi-income" id="d-esbi-b-disp" style="color:#f0d060">NT$ 0</div>
+        <div class="esbi-desc" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
+      </div>
+      <div class="esbi-cell" id="d-esbi-s-cell">
+        <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
+        <div class="esbi-qname" data-i18n="esbi.s.name">自僱者</div>
+        <div class="esbi-income" id="d-esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+        <div class="esbi-desc" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
+      </div>
+      <div class="esbi-cell" id="d-esbi-i-cell" style="background:rgba(34,197,94,0.05)">
+        <div class="esbi-letter" style="color:#22c55e">I</div>
+        <div class="esbi-qname" data-i18n="esbi.i.name">投資者</div>
+        <div class="esbi-income" id="d-esbi-i-disp" style="color:#22c55e">NT$ 0</div>
+        <div class="esbi-desc" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
+        <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
+      <span data-i18n="esbi.activeLabel">主動 E+S</span>
+      <span id="d-esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
+    </div>
+    <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="d-esbi-ratio-fill" style="width:0%"></div></div>
+    <div class="esbi-divider" style="margin-top:10px"></div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
+    <div class="esbi-active-input">
+      <div class="esbi-input-row">
+        <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
+        <span class="esbi-input-label" data-i18n="esbi.input.e">薪資收入</span>
+        <input id="d-esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+      </div>
+      <div class="esbi-input-row">
+        <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
+        <span class="esbi-input-label" data-i18n="esbi.input.s">副業 / 接案</span>
+        <input id="d-esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+      </div>
+      <div class="esbi-input-row">
+        <span class="esbi-q-badge" style="color:rgba(240,208,96,0.7)">B</span>
+        <span class="esbi-input-label" data-i18n="esbi.input.b">企業 / 業務收入</span>
+        <input id="d-esbi-b-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+      </div>
+    </div>
+    <div class="esbi-rd-msg" id="d-esbi-rd-msg"></div>
   </div>
 
   <!-- Cashflow Breakdown Popup（hover 現金流：生存之泉 才顯示） -->
@@ -3617,6 +3696,9 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
           <input type="number" id="exp-other" placeholder="0" min="0">
         </div>
       </div>
+      <!-- 自定義支出項目 -->
+      <div id="exp-custom-list"></div>
+      <button class="btn-add-exp-item" onclick="addCustomExpItem()">＋ 新增支出項目（保險、房貸等）</button>
       <div class="expense-total-row">
         <span style="color:var(--muted);font-size:13px" data-i18n="goal.calcArrow">計算總計 →</span>
         <span id="exp-total-display" style="font-family:'DM Mono',monospace;font-size:16px;color:var(--green)">NT$ 0</span>
@@ -4664,7 +4746,7 @@ const TRANSLATIONS = {
     'personality.magnet.name':'豐盛引力者','personality.magnet.tag':'直覺・感受力強','personality.magnet.desc':'擁有強大感受力，相信能量流動，豐盛自然吸引。',
     'personality.anchor.name':'穩定基石者','personality.anchor.tag':'穩健・重視安全','personality.anchor.desc':'重視安全感，腳踏實地，穩健也能走得很遠。',
     'personality.creator.name':'創造登峰者','personality.creator.tag':'創新・不走尋常路','personality.creator.desc':'有獨特想法，渴望突破，財富路徑由自己定義。',
-    'nav.tx':'交易','topbar.tx':'交易紀錄',
+    'nav.tx':'交易','topbar.tx':'交易紀錄','nav.jarsTx':'罐子',
     'tx.income':'💰 記錄收入','tx.expense':'💸 記錄支出',
     'tx.modeAuto':'🔄 自動分配','tx.modeManual':'🫙 指定罐子',
     'tx.incomeTypeActive':'主動收入','tx.incomeTypePassive':'被動收入',
@@ -4889,7 +4971,7 @@ const TRANSLATIONS = {
     'personality.magnet.name':'丰盛引力者','personality.magnet.tag':'直觉・感受力强','personality.magnet.desc':'拥有强大感受力，相信能量流动，丰盛自然吸引。',
     'personality.anchor.name':'稳定基石者','personality.anchor.tag':'稳健・重视安全','personality.anchor.desc':'重视安全感，脚踏实地，稳健也能走得很远。',
     'personality.creator.name':'创造登峰者','personality.creator.tag':'创新・不走寻常路','personality.creator.desc':'有独特想法，渴望突破，财富路径由自己定义。',
-    'nav.tx':'交易','topbar.tx':'交易记录',
+    'nav.tx':'交易','topbar.tx':'交易记录','nav.jarsTx':'罐子',
     'tx.income':'💰 记录收入','tx.expense':'💸 记录支出',
     'tx.modeAuto':'🔄 自动分配','tx.modeManual':'🫙 指定罐子',
     'tx.incomeTypeActive':'主动收入','tx.incomeTypePassive':'被动收入',
@@ -5114,7 +5196,7 @@ const TRANSLATIONS = {
     'personality.magnet.name':'THE MAGNET','personality.magnet.tag':'Intuitive · Highly Sensitive','personality.magnet.desc':'With strong intuition and trust in the flow of energy, abundance comes naturally to you.',
     'personality.anchor.name':'THE ANCHOR','personality.anchor.tag':'Steady · Security-Focused','personality.anchor.desc':'Security-minded and grounded — steady steps can take you just as far.',
     'personality.creator.name':'THE CREATOR','personality.creator.tag':'Innovative · Unconventional','personality.creator.desc':'With original ideas and a drive to break through, you define your own path to wealth.',
-    'nav.tx':'Record','topbar.tx':'Transactions',
+    'nav.tx':'Record','topbar.tx':'Transactions','nav.jarsTx':'Jars',
     'tx.income':'💰 Log Income','tx.expense':'💸 Log Expense',
     'tx.modeAuto':'🔄 Auto-Distribute','tx.modeManual':'🫙 To Specific Jar',
     'tx.incomeTypeActive':'Active Income','tx.incomeTypePassive':'Passive Income',
@@ -6146,10 +6228,51 @@ document.getElementById('goal-toggle').addEventListener('click', () => {
 });
 
 // ── Goal Helpers ──
+let expCustomItems = [];
+
 function computeExpTotal(prefix = '') {
-  return ['exp-rent','exp-food','exp-transport','exp-entertain','exp-health','exp-learn','exp-other']
+  const fixed = ['exp-rent','exp-food','exp-transport','exp-entertain','exp-health','exp-learn','exp-other']
     .reduce((s,i) => s + (+(document.getElementById(prefix+i)||{value:0}).value||0), 0);
+  const custom = expCustomItems.reduce((s, item) => s + (+item.amount || 0), 0);
+  return fixed + custom;
 }
+
+function renderCustomExpItems() {
+  ['exp-custom-list', 'm-exp-custom-list', 'setup-exp-custom-list'].forEach(listId => {
+    const container = document.getElementById(listId);
+    if (!container) return;
+    container.innerHTML = expCustomItems.map((item, i) => `
+      <div class="exp-custom-item">
+        <input type="text" class="exp-custom-name" placeholder="項目名稱（如：保險）" value="${(item.name||'').replace(/"/g,'&quot;')}" oninput="updateCustomExpItem(${i},'name',this.value)">
+        <input type="number" class="exp-custom-amount" placeholder="0" value="${item.amount||''}" oninput="updateCustomExpItem(${i},'amount',this.value)">
+        <button class="btn-remove-exp" onclick="removeCustomExpItem(${i})">✕</button>
+      </div>`).join('');
+  });
+  updateExpTotalDisplay();
+}
+window.renderCustomExpItems = renderCustomExpItems;
+
+function addCustomExpItem() {
+  expCustomItems.push({ name: '', amount: 0 });
+  renderCustomExpItems();
+  saveGoalSettings();
+}
+window.addCustomExpItem = addCustomExpItem;
+
+function removeCustomExpItem(i) {
+  expCustomItems.splice(i, 1);
+  renderCustomExpItems();
+  saveGoalSettings();
+}
+window.removeCustomExpItem = removeCustomExpItem;
+
+function updateCustomExpItem(i, field, value) {
+  if (!expCustomItems[i]) return;
+  expCustomItems[i][field] = field === 'amount' ? (+value || 0) : value;
+  updateExpTotalDisplay();
+  saveGoalSettings();
+}
+window.updateCustomExpItem = updateCustomExpItem;
 function updateGoalBadge() {
   const goal = +document.getElementById('goal-input').value || 100000;
   const badge = document.getElementById('goal-summary-badge');
@@ -6160,6 +6283,8 @@ function updateExpTotalDisplay() {
   if (el) el.textContent = formatCurrency(computeExpTotal());
   const mEl = document.getElementById('m-exp-total-display');
   if (mEl) mEl.textContent = formatCurrency(computeExpTotal('m-'));
+  const sEl = document.getElementById('setup-exp-total-display');
+  if (sEl) sEl.textContent = formatCurrency(computeExpTotal('setup-'));
 }
 
 // ── Goal Input ──
@@ -6353,6 +6478,7 @@ async function saveGoalSettings() {
     expHealth: +document.getElementById('exp-health').value || 0,
     expLearn: +document.getElementById('exp-learn').value || 0,
     expOther: +document.getElementById('exp-other').value || 0,
+    expCustom: expCustomItems,
     reminderDays: +(document.getElementById('update-reminder-days')||{value:30}).value || 30,
   };
   try {
@@ -6374,6 +6500,7 @@ async function loadGoalSettings() {
       document.getElementById('exp-health').value = s.expHealth || '';
       document.getElementById('exp-learn').value = s.expLearn || '';
       document.getElementById('exp-other').value = s.expOther || '';
+      if (Array.isArray(s.expCustom)) { expCustomItems = s.expCustom; renderCustomExpItems(); }
       updateGoalBadge();
       updateExpTotalDisplay();
       // 載入提醒設定
@@ -6520,7 +6647,7 @@ window.saveReminderSetting = saveReminderSetting;
 
 // ── Ring update ──
 function updateRing(pct){
-  const circumference = 2*Math.PI*66;
+  const circumference = 2*Math.PI*46;
   const offset = circumference - (pct/100)*circumference;
   const ring = document.getElementById('ring-fill');
   if(ring) ring.style.strokeDashoffset = offset;
@@ -8605,18 +8732,25 @@ window.initTxPage = initTxPage;
 // ── ESBI Quadrant System ──
 
 function loadEsbiInputs() {
-  const ids = ['e','s','b'];
-  ids.forEach(q => {
+  ['e','s','b'].forEach(q => {
     const saved = localStorage.getItem('esbi_' + q);
-    const el = document.getElementById('esbi-' + q + '-input');
-    if (el && saved) el.value = saved;
+    if (!saved) return;
+    const m = document.getElementById('esbi-' + q + '-input');
+    const d = document.getElementById('d-esbi-' + q + '-input');
+    if (m) m.value = saved;
+    if (d) d.value = saved;
   });
 }
 
 function saveAndUpdateEsbi() {
   ['e','s','b'].forEach(q => {
-    const el = document.getElementById('esbi-' + q + '-input');
-    if (el) localStorage.setItem('esbi_' + q, el.value || '0');
+    const mEl = document.getElementById('esbi-' + q + '-input');
+    const dEl = document.getElementById('d-esbi-' + q + '-input');
+    const active = document.activeElement;
+    const val = (active === dEl ? dEl?.value : active === mEl ? mEl?.value : (mEl?.value || dEl?.value)) || '0';
+    localStorage.setItem('esbi_' + q, val);
+    if (mEl) mEl.value = val;
+    if (dEl) dEl.value = val;
   });
   updateEsbiQuadrant();
 }
@@ -8629,37 +8763,31 @@ function updateEsbiQuadrant() {
   const b = getVal('esbi-b-input');
   const i = (window.assets || []).reduce((sum, a) => sum + (a.monthlyIncome || 0), 0);
 
-  const setDisp = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = formatCurrency(val); };
+  const setDisp = (id, val) => {
+    ['', 'd-'].forEach(pfx => { const el = document.getElementById(pfx + id); if (el) el.textContent = formatCurrency(val); });
+  };
   setDisp('esbi-e-disp', e);
   setDisp('esbi-s-disp', s);
   setDisp('esbi-b-disp', b);
   setDisp('esbi-i-disp', i);
 
-  // Highlight dominant quadrant
+  // Highlight dominant quadrant (both mobile and desktop)
   const vals = { e, s, b, i };
   const dominant = Object.entries(vals).sort((a, b) => b[1] - a[1])[0][0];
-  const cells = { e: 'esbi-e-cell', s: 'esbi-s-cell', b: 'esbi-b-cell', i: 'esbi-i-cell' };
   const bgMap = { e: 'rgba(255,255,255,0.05)', s: 'rgba(255,255,255,0.05)', b: 'rgba(240,208,96,0.08)', i: 'rgba(34,197,94,0.12)' };
   const baseBg = { e: '#0b140e', s: '#0b140e', b: '#0b140e', i: 'rgba(34,197,94,0.05)' };
-  Object.entries(cells).forEach(([q, cellId]) => {
-    const el = document.getElementById(cellId);
-    if (!el) return;
-    const isTop = q === dominant && vals[q] > 0;
-    el.style.background = isTop ? bgMap[q] : baseBg[q];
+  ['', 'd-'].forEach(pfx => {
+    ['e','s','b','i'].forEach(q => {
+      const el = document.getElementById(pfx + 'esbi-' + q + '-cell');
+      if (!el) return;
+      el.style.background = (q === dominant && vals[q] > 0) ? bgMap[q] : baseBg[q];
+    });
   });
 
-  // Ratio bar
+  // Ratio bar + Rich Dad message (both mobile and desktop)
   const total = e + s + b + i;
   const passive = b + i;
   const passivePct = total > 0 ? Math.round(passive / total * 100) : 0;
-  const fill = document.getElementById('esbi-ratio-fill');
-  if (fill) fill.style.width = passivePct + '%';
-  const pctLabel = document.getElementById('esbi-passive-pct-label');
-  if (pctLabel) pctLabel.textContent = t('esbi.passiveFmt').replace('{pct}', passivePct);
-
-  // Dynamic Rich Dad message
-  const msg = document.getElementById('esbi-rd-msg');
-  if (!msg) return;
   let text = '';
   if (i > 0 && i >= (e + s + b)) {
     text = t('esbi.msg.free');
@@ -8672,7 +8800,14 @@ function updateEsbiQuadrant() {
   } else {
     text = t('esbi.msg.none');
   }
-  msg.innerHTML = text;
+  ['', 'd-'].forEach(pfx => {
+    const fill = document.getElementById(pfx + 'esbi-ratio-fill');
+    if (fill) fill.style.width = passivePct + '%';
+    const pctLabel = document.getElementById(pfx + 'esbi-passive-pct-label');
+    if (pctLabel) pctLabel.textContent = t('esbi.passiveFmt').replace('{pct}', passivePct);
+    const msg = document.getElementById(pfx + 'esbi-rd-msg');
+    if (msg) msg.innerHTML = text;
+  });
 }
 
 // ── Wealth Insight 陪伴系統 ──
@@ -10352,8 +10487,7 @@ function switchTab(tab) {
   if (titleEl) titleEl.innerHTML = topbarTitle(tab);
 
   if (tab === 'profile') initMobilePersonalityList();
-  if (tab === 'goals') setTimeout(() => renderMobileChart(), 200);
-  if (tab === 'tx') setTimeout(() => initTxPage(), 50);
+  if (tab === 'tx') { setTimeout(() => initTxPage(), 50); setTimeout(() => renderMobileChart(), 200); }
   setTimeout(syncMobileUI, 100);
 }
 
@@ -11532,206 +11666,6 @@ function initMobileHome() {
   </div>
 </div>
 
-<!-- 目標頁 -->
-<div class="app-page" id="page-goals">
-  <div class="goal-mobile-header">
-    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px" data-i18n="goal.mobile.header">財務自由目標</div>
-    <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:600;color:#f0fdf4" id="mobile-goal-amount">NT$0/月</div>
-    <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px" data-i18n="goal.mobile.headerSub">月支出目標設定</div>
-  </div>
-  <div class="page-content">
-
-    <!-- 財富頻率等級 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.wealthLevels">財富頻率等級</div>
-    </div>
-    <div id="mobile-wealth-levels" style="margin-bottom:14px" onclick="showWealthLevelModal()"></div>
-
-    <!-- 現金流卡片 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.cashflowMetrics">現金流指標</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
-      <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
-    </div>
-
-    <!-- 六個罐子 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個罐子 · 收入分配</div>
-    </div>
-    <div class="jars-section">
-      <div class="jars-header" onclick="toggleJars()">
-        <div>
-          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
-          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
-        </div>
-        <div class="jars-toggle" id="jars-toggle-icon">▾</div>
-      </div>
-      <div class="jars-body" id="jars-body">
-        <!-- 月收入輸入 -->
-        <div class="jars-income-row">
-          <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
-          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
-          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
-        </div>
-        <!-- 合計提示 -->
-        <div class="jars-total-row ok" id="jars-total-row">
-          <span id="jars-total-label">合計 100% ✓</span>
-          <span id="jars-total-diff"></span>
-        </div>
-        <!-- 罐子圖式 -->
-        <div id="jars-visual-row" class="jar-visual-row"></div>
-        <!-- 六個罐子卡片 -->
-        <div id="jars-cards"></div>
-        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
-        <!-- FFA 建議 -->
-        <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
-      </div>
-    </div>
-
-    <!-- ESBI 象限 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.esbi.sectionTitle">ESBI 收入象限</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div class="esbi-grid">
-        <div class="esbi-cell" id="esbi-e-cell">
-          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
-          <div class="esbi-qname" data-i18n="esbi.e.name">員工</div>
-          <div class="esbi-income" id="esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
-        </div>
-        <div class="esbi-cell" id="esbi-b-cell">
-          <div class="esbi-letter" style="color:rgba(240,208,96,0.65)">B</div>
-          <div class="esbi-qname" data-i18n="esbi.b.name">企業主</div>
-          <div class="esbi-income" id="esbi-b-disp" style="color:#f0d060">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
-        </div>
-        <div class="esbi-cell" id="esbi-s-cell">
-          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
-          <div class="esbi-qname" data-i18n="esbi.s.name">自僱者</div>
-          <div class="esbi-income" id="esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
-        </div>
-        <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(34,197,94,0.05)">
-          <div class="esbi-letter" style="color:#22c55e">I</div>
-          <div class="esbi-qname" data-i18n="esbi.i.name">投資者</div>
-          <div class="esbi-income" id="esbi-i-disp" style="color:#22c55e">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
-          <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
-        </div>
-      </div>
-      <!-- 被動收入佔比 -->
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
-        <span data-i18n="esbi.activeLabel">主動 E+S</span>
-        <span id="esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
-      </div>
-      <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="esbi-ratio-fill" style="width:0%"></div></div>
-      <div class="esbi-divider" style="margin-top:10px"></div>
-      <!-- 主動收入輸入 -->
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
-      <div class="esbi-active-input">
-        <div class="esbi-input-row">
-          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
-          <span class="esbi-input-label" data-i18n="esbi.input.e">薪資收入</span>
-          <input id="esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
-        </div>
-        <div class="esbi-input-row">
-          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
-          <span class="esbi-input-label" data-i18n="esbi.input.s">副業 / 接案</span>
-          <input id="esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
-        </div>
-        <div class="esbi-input-row">
-          <span class="esbi-q-badge" style="color:rgba(240,208,96,0.7)">B</span>
-          <span class="esbi-input-label" data-i18n="esbi.input.b">企業 / 業務收入</span>
-          <input id="esbi-b-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
-        </div>
-      </div>
-      <div class="esbi-rd-msg" id="esbi-rd-msg">
-        <strong>富爸爸說：</strong>財務自由在右邊。E和S用時間換錢，一旦停下來收入就停。B和I讓系統和資產替你工作，睡覺時也在賺錢——這才是真正的自由。
-      </div>
-    </div>
-
-    <!-- 設定月支出目標 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goal.settingsSection">目標設定</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <!-- 📋 每月生活支出細項 -->
-      <div class="goal-section-label" data-i18n="goal.expenseSection">📋 每月生活支出細項</div>
-      <div class="expense-grid" style="margin-bottom:12px">
-        <div class="expense-item"><label data-i18n="goal.exp.rentShort">🏠 住宅</label><input id="m-exp-rent" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.foodShort">🍱 飲食</label><input id="m-exp-food" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.transportShort">🚗 交通</label><input id="m-exp-transport" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.entertainShort">🎮 娛樂</label><input id="m-exp-entertain" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.healthShort">💊 醫療</label><input id="m-exp-health" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.learnShort">📚 學習</label><input id="m-exp-learn" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.otherShort">📦 其他</label><input id="m-exp-other" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-      </div>
-      <div class="expense-total-row" style="margin-bottom:16px">
-        <span style="color:rgba(255,255,255,0.4);font-size:12px" data-i18n="goal.calcArrow">計算總計 →</span>
-        <span id="m-exp-total-display" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--green)">NT$ 0</span>
-        <button class="btn-apply-total" id="m-btn-apply-total" data-i18n="goal.applyTotal">套用為目標</button>
-      </div>
-
-      <!-- 💰 財務自由月支出目標 -->
-      <div class="goal-section-label" data-i18n="goal.directSection">💰 財務自由月支出目標</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px" data-i18n="goal.directLabel">每月需要多少現金流才能財務自由？</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-        <span id="mobile-goal-cur-symbol" style="font-size:12px;color:rgba(255,255,255,0.4)">NT$</span>
-        <input id="mobile-goal-input" type="number" value="100000" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 12px;font-size:14px;font-family:monospace;color:#f0fdf4;outline:none" placeholder="100000">
-        <span style="font-size:12px;color:rgba(255,255,255,0.4)" data-i18n="goal.perMonth">/月</span>
-      </div>
-
-      <!-- 🏆 財務自由里程碑 -->
-      <div class="goal-section-label" data-i18n="goal.milestonesSection">🏆 財務自由里程碑</div>
-      <div class="milestones-grid" id="m-milestones-grid" style="margin-bottom:16px"></div>
-
-      <!-- 📈 達成預測 -->
-      <div class="goal-section-label" data-i18n="goal.forecastSection">📈 達成預測</div>
-      <div class="forecast-box">
-        <div id="m-forecast-text" class="forecast-text" data-i18n="goal.forecast.empty">新增資產並設定每月現金流後，系統將自動預測您的財務自由時程。</div>
-      </div>
-    </div>
-
-    <!-- 資產趨勢圖 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.assetTrend">資產趨勢</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
-        <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.income">被動收入</button>
-      </div>
-      <div id="mobile-trend-area" style="height:160px;position:relative;">
-        <canvas id="mobile-chart-canvas" style="width:100%;height:160px;"></canvas>
-      </div>
-    </div>
-
-    <!-- 更新提醒設定 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.updateReminder">更新提醒</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderEvery">每隔</span>
-        <select id="mobile-reminder-days" onchange="saveReminderSetting()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;border-radius:8px;padding:6px 10px;font-size:13px;flex:1">
-          <option value="7" data-i18n="goal.reminderDays7">7 天</option>
-          <option value="14" data-i18n="goal.reminderDays14">14 天</option>
-          <option value="30" selected data-i18n="goal.reminderDays30">30 天</option>
-          <option value="60" data-i18n="goal.reminderDays60">60 天</option>
-          <option value="0" data-i18n="goal.reminderNever">不提醒</option>
-        </select>
-        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderSuffix">提醒我更新一次資產</span>
-      </div>
-      <div id="last-update-info" style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px"></div>
-    </div>
-
-  </div>
-</div>
-
 <!-- 夢想頁 -->
 <div class="app-page" id="page-dreams">
   <div style="background:linear-gradient(160deg,#0d1a0a,#060f0a);padding:20px 14px">
@@ -11952,10 +11886,207 @@ function initMobileHome() {
     <div class="mobile-section-header" style="margin-top:4px">
       <div class="mobile-section-title" data-i18n="tx.history">交易紀錄</div>
     </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;margin-bottom:80px">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;margin-bottom:12px">
       <div id="tx-history-list">
         <div style="text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px" data-i18n="tx.noHistory">尚無交易紀錄</div>
       </div>
+    </div>
+
+    <!-- ══ 以下併入自原「目標」頁（六個罐子/ESBI/財務目標/負債），2026-07-18 ══ -->
+
+    <div style="margin:4px 0 14px;text-align:center;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em" data-i18n="goal.mobile.header">財務自由目標</div>
+    <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:600;color:#f0fdf4;text-align:center;margin-bottom:4px" id="mobile-goal-amount">NT$0/月</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:14px" data-i18n="goal.mobile.headerSub">月支出目標設定</div>
+
+    <!-- 財富頻率等級 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.wealthLevels">財富頻率等級</div>
+    </div>
+    <div id="mobile-wealth-levels" style="margin-bottom:14px" onclick="showWealthLevelModal()"></div>
+
+    <!-- 現金流卡片 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.cashflowMetrics">現金流指標</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
+      <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
+    </div>
+
+    <!-- 六個罐子 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個罐子 · 收入分配</div>
+    </div>
+    <div class="jars-section">
+      <div class="jars-header" onclick="toggleJars()">
+        <div>
+          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
+          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
+        </div>
+        <div class="jars-toggle" id="jars-toggle-icon">▾</div>
+      </div>
+      <div class="jars-body" id="jars-body">
+        <!-- 月收入輸入 -->
+        <div class="jars-income-row">
+          <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
+          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
+          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
+        </div>
+        <!-- 合計提示 -->
+        <div class="jars-total-row ok" id="jars-total-row">
+          <span id="jars-total-label">合計 100% ✓</span>
+          <span id="jars-total-diff"></span>
+        </div>
+        <!-- 罐子圖式 -->
+        <div id="jars-visual-row" class="jar-visual-row"></div>
+        <!-- 六個罐子卡片 -->
+        <div id="jars-cards"></div>
+        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
+        <!-- FFA 建議 -->
+        <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ESBI 象限 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.esbi.sectionTitle">ESBI 收入象限</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div class="esbi-grid">
+        <div class="esbi-cell" id="esbi-e-cell">
+          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
+          <div class="esbi-qname" data-i18n="esbi.e.name">員工</div>
+          <div class="esbi-income" id="esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-desc" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
+        </div>
+        <div class="esbi-cell" id="esbi-b-cell">
+          <div class="esbi-letter" style="color:rgba(240,208,96,0.65)">B</div>
+          <div class="esbi-qname" data-i18n="esbi.b.name">企業主</div>
+          <div class="esbi-income" id="esbi-b-disp" style="color:#f0d060">NT$ 0</div>
+          <div class="esbi-desc" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
+        </div>
+        <div class="esbi-cell" id="esbi-s-cell">
+          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
+          <div class="esbi-qname" data-i18n="esbi.s.name">自僱者</div>
+          <div class="esbi-income" id="esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-desc" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
+        </div>
+        <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(34,197,94,0.05)">
+          <div class="esbi-letter" style="color:#22c55e">I</div>
+          <div class="esbi-qname" data-i18n="esbi.i.name">投資者</div>
+          <div class="esbi-income" id="esbi-i-disp" style="color:#22c55e">NT$ 0</div>
+          <div class="esbi-desc" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
+          <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
+        </div>
+      </div>
+      <!-- 被動收入佔比 -->
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
+        <span data-i18n="esbi.activeLabel">主動 E+S</span>
+        <span id="esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
+      </div>
+      <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="esbi-ratio-fill" style="width:0%"></div></div>
+      <div class="esbi-divider" style="margin-top:10px"></div>
+      <!-- 主動收入輸入 -->
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
+      <div class="esbi-active-input">
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
+          <span class="esbi-input-label" data-i18n="esbi.input.e">薪資收入</span>
+          <input id="esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
+          <span class="esbi-input-label" data-i18n="esbi.input.s">副業 / 接案</span>
+          <input id="esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+        <div class="esbi-input-row">
+          <span class="esbi-q-badge" style="color:rgba(240,208,96,0.7)">B</span>
+          <span class="esbi-input-label" data-i18n="esbi.input.b">企業 / 業務收入</span>
+          <input id="esbi-b-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
+        </div>
+      </div>
+      <div class="esbi-rd-msg" id="esbi-rd-msg">
+        <strong>富爸爸說：</strong>財務自由在右邊。E和S用時間換錢，一旦停下來收入就停。B和I讓系統和資產替你工作，睡覺時也在賺錢——這才是真正的自由。
+      </div>
+    </div>
+
+    <!-- 設定月支出目標 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goal.settingsSection">目標設定</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
+      <!-- 📋 每月生活支出細項 -->
+      <div class="goal-section-label" data-i18n="goal.expenseSection">📋 每月生活支出細項</div>
+      <div class="expense-grid" style="margin-bottom:12px">
+        <div class="expense-item"><label data-i18n="goal.exp.rentShort">🏠 住宅</label><input id="m-exp-rent" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.foodShort">🍱 飲食</label><input id="m-exp-food" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.transportShort">🚗 交通</label><input id="m-exp-transport" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.entertainShort">🎮 娛樂</label><input id="m-exp-entertain" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.healthShort">💊 醫療</label><input id="m-exp-health" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.learnShort">📚 學習</label><input id="m-exp-learn" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.otherShort">📦 其他</label><input id="m-exp-other" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+      </div>
+      <!-- 自定義支出項目 -->
+      <div id="m-exp-custom-list"></div>
+      <button class="btn-add-exp-item" onclick="addCustomExpItem()">＋ 新增支出項目（保險、房貸等）</button>
+      <div class="expense-total-row" style="margin-bottom:16px">
+        <span style="color:rgba(255,255,255,0.4);font-size:12px" data-i18n="goal.calcArrow">計算總計 →</span>
+        <span id="m-exp-total-display" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--green)">NT$ 0</span>
+        <button class="btn-apply-total" id="m-btn-apply-total" data-i18n="goal.applyTotal">套用為目標</button>
+      </div>
+
+      <!-- 💰 財務自由月支出目標 -->
+      <div class="goal-section-label" data-i18n="goal.directSection">💰 財務自由月支出目標</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px" data-i18n="goal.directLabel">每月需要多少現金流才能財務自由？</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+        <span id="mobile-goal-cur-symbol" style="font-size:12px;color:rgba(255,255,255,0.4)">NT$</span>
+        <input id="mobile-goal-input" type="number" value="100000" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 12px;font-size:14px;font-family:monospace;color:#f0fdf4;outline:none" placeholder="100000">
+        <span style="font-size:12px;color:rgba(255,255,255,0.4)" data-i18n="goal.perMonth">/月</span>
+      </div>
+
+      <!-- 🏆 財務自由里程碑 -->
+      <div class="goal-section-label" data-i18n="goal.milestonesSection">🏆 財務自由里程碑</div>
+      <div class="milestones-grid" id="m-milestones-grid" style="margin-bottom:16px"></div>
+
+      <!-- 📈 達成預測 -->
+      <div class="goal-section-label" data-i18n="goal.forecastSection">📈 達成預測</div>
+      <div class="forecast-box">
+        <div id="m-forecast-text" class="forecast-text" data-i18n="goal.forecast.empty">新增資產並設定每月現金流後，系統將自動預測您的財務自由時程。</div>
+      </div>
+    </div>
+
+    <!-- 資產趨勢圖 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.assetTrend">資產趨勢</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
+        <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.income">被動收入</button>
+      </div>
+      <div id="mobile-trend-area" style="height:160px;position:relative;">
+        <canvas id="mobile-chart-canvas" style="width:100%;height:160px;"></canvas>
+      </div>
+    </div>
+
+    <!-- 更新提醒設定 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.updateReminder">更新提醒</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderEvery">每隔</span>
+        <select id="mobile-reminder-days" onchange="saveReminderSetting()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;border-radius:8px;padding:6px 10px;font-size:13px;flex:1">
+          <option value="7" data-i18n="goal.reminderDays7">7 天</option>
+          <option value="14" data-i18n="goal.reminderDays14">14 天</option>
+          <option value="30" selected data-i18n="goal.reminderDays30">30 天</option>
+          <option value="60" data-i18n="goal.reminderDays60">60 天</option>
+          <option value="0" data-i18n="goal.reminderNever">不提醒</option>
+        </select>
+        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderSuffix">提醒我更新一次資產</span>
+      </div>
+      <div id="last-update-info" style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px"></div>
     </div>
 
   </div>
@@ -11983,7 +12114,7 @@ function initMobileHome() {
         <div class="profile-menu-label" data-i18n="profile.achievements">成就殿堂</div>
         <div class="profile-menu-arrow">›</div>
       </div>
-      <div class="profile-menu-item" onclick="switchTab('goals')">
+      <div class="profile-menu-item" onclick="switchTab('tx')">
         <div class="profile-menu-icon">🎯</div>
         <div class="profile-menu-label" data-i18n="profile.goalSettings">財務目標設定</div>
         <div class="profile-menu-arrow">›</div>
@@ -12145,7 +12276,7 @@ function initMobileHome() {
         <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="18" y2="15"/>
       </svg>
     </div>
-    <div class="nav-label" data-i18n="nav.tx">交易</div>
+    <div class="nav-label" data-i18n="nav.jarsTx">罐子</div>
   </div>
   <div class="nav-item" id="nav-dreams" onclick="switchTab('dreams')">
     <div class="nav-icon">
@@ -12755,12 +12886,16 @@ window.submitMobileDebt = submitMobileDebt;
   font-size:16px;cursor:pointer;color:#aaa;line-height:1;padding:0;
 }
 .fox-bclose:hover{color:#555;}
+@media(max-width: 768px) {
+  #fox-widget, #fox-guide, #fox-ctx-menu { display:none !important; }
+}
 </style>
 
 <script>
 /* ===== FOX WIDGET ===== */
 (function(){
 'use strict';
+if (window.innerWidth <= 768) return; // 手機版不顯示狐狸小幫手，避免擋住操作
 
 /*
   時間軸（每次漫步 10 秒）：
@@ -12778,18 +12913,75 @@ const IDLE_MIN_MS     = 7000;
 const IDLE_MAX_MS     = 14000;
 const FOX_W = 210, FOX_H = 320;
 
-const TIPS = [
+const TIPS_GENERIC = [
   '每月收入至少存10%，時間是你最好的朋友！',
   '財務自由帳戶每月固定存入，讓錢幫你工作 💰',
   '先還高利息的債務，省下的利息就是獲利！',
   '六個罐子系統幫你掌握每一分錢的流向！',
   '投資前先備好3到6個月的緊急備用金！',
-  '記錄每天支出，找出那些不知不覺的漏財！',
   '複利是財富最強大的力量，越早開始越好！',
   '消費前問自己：這是需要，還是只是想要？',
   '設定具體的財務目標，夢想才會變成計畫！',
   '被動收入超過支出的那一天，就是財務自由！',
 ];
+
+function buildPersonalTips() {
+  const tips = [];
+  const assets = window.assets || [];
+  const assetCount = assets.length;
+  const totalCF = assets.reduce((s, a) => s + (parseFloat(a.monthlyIncome) || 0), 0);
+  const totalVal = assets.reduce((s, a) => s + (parseFloat(a.currentValue) || parseFloat(a.totalCost) || 0), 0);
+  const cats = [...new Set(assets.map(a => a.category).filter(Boolean))];
+
+  // 使用天數
+  let days = 0;
+  const firstSeen = localStorage.getItem('wealthFirstSeenAt');
+  if (firstSeen) {
+    days = Math.floor((Date.now() - parseInt(firstSeen)) / 86400000);
+  }
+
+  // 資產狀況鼓勵
+  if (assetCount === 0) {
+    tips.push('新增你的第一筆資產吧！記錄是財富覺醒的第一步 🌱');
+    tips.push('富爸爸說：你無法管理你沒有追蹤的東西。開始記錄吧！');
+  } else {
+    tips.push('你已經記錄了 ' + assetCount + ' 筆資產，持續累積中！📈');
+    if (assetCount >= 10) tips.push('你有 ' + assetCount + ' 筆資產了！多元配置是降低風險的關鍵 💎');
+    if (assetCount >= 5) tips.push('資產組合越來越豐富了！' + assetCount + ' 筆資產，繼續加油 🔥');
+  }
+
+  if (totalCF > 0) {
+    tips.push('你每月有 NT$' + Math.round(totalCF).toLocaleString() + ' 的非工資收入，錢正在替你工作！💰');
+    tips.push('被動收入 NT$' + Math.round(totalCF).toLocaleString() + '/月，離財務自由又近了一步 🎯');
+    if (totalCF >= 50000) tips.push('月被動收入突破五萬！你已經走在很多人前面了 👑');
+    if (totalCF >= 20000) tips.push('每月 NT$' + Math.round(totalCF).toLocaleString() + ' 自動進帳，這就是富爸爸說的「讓錢替你工作」🌟');
+    if (totalCF >= 5000) tips.push('NT$' + Math.round(totalCF).toLocaleString() + '/月的被動收入，相當於每天有人請你吃飯！🍽️');
+  } else if (assetCount > 0) {
+    tips.push('你的資產還沒產生現金流，想想看能不能讓它們替你賺錢 🤔');
+    tips.push('資產的價值在於它能帶來的現金流，試著找到會「下金蛋的鵝」🪿');
+  }
+
+  if (cats.length >= 3) {
+    tips.push('你的資產橫跨 ' + cats.length + ' 個類別，分散投資做得很好！🛡️');
+  } else if (cats.length === 1 && assetCount > 1) {
+    tips.push('目前資產集中在同一類別，考慮分散到不同領域降低風險 💡');
+  }
+
+  if (totalVal > 0) {
+    tips.push('你的資產總值 NT$' + Math.round(totalVal).toLocaleString() + '，每一分錢都是你努力的成果 ✨');
+    if (totalVal >= 1000000) tips.push('資產突破百萬！繼續讓複利幫你工作 🚀');
+  }
+
+  // 使用天數鼓勵
+  if (days >= 365) tips.push('你已經使用財富覺醒超過一年了！堅持就是最大的力量 🏆');
+  else if (days >= 180) tips.push('半年了！你的財富意識正在改變你的未來 🌈');
+  else if (days >= 90) tips.push('持續記錄 ' + days + ' 天了！習慣正在養成中 💪');
+  else if (days >= 30) tips.push('已經記錄 ' + days + ' 天！一個月的堅持，代表你是認真的 🔥');
+  else if (days >= 7) tips.push('第 ' + days + ' 天了！每天打開看一下，財富意識就在成長 🌱');
+  else if (days >= 1) tips.push('歡迎回來！持續記錄是財富覺醒最重要的事 👋');
+
+  return tips;
+}
 
 const S = { IDLE:0, WALK_START:1, WALK_STOP:2 };
 let state = S.IDLE;
@@ -12900,7 +13092,9 @@ function scheduleTip() {
 }
 
 function showTip() {
-  tipEl.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  const personal = buildPersonalTips();
+  const pool = personal.length > 0 && Math.random() < 0.7 ? personal : TIPS_GENERIC;
+  tipEl.textContent = pool[Math.floor(Math.random() * pool.length)];
   bubble.style.display = 'block';
 }
 
