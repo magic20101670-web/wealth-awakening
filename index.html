@@ -316,8 +316,13 @@ select option { background: #0d2318; }
 .jar-amount { font-size:15px;font-weight:600;font-family:'DM Mono',monospace;color:#4ade80; }
 .jar-amount.zero { color:rgba(255,255,255,0.2); }
 .jars-total-row { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:9px;margin-bottom:10px;font-size:12px; }
-.jars-total-row.ok { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#4ade80; }
+.jars-total-row.ok { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#4ade80;display:none; }
 .jars-total-row.err { background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171; }
+.jar-card-name-click { cursor:pointer; }
+@media(max-width:768px) {
+  .jar-card-detail { display:none; }
+  .jar-card.expanded .jar-card-detail { display:block; }
+}
 .jars-ffa-tip { background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.18);border-radius:10px;padding:11px 13px;margin-top:4px;font-size:12px;color:rgba(240,253,244,0.75);line-height:1.6; }
 /* ── Jar visuals ── */
 .jar-visual-row { display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:14px 0 16px;padding:14px 10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px; }
@@ -407,6 +412,20 @@ select option { background: #0d2318; }
 .dream-item-setup .star-btn.main { opacity:1; }
 .dream-item-setup .del { background:none; border:none; color:rgba(255,255,255,0.3); cursor:pointer; font-size:14px; }
 .dream-start-btn { background:linear-gradient(135deg,#f0d060,#d4af37); color:#052e16; border:none; border-radius:16px; padding:16px 40px; font-size:16px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:20px; width:100%; letter-spacing:0.04em; }
+.dream-setup-icon { font-size:44px; margin-bottom:12px; }
+
+/* 首次登入三個設定畫面（夢想/罐子/月支出目標）手機版壓縮，
+   減少說明文字與留白，讓確定/儲存按鈕不用滑到底才看得到 */
+@media(max-width:768px) {
+  .dream-intro { padding:20px 18px 14px; }
+  .dream-intro-title { font-size:22px; margin-bottom:4px; }
+  .dream-intro-sub { font-size:12.5px; margin-bottom:12px; line-height:1.45; }
+  .dream-setup-icon { font-size:28px; margin-bottom:6px; }
+  .dream-emoji-grid { gap:6px; margin:10px 0; }
+  .dream-emoji-btn { padding:8px 6px; font-size:18px; }
+  .dream-start-btn { padding:12px 32px; margin-top:12px; }
+  .jars-setup-currency, .goal-section-label { margin-bottom:2px; }
+}
 
 /* 六個罐子起始餘額設定 */
 .jars-setup-currency { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#f0fdf4; padding:8px 14px; border-radius:10px; font-size:13px; font-family:'DM Sans',sans-serif; }
@@ -1922,7 +1941,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 <!-- 夢想許願儀式畫面（第一次登入） -->
 <div class="dream-screen hidden" id="dream-screen">
   <div class="dream-intro">
-    <div style="font-size:44px;margin-bottom:12px">🌟</div>
+    <div class="dream-setup-icon">🌟</div>
     <div class="dream-intro-title" data-i18n="dream.setup.title">你的夢想是什麼？</div>
     <div class="dream-intro-sub" data-i18n="dream.setup.subtitle">財富自由不是終點，而是讓你有能力去追求真正重要的事。<br><br>你的夢想，就是你最好的理財動力。<br>當你清楚知道自己在為什麼而努力，每一筆資產的累積才有意義。<br><br>點選 emoji，選擇你的夢想 ✨</div>
 
@@ -1981,7 +2000,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 <!-- 六個罐子起始餘額設定（首次登入） -->
 <div class="dream-screen hidden" id="jars-balance-screen" style="z-index:502">
   <div class="dream-intro">
-    <div style="font-size:44px;margin-bottom:12px">🫙</div>
+    <div class="dream-setup-icon">🫙</div>
     <div class="dream-intro-title" data-i18n="jarsSetup.title">設定你的六個罐子</div>
     <div class="dream-intro-sub" data-i18n="jarsSetup.subtitle">六個罐子是你的財富分配系統。<br>先告訴我們你目前每個罐子裡大概有多少錢，<br>之後就能持續追蹤每個罐子的成長 📈</div>
 
@@ -2013,8 +2032,8 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
 <!-- 設定月支出目標（首次登入） -->
 <div class="dream-screen hidden" id="goal-setup-screen" style="z-index:501">
-  <div class="dream-intro" style="padding-bottom:80px">
-    <div style="font-size:44px;margin-bottom:12px">🎯</div>
+  <div class="dream-intro">
+    <div class="dream-setup-icon">🎯</div>
     <div class="dream-intro-title" data-i18n="goalSetup.title">設定月支出目標</div>
     <div class="dream-intro-sub" data-i18n="goalSetup.subtitle">了解你每月的生活開銷，才能算出財務自由真正需要的現金流。<br>先填寫每月固定支出，再設定你的財務自由月支出目標 💰</div>
 
@@ -3454,7 +3473,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none" onclick="toggleDesktopJars()">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.jars.titleDesktop">💰🫙 六個罐子 · 收入分配系統</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="goals.jars.subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <button onclick="event.stopPropagation();openTxDesktopModal()" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">💳 交易紀錄</button>
@@ -3484,7 +3503,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.esbi.sectionTitle">ESBI 收入象限</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Robert Kiyosaki · Rich Dad Poor Dad</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="esbi.subtitle">四種收入象限，你的錢從哪裡來？</div>
       </div>
     </div>
     <div class="esbi-grid">
@@ -3975,7 +3994,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       <input class="celebrate-reward-input" id="celebrate-reward-input" type="text" placeholder="或是寫下你自己的慶祝方式..." maxlength="50" />
     </div>
     <div class="rd-perspective" id="rd-perspective" style="display:none">
-      <div class="rd-label">💡 富爸爸視角</div>
+      <div class="rd-label">💡 財富視角</div>
       <div id="rd-cf-tag" class="rd-cf-tag"></div>
       <div class="rd-purpose-label">你買這個的目的是什麼？</div>
       <div class="rd-purpose-grid">
@@ -4554,7 +4573,7 @@ const TRANSLATIONS = {
     'home.personalityPrompt.title':'找出你的財富人格','home.personalityPrompt.desc':'5個問題，看看你是哪一種財富原型，讓建議更貼近你','home.personalityPrompt.cta':'立即測驗 →',
     'goals.jars.sectionTitle':'六個罐子 · 收入分配',
     'goals.jars.title':'💰🫙 六個罐子系統','goals.jars.titleDesktop':'💰🫙 六個罐子 · 收入分配系統',
-    'goals.jars.subtitle':'T. Harv Eker · 有錢人想的和你不一樣',
+    'goals.jars.subtitle':'把每一塊錢分配到對的地方',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'計算',
     'goals.jars.totalOk':'合計 100% ✓','goals.jars.totalFmt':'合計 {pct}%',
     'goals.jars.diffMoreFmt':'多了 {pct}%','goals.jars.diffLessFmt':'少了 {pct}%',
@@ -4568,24 +4587,24 @@ const TRANSLATIONS = {
     'jar.play.name':'享樂帳戶','jar.play.desc':'不帶罪惡感地花掉，而且要全部花完。享樂帳戶讓你的大腦知道「有錢是好事」。',
     'jar.give.name':'給予帳戶','jar.give.desc':'捐款、請朋友吃飯、幫助需要幫助的人。給予是財富循環的一部分。',
     'jarsSetup.title':'設定你的六個罐子',
-    'jarsSetup.subtitle':'六個罐子是你的財富分配系統。<br>先告訴我們你目前每個罐子裡大概有多少錢，<br>之後就能持續追蹤每個罐子的成長 📈',
+    'jarsSetup.subtitle':'告訴我們每個罐子目前大概有多少錢 📈',
     'jarsSetup.startBtn':'開始追蹤我的罐子 🚀','jarsSetup.skipBtn':'稍後設定','jarsSetup.currentBalance':'目前餘額',
     'jarsSetup.totalAmountLabel':'💰 目前資產總額',
     'goalSetup.title':'設定月支出目標',
-    'goalSetup.subtitle':'了解你每月的生活開銷，才能算出財務自由真正需要的現金流。<br>先填寫每月固定支出，再設定你的財務自由月支出目標 💰',
+    'goalSetup.subtitle':'填寫每月支出，算出財務自由需要的現金流 💰',
     'goalSetup.startBtn':'儲存並繼續 🚀','goalSetup.skipBtn':'稍後設定',
     'goals.esbi.sectionTitle':'ESBI 收入象限',
     'esbi.e.name':'員工','esbi.s.name':'自僱者','esbi.b.name':'企業主','esbi.i.name':'投資者',
     'esbi.e.desc':'用時間換薪資<br>停工就停收入','esbi.b.desc':'系統為你工作<br>可以放假賺錢',
     'esbi.s.desc':'靠自己的技能<br>但仍需親力親為','esbi.i.desc':'錢替你工作<br>睡覺也在賺錢',
-    'esbi.goalTag':'目標','esbi.activeLabel':'主動 E+S','esbi.passiveFmt':'被動 B+I {pct}%',
+    'esbi.goalTag':'目標','esbi.activeLabel':'主動 E+S','esbi.passiveFmt':'被動 B+I {pct}%','esbi.rdToggle':'💡 象限說明 ›','esbi.subtitle':'四種收入象限，你的錢從哪裡來？',
     'esbi.inputHint':'輸入你的主動收入（月）',
     'esbi.input.e':'薪資收入','esbi.input.s':'副業 / 接案','esbi.input.b':'企業 / 業務收入',
-    'esbi.msg.free':'<strong>🎉 財務自由的核心：</strong>你的被動收入（I象限）已超越主動收入！讓錢替你工作，這正是富爸爸說的財富自由。',
-    'esbi.msg.over50Fmt':'<strong>富爸爸說：</strong>你已有 {pct}% 的收入來自被動！超過一半的生活由資產支撐，你正在邁向右邊象限。繼續增加 B 和 I。',
-    'esbi.msg.over20Fmt':'<strong>富爸爸說：</strong>你有 {pct}% 的收入不需要你親自去賺——這是進步。財務自由的旅程就是把這個比例一直往上推。',
-    'esbi.msg.startedI':'<strong>富爸爸說：</strong>你的投資組合已開始產生被動收入。每增加一筆配息資產，都是在讓 I 象限長大。目標是讓 B+I 超過 E+S。',
-    'esbi.msg.none':'<strong>富爸爸說：</strong>E 和 S 用時間換錢，停工就停收入。B 和 I 讓系統和資產替你工作，睡覺時也在賺錢——增加有現金流的資產，是往右邊移動的第一步。',
+    'esbi.msg.free':'<strong>🎉 財務自由的核心：</strong>你的被動收入（I象限）已超越主動收入！讓錢替你工作，這正是財富自由的樣子。',
+    'esbi.msg.over50Fmt':'<strong>你已有 {pct}% 的收入來自被動！</strong>超過一半的生活由資產支撐，你正在邁向右邊象限。繼續增加 B 和 I。',
+    'esbi.msg.over20Fmt':'<strong>你有 {pct}% 的收入不需要你親自去賺</strong>——這是進步。財務自由的旅程就是把這個比例一直往上推。',
+    'esbi.msg.startedI':'<strong>你的投資組合已開始產生被動收入。</strong>每增加一筆配息資產，都是在讓 I 象限長大。目標是讓 B+I 超過 E+S。',
+    'esbi.msg.none':'<strong>E 和 S 用時間換錢，停工就停收入。</strong>B 和 I 讓系統和資產替你工作，睡覺時也在賺錢——增加有現金流的資產，是往右邊移動的第一步。',
     'home.mainDream':'我的主夢想','home.viewAll':'查看全部 ›','home.otherDreams':'其他夢想',
     'home.dream.none':'還未設定夢想','home.dream.noneSub':'前往夢想頁面設定你的目標',
     'home.dream.targetFmt':'目標 {amount} · 每一筆資產都在靠近 ✨','home.dream.noTargetSub':'每一筆資產，都在帶你靠近這個夢想 ✨',
@@ -4598,7 +4617,7 @@ const TRANSLATIONS = {
     'dream.grid.noTarget':'未設定','home.grid.dreamAchieveBtn':'🎉 我將實現!',
     'home.dream.addNew':'＋ 新增夢想','home.dream.addFirst':'＋ 新增我的夢想',
     'dream.setup.title':'你的夢想是什麼？',
-    'dream.setup.subtitle':'財富自由不是終點，而是讓你有能力去追求真正重要的事。<br><br>你的夢想，就是你最好的理財動力。<br>當你清楚知道自己在為什麼而努力，每一筆資產的累積才有意義。<br><br>點選 emoji，選擇你的夢想 ✨',
+    'dream.setup.subtitle':'點選 emoji，選擇你的夢想 ✨',
     'dream.setup.inputPlaceholder':'點照片選用，或輸入你自己的夢想...',
     'dream.setup.amountPlaceholder':'💰 這個夢想大概需要多少錢？（選填）',
     'dream.setup.addBtn':'＋ 加入','dream.setup.usePhoto':'用這個 ↗',
@@ -4779,7 +4798,7 @@ const TRANSLATIONS = {
     'home.personalityPrompt.title':'找出你的财富人格','home.personalityPrompt.desc':'5个问题，看看你是哪一种财富原型，让建议更贴近你','home.personalityPrompt.cta':'立即测验 →',
     'goals.jars.sectionTitle':'六个罐子 · 收入分配',
     'goals.jars.title':'💰🫙 六个罐子系统','goals.jars.titleDesktop':'💰🫙 六个罐子 · 收入分配系统',
-    'goals.jars.subtitle':'T. Harv Eker · 有钱人想的和你不一样',
+    'goals.jars.subtitle':'把每一块钱分配到对的地方',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'计算',
     'goals.jars.totalOk':'合计 100% ✓','goals.jars.totalFmt':'合计 {pct}%',
     'goals.jars.diffMoreFmt':'多了 {pct}%','goals.jars.diffLessFmt':'少了 {pct}%',
@@ -4793,24 +4812,24 @@ const TRANSLATIONS = {
     'jar.play.name':'享乐账户','jar.play.desc':'不带罪恶感地花掉，而且要全部花完。享乐账户让你的大脑知道「有钱是好事」。',
     'jar.give.name':'给予账户','jar.give.desc':'捐款、请朋友吃饭、帮助需要帮助的人。给予是财富循环的一部分。',
     'jarsSetup.title':'设置你的六个罐子',
-    'jarsSetup.subtitle':'六个罐子是你的财富分配系统。<br>先告诉我们你目前每个罐子里大概有多少钱，<br>之后就能持续追踪每个罐子的成长 📈',
+    'jarsSetup.subtitle':'告诉我们每个罐子目前大概有多少钱 📈',
     'jarsSetup.startBtn':'开始追踪我的罐子 🚀','jarsSetup.skipBtn':'稍后设置','jarsSetup.currentBalance':'目前余额',
     'jarsSetup.totalAmountLabel':'💰 目前资产总额',
     'goalSetup.title':'设置月支出目标',
-    'goalSetup.subtitle':'了解你每月的生活开销，才能算出财务自由真正需要的现金流。<br>先填写每月固定支出，再设置你的财务自由月支出目标 💰',
+    'goalSetup.subtitle':'填写每月支出，算出财务自由需要的现金流 💰',
     'goalSetup.startBtn':'保存并继续 🚀','goalSetup.skipBtn':'稍后设置',
     'goals.esbi.sectionTitle':'ESBI 收入象限',
     'esbi.e.name':'员工','esbi.s.name':'自雇者','esbi.b.name':'企业主','esbi.i.name':'投资者',
     'esbi.e.desc':'用时间换薪资<br>停工就停收入','esbi.b.desc':'系统为你工作<br>可以放假赚钱',
     'esbi.s.desc':'靠自己的技能<br>但仍需亲力亲为','esbi.i.desc':'钱替你工作<br>睡觉也在赚钱',
-    'esbi.goalTag':'目标','esbi.activeLabel':'主动 E+S','esbi.passiveFmt':'被动 B+I {pct}%',
+    'esbi.goalTag':'目标','esbi.activeLabel':'主动 E+S','esbi.passiveFmt':'被动 B+I {pct}%','esbi.rdToggle':'💡 象限说明 ›','esbi.subtitle':'四种收入象限，你的钱从哪里来？',
     'esbi.inputHint':'输入你的主动收入（月）',
     'esbi.input.e':'薪资收入','esbi.input.s':'副业 / 接案','esbi.input.b':'企业 / 业务收入',
-    'esbi.msg.free':'<strong>🎉 财务自由的核心：</strong>你的被动收入（I象限）已超越主动收入！让钱替你工作，这正是富爸爸说的财富自由。',
-    'esbi.msg.over50Fmt':'<strong>富爸爸说：</strong>你已有 {pct}% 的收入来自被动！超过一半的生活由资产支撑，你正在迈向右边象限。继续增加 B 和 I。',
-    'esbi.msg.over20Fmt':'<strong>富爸爸说：</strong>你有 {pct}% 的收入不需要你亲自去赚——这是进步。财务自由的旅程就是把这个比例一直往上推。',
-    'esbi.msg.startedI':'<strong>富爸爸说：</strong>你的投资组合已开始产生被动收入。每增加一笔配息资产，都是在让 I 象限长大。目标是让 B+I 超过 E+S。',
-    'esbi.msg.none':'<strong>富爸爸说：</strong>E 和 S 用时间换钱，停工就停收入。B 和 I 让系统和资产替你工作，睡觉时也在赚钱——增加有现金流的资产，是往右边移动的第一步。',
+    'esbi.msg.free':'<strong>🎉 财务自由的核心：</strong>你的被动收入（I象限）已超越主动收入！让钱替你工作，这正是财富自由的样子。',
+    'esbi.msg.over50Fmt':'<strong>你已有 {pct}% 的收入来自被动！</strong>超过一半的生活由资产支撑，你正在迈向右边象限。继续增加 B 和 I。',
+    'esbi.msg.over20Fmt':'<strong>你有 {pct}% 的收入不需要你亲自去赚</strong>——这是进步。财务自由的旅程就是把这个比例一直往上推。',
+    'esbi.msg.startedI':'<strong>你的投资组合已开始产生被动收入。</strong>每增加一笔配息资产，都是在让 I 象限长大。目标是让 B+I 超过 E+S。',
+    'esbi.msg.none':'<strong>E 和 S 用时间换钱，停工就停收入。</strong>B 和 I 让系统和资产替你工作，睡觉时也在赚钱——增加有现金流的资产，是往右边移动的第一步。',
     'home.mainDream':'我的主梦想','home.viewAll':'查看全部 ›','home.otherDreams':'其他梦想',
     'home.dream.none':'还未设定梦想','home.dream.noneSub':'前往梦想页面设定你的目标',
     'home.dream.targetFmt':'目标 {amount} · 每一笔资产都在靠近 ✨','home.dream.noTargetSub':'每一笔资产，都在带你靠近这个梦想 ✨',
@@ -4823,7 +4842,7 @@ const TRANSLATIONS = {
     'dream.grid.noTarget':'未设置','home.grid.dreamAchieveBtn':'🎉 我将实现!',
     'home.dream.addNew':'＋ 新增梦想','home.dream.addFirst':'＋ 新增我的梦想',
     'dream.setup.title':'你的梦想是什么？',
-    'dream.setup.subtitle':'财富自由不是终点，而是让你有能力去追求真正重要的事。<br><br>你的梦想，就是你最好的理财动力。<br>当你清楚知道自己在为什么而努力，每一笔资产的累积才有意义。<br><br>点选 emoji，选择你的梦想 ✨',
+    'dream.setup.subtitle':'点选 emoji，选择你的梦想 ✨',
     'dream.setup.inputPlaceholder':'点照片选用，或输入你自己的梦想...',
     'dream.setup.amountPlaceholder':'💰 这个梦想大概需要多少钱？（选填）',
     'dream.setup.addBtn':'＋ 加入','dream.setup.usePhoto':'用这个 ↗',
@@ -5004,7 +5023,7 @@ const TRANSLATIONS = {
     'home.personalityPrompt.title':'Discover Your Wealth Personality','home.personalityPrompt.desc':'Answer 5 quick questions to find your wealth archetype and get advice tailored to you','home.personalityPrompt.cta':'Take the Quiz →',
     'goals.jars.sectionTitle':'Six Jars · Income Allocation',
     'goals.jars.title':'💰🫙 The Six Jars System','goals.jars.titleDesktop':'💰🫙 Six Jars · Income Allocation System',
-    'goals.jars.subtitle':'T. Harv Eker · Secrets of the Millionaire Mind',
+    'goals.jars.subtitle':'Give every dollar a job',
     'goals.jars.incomeLabel':'💰 Income to Allocate','goals.jars.calculate':'Calculate',
     'goals.jars.totalOk':'Total 100% ✓','goals.jars.totalFmt':'Total {pct}%',
     'goals.jars.diffMoreFmt':'{pct}% over','goals.jars.diffLessFmt':'{pct}% short',
@@ -5018,24 +5037,24 @@ const TRANSLATIONS = {
     'jar.play.name':'Play','jar.play.desc':'Spend it guilt-free, and spend it all. This jar trains your brain to know that having money is good.',
     'jar.give.name':'Give','jar.give.desc':'Donate, treat a friend, help someone in need. Giving is part of the cycle of wealth.',
     'jarsSetup.title':'Set Up Your Six Jars',
-    'jarsSetup.subtitle':'The Six Jars are your wealth allocation system.<br>Tell us roughly how much is in each jar right now,<br>so we can track each jar\'s growth over time 📈',
+    'jarsSetup.subtitle':'Tell us roughly how much is in each jar right now 📈',
     'jarsSetup.startBtn':'Start Tracking My Jars 🚀','jarsSetup.skipBtn':'Set Up Later','jarsSetup.currentBalance':'Current Balance',
     'jarsSetup.totalAmountLabel':'💰 Current Total Assets',
     'goalSetup.title':'Set Monthly Expense Goal',
-    'goalSetup.subtitle':'Knowing your monthly expenses helps you figure out the cash flow you truly need for financial freedom.<br>Fill in your monthly expenses first, then set your financial freedom monthly target 💰',
+    'goalSetup.subtitle':'Fill in your monthly expenses to calculate your freedom target 💰',
     'goalSetup.startBtn':'Save & Continue 🚀','goalSetup.skipBtn':'Set Up Later',
     'goals.esbi.sectionTitle':'ESBI Income Quadrant',
     'esbi.e.name':'Employee','esbi.s.name':'Self-Employed','esbi.b.name':'Business Owner','esbi.i.name':'Investor',
     'esbi.e.desc':'Trade time for pay<br>Stop working, income stops','esbi.b.desc':'Systems work for you<br>Earn while on vacation',
     'esbi.s.desc':'Rely on your own skills<br>Still hands-on','esbi.i.desc':'Money works for you<br>Earn even while asleep',
-    'esbi.goalTag':'Goal','esbi.activeLabel':'Active E+S','esbi.passiveFmt':'Passive B+I {pct}%',
+    'esbi.goalTag':'Goal','esbi.activeLabel':'Active E+S','esbi.passiveFmt':'Passive B+I {pct}%','esbi.rdToggle':'💡 What this means ›','esbi.subtitle':'Four income quadrants — where does your money come from?',
     'esbi.inputHint':'Enter your active income (monthly)',
     'esbi.input.e':'Salary','esbi.input.s':'Side Gig / Freelance','esbi.input.b':'Business Income',
-    'esbi.msg.free':'<strong>🎉 The heart of financial freedom:</strong> Your passive income (Quadrant I) has overtaken your active income! Letting money work for you — that\'s exactly what Rich Dad means by financial freedom.',
-    'esbi.msg.over50Fmt':'<strong>Rich Dad says:</strong> {pct}% of your income is already passive! More than half your life is supported by assets — you\'re moving toward the right quadrants. Keep growing B and I.',
-    'esbi.msg.over20Fmt':'<strong>Rich Dad says:</strong> {pct}% of your income doesn\'t require you to work for it — that\'s progress. The journey to financial freedom is about pushing that percentage higher and higher.',
-    'esbi.msg.startedI':'<strong>Rich Dad says:</strong> Your portfolio has started generating passive income. Every income-producing asset you add grows your I quadrant. The goal: get B+I to overtake E+S.',
-    'esbi.msg.none':'<strong>Rich Dad says:</strong> E and S trade time for money — stop working, income stops. B and I let systems and assets work for you, earning even while you sleep. Adding cash-flowing assets is the first step toward the right side.',
+    'esbi.msg.free':'<strong>🎉 The heart of financial freedom:</strong> Your passive income (Quadrant I) has overtaken your active income! Letting money work for you — that\'s what financial freedom looks like.',
+    'esbi.msg.over50Fmt':'<strong>{pct}% of your income is already passive!</strong> More than half your life is supported by assets — you\'re moving toward the right quadrants. Keep growing B and I.',
+    'esbi.msg.over20Fmt':'<strong>{pct}% of your income doesn\'t require you to work for it</strong> — that\'s progress. The journey to financial freedom is about pushing that percentage higher and higher.',
+    'esbi.msg.startedI':'<strong>Your portfolio has started generating passive income.</strong> Every income-producing asset you add grows your I quadrant. The goal: get B+I to overtake E+S.',
+    'esbi.msg.none':'<strong>E and S trade time for money — stop working, income stops.</strong> B and I let systems and assets work for you, earning even while you sleep. Adding cash-flowing assets is the first step toward the right side.',
     'home.mainDream':'My Main Dream','home.viewAll':'View All ›','home.otherDreams':'Other Dreams',
     'home.dream.none':'No dream set yet','home.dream.noneSub':'Go to Dreams to set your goal',
     'home.dream.targetFmt':'Target {amount} · Every asset brings you closer ✨','home.dream.noTargetSub':'Every asset brings you closer to this dream ✨',
@@ -5048,7 +5067,7 @@ const TRANSLATIONS = {
     'dream.grid.noTarget':'Not set','home.grid.dreamAchieveBtn':'🎉 Make it real!',
     'home.dream.addNew':'＋ Add Dream','home.dream.addFirst':'＋ Add My Dream',
     'dream.setup.title':'What is your dream?',
-    'dream.setup.subtitle':'Financial freedom isn\'t the destination. It\'s having the ability to pursue what truly matters.<br><br>Your dream is your best motivation for managing money.<br>When you know clearly what you\'re working toward, every asset you build has meaning.<br><br>Pick an emoji to choose your dream ✨',
+    'dream.setup.subtitle':'Pick an emoji to choose your dream ✨',
     'dream.setup.inputPlaceholder':'Pick a photo, or type your own dream...',
     'dream.setup.amountPlaceholder':'💰 Roughly how much will this dream cost? (optional)',
     'dream.setup.addBtn':'＋ Add','dream.setup.usePhoto':'Use this ↗',
@@ -6277,6 +6296,10 @@ function updateGoalBadge() {
   const goal = +document.getElementById('goal-input').value || 100000;
   const badge = document.getElementById('goal-summary-badge');
   if (badge) badge.textContent = t('goal.badgeFmt').replace('{amt}', formatCurrency(goal));
+  // 手機版罐子分頁的目標摘要小卡
+  const mGoal = +document.getElementById('mobile-goal-input')?.value || goal;
+  const mAmt = document.getElementById('goal-summary-amount-mobile');
+  if (mAmt) mAmt.textContent = formatCurrency(mGoal) + t('goal.perMonth');
 }
 function updateExpTotalDisplay() {
   const el = document.getElementById('exp-total-display');
@@ -6370,6 +6393,24 @@ async function loadGoalSetupScreen() {
   } catch(e) { console.error(e); }
 }
 window.loadGoalSetupScreen = loadGoalSetupScreen;
+
+// 手機版罐子分頁「🎯 財務自由目標」摘要卡點擊後，重新打開這個畫面來編輯
+// （跟首次登入用的是同一個畫面，只是這裡不受「已完成過就不再顯示」的限制）
+function openGoalSetupForEdit() {
+  ['rent','food','transport','entertain','health','learn','other'].forEach(k => {
+    const src = document.getElementById('m-exp-' + k);
+    const dst = document.getElementById('setup-exp-' + k);
+    if (src && dst) dst.value = src.value;
+  });
+  const goalSrc = document.getElementById('mobile-goal-input');
+  const goalDst = document.getElementById('setup-goal-input');
+  if (goalSrc && goalDst) goalDst.value = goalSrc.value || 100000;
+  const symEl = document.getElementById('setup-goal-cur-symbol');
+  if (symEl) symEl.textContent = currencySymbol();
+  updateSetupExpTotalDisplay();
+  document.getElementById('goal-setup-screen').classList.remove('hidden');
+}
+window.openGoalSetupForEdit = openGoalSetupForEdit;
 
 async function saveGoalSetupAndContinue() {
   if (!currentUser) return;
@@ -6869,7 +6910,7 @@ function _buildWealthInsight(){
         const ryield = cVal>0&&cInc>0 ? ((cInc*12/cVal)*100).toFixed(1) : null;
         if(cInc===0){
           lines.push(`🏠 房地產（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
-          lines.push(`月現金流 NT$0。自住房在富爸爸定義中是負債（需持續支出）；若為出租物件，請把淨租金（租金−貸款月供−管理費）填入月現金流，Freedom Degree 才能反映真實狀況。`);
+          lines.push(`月現金流 NT$0。自住房通常被歸類為負債（需持續支出）；若為出租物件，請把淨租金（租金−貸款月供−管理費）填入月現金流，Freedom Degree 才能反映真實狀況。`);
         } else {
           const quality = parseFloat(ryield)>=4?'租金報酬率不錯':'台灣普遍的低租酬型態，增值是主要優勢';
           lines.push(`🏠 房地產（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
@@ -6943,9 +6984,9 @@ function _buildWealthInsight(){
       else if(cat==='business'){
         lines.push(`🏢 公司／企業（${names}）｜現值 ${fmt2(cVal)}，佔 ${share}%`);
         if(cInc>0){
-          lines.push(`月分潤 ${fmt2(cInc)}。企業是富爸爸定義中 B 象限的核心資產——讓系統和團隊為你工作。持續優化營運系統，讓現金流逐漸脫離你個人的時間投入，是這項資產最大的潛力。`);
+          lines.push(`月分潤 ${fmt2(cInc)}。企業是 B 象限的核心資產——讓系統和團隊為你工作。持續優化營運系統，讓現金流逐漸脫離你個人的時間投入，是這項資產最大的潛力。`);
         } else {
-          lines.push(`尚無月分潤現金流。企業是富爸爸定義中 B 象限的核心資產，但只有當它能脫離創辦人本人持續運作並產生分潤時，才真正成為資產而非另一份工作。建議檢視營運模式，逐步建立系統與團隊。`);
+          lines.push(`尚無月分潤現金流。企業是 B 象限的核心資產，但只有當它能脫離創辦人本人持續運作並產生分潤時，才真正成為資產而非另一份工作。建議檢視營運模式，逐步建立系統與團隊。`);
         }
       }
 
@@ -7805,25 +7846,25 @@ window.selectRdPurpose = selectRdPurpose;
 
 function _getRdInsight(cf, purpose) {
   const map = {
-    'in_income':     '這是富爸爸最推崇的資產型態——<span class="rd-hl">每個月替你工作，不需要你動手</span>。持有越久，複利效果越強。',
-    'in_growth':     '這個資產不只配息，還可能增值。<span class="rd-hl">你同時在賺兩種收益</span>。富爸爸說：最好的資產，讓口袋每月進錢，同時本金也在長大。',
+    'in_income':     '這是最理想的資產型態之一——<span class="rd-hl">每個月替你工作，不需要你動手</span>。持有越久，複利效果越強。',
+    'in_growth':     '這個資產不只配息，還可能增值。<span class="rd-hl">你同時在賺兩種收益</span>。最好的資產，讓口袋每月進錢，同時本金也在長大。',
     'in_protection': '保障型資產同時帶來現金流——這很少見，但很有力量。<span class="rd-hl">它保護你，也替你工作</span>。',
-    'in_lifestyle':  '這個選擇每月帶給你收入，同時提升生活品質。<span class="rd-hl">富爸爸說：先讓資產替你賺到享受的錢，再去享受</span>。你做到了。',
-    'growth_income':     '現在它不給你現金流，但你在等待升值。<span class="rd-hl">這是合理的策略，但需要耐心</span>。富爸爸說：增值型資產需要時間，別被短期波動嚇跑。',
-    'growth_growth':     '純增值策略——你在等待未來的價格更高。<span class="rd-hl">沒有問題，但富爸爸建議同時持有現金流資產作底盤</span>，讓你在等待期間生活不受影響。',
+    'in_lifestyle':  '這個選擇每月帶給你收入，同時提升生活品質。<span class="rd-hl">先讓資產替你賺到享受的錢，再去享受</span>。你做到了。',
+    'growth_income':     '現在它不給你現金流，但你在等待升值。<span class="rd-hl">這是合理的策略，但需要耐心</span>。增值型資產需要時間，別被短期波動嚇跑。',
+    'growth_growth':     '純增值策略——你在等待未來的價格更高。<span class="rd-hl">沒有問題，但建議同時持有現金流資產作底盤</span>，讓你在等待期間生活不受影響。',
     'growth_protection': '增值型資產波動通常較大，較少用來保障。<span class="rd-hl">如果目的是保障，可以考慮更穩定的工具</span>。如果主要是投資，就讓時間說話。',
-    'growth_lifestyle':  '增值型資產改善生活，通常需要在對的時機賣出。<span class="rd-hl">富爸爸的提醒：不要為了眼前的享受，賣掉正在替你長期工作的資產</span>。',
+    'growth_lifestyle':  '增值型資產改善生活，通常需要在對的時機賣出。<span class="rd-hl">提醒：不要為了眼前的享受，賣掉正在替你長期工作的資產</span>。',
     'out_income':     '每月支出，目的是換取未來的收入——這可能是好的負債邏輯。<span class="rd-hl">關鍵問題：未來帶給你的，會超過你現在付出的嗎？</span>',
-    'out_growth':     '每月支出，等待增值。<span class="rd-hl">這是槓桿策略——放大報酬，也放大風險</span>。富爸爸用槓桿買房，但他確保租金超過貸款成本。你的數字算過了嗎？',
-    'out_protection': '<span class="rd-hl">這是合理的保護成本</span>。富爸爸不說保險是壞的——保障家人和資產，讓你安心持續前進，是必要的選擇。買資產和負債本身沒有對錯，重點是你清楚這筆錢的意義。',
-    'out_lifestyle':  '每月支出換取生活品質——<span class="rd-hl">富爸爸說：你可以花，但要用資產的收益來花，不要用薪水來花</span>。這筆支出，你的被動收入能覆蓋嗎？',
+    'out_growth':     '每月支出，等待增值。<span class="rd-hl">這是槓桿策略——放大報酬，也放大風險</span>。善用槓桿的前提是確保租金超過貸款成本，你的數字算過了嗎？',
+    'out_protection': '<span class="rd-hl">這是合理的保護成本</span>。保險不是壞的——保障家人和資產，讓你安心持續前進，是必要的選擇。買資產和負債本身沒有對錯，重點是你清楚這筆錢的意義。',
+    'out_lifestyle':  '每月支出換取生活品質——<span class="rd-hl">可以花，但要用資產的收益來花，不要用薪水來花</span>。這筆支出，你的被動收入能覆蓋嗎？',
     // 理財型保險：同時有進有出
     'mixed_income':     '這是理財型保險的運作方式——<span class="rd-hl">你付出保費，換取保障加上持續的現金流回報</span>。關鍵是看長期：總收入什麼時候能超過總保費？這個時間點就是你的損益平衡點。',
     'mixed_growth':     '理財型保險通常兼顧保障與資產增值。<span class="rd-hl">你現在的淨現金流是正還是負，決定了你的短期負擔</span>。長期的增值潛力需要拉長時間軸來評估。',
-    'mixed_protection': '這是理財型保險最核心的用途——<span class="rd-hl">用保費換取保障，同時讓部分資金替你持續工作</span>。富爸爸不反對保障，他說：保障讓你安心繼續前進，是必要的成本。',
-    'mixed_lifestyle':  '理財型保險同時保障你的家人，也帶來一定的現金流回報。<span class="rd-hl">它是一種長期的財務安排，不是短期消費</span>。富爸爸說：清楚知道每一分錢的去向，這本身就是財務智慧。',
+    'mixed_protection': '這是理財型保險最核心的用途——<span class="rd-hl">用保費換取保障，同時讓部分資金替你持續工作</span>。保障讓你安心繼續前進，是必要的成本，不是浪費。',
+    'mixed_lifestyle':  '理財型保險同時保障你的家人，也帶來一定的現金流回報。<span class="rd-hl">它是一種長期的財務安排，不是短期消費</span>。清楚知道每一分錢的去向，這本身就是財務智慧。',
   };
-  return map[`${cf}_${purpose}`] || '每一個財務決策都沒有絕對的對錯。<span class="rd-hl">重要的是：你清楚知道你在做什麼，為什麼這樣做</span>。這就是富爸爸說的財務智慧。';
+  return map[`${cf}_${purpose}`] || '每一個財務決策都沒有絕對的對錯。<span class="rd-hl">重要的是：你清楚知道你在做什麼，為什麼這樣做</span>。這就是財務智慧。';
 }
 
 // ── Six Jars System ──
@@ -7845,6 +7886,13 @@ const JARS_DEFAULTS = [
 
 // 各罐子「調整餘額」輸入框是否展開
 let jarAdjustOpen = {};
+// 手機版：每個罐子卡片的說明/金額/餘額是否展開（點擊罐子名稱才顯示，桌面版不受影響）
+let jarCardExpanded = {};
+function toggleJarCardDetail(jarId) {
+  jarCardExpanded[jarId] = !jarCardExpanded[jarId];
+  updateJars();
+}
+window.toggleJarCardDetail = toggleJarCardDetail;
 
 function loadJarSettings() {
   try {
@@ -7969,9 +8017,9 @@ function renderJarCards(income) {
   const incomeVal = income || 0;
   const html = JARS_DEFAULTS.map(j => {
     const amt = incomeVal > 0 ? Math.round(incomeVal * j.pct / 100) : null;
-    return `<div class="jar-card${j.id==='ffa' ? ' ffa' : ''}">
+    return `<div class="jar-card${j.id==='ffa' ? ' ffa' : ''}${jarCardExpanded[j.id] ? ' expanded' : ''}">
       <div class="jar-card-top">
-        <div>
+        <div class="jar-card-name-click" onclick="toggleJarCardDetail('${j.id}')">
           <div class="jar-name">${j.emoji} ${t('jar.'+j.id+'.name')}</div>
           <div class="jar-abbr">${j.abbr}</div>
         </div>
@@ -7981,17 +8029,19 @@ function renderJarCards(income) {
           <span class="jar-pct-symbol">%</span>
         </div>
       </div>
-      <div class="jar-desc">${t('jar.'+j.id+'.desc')}</div>
-      <div class="jar-amount${amt === null ? ' zero' : ''}">${amt !== null ? formatCurrency(amt) : currencySymbol() + ' —'}</div>
-      <div class="jar-balance-row">
-        ${jarBalances[j.id] != null ? `<span class="jar-current-balance">${t('jarsSetup.currentBalance')}：${formatCurrency(jarBalances[j.id])}</span>` : '<span></span>'}
-        <button class="jar-adjust-toggle" onclick="toggleJarAdjust('${j.id}')">${jarAdjustOpen[j.id] ? '✕' : '💰 ' + t('goals.jars.adjust')}</button>
+      <div class="jar-card-detail">
+        <div class="jar-desc">${t('jar.'+j.id+'.desc')}</div>
+        <div class="jar-amount${amt === null ? ' zero' : ''}">${amt !== null ? formatCurrency(amt) : currencySymbol() + ' —'}</div>
+        <div class="jar-balance-row">
+          ${jarBalances[j.id] != null ? `<span class="jar-current-balance">${t('jarsSetup.currentBalance')}：${formatCurrency(jarBalances[j.id])}</span>` : '<span></span>'}
+          <button class="jar-adjust-toggle" onclick="toggleJarAdjust('${j.id}')">${jarAdjustOpen[j.id] ? '✕' : '💰 ' + t('goals.jars.adjust')}</button>
+        </div>
+        ${jarAdjustOpen[j.id] ? `
+        <div class="jar-adjust-row">
+          <input type="number" class="jar-adjust-input" id="jar-adjust-${j.id}" placeholder="${t('goals.jars.adjustPlaceholder')}" step="any">
+          <button class="jar-adjust-confirm" onclick="confirmJarAdjust('${j.id}')">${t('goals.jars.adjustConfirm')}</button>
+        </div>` : ''}
       </div>
-      ${jarAdjustOpen[j.id] ? `
-      <div class="jar-adjust-row">
-        <input type="number" class="jar-adjust-input" id="jar-adjust-${j.id}" placeholder="${t('goals.jars.adjustPlaceholder')}" step="any">
-        <button class="jar-adjust-confirm" onclick="confirmJarAdjust('${j.id}')">${t('goals.jars.adjustConfirm')}</button>
-      </div>` : ''}
     </div>`;
   }).join('');
   document.querySelectorAll('#jars-cards').forEach(c => { c.innerHTML = html; });
@@ -8059,7 +8109,7 @@ function updateFfaTip(income) {
     tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：金額夠大，可以考慮多元配置。查看你的資產頁面，找出最集中的類別，用 FFA 開始再平衡。`;
   }
 
-  tip += `<br><span style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;display:block">富爸爸說：FFA 只進不出——投資產生的收益才能花，本金永遠留著。</span>`;
+  tip += `<br><span style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;display:block">小提醒：FFA 只進不出——投資產生的收益才能花，本金永遠留著。</span>`;
   tipEl.innerHTML = tip;
   tipEl.style.display = 'block';
 }
@@ -8198,13 +8248,29 @@ async function confirmJarAdjust(jarId) {
 window.confirmJarAdjust = confirmJarAdjust;
 
 function toggleJars() {
-  const body = document.getElementById('jars-body');
-  const icon = document.getElementById('jars-toggle-icon');
+  toggleSection('jars-body', 'jars-toggle-icon');
+}
+
+// 通用收合/展開（罐子分頁裡的資產趨勢圖、更新提醒設定都共用這個）
+function toggleSection(bodyId, iconId) {
+  const body = document.getElementById(bodyId);
+  const icon = document.getElementById(iconId);
   if (!body) return;
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   if (icon) icon.classList.toggle('open', !isOpen);
+  return !isOpen;
 }
+window.toggleSection = toggleSection;
+
+// 資產趨勢圖收合時 canvas 是 display:none，Chart.js 量不到寬高會畫成空白，
+// 展開的當下要重畫一次才會正確顯示
+function toggleTrendSection() {
+  if (toggleSection('trend-body', 'trend-toggle-icon')) {
+    setTimeout(() => { if (window.renderMobileChart) renderMobileChart(); }, 50);
+  }
+}
+window.toggleTrendSection = toggleTrendSection;
 
 function toggleDesktopJars() {
   const body = document.getElementById('jars-desktop-body');
@@ -8755,6 +8821,19 @@ function saveAndUpdateEsbi() {
   updateEsbiQuadrant();
 }
 window.saveAndUpdateEsbi = saveAndUpdateEsbi;
+
+// 手機版：ESBI 每格說明文字、象限說明段落，預設收起來，點了才顯示（保持版面簡潔）
+function toggleEsbiDesc(q) {
+  const el = document.getElementById('esbi-' + q + '-desc');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+window.toggleEsbiDesc = toggleEsbiDesc;
+
+function toggleEsbiRdMsg() {
+  const el = document.getElementById('esbi-rd-msg');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+window.toggleEsbiRdMsg = toggleEsbiRdMsg;
 
 function updateEsbiQuadrant() {
   const getVal = id => +(document.getElementById(id)?.value || localStorage.getItem(id.replace('esbi-','esbi_').replace('-input','')) || 0);
@@ -11921,7 +12000,7 @@ function initMobileHome() {
       <div class="jars-header" onclick="toggleJars()">
         <div>
           <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
-          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">T. Harv Eker · 有錢人想的和你不一樣</div>
+          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
         </div>
         <div class="jars-toggle" id="jars-toggle-icon">▾</div>
       </div>
@@ -11956,27 +12035,27 @@ function initMobileHome() {
       <div class="esbi-grid">
         <div class="esbi-cell" id="esbi-e-cell">
           <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
-          <div class="esbi-qname" data-i18n="esbi.e.name">員工</div>
+          <div class="esbi-qname"><span data-i18n="esbi.e.name">員工</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('e')">ⓘ</span></div>
           <div class="esbi-income" id="esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
+          <div class="esbi-desc" id="esbi-e-desc" style="display:none" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
         </div>
         <div class="esbi-cell" id="esbi-b-cell">
           <div class="esbi-letter" style="color:rgba(240,208,96,0.65)">B</div>
-          <div class="esbi-qname" data-i18n="esbi.b.name">企業主</div>
+          <div class="esbi-qname"><span data-i18n="esbi.b.name">企業主</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('b')">ⓘ</span></div>
           <div class="esbi-income" id="esbi-b-disp" style="color:#f0d060">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
+          <div class="esbi-desc" id="esbi-b-desc" style="display:none" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
         </div>
         <div class="esbi-cell" id="esbi-s-cell">
           <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
-          <div class="esbi-qname" data-i18n="esbi.s.name">自僱者</div>
+          <div class="esbi-qname"><span data-i18n="esbi.s.name">自僱者</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('s')">ⓘ</span></div>
           <div class="esbi-income" id="esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
+          <div class="esbi-desc" id="esbi-s-desc" style="display:none" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
         </div>
         <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(34,197,94,0.05)">
           <div class="esbi-letter" style="color:#22c55e">I</div>
-          <div class="esbi-qname" data-i18n="esbi.i.name">投資者</div>
+          <div class="esbi-qname"><span data-i18n="esbi.i.name">投資者</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('i')">ⓘ</span></div>
           <div class="esbi-income" id="esbi-i-disp" style="color:#22c55e">NT$ 0</div>
-          <div class="esbi-desc" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
+          <div class="esbi-desc" id="esbi-i-desc" style="display:none" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
           <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
         </div>
       </div>
@@ -12006,46 +12085,47 @@ function initMobileHome() {
           <input id="esbi-b-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
         </div>
       </div>
-      <div class="esbi-rd-msg" id="esbi-rd-msg">
-        <strong>富爸爸說：</strong>財務自由在右邊。E和S用時間換錢，一旦停下來收入就停。B和I讓系統和資產替你工作，睡覺時也在賺錢——這才是真正的自由。
-      </div>
+      <div class="jars-setup-info" style="margin-top:8px;font-size:11px;cursor:pointer" onclick="toggleEsbiRdMsg()" id="esbi-rd-toggle" data-i18n="esbi.rdToggle">💡 象限說明 ›</div>
+      <div class="esbi-rd-msg" id="esbi-rd-msg" style="display:none"></div>
     </div>
 
-    <!-- 設定月支出目標 -->
+    <!-- 設定月支出目標：預設只顯示摘要卡，點了才打開完整設定畫面（重用首次登入的 #goal-setup-screen） -->
     <div class="mobile-section-header">
       <div class="mobile-section-title" data-i18n="goal.settingsSection">目標設定</div>
     </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <!-- 📋 每月生活支出細項 -->
-      <div class="goal-section-label" data-i18n="goal.expenseSection">📋 每月生活支出細項</div>
-      <div class="expense-grid" style="margin-bottom:12px">
-        <div class="expense-item"><label data-i18n="goal.exp.rentShort">🏠 住宅</label><input id="m-exp-rent" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.foodShort">🍱 飲食</label><input id="m-exp-food" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.transportShort">🚗 交通</label><input id="m-exp-transport" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.entertainShort">🎮 娛樂</label><input id="m-exp-entertain" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.healthShort">💊 醫療</label><input id="m-exp-health" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.learnShort">📚 學習</label><input id="m-exp-learn" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
-        <div class="expense-item"><label data-i18n="goal.exp.otherShort">📦 其他</label><input id="m-exp-other" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 10px;font-size:13px;color:#f0fdf4;outline:none;box-sizing:border-box"></div>
+    <div onclick="openGoalSetupForEdit()" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:2px" data-i18n="goal.directSection">💰 財務自由月支出目標</div>
+        <div id="goal-summary-amount-mobile" style="font-family:'DM Mono',monospace;font-size:18px;color:#f0d060">NT$100,000/月</div>
       </div>
-      <!-- 自定義支出項目 -->
+      <div style="font-size:12px;color:rgba(255,255,255,0.3)">›</div>
+    </div>
+
+    <!-- 實際欄位隱藏在這裡，資料仍照舊由 mobile-goal-input / m-exp-* 供其他函式讀取，
+         編輯統一走上面的摘要卡 → #goal-setup-screen -->
+    <div style="display:none">
+      <div class="expense-grid">
+        <div class="expense-item"><label data-i18n="goal.exp.rentShort">🏠 住宅</label><input id="m-exp-rent" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.foodShort">🍱 飲食</label><input id="m-exp-food" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.transportShort">🚗 交通</label><input id="m-exp-transport" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.entertainShort">🎮 娛樂</label><input id="m-exp-entertain" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.healthShort">💊 醫療</label><input id="m-exp-health" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.learnShort">📚 學習</label><input id="m-exp-learn" type="number" placeholder="0"></div>
+        <div class="expense-item"><label data-i18n="goal.exp.otherShort">📦 其他</label><input id="m-exp-other" type="number" placeholder="0"></div>
+      </div>
       <div id="m-exp-custom-list"></div>
       <button class="btn-add-exp-item" onclick="addCustomExpItem()">＋ 新增支出項目（保險、房貸等）</button>
-      <div class="expense-total-row" style="margin-bottom:16px">
-        <span style="color:rgba(255,255,255,0.4);font-size:12px" data-i18n="goal.calcArrow">計算總計 →</span>
-        <span id="m-exp-total-display" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--green)">NT$ 0</span>
+      <div class="expense-total-row">
+        <span data-i18n="goal.calcArrow">計算總計 →</span>
+        <span id="m-exp-total-display">NT$ 0</span>
         <button class="btn-apply-total" id="m-btn-apply-total" data-i18n="goal.applyTotal">套用為目標</button>
       </div>
+      <span id="mobile-goal-cur-symbol">NT$</span>
+      <input id="mobile-goal-input" type="number" value="100000">
+    </div>
 
-      <!-- 💰 財務自由月支出目標 -->
-      <div class="goal-section-label" data-i18n="goal.directSection">💰 財務自由月支出目標</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px" data-i18n="goal.directLabel">每月需要多少現金流才能財務自由？</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-        <span id="mobile-goal-cur-symbol" style="font-size:12px;color:rgba(255,255,255,0.4)">NT$</span>
-        <input id="mobile-goal-input" type="number" value="100000" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 12px;font-size:14px;font-family:monospace;color:#f0fdf4;outline:none" placeholder="100000">
-        <span style="font-size:12px;color:rgba(255,255,255,0.4)" data-i18n="goal.perMonth">/月</span>
-      </div>
-
-      <!-- 🏆 財務自由里程碑 -->
+    <!-- 財務自由進度：里程碑 + 預測，屬於「看目前狀態」不是設定，維持直接可見 -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
       <div class="goal-section-label" data-i18n="goal.milestonesSection">🏆 財務自由里程碑</div>
       <div class="milestones-grid" id="m-milestones-grid" style="margin-bottom:16px"></div>
 
@@ -12058,35 +12138,43 @@ function initMobileHome() {
 
     <!-- 資產趨勢圖 -->
     <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.assetTrend">資產趨勢</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
-        <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.income">被動收入</button>
+      <!-- 資產趨勢圖：收合，點了才展開 -->
+    <div class="jars-section">
+      <div class="jars-header" onclick="toggleTrendSection()">
+        <div class="mobile-section-title" data-i18n="goals.assetTrend" style="margin:0">資產趨勢</div>
+        <div class="jars-toggle" id="trend-toggle-icon">▾</div>
       </div>
-      <div id="mobile-trend-area" style="height:160px;position:relative;">
-        <canvas id="mobile-chart-canvas" style="width:100%;height:160px;"></canvas>
+      <div class="jars-body" id="trend-body">
+        <div style="display:flex;gap:6px;margin-bottom:10px;margin-top:14px">
+          <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
+          <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.income">被動收入</button>
+        </div>
+        <div id="mobile-trend-area" style="height:160px;position:relative;">
+          <canvas id="mobile-chart-canvas" style="width:100%;height:160px;"></canvas>
+        </div>
       </div>
     </div>
 
-    <!-- 更新提醒設定 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.updateReminder">更新提醒</div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderEvery">每隔</span>
-        <select id="mobile-reminder-days" onchange="saveReminderSetting()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;border-radius:8px;padding:6px 10px;font-size:13px;flex:1">
-          <option value="7" data-i18n="goal.reminderDays7">7 天</option>
-          <option value="14" data-i18n="goal.reminderDays14">14 天</option>
-          <option value="30" selected data-i18n="goal.reminderDays30">30 天</option>
-          <option value="60" data-i18n="goal.reminderDays60">60 天</option>
-          <option value="0" data-i18n="goal.reminderNever">不提醒</option>
-        </select>
-        <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderSuffix">提醒我更新一次資產</span>
+    <!-- 更新提醒設定：收合，點了才展開 -->
+    <div class="jars-section">
+      <div class="jars-header" onclick="toggleSection('reminder-body','reminder-toggle-icon')">
+        <div class="mobile-section-title" data-i18n="goals.updateReminder" style="margin:0">更新提醒</div>
+        <div class="jars-toggle" id="reminder-toggle-icon">▾</div>
       </div>
-      <div id="last-update-info" style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px"></div>
+      <div class="jars-body" id="reminder-body">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderEvery">每隔</span>
+          <select id="mobile-reminder-days" onchange="saveReminderSetting()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;border-radius:8px;padding:6px 10px;font-size:13px;flex:1">
+            <option value="7" data-i18n="goal.reminderDays7">7 天</option>
+            <option value="14" data-i18n="goal.reminderDays14">14 天</option>
+            <option value="30" selected data-i18n="goal.reminderDays30">30 天</option>
+            <option value="60" data-i18n="goal.reminderDays60">60 天</option>
+            <option value="0" data-i18n="goal.reminderNever">不提醒</option>
+          </select>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5)" data-i18n="goal.reminderSuffix">提醒我更新一次資產</span>
+        </div>
+        <div id="last-update-info" style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px"></div>
+      </div>
     </div>
 
   </div>
@@ -12500,16 +12588,15 @@ function syncMobileWealthLevels() {
   const currentLevelName=wlLabel?(wlLabel.dataset.levelName||wlLabel.textContent):'Observer';
   const container=document.getElementById('mobile-wealth-levels');
   if(!container) return;
-  container.innerHTML=LEVELS.map(l=>{
-    const isActive=l.name===currentLevelName;
-    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:'+(isActive?'rgba(34,197,94,0.08)':'rgba(255,255,255,0.02)')+';;border:1px solid '+(isActive?'rgba(34,197,94,0.25)':'rgba(255,255,255,0.06)')+';border-radius:12px;margin-bottom:6px">'+
-      '<div style="font-size:20px;flex-shrink:0">'+l.icon+'</div>'+
-      '<div style="flex:1">'+
-      '<div style="font-size:12px;font-weight:600;color:'+(isActive?'#22c55e':'rgba(255,255,255,0.6)')+'">'+l.name+' '+l.zh+'</div>'+
-      '<div style="font-size:10px;color:rgba(255,255,255,0.3)">'+l.label+'</div></div>'+
-      (isActive?'<div style="font-size:10px;background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 8px;border-radius:10px;font-weight:600">目前</div>':'')+
-    '</div>';
-  }).join('');
+  // 只顯示目前等級一行，完整 6 個等級點擊後由 showWealthLevelModal() 彈窗顯示
+  const l=LEVELS.find(x=>x.name===currentLevelName)||LEVELS[0];
+  container.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:12px;cursor:pointer">'+
+    '<div style="font-size:20px;flex-shrink:0">'+l.icon+'</div>'+
+    '<div style="flex:1">'+
+    '<div style="font-size:12px;font-weight:600;color:#22c55e">'+l.name+' '+l.zh+'</div>'+
+    '<div style="font-size:10px;color:rgba(255,255,255,0.3)">'+l.label+'</div></div>'+
+    '<div style="font-size:11px;color:rgba(255,255,255,0.3)">查看全部 ›</div>'+
+  '</div>';
 }
 
 function syncMobileDebt() {
@@ -12943,7 +13030,7 @@ function buildPersonalTips() {
   // 資產狀況鼓勵
   if (assetCount === 0) {
     tips.push('新增你的第一筆資產吧！記錄是財富覺醒的第一步 🌱');
-    tips.push('富爸爸說：你無法管理你沒有追蹤的東西。開始記錄吧！');
+    tips.push('你無法管理你沒有追蹤的東西。開始記錄吧！');
   } else {
     tips.push('你已經記錄了 ' + assetCount + ' 筆資產，持續累積中！📈');
     if (assetCount >= 10) tips.push('你有 ' + assetCount + ' 筆資產了！多元配置是降低風險的關鍵 💎');
@@ -12954,7 +13041,7 @@ function buildPersonalTips() {
     tips.push('你每月有 NT$' + Math.round(totalCF).toLocaleString() + ' 的非工資收入，錢正在替你工作！💰');
     tips.push('被動收入 NT$' + Math.round(totalCF).toLocaleString() + '/月，離財務自由又近了一步 🎯');
     if (totalCF >= 50000) tips.push('月被動收入突破五萬！你已經走在很多人前面了 👑');
-    if (totalCF >= 20000) tips.push('每月 NT$' + Math.round(totalCF).toLocaleString() + ' 自動進帳，這就是富爸爸說的「讓錢替你工作」🌟');
+    if (totalCF >= 20000) tips.push('每月 NT$' + Math.round(totalCF).toLocaleString() + ' 自動進帳，這就是「讓錢替你工作」的樣子 🌟');
     if (totalCF >= 5000) tips.push('NT$' + Math.round(totalCF).toLocaleString() + '/月的被動收入，相當於每天有人請你吃飯！🍽️');
   } else if (assetCount > 0) {
     tips.push('你的資產還沒產生現金流，想想看能不能讓它們替你賺錢 🤔');
@@ -13171,7 +13258,7 @@ const REACT_MSGS = {
   assetWithIncome: [
     '太棒了！{name} 每月帶來非工資收入，你的錢開始替你工作了！🎉',
     '又多一筆非工資收入！{name} 正在幫你靠近財務自由 💪',
-    '富爸爸會為你驕傲！{name} 讓你的被動收入又成長了 🌱',
+    '太值得驕傲了！{name} 讓你的被動收入又成長了 🌱',
     '每一筆非工資收入都是自由的磚塊，{name} 又加了一塊！🧱',
   ],
   assetNoIncome: [
@@ -13201,21 +13288,21 @@ const GUIDE_TOPICS = [
   { icon:'🦊', title:'為什麼需要財富覺醒？', featured: true,
     answer:'嗨！歡迎來到財富覺醒 👋\n\n你是不是每個月薪水一進來，繳完房租、吃飯、買東西，就不知道錢跑去哪了？\n\n這很正常，大部分人都是這樣。但問題是——如果有一天你不想上班了，或是沒辦法工作了，你的收入就歸零了。\n\n財富覺醒想幫你改變這件事。\n\n簡單來說，這個平台幫你：\n\n① 搞清楚你的錢 — 你有哪些資產？每個月有多少錢是不用工作也會進來的？\n\n② 學會分配收入 — 不是叫你省吃儉用，而是讓每一塊錢都有它該去的地方。該花的花，該存的存，該投資的投資。\n\n③ 看到你的進步 — 一個數字告訴你離「不用為錢煩惱」還有多遠，每新增一筆收入來源，這個數字就會成長。\n\n你不需要懂投資、不需要很有錢，你只需要「開始記錄」。\n\n點擊下方的功能，我會一個一個告訴你怎麼用 👇' },
   { icon:'🎯', title:'Freedom Degree（財務自由度）',
-    answer:'Freedom Degree 是你的「財務自由進度條」。它計算你的非工資收入佔每月支出的比例。當這個數字到達 100%，代表你不用工作也能維持生活——這就是富爸爸說的「財務自由」。每新增一筆有現金流的資產，這個數字就會往上爬。' },
+    answer:'Freedom Degree 是你的「財務自由進度條」。它計算你的非工資收入佔每月支出的比例。當這個數字到達 100%，代表你不用工作也能維持生活——這就是「財務自由」的定義。每新增一筆有現金流的資產，這個數字就會往上爬。' },
   { icon:'🏦', title:'六個罐子系統',
-    answer:'六個罐子來自《有錢人想的和你不一樣》。每月收入按比例分配到 6 個帳戶：生活必需（NEC 55%）、財務自由（FFA 10%）、長期儲蓄（LTSS 10%）、教育（EDU 10%）、玩樂（PLAY 10%）、給予（GIVE 5%）。這不是記帳工具，是「讓每一塊錢都有任務」的系統。FFA 帳戶裡的錢只進不出，專門用來買入會產生現金流的資產。比例可以自行調整，更符合你的實際需求。' },
+    answer:'六個罐子是一套收入分配系統。每月收入按比例分配到 6 個帳戶：生活必需（NEC 55%）、財務自由（FFA 10%）、長期儲蓄（LTSS 10%）、教育（EDU 10%）、玩樂（PLAY 10%）、給予（GIVE 5%）。這不是記帳工具，是「讓每一塊錢都有任務」的系統。FFA 帳戶裡的錢只進不出，專門用來買入會產生現金流的資產。比例可以自行調整，更符合你的實際需求。' },
   { icon:'📊', title:'ESBI 象限',
-    answer:'ESBI 是富爸爸最核心的概念。E（員工）用時間換錢、S（自僱者）擁有一份工作、B（企業主）擁有一個系統、I（投資者）讓錢替你工作。大多數人一輩子待在 E 和 S，但真正的財務自由在 B 和 I。這個功能追蹤你在四個象限的收入比例，目標是讓 B+I 的比例持續成長。' },
+    answer:'ESBI 是四種收入象限的分類。E（員工）用時間換錢、S（自僱者）擁有一份工作、B（企業主）擁有一個系統、I（投資者）讓錢替你工作。大多數人一輩子待在 E 和 S，但真正的財務自由在 B 和 I。這個功能追蹤你在四個象限的收入比例，目標是讓 B+I 的比例持續成長。' },
   { icon:'🌳', title:'財富之樹',
     answer:'財富之樹是你的「財富成長視覺化」。你每天打開 app、每新增一筆資產，樹就會慢慢長大。從種子 → 幼苗 → 成長期 → 茂盛期 → 繁盛期 → 豐收期，6 個階段代表你的財富旅程。它不只看金額，也看你的持續投入。就像真正的樹，需要時間和耐心，但一旦長成，它會替你遮風擋雨。' },
   { icon:'💰', title:'現金流來源明細',
-    answer:'這裡顯示你所有資產每月帶來的非工資收入明細。富爸爸說：「資產就是把錢放進你口袋的東西。」這個功能讓你一眼看到哪些資產在替你賺錢、各佔多少比例。如果某個類別的現金流特別高，代表你在那個領域有優勢，可以考慮加碼。' },
+    answer:'這裡顯示你所有資產每月帶來的非工資收入明細。資產的核心價值，就是它能把錢放進你口袋。這個功能讓你一眼看到哪些資產在替你賺錢、各佔多少比例。如果某個類別的現金流特別高，代表你在那個領域有優勢，可以考慮加碼。' },
   { icon:'✨', title:'AI 財富洞察',
-    answer:'AI 會分析你目前持有的所有資產，用富爸爸的觀點給你個人化的建議。它會看你的資產類別分佈、現金流狀況、Freedom Degree 進度，然後告訴你下一步該做什麼。不是通用的理財建議，是針對「你的」資產組合量身打造的洞察。' },
+    answer:'AI 會分析你目前持有的所有資產，給你個人化的建議。它會看你的資產類別分佈、現金流狀況、Freedom Degree 進度，然後告訴你下一步該做什麼。不是通用的理財建議，是針對「你的」資產組合量身打造的洞察。' },
   { icon:'💎', title:'夢想系統',
-    answer:'設定你的主夢想和目標金額。每一筆資產的現金流都在幫你靠近這個夢想。這個功能把抽象的「財務自由」變成具體的「我要去峇里島看日落」。當你的非工資收入累積到足以實現夢想，就是你的財務自由時刻。富爸爸說：「人們不會為了抽象的數字努力，但會為了具體的夢想拼命。」' },
+    answer:'設定你的主夢想和目標金額。每一筆資產的現金流都在幫你靠近這個夢想。這個功能把抽象的「財務自由」變成具體的「我要去峇里島看日落」。當你的非工資收入累積到足以實現夢想，就是你的財務自由時刻。人們不會為了抽象的數字努力，但會為了具體的夢想拼命。' },
   { icon:'📝', title:'債務管理',
-    answer:'記錄你的負債和每月還款金額。這些會從你的現金流中扣除，影響 Freedom Degree。富爸爸區分「好債」和「壞債」——好債是借錢買入會產生現金流的資產（例如房貸出租），壞債是借錢消費（信用卡、車貸）。這個功能幫你看清楚負債全貌，優先還掉高利息的壞債。' },
+    answer:'記錄你的負債和每月還款金額。這些會從你的現金流中扣除，影響 Freedom Degree。負債可以分成「好債」和「壞債」——好債是借錢買入會產生現金流的資產（例如房貸出租），壞債是借錢消費（信用卡、車貸）。這個功能幫你看清楚負債全貌，優先還掉高利息的壞債。' },
   { icon:'👤', title:'財富人格測驗',
     answer:'5 種財富人格：先行者🦅、智慧者🦉、磁吸者🌟、穩固者🏔️、創造者🔥。每種人格有不同的理財天賦和盲點。了解自己的人格，才知道該用什麼策略累積財富。先行者適合快速行動、智慧者適合深度研究、磁吸者適合社群投資、穩固者適合穩定配息、創造者適合打造系統。' },
   { icon:'👑', title:'財富頻率等級',
