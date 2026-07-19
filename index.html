@@ -394,9 +394,9 @@ select option { background: #0d2318; }
 .debt-del-btn:hover { color:#f87171; }
 /* ── 夢想系統 ── */
 /* 許願儀式畫面 */
-.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:1100; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; overflow-y:auto; }
+.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:1100; display:block; overflow-y:auto; -webkit-overflow-scrolling:touch; }
 .dream-screen.hidden { display:none; }
-.dream-intro { text-align:center; padding:40px 24px; max-width:480px; width:100%; }
+.dream-intro { text-align:center; padding:40px 24px; max-width:480px; width:100%; margin:0 auto; box-sizing:border-box; }
 .dream-intro-title { font-family:'DM Serif Display',serif; font-size:36px; color:#f0d060; margin-bottom:8px; }
 .dream-intro-sub { font-size:15px; color:rgba(134,239,172,0.7); margin-bottom:32px; line-height:1.6; }
 .dream-emoji-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:16px 0; }
