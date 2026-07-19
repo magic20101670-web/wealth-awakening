@@ -12182,6 +12182,7 @@ function initMobileHome() {
 
   </div>
 </div>
+</div>
 
 <!-- 我的頁面 -->
 <div class="app-page" id="page-profile">
@@ -12985,7 +12986,7 @@ window.submitMobileDebt = submitMobileDebt;
 /* ===== FOX WIDGET ===== */
 (function(){
 'use strict';
-if (window.innerWidth <= 768) return; // 手機版不顯示狐狸小幫手，避免擋住操作
+function initFox() { // 手機版不顯示狐狸小幫手，避免擋住操作
 
 /*
   時間軸（每次漫步 10 秒）：
@@ -13361,6 +13362,21 @@ window.foxReact = foxReact;
 window.showGuideAnswer = showGuideAnswer;
 window.openGuide = openGuide;
 window.closeGuide = closeGuide;
+} // end initFox
+
+if (window.innerWidth > 768) {
+  initFox();
+} else {
+  // 載入當下是窄視窗（例如瀏覽器沒最大化），之後如果變寬了再啟動，
+  // 避免狐狸永久消失、要重新整理頁面才會出現
+  var _foxResizeInit = function() {
+    if (window.innerWidth > 768) {
+      window.removeEventListener('resize', _foxResizeInit);
+      initFox();
+    }
+  };
+  window.addEventListener('resize', _foxResizeInit);
+}
 })();
 </script>
 
