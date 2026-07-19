@@ -10925,19 +10925,63 @@ function initMobilePersonalityList() {
   if (!container) return;
   const key = localStorage.getItem('wealthPersonality') || '';
   const badgeMap = { pioneer:'🦅', sage:'🦉', magnet:'🌟', anchor:'🏔️', creator:'🔥' };
-  container.innerHTML = Object.entries(badgeMap).map(([k, badge]) => {
-    const isMe = k === key;
-    const name = t('personality.'+k+'.name');
-    const desc = t('personality.'+k+'.desc');
-    return '<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)">' +
-      '<div style="font-size:20px;flex-shrink:0">' + badge + '</div>' +
-      '<div style="flex:1">' +
-      '<div style="font-size:12px;font-weight:600;color:' + (isMe ? '#f0d060' : 'rgba(255,255,255,0.65)') + ';margin-bottom:2px">' +
-      name + (isMe ? ' <span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 6px;border-radius:8px">' + t('personality.yourBadge') + '</span>' : '') + '</div>' +
-      '<div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">' + desc + '</div></div></div>';
-  }).join('') + '<div style="font-size:10px;color:rgba(255,255,255,0.2);text-align:center;padding-top:8px">' + t('personality.mobileFooter') + '</div>';
+  // 只顯示目前的財富人格一行，其餘四種點擊後由 showPersonalityModal() 彈窗顯示
+  if (!badgeMap[key]) {
+    container.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(240,208,96,0.06);border:1px solid rgba(240,208,96,0.2);border-radius:12px;cursor:pointer" onclick="startFullRetestQuiz()">' +
+      '<div style="font-size:20px;flex-shrink:0">✨</div>' +
+      '<div style="flex:1"><div style="font-size:12px;font-weight:600;color:#f0d060">' + t('home.personalityPrompt.title') + '</div></div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.3);flex-shrink:0">' + t('home.personalityPrompt.cta') + '</div></div>';
+    return;
+  }
+  const badge = badgeMap[key];
+  const name = t('personality.'+key+'.name');
+  const desc = t('personality.'+key+'.desc');
+  container.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.25);border-radius:12px;cursor:pointer" onclick="showPersonalityModal()">' +
+    '<div style="font-size:20px;flex-shrink:0">' + badge + '</div>' +
+    '<div style="flex:1">' +
+    '<div style="font-size:12px;font-weight:600;color:#f0d060">' + name + '</div>' +
+    '<div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.4">' + desc + '</div>' +
+    '</div>' +
+    '<div style="font-size:11px;color:rgba(255,255,255,0.3);flex-shrink:0">查看全部 ›</div></div>';
 }
 window.initMobilePersonalityList = initMobilePersonalityList;
+
+// 五種財富人格 Modal（收合列點擊後展開，樣式比照 showWealthLevelModal）
+function showPersonalityModal() {
+  const existing = document.getElementById('personality-modal');
+  if (existing) { existing.remove(); return; }
+  const key = localStorage.getItem('wealthPersonality') || '';
+  const badgeMap = { pioneer:'🦅', sage:'🦉', magnet:'🌟', anchor:'🏔️', creator:'🔥' };
+
+  const modal = document.createElement('div');
+  modal.id = 'personality-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;display:flex;align-items:flex-end;';
+
+  modal.innerHTML = `
+    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:700;color:#f0d060;">✦ ${t('profile.personalitySection')}</div>
+        <div onclick="document.getElementById('personality-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+      </div>
+      ${Object.entries(badgeMap).map(([k, badge]) => {
+        const isMe = k === key;
+        const name = t('personality.'+k+'.name');
+        const desc = t('personality.'+k+'.desc');
+        return `<div style="display:flex;align-items:flex-start;gap:10px;padding:11px;background:${isMe?'rgba(240,208,96,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isMe?'rgba(240,208,96,0.25)':'rgba(255,255,255,0.06)'};border-radius:14px;margin-bottom:8px;">
+          <div style="font-size:20px;flex-shrink:0">${badge}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;color:${isMe?'#f0d060':'rgba(255,255,255,0.65)'};margin-bottom:2px">${name}${isMe?' <span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 6px;border-radius:8px">'+t('personality.yourBadge')+'</span>':''}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">${desc}</div>
+          </div>
+        </div>`;
+      }).join('')}
+      <div style="font-size:10px;color:rgba(255,255,255,0.2);text-align:center;padding-top:8px">${t('personality.mobileFooter')}</div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+window.showPersonalityModal = showPersonalityModal;
 
 // 財富等級說明 Modal
 function showWealthLevelModal() {
@@ -11829,6 +11873,41 @@ function initMobileHome() {
 <div class="app-page" id="page-tx">
   <div class="page-content">
 
+    <!-- 六個罐子 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個罐子 · 收入分配</div>
+    </div>
+    <div class="jars-section">
+      <div class="jars-header" onclick="toggleJars()">
+        <div>
+          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
+          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
+        </div>
+        <div class="jars-toggle" id="jars-toggle-icon">▾</div>
+      </div>
+      <div class="jars-body" id="jars-body">
+        <!-- 月收入輸入 -->
+        <div class="jars-income-row">
+          <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
+          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
+          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
+          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
+        </div>
+        <!-- 合計提示 -->
+        <div class="jars-total-row ok" id="jars-total-row">
+          <span id="jars-total-label">合計 100% ✓</span>
+          <span id="jars-total-diff"></span>
+        </div>
+        <!-- 罐子圖式 -->
+        <div id="jars-visual-row" class="jar-visual-row"></div>
+        <!-- 六個罐子卡片 -->
+        <div id="jars-cards"></div>
+        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
+        <!-- FFA 建議 -->
+        <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
+      </div>
+    </div>
+
     <!-- 罐子餘額總覽 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title" data-i18n="tx.jarSummary">罐子餘額</div>
@@ -11982,12 +12061,6 @@ function initMobileHome() {
     <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:600;color:#f0fdf4;text-align:center;margin-bottom:4px" id="mobile-goal-amount">NT$0/月</div>
     <div style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:14px" data-i18n="goal.mobile.headerSub">月支出目標設定</div>
 
-    <!-- 財富頻率等級 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.wealthLevels">財富頻率等級</div>
-    </div>
-    <div id="mobile-wealth-levels" style="margin-bottom:14px" onclick="showWealthLevelModal()"></div>
-
     <!-- 現金流卡片 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title" data-i18n="goals.cashflowMetrics">現金流指標</div>
@@ -11995,41 +12068,6 @@ function initMobileHome() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
       <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
-    </div>
-
-    <!-- 六個罐子 -->
-    <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個罐子 · 收入分配</div>
-    </div>
-    <div class="jars-section">
-      <div class="jars-header" onclick="toggleJars()">
-        <div>
-          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
-          <div class="jars-subtitle" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
-        </div>
-        <div class="jars-toggle" id="jars-toggle-icon">▾</div>
-      </div>
-      <div class="jars-body" id="jars-body">
-        <!-- 月收入輸入 -->
-        <div class="jars-income-row">
-          <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
-          <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
-          <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
-          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
-        </div>
-        <!-- 合計提示 -->
-        <div class="jars-total-row ok" id="jars-total-row">
-          <span id="jars-total-label">合計 100% ✓</span>
-          <span id="jars-total-diff"></span>
-        </div>
-        <!-- 罐子圖式 -->
-        <div id="jars-visual-row" class="jar-visual-row"></div>
-        <!-- 六個罐子卡片 -->
-        <div id="jars-cards"></div>
-        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
-        <!-- FFA 建議 -->
-        <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
-      </div>
     </div>
 
     <!-- ESBI 象限 -->
@@ -12202,6 +12240,13 @@ function initMobileHome() {
       <div class="mobile-section-more" onclick="startFullRetestQuiz()" data-i18n="profile.retest">重新測驗 ›</div>
     </div>
     <div id="mobile-personality-list" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px;margin-bottom:14px"></div>
+
+    <!-- 財富頻率等級 -->
+    <div class="mobile-section-header">
+      <div class="mobile-section-title" data-i18n="goals.wealthLevels">財富頻率等級</div>
+    </div>
+    <div id="mobile-wealth-levels" style="margin-bottom:14px" onclick="showWealthLevelModal()"></div>
+
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;margin-bottom:14px">
       <div class="profile-menu-item" onclick="openCompletedDreams()">
         <div class="profile-menu-icon">🏆</div>
