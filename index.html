@@ -394,7 +394,7 @@ select option { background: #0d2318; }
 .debt-del-btn:hover { color:#f87171; }
 /* ── 夢想系統 ── */
 /* 許願儀式畫面 */
-.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:500; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; overflow-y:auto; }
+.dream-screen { position:fixed; inset:0; background:var(--bg); z-index:1100; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; overflow-y:auto; }
 .dream-screen.hidden { display:none; }
 .dream-intro { text-align:center; padding:40px 24px; max-width:480px; width:100%; }
 .dream-intro-title { font-family:'DM Serif Display',serif; font-size:36px; color:#f0d060; margin-bottom:8px; }
@@ -2001,7 +2001,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 </div>
 
 <!-- 六個罐子起始餘額設定（首次登入） -->
-<div class="dream-screen hidden" id="jars-balance-screen" style="z-index:502">
+<div class="dream-screen hidden" id="jars-balance-screen" style="z-index:1102">
   <div class="dream-intro">
     <div class="dream-setup-icon">🫙</div>
     <div class="dream-intro-title" data-i18n="jarsSetup.title">設定你的六個罐子</div>
@@ -2034,7 +2034,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 </div>
 
 <!-- 設定月支出目標（首次登入） -->
-<div class="dream-screen hidden" id="goal-setup-screen" style="z-index:501">
+<div class="dream-screen hidden" id="goal-setup-screen" style="z-index:1101">
   <div class="dream-intro">
     <div class="dream-setup-icon">🎯</div>
     <div class="dream-intro-title" data-i18n="goalSetup.title">設定月支出目標</div>
