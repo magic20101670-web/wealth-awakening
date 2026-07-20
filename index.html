@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #060f0a;
+  --bg: #0a1628;
   --surface: rgba(255,255,255,0.04);
   --border: rgba(255,255,255,0.08);
   --green: #22c55e;
@@ -19,7 +19,7 @@
   --red: #f87171;
   --text: #f0fdf4;
   --muted: rgba(240,253,244,0.45);
-  --input: #0d2318;
+  --input: #142838;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { overflow-x: hidden; }
@@ -28,9 +28,9 @@ body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-s
 
 /* Header */
 header { display: flex; flex-direction: row; align-items: center; gap: 20px; margin-bottom: 20px; }
-.logo { font-family: 'DM Serif Display', serif; font-size: 42px; letter-spacing: -1px; background: linear-gradient(135deg,#86efac,#22c55e,#16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+.logo { font-family: 'DM Serif Display', serif; font-size: 42px; letter-spacing: -1px; background: linear-gradient(135deg,#f0d6c0,#d4a574,#c98a6f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
 .logo-sub { color: var(--muted); font-size: 13px; margin-top: 6px; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; }
-.badge { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.2); color: var(--green); font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 20px; }
+.badge { background: var(--green-dim); border: 1px solid rgba(212,165,116,0.2); color: var(--green); font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 20px; }
 
 /* Cards */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; margin-bottom: 20px; }
@@ -42,7 +42,7 @@ header { display: flex; flex-direction: row; align-items: center; gap: 20px; mar
 .freedom-pct { font-family: 'DM Serif Display', serif; font-size: 72px; color: var(--green); line-height: 1; text-shadow: 0 0 40px var(--green-glow); }
 .freedom-desc { color: var(--muted); font-size: 13px; margin-top: 8px; }
 .progress-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); margin-top: 20px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#16a34a,#22c55e,#86efac); transition: width 0.8s cubic-bezier(0.23,1,0.32,1); box-shadow: 0 0 12px var(--green-glow); }
+.progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#c98a6f,#d4a574,#f0d6c0); transition: width 0.8s cubic-bezier(0.23,1,0.32,1); box-shadow: 0 0 12px var(--green-glow); }
 
 /* Stats */
 .summary-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 14px; margin-bottom: 20px; }
@@ -63,7 +63,7 @@ input, select {
   font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
   transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
 }
-input:focus, select:focus { border-color: rgba(34,197,94,0.4); }
+input:focus, select:focus { border-color: rgba(212,165,116,0.4); }
 input::placeholder { color: var(--muted); }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2322c55e' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -72,11 +72,11 @@ select {
   padding-right: 36px;
   cursor: pointer;
 }
-select option { background: #0d2318; }
+select option { background: #152a3c; }
 
 /* Symbol dropdown */
 .sym-wrap { position: relative; }
-.dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #0d2318; border: 1px solid rgba(34,197,94,0.2); border-radius: 14px; max-height: 240px; overflow-y: auto; z-index: 100; display: none; }
+.dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #152a3c; border: 1px solid rgba(212,165,116,0.2); border-radius: 14px; max-height: 240px; overflow-y: auto; z-index: 100; display: none; }
 .dropdown.open { display: block; }
 .dd-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
 .dd-item:last-child { border-bottom: none; }
@@ -91,7 +91,7 @@ select option { background: #0d2318; }
 /* Button */
 .btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .btn-green { background: var(--green); color: #052e16; box-shadow: 0 0 24px var(--green-glow); }
-.btn-green:hover { background: #16a34a; transform: translateY(-1px); }
+.btn-green:hover { background: #c98a6f; transform: translateY(-1px); }
 .btn-green:active { transform: translateY(0); }
 .btn-green:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
@@ -102,7 +102,7 @@ select option { background: #0d2318; }
 .assets-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 12px; margin-top: 16px; width:100%; }
 .asset-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; position: relative; transition: border-color 0.2s, transform 0.2s; animation: fadeIn 0.3s ease; min-width:0; overflow:hidden; }
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-.asset-card:hover { border-color: rgba(34,197,94,0.2); transform: translateY(-2px); }
+.asset-card:hover { border-color: rgba(212,165,116,0.2); transform: translateY(-2px); }
 .asset-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
 .asset-name { font-size: 13px; font-weight: 500; }
 .asset-sym { font-family: "DM Mono", monospace; font-size: 10px; color: var(--muted); margin-top: 2px; }
@@ -124,10 +124,10 @@ select option { background: #0d2318; }
 .asset-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); gap:8px; }
 .asset-row span:first-child { flex-shrink:0; }
 .asset-row span:last-child { color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px; }
-.asset-row span.pnl.pos { color: #22c55e !important; }
+.asset-row span.pnl.pos { color: #d4a574 !important; }
 .asset-row span.pnl.neg { color: #f87171 !important; }
 .pnl { font-weight: 600; font-size: 14px; }
-.pnl.pos { color: #22c55e !important; }
+.pnl.pos { color: #d4a574 !important; }
 .pnl.neg { color: #f87171 !important; }
 .del-btn { position:absolute; top:14px; right:14px; background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.2); color:var(--red); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:all 0.2s; opacity:0; }
 .asset-card:hover .del-btn { opacity: 1; }
@@ -138,7 +138,7 @@ select option { background: #0d2318; }
 @keyframes wlGlow { 0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,0)} 50%{box-shadow:0 0 12px rgba(212,175,55,0.2)} }
 
 /* Daily Quote */
-.quote-card { position:relative; z-index:1; margin-bottom:20px; padding:20px 28px; border-radius:20px; background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(34,197,94,0.04)); border:1px solid rgba(212,175,55,0.12); }
+.quote-card { position:relative; z-index:1; margin-bottom:20px; padding:20px 28px; border-radius:20px; background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(212,165,116,0.04)); border:1px solid rgba(212,175,55,0.12); }
 .quote-label { position:absolute; top:14px; left:20px; font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:rgba(212,175,55,0.6); font-family:'DM Mono',monospace; margin:0; }
 .quote-text { display:block; font-family:'DM Serif Display',serif; font-size:17px; color:var(--text); line-height:1.7; margin-bottom:6px; }
 .freq-card-scene { perspective:800px; cursor:pointer; min-height:80px; }
@@ -148,7 +148,7 @@ select option { background: #0d2318; }
 .freq-card-front,.freq-card-back { position:absolute; top:0; left:0; width:100%; height:100%; min-height:inherit; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:14px; }
 .freq-card-front { background:linear-gradient(135deg,rgba(240,208,96,0.1),rgba(212,175,55,0.05)); border:1px dashed rgba(240,208,96,0.3); }
 .freq-card-front:hover { background:linear-gradient(135deg,rgba(240,208,96,0.18),rgba(212,175,55,0.1)); }
-.freq-card-back { transform:rotateY(180deg); background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(212,175,55,0.05)); border:1px solid rgba(212,175,55,0.15); padding:14px 18px; text-align:center; }
+.freq-card-back { transform:rotateY(180deg); background:linear-gradient(135deg,rgba(212,165,116,0.08),rgba(212,175,55,0.05)); border:1px solid rgba(212,175,55,0.15); padding:14px 18px; text-align:center; }
 @keyframes cardGlow { 0%{box-shadow:0 0 8px rgba(240,208,96,0.2)} 50%{box-shadow:0 0 20px rgba(240,208,96,0.4)} 100%{box-shadow:0 0 8px rgba(240,208,96,0.2)} }
 .freq-card-front { animation:cardGlow 2.5s ease-in-out infinite; }
 .quote-author { display:block; font-size:11px; color:var(--muted); letter-spacing:0.06em; }
@@ -158,30 +158,30 @@ select option { background: #0d2318; }
 .wl-levels { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
 .wl-item { flex:1; min-width:80px; padding:10px 12px; border-radius:12px; border:1px solid var(--border); text-align:center; transition:all 0.3s; opacity:0.4; }
 .wl-item.current { opacity:1; border-color:rgba(212,175,55,0.4); background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.04)); box-shadow:0 0 20px rgba(212,175,55,0.1); }
-.wl-item.unlocked { opacity:0.7; border-color:rgba(34,197,94,0.2); }
+.wl-item.unlocked { opacity:0.7; border-color:rgba(212,165,116,0.2); }
 .wl-icon { font-size:16px; margin-bottom:4px; }
 .wl-name { font-size:10px; font-weight:600; letter-spacing:0.06em; color:var(--text); }
 .wl-req { font-size:9px; color:var(--muted); margin-top:2px; }
 .wl-current-label { font-size:9px; color:#f0d060; margin-top:3px; font-weight:600; }
 /* Staking */
-.staking-box { background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.15); border-radius:12px; padding:14px 16px; }
+.staking-box { background:rgba(212,165,116,0.05); border:1px solid rgba(212,165,116,0.15); border-radius:12px; padding:14px 16px; }
 .staking-label { font-size:12px; font-weight:600; color:var(--green); letter-spacing:0.06em; }
-.staking-preview { font-size:13px; color:var(--green); font-family:'DM Mono',monospace; background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.15); border-radius:10px; padding:10px 14px; display:flex; align-items:center; }
+.staking-preview { font-size:13px; color:var(--green); font-family:'DM Mono',monospace; background:rgba(212,165,116,0.08); border:1px solid rgba(212,165,116,0.15); border-radius:10px; padding:10px 14px; display:flex; align-items:center; }
 /* Wealth Tree */
 .wealth-tree-card { padding:20px 24px; }
-.tree-level-badge { font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green); }
+.tree-level-badge { font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:var(--green); }
 .tree-stat { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:10px; }
 .tree-stat-label { font-size:11px;color:var(--muted); }
 .tree-stat-val { font-size:13px;font-weight:600;color:var(--text);font-family:'DM Mono',monospace; }
 /* Cashflow Cards */
 .cashflow-card { padding:20px 24px; }
-.cashflow-icon { width:38px;height:38px;border-radius:12px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+.cashflow-icon { width:38px;height:38px;border-radius:12px;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
 .cashflow-title { font-size:14px;font-weight:600;color:var(--green);letter-spacing:0.04em; }
 .cashflow-sub { font-size:11px;color:var(--muted);margin-top:2px; }
 .cashflow-amount { font-family:'DM Mono',monospace;font-size:26px;font-weight:500;color:var(--green);margin-bottom:10px; }
 .cashflow-bar-wrap { height:4px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden; }
-.cashflow-bar-fill { height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);transition:width 1s cubic-bezier(0.23,1,0.32,1); }
-#cf-breakdown-popup { position:fixed;z-index:8888;min-width:280px;max-width:360px;background:#0d1f14;border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.18s ease,transform 0.18s ease;transform:translateY(-4px); }
+.cashflow-bar-fill { height:100%;border-radius:99px;background:linear-gradient(90deg,#c98a6f,#f0d6c0);transition:width 1s cubic-bezier(0.23,1,0.32,1); }
+#cf-breakdown-popup { position:fixed;z-index:8888;min-width:280px;max-width:360px;background:#142838;border:1px solid rgba(212,165,116,0.25);border-radius:16px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.18s ease,transform 0.18s ease;transform:translateY(-4px); }
 #cf-breakdown-popup.cf-popup-visible { opacity:1;pointer-events:auto;transform:translateY(0); }
 [data-theme^="light"] #cf-breakdown-popup { background:#ffffff;border-color:rgba(22,163,74,0.25);box-shadow:0 12px 40px rgba(0,0,0,0.15); }
 /* Cashflow Breakdown */
@@ -196,10 +196,10 @@ select option { background: #0d2318; }
 .ring-wrap:hover #freedom-desc { display:block !important; }
 .ring-wrap:hover .freedom-label { display:block !important; }
 /* AI Insight */
-.ai-insight-card { border-color:rgba(34,197,94,0.15); background:linear-gradient(135deg,rgba(34,197,94,0.04),rgba(0,0,0,0)); }
-.ai-icon { width:34px; height:34px; background:var(--green-dim); border:1px solid rgba(34,197,94,0.3); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:16px; flex-shrink:0; animation: aiPulse 3s ease-in-out infinite; }
-@keyframes aiPulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.3)} 50%{box-shadow:0 0 0 6px rgba(34,197,94,0)} }
-.ai-refresh-btn { background:transparent; border:1px solid rgba(34,197,94,0.2); color:var(--muted); border-radius:8px; padding:5px 12px; font-size:11px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; white-space:nowrap; }
+.ai-insight-card { border-color:rgba(212,165,116,0.15); background:linear-gradient(135deg,rgba(212,165,116,0.04),rgba(0,0,0,0)); }
+.ai-icon { width:34px; height:34px; background:var(--green-dim); border:1px solid rgba(212,165,116,0.3); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:16px; flex-shrink:0; animation: aiPulse 3s ease-in-out infinite; }
+@keyframes aiPulse { 0%,100%{box-shadow:0 0 0 0 rgba(212,165,116,0.3)} 50%{box-shadow:0 0 0 6px rgba(212,165,116,0)} }
+.ai-refresh-btn { background:transparent; border:1px solid rgba(212,165,116,0.2); color:var(--muted); border-radius:8px; padding:5px 12px; font-size:11px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; white-space:nowrap; }
 .ai-refresh-btn:hover { border-color:var(--green); color:var(--green); }
 .ai-insight-text { font-size:14px; color:var(--muted); line-height:1.8; white-space:pre-line; }
 .ai-insight-text .ai-highlight { color:var(--green); font-weight:500; }
@@ -208,7 +208,7 @@ select option { background: #0d2318; }
 /* Celebration Modal */
 .celebrate-modal { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity 0.3s; }
 .celebrate-modal.show { opacity:1; pointer-events:all; }
-.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(34,197,94,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; max-height:90vh; overflow-y:auto; overflow-x:hidden; box-shadow:0 0 60px rgba(34,197,94,0.15); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+.celebrate-box { position:relative; background:linear-gradient(135deg,#0a1f0f,#0d2b16); border:1px solid rgba(212,165,116,0.3); border-radius:28px; padding:48px 40px; text-align:center; max-width:420px; width:90%; max-height:90vh; overflow-y:auto; overflow-x:hidden; box-shadow:0 0 60px rgba(212,165,116,0.15); animation:celebRise 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
 @keyframes celebRise { 0%{transform:translateY(60px) scale(0.88);opacity:0;filter:blur(4px)} 60%{filter:blur(0)} 100%{transform:translateY(0) scale(1);opacity:1;filter:blur(0)} }
 .celebrate-confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
 .confetti-piece { position:absolute; width:8px; height:8px; border-radius:2px; animation: confettiFall linear forwards; }
@@ -216,10 +216,10 @@ select option { background: #0d2318; }
 .celebrate-icon { font-size:56px; margin-bottom:12px; animation:iconEntrance 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.18s both; }
 @keyframes iconEntrance { 0%{transform:scale(0) rotate(-30deg);opacity:0} 55%{transform:scale(1.35) rotate(8deg)} 75%{transform:scale(0.92) rotate(-2deg)} 100%{transform:scale(1) rotate(0deg);opacity:1} }
 .celebrate-icon.milestone { animation:iconEntrance 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.18s both, iconGlow 1.8s ease-in-out 0.9s infinite; }
-@keyframes iconGlow { 0%,100%{filter:drop-shadow(0 0 0px transparent)} 50%{filter:drop-shadow(0 0 16px rgba(34,197,94,0.8))} }
+@keyframes iconGlow { 0%,100%{filter:drop-shadow(0 0 0px transparent)} 50%{filter:drop-shadow(0 0 16px rgba(212,165,116,0.8))} }
 .celebrate-title { font-family:'DM Serif Display',serif; font-size:26px; color:var(--text); margin-bottom:10px; animation:celebFadeUp 0.5s ease 0.32s both; }
 .celebrate-sub { font-size:14px; color:var(--muted); margin-bottom:16px; line-height:1.6; animation:celebFadeUp 0.5s ease 0.44s both; }
-.celebrate-pct { font-family:'DM Serif Display',serif; font-size:42px; color:var(--green); margin-bottom:6px; text-shadow:0 0 20px rgba(34,197,94,0.5); animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.5s both; }
+.celebrate-pct { font-family:'DM Serif Display',serif; font-size:42px; color:var(--green); margin-bottom:6px; text-shadow:0 0 20px rgba(212,165,116,0.5); animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.5s both; }
 .celebrate-pct-label { font-size:11px; color:var(--muted); letter-spacing:0.12em; margin-bottom:20px; animation:celebFadeUp 0.4s ease 0.56s both; }
 .celebrate-quote { font-size:13px; color:rgba(240,253,244,0.5); font-style:italic; margin-bottom:28px; padding:0 10px; line-height:1.7; animation:celebFadeUp 0.5s ease 0.62s both; }
 @keyframes celebFadeUp { 0%{transform:translateY(18px);opacity:0} 100%{transform:translateY(0);opacity:1} }
@@ -231,9 +231,9 @@ select option { background: #0d2318; }
   .celebrate-quote{margin-bottom:16px;}
 }
 .celebrate-btn { background:var(--green); color:#052e16; border:none; border-radius:14px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; width:100%; animation:celebFadeUp 0.5s cubic-bezier(0.34,1.4,0.64,1) 0.72s both; }
-.celebrate-btn:hover { background:#16a34a; transform:translateY(-1px); }
+.celebrate-btn:hover { background:#c98a6f; transform:translateY(-1px); }
 /* Wealth Insight Card */
-.insight-card { background:linear-gradient(135deg,rgba(34,197,94,0.07),rgba(34,197,94,0.02)); border:1px solid rgba(34,197,94,0.2); border-radius:16px; padding:14px 18px; display:flex; align-items:flex-start; gap:12px; position:relative; z-index:1; }
+.insight-card { background:linear-gradient(135deg,rgba(212,165,116,0.07),rgba(212,165,116,0.02)); border:1px solid rgba(212,165,116,0.2); border-radius:16px; padding:14px 18px; display:flex; align-items:flex-start; gap:12px; position:relative; z-index:1; }
 .insight-card-label { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--green); margin-bottom:5px; font-weight:600; }
 .insight-card-text { font-size:13px; color:var(--text); line-height:1.65; }
 .insight-card-dismiss { position:absolute; top:10px; right:12px; background:none; border:none; color:var(--muted); font-size:14px; cursor:pointer; padding:2px 6px; border-radius:6px; transition:color 0.15s; }
@@ -258,8 +258,8 @@ select option { background: #0d2318; }
 .celebrate-reward-title { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(240,208,96,0.65); margin-bottom:10px; }
 .celebrate-reward-opts { display:flex; flex-direction:column; gap:7px; margin-bottom:10px; }
 .celebrate-reward-opt { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); border-radius:11px; padding:10px 14px; font-size:13px; color:var(--muted); cursor:pointer; text-align:left; transition:all 0.18s; font-family:'DM Sans',sans-serif; line-height:1.4; }
-.celebrate-reward-opt:hover { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.3); color:var(--text); }
-.celebrate-reward-opt.picked { background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.5); color:#86efac; }
+.celebrate-reward-opt:hover { background:rgba(212,165,116,0.08); border-color:rgba(212,165,116,0.3); color:var(--text); }
+.celebrate-reward-opt.picked { background:rgba(212,165,116,0.13); border-color:rgba(212,165,116,0.5); color:#f0d6c0; }
 .celebrate-reward-input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); border-radius:11px; padding:10px 14px; font-size:13px; color:var(--text); font-family:'DM Sans',sans-serif; box-sizing:border-box; transition:border-color 0.18s; }
 .celebrate-reward-input:focus { outline:none; border-color:rgba(240,208,96,0.4); background:rgba(240,208,96,0.04); }
 .celebrate-reward-input::placeholder { color:var(--muted); }
@@ -276,7 +276,7 @@ select option { background: #0d2318; }
 .rd-perspective { margin-bottom:16px; text-align:left; animation:celebFadeUp 0.5s ease 0.9s both; }
 .rd-label { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:rgba(240,208,96,0.6); font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
 .rd-cf-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:10px; }
-.rd-cf-in    { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); color:#86efac; }
+.rd-cf-in    { background:rgba(212,165,116,0.12); border:1px solid rgba(212,165,116,0.25); color:#f0d6c0; }
 .rd-cf-out   { background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; }
 .rd-cf-growth { background:rgba(96,165,250,0.1); border:1px solid rgba(96,165,250,0.2); color:#60a5fa; }
 .rd-cf-mixed { background:rgba(240,208,96,0.1); border:1px solid rgba(240,208,96,0.25); color:#f0d060; }
@@ -303,11 +303,11 @@ select option { background: #0d2318; }
 .jars-income-input { width:130px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:7px 10px;font-size:13px;font-family:'DM Mono',monospace;color:#f0fdf4;outline:none;text-align:right; }
 .jars-income-input:focus { border-color:rgba(240,208,96,0.35); }
 .jar-dep-cur-sel { background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:#f0fdf4;font-size:11px;padding:4px 5px;cursor:pointer;font-family:'DM Sans',sans-serif;min-width:72px;flex-shrink:0; }
-.jar-dep-convert-row { font-size:10.5px;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.18);border-radius:8px;padding:4px 10px;margin-top:-8px;margin-bottom:6px;display:none; }
+.jar-dep-convert-row { font-size:10.5px;color:rgba(212,165,116,0.85);background:rgba(212,165,116,0.07);border:1px solid rgba(212,165,116,0.18);border-radius:8px;padding:4px 10px;margin-top:-8px;margin-bottom:6px;display:none; }
 [data-theme^="light"] .jar-dep-cur-sel { background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.15);color:#1a2e1a; }
 [data-theme^="light"] .jar-dep-convert-row { background:rgba(22,163,74,0.06);border-color:rgba(22,163,74,0.2);color:#15803d; }
 .jar-card { background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:8px; }
-.jar-card.ffa { border-color:rgba(34,197,94,0.25);background:rgba(34,197,94,0.04); }
+.jar-card.ffa { border-color:rgba(212,165,116,0.25);background:rgba(212,165,116,0.04); }
 .jar-card-top { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px; }
 .jar-name { font-size:13px;font-weight:600;color:#f0fdf4; }
 .jar-abbr { font-size:10px;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.3);margin-top:2px; }
@@ -316,17 +316,17 @@ select option { background: #0d2318; }
 .jar-pct-input:focus { border-color:rgba(240,208,96,0.35); }
 .jar-pct-symbol { font-size:12px;color:rgba(255,255,255,0.35); }
 .jar-desc { font-size:11px;color:rgba(255,255,255,0.38);line-height:1.55;margin-bottom:8px; }
-.jar-amount { font-size:15px;font-weight:600;font-family:'DM Mono',monospace;color:#4ade80; }
+.jar-amount { font-size:15px;font-weight:600;font-family:'DM Mono',monospace;color:#e8b4a0; }
 .jar-amount.zero { color:rgba(255,255,255,0.2); }
 .jars-total-row { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:9px;margin-bottom:10px;font-size:12px; }
-.jars-total-row.ok { background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#4ade80;display:none; }
+.jars-total-row.ok { background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.2);color:#e8b4a0;display:none; }
 .jars-total-row.err { background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171; }
 .jar-card-name-click { cursor:pointer; }
 @media(max-width:768px) {
   .jar-card-detail { display:none; }
   .jar-card.expanded .jar-card-detail { display:block; }
 }
-.jars-ffa-tip { background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.18);border-radius:10px;padding:11px 13px;margin-top:4px;font-size:12px;color:rgba(240,253,244,0.75);line-height:1.6; }
+.jars-ffa-tip { background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.18);border-radius:10px;padding:11px 13px;margin-top:4px;font-size:12px;color:rgba(240,253,244,0.75);line-height:1.6; }
 /* ── Jar visuals ── */
 .jar-visual-row { display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:14px 0 16px;padding:14px 10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px; }
 .jar-visual-item { display:flex;flex-direction:column;align-items:center;gap:4px;cursor:default; }
@@ -339,25 +339,25 @@ select option { background: #0d2318; }
 .tree-preview-row-label { font-size:10px;color:rgba(255,255,255,0.55);margin-bottom:7px;font-weight:600;letter-spacing:0.04em; }
 .tree-preview-btns { display:flex;flex-wrap:wrap;gap:5px; }
 .tree-preview-btn { font-size:10px;padding:4px 9px;border-radius:16px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);cursor:pointer;transition:all 0.18s;white-space:nowrap;user-select:none; }
-.tree-preview-btn:hover { background:rgba(34,197,94,0.22);border-color:rgba(34,197,94,0.5);color:#86efac; }
-.tree-preview-btn.tpb-active { background:rgba(34,197,94,0.28);border-color:#22c55e;color:#22c55e;font-weight:700; }
+.tree-preview-btn:hover { background:rgba(212,165,116,0.22);border-color:rgba(212,165,116,0.5);color:#f0d6c0; }
+.tree-preview-btn.tpb-active { background:rgba(212,165,116,0.28);border-color:#d4a574;color:#d4a574;font-weight:700; }
 .tree-preview-exit { font-size:10px;padding:4px 10px;border-radius:16px;border:1px solid rgba(255,100,100,0.4);background:rgba(255,100,100,0.15);color:rgba(255,160,160,0.9);cursor:pointer;margin-left:2px; }
 .tree-preview-exit:hover { background:rgba(255,100,100,0.25);color:#fca5a5; }
 @media(max-width:768px){ .jar-visual-row { grid-template-columns:repeat(3,1fr); } }
-.jars-ffa-tip strong { color:#4ade80;font-weight:500; }
-.jars-deposit-btn { background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:8px;transition:all 0.2s; }
-.jars-deposit-btn:hover { background:rgba(74,222,128,0.25); }
+.jars-ffa-tip strong { color:#e8b4a0;font-weight:500; }
+.jars-deposit-btn { background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);color:#e8b4a0;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:8px;transition:all 0.2s; }
+.jars-deposit-btn:hover { background:rgba(212,165,116,0.25); }
 /* ESBI Quadrant */
 .esbi-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; margin-bottom:12px; }
-.esbi-cell { padding:11px 12px; background:#0b140e; position:relative; transition:background 0.3s; }
+.esbi-cell { padding:11px 12px; background:var(--s2,#101d2e); position:relative; transition:background 0.3s; }
 .esbi-letter { font-size:22px; font-weight:700; font-family:'DM Mono',monospace; margin-bottom:1px; line-height:1; }
 .esbi-qname { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.3); margin-bottom:6px; }
 .esbi-income { font-size:13px; font-weight:600; font-family:'DM Mono',monospace; }
 .esbi-desc { font-size:10px; color:rgba(255,255,255,0.28); margin-top:3px; line-height:1.35; }
-.esbi-goal-tag { position:absolute; top:7px; right:7px; font-size:9px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:#4ade80; padding:2px 6px; border-radius:6px; font-weight:600; }
+.esbi-goal-tag { position:absolute; top:7px; right:7px; font-size:9px; background:rgba(212,165,116,0.15); border:1px solid rgba(212,165,116,0.3); color:#e8b4a0; padding:2px 6px; border-radius:6px; font-weight:600; }
 .esbi-divider { height:1px; background:rgba(255,255,255,0.05); margin:0 0 10px; }
 .esbi-ratio-bar { height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-bottom:4px; }
-.esbi-ratio-fill { height:100%; background:linear-gradient(90deg,#22c55e,#86efac); border-radius:3px; transition:width 0.5s ease; }
+.esbi-ratio-fill { height:100%; background:linear-gradient(90deg,#d4a574,#f0d6c0); border-radius:3px; transition:width 0.5s ease; }
 .esbi-active-input { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; margin-bottom:8px; }
 .esbi-input-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
 .esbi-input-row:last-child { margin-bottom:0; }
@@ -367,8 +367,16 @@ select option { background: #0d2318; }
 .esbi-num-input:focus { border-color:rgba(240,208,96,0.3); }
 .esbi-rd-msg { font-size:12px; color:rgba(240,253,244,0.5); line-height:1.65; padding:10px 12px; background:rgba(240,208,96,0.04); border:1px solid rgba(240,208,96,0.1); border-radius:10px; margin-top:10px; }
 .esbi-rd-msg strong { color:#f0d060; font-weight:500; }
+[data-theme^="light"] .esbi-qname { color: var(--fg3) !important; }
+[data-theme^="light"] .esbi-desc { color: var(--fg3) !important; }
+[data-theme^="light"] .esbi-divider { background: var(--border) !important; }
+[data-theme^="light"] .esbi-ratio-bar { background: var(--border) !important; }
+[data-theme^="light"] .esbi-active-input { background: var(--card-bg) !important; border-color: var(--border) !important; }
+[data-theme^="light"] .esbi-input-label { color: var(--fg2) !important; }
+[data-theme^="light"] .esbi-num-input { background: var(--card-bg) !important; border-color: var(--border) !important; color: var(--fg) !important; }
+[data-theme^="light"] .esbi-rd-msg { color: var(--fg2) !important; }
 /* WA Toast */
-.wa-toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(20px); z-index:9997; background:linear-gradient(135deg,#0d2318,#0a1a0f); border:1px solid rgba(34,197,94,0.28); border-radius:18px; padding:14px 18px 14px 16px; display:flex; align-items:flex-start; gap:11px; max-width:360px; width:calc(100% - 40px); box-shadow:0 8px 32px rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1), opacity 0.35s ease; }
+.wa-toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(20px); z-index:9997; background:linear-gradient(135deg,#152a3c,#0e1f30); border:1px solid rgba(212,165,116,0.28); border-radius:18px; padding:14px 18px 14px 16px; display:flex; align-items:flex-start; gap:11px; max-width:360px; width:calc(100% - 40px); box-shadow:0 8px 32px rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1), opacity 0.35s ease; }
 .wa-toast.show { transform:translateX(-50%) translateY(0); opacity:1; pointer-events:all; }
 .wa-toast-icon { font-size:20px; flex-shrink:0; line-height:1.4; }
 .wa-toast-body { flex:1; }
@@ -452,8 +460,8 @@ select option { background: #0d2318; }
 .jar-adjust-toggle:hover { color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.25); }
 .jar-adjust-row { display:flex; gap:6px; margin-top:8px; }
 .jar-adjust-input { flex:1; min-width:0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:6px 10px; font-size:12px; font-family:'DM Mono',monospace; color:#f0fdf4; outline:none; }
-.jar-adjust-confirm { background:rgba(74,222,128,0.15); border:1px solid rgba(74,222,128,0.3); color:#4ade80; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; flex-shrink:0; }
-.jar-adjust-confirm:hover { background:rgba(74,222,128,0.25); }
+.jar-adjust-confirm { background:rgba(212,165,116,0.15); border:1px solid rgba(212,165,116,0.3); color:#e8b4a0; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; flex-shrink:0; }
+.jar-adjust-confirm:hover { background:rgba(212,165,116,0.25); }
 
 /* 主畫面夢想區塊 */
 .dream-hero { background:linear-gradient(135deg,rgba(240,208,96,0.08),rgba(212,175,55,0.04)); border:1px solid rgba(240,208,96,0.2); border-radius:20px; padding:22px 26px; position:relative; overflow:hidden; margin-bottom:20px; }
@@ -476,12 +484,12 @@ select option { background: #0d2318; }
 .dh-cell-bar { height:5px; border-radius:99px; background:rgba(255,255,255,0.08); overflow:hidden; margin-top:8px; }
 .dh-cell-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#b45309,#f0d060,#fde68a); transition:width 0.8s cubic-bezier(0.23,1,0.32,1); }
 .dh-cell-pct { font-size:10px; color:#f0d060; font-weight:600; margin-top:4px; text-align:right; font-family:'DM Mono',monospace; }
-.dh-cell.assets .dh-cell-label { color:#4ade80; }
+.dh-cell.assets .dh-cell-label { color:#e8b4a0; }
 .dh-cell.liabilities .dh-cell-label { color:#f87171; }
 .dh-asset-spark { position:relative; height:36px; margin-top:6px; }
 .dh-cell-bottom-row { display:flex; align-items:flex-end; justify-content:space-between; margin-top:8px; }
-.dh-cell-add { width:26px; height:26px; flex-shrink:0; border-radius:50%; border:1px solid rgba(34,197,94,0.3); background:rgba(34,197,94,0.1); color:#4ade80; font-size:16px; line-height:1; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
-.dh-cell-add:hover { background:rgba(34,197,94,0.2); }
+.dh-cell-add { width:26px; height:26px; flex-shrink:0; border-radius:50%; border:1px solid rgba(212,165,116,0.3); background:rgba(212,165,116,0.1); color:#e8b4a0; font-size:16px; line-height:1; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+.dh-cell-add:hover { background:rgba(212,165,116,0.2); }
 .dh-cell-add.debt { border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.1); color:#f87171; }
 .dh-cell-add.debt:hover { background:rgba(239,68,68,0.2); }
 .dh-cell.assets .assets-grid { display:flex; flex-direction:column; gap:6px; margin-top:10px; max-height:180px; overflow-y:auto; }
@@ -537,8 +545,8 @@ select option { background: #0d2318; }
 .dh-dream-row-name { flex:1; min-width:0; color:#f0fdf4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .dh-dream-row-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .dh-dream-row-amount { font-family:'DM Mono',monospace; color:rgba(240,253,244,0.7); }
-.dh-dream-achieve-btn { font-size:10px; font-weight:600; padding:2px 8px; border-radius:99px; border:1px solid rgba(34,197,94,0.35); background:rgba(34,197,94,0.12); color:#4ade80; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; white-space:nowrap; }
-.dh-dream-achieve-btn:hover { background:rgba(34,197,94,0.22); }
+.dh-dream-achieve-btn { font-size:10px; font-weight:600; padding:2px 8px; border-radius:99px; border:1px solid rgba(212,165,116,0.35); background:rgba(212,165,116,0.12); color:#e8b4a0; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; white-space:nowrap; }
+.dh-dream-achieve-btn:hover { background:rgba(212,165,116,0.22); }
 .dh-dream-empty { font-size:12px; color:rgba(255,255,255,0.3); margin-top:8px; }
 .dh-dream-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.07); }
 .dh-dream-total-label { font-size:11px; color:rgba(255,255,255,0.4); }
@@ -546,7 +554,7 @@ select option { background: #0d2318; }
 .dream-hero-actions { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
 .dream-hero-btn { background:rgba(240,208,96,0.1); border:1px solid rgba(240,208,96,0.2); color:#f0d060; border-radius:10px; padding:7px 14px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; transition:all 0.2s; }
 .dream-hero-btn:hover { background:rgba(240,208,96,0.18); }
-.dream-hero-btn.complete { background:rgba(34,197,94,0.1); border-color:rgba(34,197,94,0.25); color:#86efac; }
+.dream-hero-btn.complete { background:rgba(212,165,116,0.1); border-color:rgba(212,165,116,0.25); color:#f0d6c0; }
 .dream-mini-list { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
 .dream-mini { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:6px 12px; font-size:12px; color:rgba(134,239,172,0.7); cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; }
 .dream-mini:hover { border-color:rgba(240,208,96,0.3); }
@@ -556,7 +564,7 @@ select option { background: #0d2318; }
 /* 每月提醒彈窗 */
 .dream-reminder { position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity 0.4s; }
 .dream-reminder.show { opacity:1; pointer-events:all; }
-.dream-reminder-box { background:linear-gradient(135deg,#0a1f0f,#060f0a); border:1px solid rgba(240,208,96,0.25); border-radius:24px; padding:36px 32px; max-width:340px; width:90%; text-align:center; position:relative; }
+.dream-reminder-box { background:linear-gradient(135deg,#0a1f0f,#0a1628); border:1px solid rgba(240,208,96,0.25); border-radius:24px; padding:36px 32px; max-width:340px; width:90%; text-align:center; position:relative; }
 .dream-reminder-star { font-size:48px; margin-bottom:16px; display:block; animation:starPulse 2s ease-in-out infinite; }
 @keyframes starPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
 .dream-reminder-title { font-size:11px; letter-spacing:0.14em; color:rgba(240,208,96,0.6); margin-bottom:12px; }
@@ -568,7 +576,7 @@ select option { background: #0d2318; }
 /* 夢想達成慶祝 */
 .dream-complete-modal { position:fixed; inset:0; z-index:9500; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); opacity:0; pointer-events:none; transition:opacity 0.4s; }
 .dream-complete-modal.show { opacity:1; pointer-events:all; }
-.dream-complete-box { background:linear-gradient(135deg,#0d2318,#060f0a); border:1px solid rgba(240,208,96,0.3); border-radius:24px; padding:40px 32px; max-width:360px; width:90%; text-align:center; }
+.dream-complete-box { background:linear-gradient(135deg,#152a3c,#0a1628); border:1px solid rgba(240,208,96,0.3); border-radius:24px; padding:40px 32px; max-width:360px; width:90%; text-align:center; }
 .dream-complete-emoji { font-size:64px; margin-bottom:12px; display:block; }
 .dream-complete-title { font-family:'DM Serif Display',serif; font-size:28px; color:#f0d060; margin-bottom:8px; }
 .dream-complete-sub { font-size:13px; color:rgba(134,239,172,0.7); margin-bottom:20px; line-height:1.6; }
@@ -591,7 +599,7 @@ select option { background: #0d2318; }
   bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
-  background: #0d2318;
+  background: #152a3c;
   border: 1px solid rgba(240,208,96,0.25);
   border-radius: 14px;
   padding: 14px 16px;
@@ -628,7 +636,7 @@ select option { background: #0d2318; }
 .goal-label { font-size:13px; color:var(--muted); white-space:nowrap; }
 .goal-input { width:180px; font-family:'DM Mono',monospace; }
 ::-webkit-scrollbar { width:4px; }
-::-webkit-scrollbar-thumb { background:rgba(34,197,94,.3); border-radius:99px; }
+::-webkit-scrollbar-thumb { background:rgba(212,165,116,.3); border-radius:99px; }
 @media(max-width:600px) {
   .form-grid { grid-template-columns:1fr; }
   .full { grid-column:1; }
@@ -713,14 +721,14 @@ select option { background: #0d2318; }
 .goal-card { padding: 24px 28px; }
 .goal-header { display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; flex-wrap:wrap; gap:10px; }
 .goal-header:hover .goal-chevron { color: var(--green); }
-.goal-badge { font-size:12px; font-family:'DM Mono',monospace; color:var(--green); background:var(--green-dim); border:1px solid rgba(34,197,94,0.2); padding:5px 12px; border-radius:20px; }
+.goal-badge { font-size:12px; font-family:'DM Mono',monospace; color:var(--green); background:var(--green-dim); border:1px solid rgba(212,165,116,0.2); padding:5px 12px; border-radius:20px; }
 .goal-section-label { font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-bottom:14px; }
 .expense-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin-bottom:14px; }
 .expense-item label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
 .expense-item input { font-family:'DM Mono',monospace; font-size:14px; }
-.expense-total-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:12px 16px; background:var(--green-dim); border:1px solid rgba(34,197,94,0.15); border-radius:12px; }
+.expense-total-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:12px 16px; background:var(--green-dim); border:1px solid rgba(212,165,116,0.15); border-radius:12px; }
 .btn-apply-total { background:var(--green); color:#052e16; border:none; border-radius:8px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
-.btn-apply-total:hover { background:#16a34a; }
+.btn-apply-total:hover { background:#c98a6f; }
 .exp-custom-item { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
 .exp-custom-name { flex:1; min-width:0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:6px 10px; font-size:13px; color:#f0fdf4; font-family:'DM Sans',sans-serif; outline:none; }
 .exp-custom-name:focus { border-color:rgba(255,255,255,0.25); }
@@ -732,14 +740,14 @@ select option { background: #0d2318; }
 .btn-add-exp-item:hover { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.65); border-color:rgba(255,255,255,0.25); }
 .milestones-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
 .milestone-card { border-radius:14px; padding:16px 18px; border:1px solid var(--border); position:relative; overflow:hidden; transition:border-color 0.3s; }
-.milestone-card.reached { border-color:rgba(34,197,94,0.4); background:rgba(34,197,94,0.06); }
+.milestone-card.reached { border-color:rgba(212,165,116,0.4); background:rgba(212,165,116,0.06); }
 .milestone-card.reached::before { content:'✓'; position:absolute; top:10px; right:12px; color:var(--green); font-size:14px; font-weight:700; }
 .milestone-pct { font-family:'DM Serif Display',serif; font-size:28px; color:var(--green); line-height:1; }
 .milestone-card:not(.reached) .milestone-pct { color:var(--muted); }
 .milestone-label { font-size:12px; color:var(--muted); margin:4px 0 8px; }
 .milestone-amount { font-family:'DM Mono',monospace; font-size:13px; color:var(--text); }
 .milestone-bar { height:4px; border-radius:99px; background:rgba(255,255,255,0.08); margin-top:10px; overflow:hidden; }
-.milestone-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#16a34a,#22c55e); transition:width 0.8s cubic-bezier(0.23,1,0.32,1); }
+.milestone-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#c98a6f,#d4a574); transition:width 0.8s cubic-bezier(0.23,1,0.32,1); }
 .forecast-box { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
 .forecast-text { font-size:14px; color:var(--muted); line-height:1.7; }
 .forecast-highlight { color:var(--green); font-family:'DM Mono',monospace; font-weight:500; }
@@ -752,15 +760,15 @@ select option { background: #0d2318; }
 /* Onboarding（首次開啟：語言＋風格選擇） */
 .onboarding-screen { position:fixed; inset:0; background:var(--bg); display:none; align-items:center; justify-content:center; z-index:2200; flex-direction:column; gap:24px; padding:24px; overflow-y:auto; }
 .ob-lang-btn, .ob-theme-btn { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--fg); border-radius:12px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
-.ob-lang-btn:hover, .ob-theme-btn:hover { border-color:rgba(34,197,94,0.4); }
-.ob-lang-btn.active, .ob-theme-btn.active { background:rgba(34,197,94,0.12); border-color:#22c55e; color:#4ade80; }
+.ob-lang-btn:hover, .ob-theme-btn:hover { border-color:rgba(212,165,116,0.4); }
+.ob-lang-btn.active, .ob-theme-btn.active { background:rgba(212,165,116,0.12); border-color:#d4a574; color:#e8b4a0; }
 .ob-theme-row { display:flex; gap:10px; }
 .ob-theme-btn { flex:1; }
 
 /* Login */
 .login-screen { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:2001; flex-direction:column; gap:24px; }
 .login-box { text-align:center; padding:0 24px; }
-.login-title { font-family:'DM Serif Display',serif; font-size:36px; background:linear-gradient(135deg,#86efac,#22c55e,#16a34a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+.login-title { font-family:'DM Serif Display',serif; font-size:36px; background:linear-gradient(135deg,#f0d6c0,#d4a574,#c98a6f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
 .login-sub { color:var(--muted); font-size:14px; margin-bottom:32px; line-height:1.6; }
 
 /* Gold glow */
@@ -805,7 +813,7 @@ select option { background: #0d2318; }
 .btn-google { display:inline-flex; align-items:center; gap:12px; background:#fff; color:#1f1f1f; border:none; border-radius:14px; padding:14px 28px; font-size:15px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; box-shadow:0 2px 16px rgba(0,0,0,0.3); }
 .btn-google:hover { transform:translateY(-2px); box-shadow:0 4px 24px rgba(0,0,0,0.4); }
 .user-bar { display:flex; align-items:center; gap:10px; }
-.user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid rgba(34,197,94,0.4); }
+.user-avatar { width:28px; height:28px; border-radius:50%; border:2px solid rgba(212,165,116,0.4); }
 .user-name { font-size:12px; color:var(--muted); max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .btn-logout { background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:4px 10px; font-size:11px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
 .btn-logout:hover { border-color:var(--red); color:var(--red); }
@@ -816,14 +824,14 @@ select option { background: #0d2318; }
 
 /* v2 設計變數 */
 :root {
-  --v2-bg: #060f0a;
-  --v2-s1: #0d1f14;
-  --v2-s2: #0f2318;
-  --v2-accent: #22c55e;
-  --v2-accent-hi: #4ade80;
-  --v2-accent-lo: #16a34a;
-  --v2-accent-dim: rgba(34,197,94,0.10);
-  --v2-accent-glow: rgba(34,197,94,0.20);
+  --v2-bg: #0a1628;
+  --v2-s1: #142838;
+  --v2-s2: #1a3244;
+  --v2-accent: #d4a574;
+  --v2-accent-hi: #e8b4a0;
+  --v2-accent-lo: #c98a6f;
+  --v2-accent-dim: rgba(212,165,116,0.10);
+  --v2-accent-glow: rgba(212,165,116,0.20);
   --v2-gold: #f59e0b;
   --v2-gold-dim: rgba(245,158,11,0.12);
   --v2-blue: #60a5fa;
@@ -831,8 +839,8 @@ select option { background: #0d2318; }
   --v2-fg: #f0fdf4;
   --v2-fg2: rgba(240,253,244,0.55);
   --v2-fg3: rgba(240,253,244,0.30);
-  --v2-border: rgba(34,197,94,0.10);
-  --v2-border-hi: rgba(34,197,94,0.20);
+  --v2-border: rgba(212,165,116,0.10);
+  --v2-border-hi: rgba(212,165,116,0.20);
   --v2-mono: ui-monospace,'SF Mono','DM Mono',Menlo,monospace;
   --v2-r: 14px;
 }
@@ -870,7 +878,7 @@ select option { background: #0d2318; }
   }
   .app-topbar-logo {
     width: 24px; height: 24px;
-    background: linear-gradient(135deg, #4ade80, #16a34a);
+    background: linear-gradient(135deg, #e8b4a0, #c98a6f);
     border-radius: 7px;
     display: flex; align-items: center; justify-content: center;
     font-size: 13px;
@@ -923,7 +931,7 @@ select option { background: #0d2318; }
     background: rgba(6,15,10,0.98);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border-top: 1px solid rgba(34,197,94,0.07);
+    border-top: 1px solid rgba(212,165,116,0.07);
     display: flex;
     align-items: flex-start;
     padding-top: 10px;
@@ -972,8 +980,8 @@ select option { background: #0d2318; }
   .nav-fab {
     width: 48px; height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4ade80, #16a34a);
-    box-shadow: 0 0 0 3px rgba(6,15,10,0.98), 0 0 16px rgba(34,197,94,0.5);
+    background: linear-gradient(135deg, #e8b4a0, #c98a6f);
+    box-shadow: 0 0 0 3px rgba(6,15,10,0.98), 0 0 16px rgba(212,165,116,0.5);
     display: flex; align-items: center; justify-content: center;
     font-size: 22px;
     color: #052e16;
@@ -1012,13 +1020,13 @@ select option { background: #0d2318; }
   .v2-card::after {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 5%, rgba(34,197,94,0.18) 50%, transparent 95%);
+    background: linear-gradient(90deg, transparent 5%, rgba(212,165,116,0.18) 50%, transparent 95%);
     pointer-events: none;
   }
 
   /* ── 首頁頂部 Banner v2 ── */
   .home-banner {
-    background: linear-gradient(160deg, #0d1f14 0%, #060f0a 100%);
+    background: linear-gradient(160deg, #142838 0%, #0a1628 100%);
     padding: 16px 16px 18px;
     position: relative;
     overflow: hidden;
@@ -1029,7 +1037,7 @@ select option { background: #0d2318; }
     position: absolute;
     top: -80px; right: -60px;
     width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(34,197,94,0.10) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(212,165,116,0.10) 0%, transparent 70%);
     pointer-events: none;
   }
   .home-greeting {
@@ -1063,7 +1071,7 @@ select option { background: #0d2318; }
     justify-content: space-between;
     align-items: center;
     padding: 5px 0;
-    border-bottom: 1px solid rgba(34,197,94,0.06);
+    border-bottom: 1px solid rgba(212,165,116,0.06);
   }
   .home-stat-mini:last-child { border-bottom: none; }
   .home-stat-mini-label {
@@ -1098,12 +1106,12 @@ select option { background: #0d2318; }
   .quick-card::after {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 5%, rgba(34,197,94,0.15) 50%, transparent 95%);
+    background: linear-gradient(90deg, transparent 5%, rgba(212,165,116,0.15) 50%, transparent 95%);
   }
   .quick-card-label {
     font-family: var(--v2-mono);
     font-size: 8px;
-    color: rgba(34,197,94,0.40);
+    color: rgba(212,165,116,0.40);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 5px;
@@ -1142,7 +1150,7 @@ select option { background: #0d2318; }
   .mobile-section-more {
     font-family: var(--v2-mono);
     font-size: 8.5px;
-    color: rgba(34,197,94,0.40);
+    color: rgba(212,165,116,0.40);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     cursor: pointer;
@@ -1183,7 +1191,7 @@ select option { background: #0d2318; }
   .dream-progress-sub { font-size: 9px; color: var(--v2-fg3); font-family: var(--v2-mono); text-transform: uppercase; letter-spacing: 0.05em; }
   .dream-progress-bar {
     height: 3.5px;
-    background: rgba(34,197,94,0.10);
+    background: rgba(212,165,116,0.10);
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: 4px;
@@ -1214,19 +1222,19 @@ select option { background: #0d2318; }
   .ai-mobile-card::after {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 5%, rgba(34,197,94,0.18) 50%, transparent 95%);
+    background: linear-gradient(90deg, transparent 5%, rgba(212,165,116,0.18) 50%, transparent 95%);
   }
 
   /* ── 資產頁 v2 ── */
   .asset-page-header {
-    background: linear-gradient(160deg, #0d1f14, #060f0a);
+    background: linear-gradient(160deg, #142838, #0a1628);
     padding: 16px 16px 14px;
     border-bottom: 1px solid var(--v2-border);
   }
   .asset-total-label {
     font-family: var(--v2-mono);
     font-size: 8px;
-    color: rgba(34,197,94,0.40);
+    color: rgba(212,165,116,0.40);
     letter-spacing: 0.10em;
     text-transform: uppercase;
     margin-bottom: 4px;
@@ -1265,7 +1273,7 @@ select option { background: #0d2318; }
   .asset-card-mobile::after {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent 5%, rgba(34,197,94,0.12) 50%, transparent 95%);
+    background: linear-gradient(90deg, transparent 5%, rgba(212,165,116,0.12) 50%, transparent 95%);
   }
   .asset-mobile-icon {
     width: 34px; height: 34px;
@@ -1289,14 +1297,14 @@ select option { background: #0d2318; }
 
   /* ── 目標頁 v2 ── */
   .goal-mobile-header {
-    background: linear-gradient(160deg, #0d1520, #060f0a);
+    background: linear-gradient(160deg, #0d1520, #0a1628);
     padding: 16px 16px 14px;
     border-bottom: 1px solid var(--v2-border);
   }
 
   /* ── 我的頁面 v2 ── */
   .profile-header {
-    background: linear-gradient(160deg, #0d1520, #060f0a);
+    background: linear-gradient(160deg, #0d1520, #0a1628);
     padding: 24px 16px 20px;
     text-align: center;
     border-bottom: 1px solid var(--v2-border);
@@ -1336,7 +1344,7 @@ select option { background: #0d2318; }
     align-items: center;
     gap: 12px;
     padding: 13px 14px;
-    border-bottom: 1px solid rgba(34,197,94,0.06);
+    border-bottom: 1px solid rgba(212,165,116,0.06);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: background 0.15s;
@@ -1385,7 +1393,7 @@ select option { background: #0d2318; }
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
     touch-action: pan-y !important;
-    background: #060f0a !important;
+    background: #0a1628 !important;
     z-index: 10 !important;
   }
 
@@ -1459,11 +1467,11 @@ select option { background: #0d2318; }
    8 大主題系統
 ══════════════════════════════════════ */
 :root,[data-theme="dark-green"]{
-  --bg:#060f0a;--s1:#0d1f14;--s2:#0f2318;
-  --fg:#f0fdf4;--fg2:rgba(240,253,244,0.55);--fg3:rgba(240,253,244,0.30);
-  --accent:#22c55e;--accent-hi:#4ade80;--accent-lo:#16a34a;
-  --accent-dim:rgba(34,197,94,0.10);--accent-glow:rgba(34,197,94,0.20);
-  --card-bg:rgba(255,255,255,0.025);--border:rgba(34,197,94,0.10);
+  --bg:#0a1628;--s1:#142838;--s2:#1a3244;
+  --fg:#f0f4f8;--fg2:rgba(240,244,248,0.55);--fg3:rgba(240,244,248,0.30);
+  --accent:#d4a574;--accent-hi:#e8b4a0;--accent-lo:#c98a6f;
+  --accent-dim:rgba(212,165,116,0.12);--accent-glow:rgba(212,165,116,0.22);
+  --card-bg:rgba(255,255,255,0.035);--border:rgba(212,165,116,0.14);
 }
 [data-theme="dark-purple"]{
   --bg:#0a0614;--s1:#160c2a;--s2:#1c1036;
@@ -1489,9 +1497,9 @@ select option { background: #0d2318; }
 [data-theme="light-white"]{
   --bg:#f8fafc;--s1:#ffffff;--s2:#f1f5f9;
   --fg:#0f172a;--fg2:rgba(15,23,42,0.60);--fg3:rgba(15,23,42,0.38);
-  --accent:#22c55e;--accent-hi:#16a34a;--accent-lo:#15803d;
-  --accent-dim:rgba(34,197,94,0.10);--accent-glow:rgba(34,197,94,0.15);
-  --card-bg:#ffffff;--border:rgba(34,197,94,0.15);
+  --accent:#d4a574;--accent-hi:#c98a6f;--accent-lo:#15803d;
+  --accent-dim:rgba(212,165,116,0.10);--accent-glow:rgba(212,165,116,0.15);
+  --card-bg:#ffffff;--border:rgba(212,165,116,0.15);
 }
 [data-theme="light-cream"]{
   --bg:#faf8f5;--s1:#ffffff;--s2:#f3efe9;
@@ -1510,7 +1518,7 @@ select option { background: #0d2318; }
 [data-theme="light-mint"]{
   --bg:#f0fdf4;--s1:#ffffff;--s2:#dcfce7;
   --fg:#052e16;--fg2:rgba(5,46,22,0.60);--fg3:rgba(5,46,22,0.38);
-  --accent:#16a34a;--accent-hi:#22c55e;--accent-lo:#15803d;
+  --accent:#c98a6f;--accent-hi:#d4a574;--accent-lo:#15803d;
   --accent-dim:rgba(22,163,74,0.10);--accent-glow:rgba(22,163,74,0.15);
   --card-bg:#ffffff;--border:rgba(22,163,74,0.15);
 }
@@ -1637,7 +1645,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
 /* CF 和 AV 卡片顏色保留 - 強制覆蓋 */
 [data-theme^="light"] #mobile-cf-card *,
-[data-theme^="light"] #mobile-cf-card2 * { color: #16a34a !important; }
+[data-theme^="light"] #mobile-cf-card2 * { color: #c98a6f !important; }
 [data-theme^="light"] #mobile-av-card *,
 [data-theme^="light"] #mobile-av-card2 * { color: #d97706 !important; }
 /* 副標題用較淡的顏色 */
@@ -1793,12 +1801,12 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] [style*="color:#eff6ff"] { color: var(--fg) !important; }
 
 /* 電腦版 CF AV 卡片 */
-[data-theme^="light"] .cf-card { background: rgba(34,197,94,0.06) !important; border-color: rgba(34,197,94,0.15) !important; }
+[data-theme^="light"] .cf-card { background: rgba(212,165,116,0.06) !important; border-color: rgba(212,165,116,0.15) !important; }
 [data-theme^="light"] .av-card { background: rgba(245,158,11,0.06) !important; border-color: rgba(245,158,11,0.15) !important; }
 
 /* 財富等級卡片 */
 [data-theme^="light"] .wl-card { background: rgba(0,0,0,0.04) !important; border-color: rgba(0,0,0,0.08) !important; }
-[data-theme^="light"] .wl-card.active { background: rgba(34,197,94,0.08) !important; border-color: rgba(34,197,94,0.2) !important; }
+[data-theme^="light"] .wl-card.active { background: rgba(212,165,116,0.08) !important; border-color: rgba(212,165,116,0.2) !important; }
 
 /* ── 登入設定畫面 亮色修正（dream-screen 不在 app-page 內，需獨立覆蓋） ── */
 [data-theme^="light"] #jars-balance-screen,
@@ -1888,11 +1896,11 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] .tx-history-title { color: var(--fg) !important; }
 [data-theme^="light"] .tx-history-sub { color: var(--fg3) !important; }
 [data-theme^="light"] .tx-type-tab { background: rgba(0,0,0,0.03) !important; border-color: rgba(0,0,0,0.08) !important; color: var(--fg2) !important; }
-[data-theme^="light"] .tx-type-tab.income.active { background: rgba(34,197,94,0.10) !important; color: var(--accent) !important; }
+[data-theme^="light"] .tx-type-tab.income.active { background: rgba(212,165,116,0.10) !important; color: var(--accent) !important; }
 [data-theme^="light"] .tx-type-tab.expense.active { background: rgba(239,68,68,0.08) !important; color: #dc2626 !important; }
 [data-theme^="light"] .tx-type-tab.asset.active { background: rgba(180,130,0,0.10) !important; color: #92400e !important; border-color: rgba(180,130,0,0.3) !important; }
 [data-theme^="light"] .tx-mode-btn { background: rgba(0,0,0,0.03) !important; border-color: rgba(0,0,0,0.08) !important; color: var(--fg2) !important; }
-[data-theme^="light"] .tx-mode-btn.active { background: rgba(34,197,94,0.10) !important; border-color: var(--border) !important; color: var(--accent) !important; }
+[data-theme^="light"] .tx-mode-btn.active { background: rgba(212,165,116,0.10) !important; border-color: var(--border) !important; color: var(--accent) !important; }
 [data-theme^="light"] .tx-toggle-btn { background: rgba(0,0,0,0.03) !important; border-color: rgba(0,0,0,0.08) !important; color: var(--fg2) !important; }
 [data-theme^="light"] .ffa-goto-btn { background: rgba(234,179,8,0.08) !important; border-color: rgba(234,179,8,0.25) !important; }
 [data-theme^="light"] .ffa-goto-label { color: #b45309 !important; }
@@ -1901,13 +1909,13 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 /* ── 交易紀錄頁面 ── */
 .tx-type-tabs{display:flex;gap:8px;margin-bottom:16px}
 .tx-type-tab{flex:1;padding:11px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.45);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.tx-type-tab.income.active{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);color:#22c55e}
+.tx-type-tab.income.active{background:rgba(212,165,116,0.12);border-color:rgba(212,165,116,0.3);color:#d4a574}
 .tx-type-tab.expense.active{background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.3);color:#f87171}
 .tx-type-tab.asset.active{background:rgba(240,208,96,0.12);border-color:rgba(240,208,96,0.3);color:#f0d060}
 .tx-toggle-btn.active-gold{background:rgba(240,208,96,0.12);border-color:rgba(240,208,96,0.3);color:#f0d060}
 .tx-mode-row{display:flex;gap:8px;margin-bottom:14px}
 .tx-mode-btn{flex:1;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.4);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.tx-mode-btn.active{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:#22c55e}
+.tx-mode-btn.active{background:rgba(212,165,116,0.1);border-color:rgba(212,165,116,0.25);color:#d4a574}
 .tx-toggle-row{display:flex;gap:8px;margin-bottom:14px}
 .tx-toggle-btn{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.4);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
 .tx-toggle-btn.active-blue{background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.3);color:#60a5fa}
@@ -1916,7 +1924,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 .tx-dist-preview{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:14px}
 .tx-dist-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:12px}
 .tx-dist-jar{color:rgba(255,255,255,0.5)}
-.tx-dist-amt{font-family:'DM Mono',monospace;color:#22c55e}
+.tx-dist-amt{font-family:'DM Mono',monospace;color:#d4a574}
 .tx-jar-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .tx-jar-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px;text-align:center}
 .tx-jar-emoji{font-size:18px;margin-bottom:3px}
@@ -1926,14 +1934,14 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 .tx-history-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
 .tx-history-item:last-child{border-bottom:none}
 .tx-history-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.tx-history-icon.income{background:rgba(34,197,94,0.12)}
+.tx-history-icon.income{background:rgba(212,165,116,0.12)}
 .tx-history-icon.expense{background:rgba(248,113,113,0.12)}
 .tx-history-icon.asset{background:rgba(240,208,96,0.12)}
 .tx-history-body{flex:1;min-width:0}
 .tx-history-title{font-size:13px;font-weight:600;color:var(--text)}
 .tx-history-sub{font-size:11px;color:rgba(255,255,255,0.38);margin-top:2px}
 .tx-history-amt{font-family:'DM Mono',monospace;font-size:14px;font-weight:600;flex-shrink:0}
-.tx-history-amt.income{color:#22c55e}
+.tx-history-amt.income{color:#d4a574}
 .tx-history-amt.expense{color:#f87171}
 .tx-history-amt.asset{color:#f0d060}
 .ffa-goto-btn{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);border-radius:12px;cursor:pointer;margin-top:10px;width:100%;font-family:'DM Sans',sans-serif}
@@ -2125,7 +2133,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
 <!-- 已實現夢想殿堂 -->
 <div id="completed-dreams-modal" style="position:fixed;inset:0;z-index:9600;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px)">
-  <div style="background:linear-gradient(135deg,#0d2318,#060f0a);border:1px solid rgba(240,208,96,0.25);border-radius:24px;padding:32px 28px;max-width:480px;width:92%;max-height:80vh;overflow-y:auto">
+  <div style="background:linear-gradient(135deg,#152a3c,#0a1628);border:1px solid rgba(240,208,96,0.25);border-radius:24px;padding:32px 28px;max-width:480px;width:92%;max-height:80vh;overflow-y:auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
       <div>
         <div style="font-family:'DM Serif Display',serif;font-size:22px;color:#f0d060" data-i18n="dream.hall.title">🏆 夢想成就殿堂</div>
@@ -2145,11 +2153,11 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 <!-- ══════════════════════════════════════
      財富探索問答（Onboarding 第一階段）
 ══════════════════════════════════════ -->
-<div id="wealth-explore-screen" style="position:fixed;inset:0;z-index:2100;background:#060f0a;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+<div id="wealth-explore-screen" style="position:fixed;inset:0;z-index:2100;background:#0a1628;display:flex;align-items:center;justify-content:center;overflow:hidden;">
   <!-- 星空背景 -->
   <canvas id="explore-stars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.4"></canvas>
   <!-- 光暈 -->
-  <div style="position:absolute;top:15%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(34,197,94,0.06) 0%,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;top:15%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(212,165,116,0.06) 0%,transparent 70%);pointer-events:none"></div>
 
   <div id="explore-inner" style="position:relative;z-index:1;width:100%;max-width:540px;padding:28px 24px;text-align:center">
 
@@ -2157,22 +2165,22 @@ body, .app-topbar, .app-bottom-nav, .app-page {
     <div id="explore-welcome" style="animation:soulFadeIn 0.8s ease both">
       <div style="font-size:48px;margin-bottom:20px;animation:soulFloat 4s ease-in-out infinite">🌱</div>
       <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#f0fdf4;line-height:1.3;margin-bottom:16px">
-        歡迎來到你的<br><span style="color:#22c55e">財富旅程</span>
+        歡迎來到你的<br><span style="color:#d4a574">財富旅程</span>
       </div>
       <div style="font-size:13px;color:rgba(134,239,172,0.6);line-height:1.9;margin-bottom:12px;max-width:380px;margin-left:auto;margin-right:auto">
         這裡不是單純記帳的地方，<br>
         而是一個幫助你逐漸理解：
       </div>
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px">
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">資產</span>
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">現金流</span>
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">非工資收入</span>
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#86efac;border-radius:20px;padding:5px 14px;font-size:12px">財富結構</span>
+        <span style="background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#f0d6c0;border-radius:20px;padding:5px 14px;font-size:12px">資產</span>
+        <span style="background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#f0d6c0;border-radius:20px;padding:5px 14px;font-size:12px">現金流</span>
+        <span style="background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#f0d6c0;border-radius:20px;padding:5px 14px;font-size:12px">非工資收入</span>
+        <span style="background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#f0d6c0;border-radius:20px;padding:5px 14px;font-size:12px">財富結構</span>
       </div>
       <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:32px">
         接下來透過 5 個簡單問題，<br>幫助你了解目前的財富狀態與成長方向。
       </div>
-      <button onclick="startWealthExplore()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(34,197,94,0.25);transition:all 0.2s;"
+      <button onclick="startWealthExplore()" style="background:linear-gradient(135deg,#d4a574,#c98a6f);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(212,165,116,0.25);transition:all 0.2s;"
         onmouseover="this.style.transform='translateY(-2px)'"
         onmouseout="this.style.transform='translateY(0)'">
         開始財富探索 →
@@ -2186,7 +2194,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
     <div id="explore-question-wrap" style="display:none">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;justify-content:center">
         <div id="explore-progress-dots" style="display:flex;gap:6px"></div>
-        <span id="explore-q-num" style="font-size:11px;color:rgba(34,197,94,0.5);font-family:'DM Mono',monospace;letter-spacing:0.1em"></span>
+        <span id="explore-q-num" style="font-size:11px;color:rgba(212,165,116,0.5);font-family:'DM Mono',monospace;letter-spacing:0.1em"></span>
       </div>
       <div id="explore-q-icon" style="font-size:40px;margin-bottom:14px;animation:soulFloat 3s ease-in-out infinite"></div>
       <div id="explore-q-text" style="font-family:'DM Serif Display',serif;font-size:22px;color:#f0fdf4;line-height:1.5;margin-bottom:8px;min-height:60px"></div>
@@ -2197,10 +2205,10 @@ body, .app-topbar, .app-bottom-nav, .app-page {
     <!-- ── 結果頁 ── -->
     <div id="explore-result" style="display:none;animation:soulFadeIn 0.8s ease both">
       <div id="explore-result-icon" style="font-size:52px;margin-bottom:16px;animation:soulFloat 3s ease-in-out infinite"></div>
-      <div style="font-size:11px;letter-spacing:0.18em;color:rgba(34,197,94,0.5);text-transform:uppercase;margin-bottom:8px;font-family:'DM Mono',monospace">你的財富旅程階段</div>
-      <div id="explore-result-title" style="font-family:'DM Serif Display',serif;font-size:28px;color:#22c55e;margin-bottom:16px;line-height:1.3"></div>
+      <div style="font-size:11px;letter-spacing:0.18em;color:rgba(212,165,116,0.5);text-transform:uppercase;margin-bottom:8px;font-family:'DM Mono',monospace">你的財富旅程階段</div>
+      <div id="explore-result-title" style="font-family:'DM Serif Display',serif;font-size:28px;color:#d4a574;margin-bottom:16px;line-height:1.3"></div>
       <div id="explore-result-desc" style="font-size:14px;color:rgba(240,253,244,0.65);line-height:1.9;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto"></div>
-      <button onclick="continueToSoulQuiz()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(34,197,94,0.2);transition:all 0.2s;"
+      <button onclick="continueToSoulQuiz()" style="background:linear-gradient(135deg,#d4a574,#c98a6f);color:#052e16;border:none;border-radius:16px;padding:16px 48px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.04em;box-shadow:0 0 40px rgba(212,165,116,0.2);transition:all 0.2s;"
         onmouseover="this.style.transform='translateY(-2px)'"
         onmouseout="this.style.transform='translateY(0)'">
         繼續我的財富旅程 →
@@ -2212,7 +2220,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
 <div id="soul-quiz-screen" style="
   position:fixed;inset:0;z-index:2000;
-  background:#060f0a;
+  background:#0a1628;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;
 ">
@@ -2280,7 +2288,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
       <div id="soul-result-en" style="font-size:12px;color:rgba(240,208,96,0.4);letter-spacing:0.12em;margin-bottom:20px;font-family:'DM Mono',monospace"></div>
 
       <div id="soul-result-card" style="
-        background:linear-gradient(135deg,rgba(240,208,96,0.07),rgba(34,197,94,0.04));
+        background:linear-gradient(135deg,rgba(240,208,96,0.07),rgba(212,165,116,0.04));
         border:1px solid rgba(240,208,96,0.18);
         border-radius:20px;padding:24px;margin-bottom:20px;text-align:left;
       ">
@@ -2305,7 +2313,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 </div>
 
 <!-- 夢想說明覆蓋層 -->
-<div id="dream-intro-screen" style="display:none;position:fixed;inset:0;z-index:2050;background:#060f0a;display:none;align-items:center;justify-content:center;overflow:hidden;">
+<div id="dream-intro-screen" style="display:none;position:fixed;inset:0;z-index:2050;background:#0a1628;display:none;align-items:center;justify-content:center;overflow:hidden;">
   <canvas id="dream-intro-stars" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.4"></canvas>
   <div style="position:relative;z-index:1;width:100%;max-width:520px;padding:28px 24px;text-align:center;animation:soulFadeIn 0.8s ease both">
     <div style="font-size:52px;margin-bottom:20px;animation:soulFloat 4s ease-in-out infinite">🌟</div>
@@ -2486,7 +2494,7 @@ function showExploreQuestion(idx) {
   // 進度點
   const dots = document.getElementById('explore-progress-dots');
   dots.innerHTML = exploreQuestions.map((_,i) =>
-    `<div style="width:8px;height:8px;border-radius:50%;background:${i<=idx?'#22c55e':'rgba(34,197,94,0.2)'};transition:all 0.3s"></div>`
+    `<div style="width:8px;height:8px;border-radius:50%;background:${i<=idx?'#d4a574':'rgba(212,165,116,0.2)'};transition:all 0.3s"></div>`
   ).join('');
   document.getElementById('explore-q-num').textContent = `${idx+1} / ${exploreQuestions.length}`;
 
@@ -2500,7 +2508,7 @@ function showExploreQuestion(idx) {
   opts.innerHTML = q.opts.map((opt, i) => `
     <button onclick="selectExploreOption(${i})" style="
       background:rgba(255,255,255,0.035);
-      border:1px solid rgba(34,197,94,0.12);
+      border:1px solid rgba(212,165,116,0.12);
       border-radius:12px;padding:12px 16px;
       font-size:13px;color:rgba(240,253,244,0.8);
       cursor:pointer;font-family:'DM Sans',sans-serif;
@@ -2508,8 +2516,8 @@ function showExploreQuestion(idx) {
       animation:soulOptionIn 0.3s ease ${i*0.06}s both;
       line-height:1.5;
     "
-    onmouseover="this.style.background='rgba(34,197,94,0.1)';this.style.borderColor='rgba(34,197,94,0.3)';this.style.color='#f0fdf4'"
-    onmouseout="this.style.background='rgba(255,255,255,0.035)';this.style.borderColor='rgba(34,197,94,0.12)';this.style.color='rgba(240,253,244,0.8)'"
+    onmouseover="this.style.background='rgba(212,165,116,0.1)';this.style.borderColor='rgba(212,165,116,0.3)';this.style.color='#f0fdf4'"
+    onmouseout="this.style.background='rgba(255,255,255,0.035)';this.style.borderColor='rgba(212,165,116,0.12)';this.style.color='rgba(240,253,244,0.8)'"
     >${opt}</button>
   `).join('');
 }
@@ -3128,7 +3136,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
 
 <div class="onboarding-screen" id="onboarding-screen">
   <div style="text-align:center">
-    <div style="font-family:'DM Serif Display',serif;font-size:30px;background:linear-gradient(135deg,#86efac,#22c55e,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">Wealth Awakening</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:30px;background:linear-gradient(135deg,#f0d6c0,#d4a574,#c98a6f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">Wealth Awakening</div>
     <div style="font-size:12px;letter-spacing:0.18em;color:rgba(212,175,55,0.7);font-family:'DM Serif Display',serif;">覺察財富・同步豐盛</div>
   </div>
 
@@ -3147,12 +3155,12 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       <button type="button" class="ob-theme-btn" data-theme="custom" onclick="onboardingSetTheme('custom')" data-i18n="onboarding.theme.custom">🎨 自訂</button>
     </div>
     <div id="ob-custom-pickers" style="display:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;margin-top:4px;">
-      <div class="color-picker-row"><span data-i18n="onboarding.cp.bg">背景色</span><input type="color" id="ob-cp-bg" value="#060f0a" onchange="applyCustomColor('--bg',this.value)"></div>
-      <div class="color-picker-row"><span data-i18n="onboarding.cp.accent">主色調</span><input type="color" id="ob-cp-accent" value="#22c55e" onchange="applyCustomColor('--accent',this.value)"></div>
+      <div class="color-picker-row"><span data-i18n="onboarding.cp.bg">背景色</span><input type="color" id="ob-cp-bg" value="#0a1628" onchange="applyCustomColor('--bg',this.value)"></div>
+      <div class="color-picker-row"><span data-i18n="onboarding.cp.accent">主色調</span><input type="color" id="ob-cp-accent" value="#d4a574" onchange="applyCustomColor('--accent',this.value)"></div>
       <div class="color-picker-row"><span data-i18n="onboarding.cp.fg">文字顏色</span><input type="color" id="ob-cp-fg" value="#f0fdf4" onchange="applyCustomColor('--fg',this.value)"></div>
       <div class="color-picker-row"><span data-i18n="onboarding.cp.card">卡片背景</span><input type="color" id="ob-cp-card" value="#ffffff" onchange="applyCustomColorRgba('--card-bg',this.value,0.04)"></div>
     </div>
-    <button type="button" id="ob-continue-btn" onclick="onboardingFinish()" data-i18n="onboarding.continueBtn" style="margin-top:8px;background:#22c55e;color:#052e16;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">繼續</button>
+    <button type="button" id="ob-continue-btn" onclick="onboardingFinish()" data-i18n="onboarding.continueBtn" style="margin-top:8px;background:#d4a574;color:#052e16;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">繼續</button>
   </div>
 </div>
 <script>
@@ -3170,14 +3178,14 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <div class="login-gold-zh">覺察財富・同步豐盛</div>
     <div class="login-sub" data-i18n="login.sub">個人財富覺醒系統<br>登入後即可追蹤你的專屬資產</div>
     <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px;margin:0 auto">
-      <input type="email" id="login-email" placeholder="電子郵件" data-i18n-placeholder="login.email" style="background:#0d2318;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif">
-      <input type="password" id="login-password" placeholder="密碼（至少6位數）" data-i18n-placeholder="login.password" style="background:#0d2318;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif">
+      <input type="email" id="login-email" placeholder="電子郵件" data-i18n-placeholder="login.email" style="background:#152a3c;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif">
+      <input type="password" id="login-password" placeholder="密碼（至少6位數）" data-i18n-placeholder="login.password" style="background:#152a3c;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif">
       <!-- 確認密碼（僅註冊時顯示） -->
-      <input type="password" id="login-password-confirm" placeholder="再次輸入密碼" data-i18n-placeholder="login.passwordConfirm" style="background:#0d2318;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif;display:none">
+      <input type="password" id="login-password-confirm" placeholder="再次輸入密碼" data-i18n-placeholder="login.passwordConfirm" style="background:#152a3c;border:1px solid rgba(255,255,255,0.1);color:#f0fdf4;padding:14px 18px;border-radius:12px;font-size:15px;outline:none;font-family:'DM Sans',sans-serif;display:none">
       <div id="login-err" style="color:#f87171;font-size:13px;text-align:center;display:none"></div>
-      <div id="login-success" style="color:#4ade80;font-size:13px;text-align:center;display:none"></div>
-      <button id="btn-login" data-i18n="login.btnLogin" style="background:#22c55e;color:#052e16;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">登入</button>
-      <button id="btn-register" data-i18n="login.btnRegister" style="background:transparent;color:#22c55e;border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">註冊新帳號</button>
+      <div id="login-success" style="color:#e8b4a0;font-size:13px;text-align:center;display:none"></div>
+      <button id="btn-login" data-i18n="login.btnLogin" style="background:#d4a574;color:#052e16;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">登入</button>
+      <button id="btn-register" data-i18n="login.btnRegister" style="background:transparent;color:#d4a574;border:1px solid rgba(212,165,116,0.3);border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">註冊新帳號</button>
       <button id="btn-forgot" data-i18n="login.btnForgot" style="background:none;border:none;color:rgba(134,239,172,0.5);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px;text-decoration:underline;text-underline-offset:3px">忘記密碼？</button>
     </div>
   </div>
@@ -3220,9 +3228,9 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
             <div data-i18n="personality.popupFooter" style="font-size:10px;color:rgba(255,255,255,0.2);text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)">完成全部20題後將更新你的財富人格</div>
           </div>
         </span>
-        <button onclick="openTxDesktopModal()" id="desktop-tx-btn" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" data-i18n="nav.tx">交易</button>
-        <button onclick="toggleDesktopLangPanel()" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" title="語言與幣別">🌐</button>
-        <button onclick="toggleDesktopThemePanel()" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" title="主題外觀">🎨</button>
+        <button onclick="openTxDesktopModal()" id="desktop-tx-btn" style="background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" data-i18n="nav.tx">交易</button>
+        <button onclick="toggleDesktopLangPanel()" style="background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" title="語言與幣別">🌐</button>
+        <button onclick="toggleDesktopThemePanel()" style="background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" title="主題外觀">🎨</button>
         <button class="btn-logout" id="btn-logout" data-i18n="profile.logout">登出</button>
       </div>
     </div>
@@ -3232,29 +3240,29 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
   <div class="quote-card" id="quote-card">
 
   <!-- 電腦版主題面板 -->
-  <div id="desktop-theme-panel" style="display:none;position:fixed;top:60px;right:16px;width:320px;background:#0d1f14;border:1px solid rgba(34,197,94,0.2);border-radius:16px;padding:16px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+  <div id="desktop-theme-panel" style="display:none;position:fixed;top:60px;right:16px;width:320px;background:var(--s1,#142838);border:1px solid rgba(212,165,116,0.2);border-radius:16px;padding:16px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-size:14px;font-weight:700;color:#f0fdf4">🎨 主題外觀</div>
-      <div onclick="toggleDesktopThemePanel()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer;padding:2px 6px;">✕</div>
+      <div style="font-size:14px;font-weight:700;color:var(--fg,#f0fdf4)">🎨 主題外觀</div>
+      <div onclick="toggleDesktopThemePanel()" style="font-size:20px;color:var(--fg3,rgba(255,255,255,0.4));cursor:pointer;padding:2px 6px;">✕</div>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">深色系</div>
+    <div style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.35));margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">深色系</div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
-      <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="深綠"><div style="background:linear-gradient(135deg,#060f0a 50%,#22c55e 50%);"></div><span>深綠</span></div>
+      <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="夜寧"><div style="background:linear-gradient(135deg,#0a1628 50%,#d4a574 50%);"></div><span>夜寧</span></div>
       <div class="theme-swatch" data-theme="dark-purple" onclick="applyTheme('dark-purple')" title="深紫"><div style="background:linear-gradient(135deg,#0a0614 50%,#a78bfa 50%);"></div><span>深紫</span></div>
       <div class="theme-swatch" data-theme="dark-blue" onclick="applyTheme('dark-blue')" title="深藍"><div style="background:linear-gradient(135deg,#060a14 50%,#60a5fa 50%);"></div><span>深藍</span></div>
       <div class="theme-swatch" data-theme="dark-gold" onclick="applyTheme('dark-gold')" title="暗金"><div style="background:linear-gradient(135deg,#0f0a02 50%,#f59e0b 50%);"></div><span>暗金</span></div>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">亮色系</div>
+    <div style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.35));margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">亮色系</div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
-      <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白"><div style="background:linear-gradient(135deg,#f8fafc 50%,#22c55e 50%);"></div><span>純白</span></div>
+      <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白"><div style="background:linear-gradient(135deg,#f8fafc 50%,#d4a574 50%);"></div><span>純白</span></div>
       <div class="theme-swatch" data-theme="light-cream" onclick="applyTheme('light-cream')" title="暖米"><div style="background:linear-gradient(135deg,#faf8f5 50%,#ea580c 50%);"></div><span>暖米</span></div>
       <div class="theme-swatch" data-theme="light-blue" onclick="applyTheme('light-blue')" title="柔藍"><div style="background:linear-gradient(135deg,#eff6ff 50%,#3b82f6 50%);"></div><span>柔藍</span></div>
-      <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷"><div style="background:linear-gradient(135deg,#f0fdf4 50%,#16a34a 50%);"></div><span>薄荷</span></div>
+      <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷"><div style="background:linear-gradient(135deg,#f0fdf4 50%,#c98a6f 50%);"></div><span>薄荷</span></div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-size:12px;font-weight:600;color:#f0fdf4">🖌️ 進階自訂</div>
-        <div onclick="resetCustomTheme()" style="font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;padding:2px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;">重置</div>
+        <div style="font-size:12px;font-weight:600;color:var(--fg,#f0fdf4)">🖌️ 進階自訂</div>
+        <div onclick="resetCustomTheme()" style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.35));cursor:pointer;padding:2px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;">重置</div>
       </div>
       <div class="color-picker-row"><span>背景色</span><input type="color" id="cp-bg-d" onchange="applyCustomColor('--bg',this.value)"></div>
       <div class="color-picker-row"><span>主色調</span><input type="color" id="cp-accent-d" onchange="applyCustomColor('--accent',this.value)"></div>
@@ -3264,7 +3272,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
   </div>
 
   <!-- 電腦版語言/幣別面板 -->
-  <div id="desktop-lang-panel" style="display:none;position:fixed;top:60px;right:16px;width:320px;background:#0d1f14;border:1px solid rgba(34,197,94,0.2);border-radius:16px;padding:16px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+  <div id="desktop-lang-panel" style="display:none;position:fixed;top:60px;right:16px;width:320px;background:#142838;border:1px solid rgba(212,165,116,0.2);border-radius:16px;padding:16px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <div style="font-size:14px;font-weight:700;color:#f0fdf4" data-i18n="profile.langCurrency">🌐 語言與幣別</div>
       <div onclick="toggleDesktopLangPanel()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer;padding:2px 6px;">✕</div>
@@ -3320,11 +3328,11 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
               <circle id="ring-fill" cx="55" cy="55" r="46" fill="none"
                 stroke="url(#ringGrad)" stroke-width="8" stroke-linecap="round"
                 stroke-dasharray="289.03" stroke-dashoffset="289.03"
-                style="transition:stroke-dashoffset 1.2s cubic-bezier(0.23,1,0.32,1);filter:drop-shadow(0 0 10px rgba(34,197,94,0.8))"/>
+                style="transition:stroke-dashoffset 1.2s cubic-bezier(0.23,1,0.32,1);filter:drop-shadow(0 0 10px rgba(212,165,116,0.8))"/>
               <defs>
                 <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#16a34a"/>
-                  <stop offset="100%" stop-color="#86efac"/>
+                  <stop offset="0%" stop-color="#c98a6f"/>
+                  <stop offset="100%" stop-color="#f0d6c0"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -3483,7 +3491,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <button onclick="event.stopPropagation();openTxDesktopModal()" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">💳 交易紀錄</button>
+        <button onclick="event.stopPropagation();openTxDesktopModal()" style="background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.2);color:var(--green);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">💳 交易紀錄</button>
         <div id="jars-desktop-toggle" style="font-size:16px;color:rgba(255,255,255,0.4);transition:transform 0.25s;transform:rotate(180deg)">▾</div>
       </div>
     </div>
@@ -3492,7 +3500,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
         <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
         <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
-        <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
+        <button onclick="updateJars()" style="padding:4px 12px;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);border-radius:8px;color:#e8b4a0;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         <div class="jars-total-row ok" id="jars-total-row" style="margin-bottom:0;flex-shrink:0;white-space:nowrap">
           <span id="jars-total-label">合計 100% ✓</span>
           <span id="jars-total-diff"></span>
@@ -3515,9 +3523,9 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     </div>
     <div class="esbi-grid">
       <div class="esbi-cell" id="d-esbi-e-cell">
-        <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
+        <div class="esbi-letter" style="color:var(--fg3,rgba(255,255,255,0.4))">E</div>
         <div class="esbi-qname" data-i18n="esbi.e.name">員工</div>
-        <div class="esbi-income" id="d-esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+        <div class="esbi-income" id="d-esbi-e-disp" style="color:var(--fg2,rgba(255,255,255,0.5))">NT$ 0</div>
         <div class="esbi-desc" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
       </div>
       <div class="esbi-cell" id="d-esbi-b-cell">
@@ -3527,34 +3535,34 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <div class="esbi-desc" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
       </div>
       <div class="esbi-cell" id="d-esbi-s-cell">
-        <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
+        <div class="esbi-letter" style="color:var(--fg3,rgba(255,255,255,0.4))">S</div>
         <div class="esbi-qname" data-i18n="esbi.s.name">自僱者</div>
-        <div class="esbi-income" id="d-esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+        <div class="esbi-income" id="d-esbi-s-disp" style="color:var(--fg2,rgba(255,255,255,0.5))">NT$ 0</div>
         <div class="esbi-desc" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
       </div>
-      <div class="esbi-cell" id="d-esbi-i-cell" style="background:rgba(34,197,94,0.05)">
-        <div class="esbi-letter" style="color:#22c55e">I</div>
+      <div class="esbi-cell" id="d-esbi-i-cell" style="background:rgba(212,165,116,0.05)">
+        <div class="esbi-letter" style="color:#d4a574">I</div>
         <div class="esbi-qname" data-i18n="esbi.i.name">投資者</div>
-        <div class="esbi-income" id="d-esbi-i-disp" style="color:#22c55e">NT$ 0</div>
+        <div class="esbi-income" id="d-esbi-i-disp" style="color:#d4a574">NT$ 0</div>
         <div class="esbi-desc" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
         <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
       </div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--fg3,rgba(255,255,255,0.3));margin-bottom:5px">
       <span data-i18n="esbi.activeLabel">主動 E+S</span>
-      <span id="d-esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
+      <span id="d-esbi-passive-pct-label" style="color:rgba(212,165,116,0.7)">被動 B+I 0%</span>
     </div>
     <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="d-esbi-ratio-fill" style="width:0%"></div></div>
     <div class="esbi-divider" style="margin-top:10px"></div>
-    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--fg3,rgba(255,255,255,0.3));margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
     <div class="esbi-active-input">
       <div class="esbi-input-row">
-        <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
+        <span class="esbi-q-badge" style="color:var(--fg2,rgba(255,255,255,0.45))">E</span>
         <span class="esbi-input-label" data-i18n="esbi.input.e">薪資收入</span>
         <input id="d-esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
       </div>
       <div class="esbi-input-row">
-        <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
+        <span class="esbi-q-badge" style="color:var(--fg2,rgba(255,255,255,0.45))">S</span>
         <span class="esbi-input-label" data-i18n="esbi.input.s">副業 / 接案</span>
         <input id="d-esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
       </div>
@@ -3569,7 +3577,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
 
   <!-- Cashflow Breakdown Popup（hover 現金流：生存之泉 才顯示） -->
   <div id="cf-breakdown-popup">
-    <div style="font-size:12px;font-weight:700;color:#86efac;margin-bottom:12px;letter-spacing:0.04em" data-i18n="cf.title">💰 現金流來源明細</div>
+    <div style="font-size:12px;font-weight:700;color:#f0d6c0;margin-bottom:12px;letter-spacing:0.04em" data-i18n="cf.title">💰 現金流來源明細</div>
     <div id="cf-breakdown" class="cf-breakdown">
       <div class="cf-row cf-header">
         <span data-i18n="cf.source">來源</span>
@@ -3630,10 +3638,10 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
             <div style="font-size:12px;font-weight:700;color:#f0d060;margin-bottom:8px;letter-spacing:0.06em">💰 六大財富等級</div>
             <div style="display:flex;flex-direction:column;gap:5px">
               <div class="tooltip-level"><span>🌑</span><span>Observer 觀察者</span><span style="color:var(--muted)">起點</span></div>
-              <div class="tooltip-level"><span>🌱</span><span>Awakener 覺醒者</span><span style="color:#86efac">NT$5,000/月</span></div>
-              <div class="tooltip-level"><span>🌿</span><span>Resonator 共振者</span><span style="color:#86efac">NT$20,000/月</span></div>
-              <div class="tooltip-level"><span>🌳</span><span>Alchemist 煉金者</span><span style="color:#86efac">NT$50,000/月</span></div>
-              <div class="tooltip-level"><span>🏛️</span><span>Architect 建構者</span><span style="color:#86efac">NT$100,000/月</span></div>
+              <div class="tooltip-level"><span>🌱</span><span>Awakener 覺醒者</span><span style="color:#f0d6c0">NT$5,000/月</span></div>
+              <div class="tooltip-level"><span>🌿</span><span>Resonator 共振者</span><span style="color:#f0d6c0">NT$20,000/月</span></div>
+              <div class="tooltip-level"><span>🌳</span><span>Alchemist 煉金者</span><span style="color:#f0d6c0">NT$50,000/月</span></div>
+              <div class="tooltip-level"><span>🏛️</span><span>Architect 建構者</span><span style="color:#f0d6c0">NT$100,000/月</span></div>
               <div class="tooltip-level"><span>✨</span><span>Ascended 昇華者</span><span style="color:#f0d060">NT$200,000/月</span></div>
             </div>
             <div style="font-size:10px;color:var(--muted);margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);padding-top:6px">依月被動收入自動升級</div>
@@ -3642,7 +3650,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
         <div style="margin-top:4px">
           <div style="font-size:10px;color:var(--muted);margin-bottom:6px" data-i18n="tree.growthProgress">成長進度</div>
           <div style="height:6px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden">
-            <div id="tree-progress-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);width:0%;transition:width 1.2s cubic-bezier(0.23,1,0.32,1)"></div>
+            <div id="tree-progress-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#c98a6f,#f0d6c0);width:0%;transition:width 1.2s cubic-bezier(0.23,1,0.32,1)"></div>
           </div>
           <div style="font-size:10px;color:var(--muted);margin-top:4px" id="tree-next-level" data-i18n="tree.nextDefault">累積更多資產讓樹成長</div>
         </div>
@@ -5608,7 +5616,7 @@ async function loadAssets() {
     assets = snap.docs.map(d=>({id:d.id,...d.data()}));
     window.assets = assets;
     document.getElementById('badge').textContent=t('badge.connected');
-    document.getElementById('badge').style.color='#22c55e';
+    document.getElementById('badge').style.color='#d4a574';
     if (window._hideLoading) setTimeout(window._hideLoading, 500);
   } catch(e) {
     document.getElementById('badge').textContent=t('badge.offline');
@@ -6604,7 +6612,7 @@ function showUpdateReminderModal(diffDays) {
   modal.id = 'update-reminder-modal';
   modal.style.cssText = 'position:fixed;inset:0;z-index:9800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px)';
   const box = document.createElement('div');
-  box.style.cssText = 'background:linear-gradient(135deg,#0d2318,#060f0a);border:1px solid rgba(251,191,36,0.3);border-radius:24px;padding:36px 32px;max-width:380px;width:90%;text-align:center;animation:soulFadeIn 0.4s ease both';
+  box.style.cssText = 'background:linear-gradient(135deg,#152a3c,#0a1628);border:1px solid rgba(251,191,36,0.3);border-radius:24px;padding:36px 32px;max-width:380px;width:90%;text-align:center;animation:soulFadeIn 0.4s ease both';
 
   const icon = document.createElement('div');
   icon.style.cssText = 'font-size:52px;margin-bottom:16px';
@@ -6685,7 +6693,7 @@ window.saveReminderSetting = saveReminderSetting;
       if(p.y<0)p.y=H; if(p.y>H)p.y=0;
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(34,197,94,${p.o})`;
+      ctx.fillStyle=`rgba(212,165,116,${p.o})`;
       ctx.fill();
     });
     requestAnimationFrame(draw);
@@ -6714,8 +6722,8 @@ function renderMobileChart(mode) {
   if (mobileChartInstance) { mobileChartInstance.destroy(); mobileChartInstance = null; }
   const ctx = canvas.getContext('2d');
   const grad = ctx.createLinearGradient(0,0,0,140);
-  grad.addColorStop(0,'rgba(34,197,94,0.25)');
-  grad.addColorStop(1,'rgba(34,197,94,0)');
+  grad.addColorStop(0,'rgba(212,165,116,0.25)');
+  grad.addColorStop(1,'rgba(212,165,116,0)');
   const isLight = document.documentElement.getAttribute('data-theme')?.startsWith('light');
   const tickColor = isLight ? 'rgba(0,0,0,0.4)' : 'rgba(240,253,244,0.4)';
   const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
@@ -6725,13 +6733,13 @@ function renderMobileChart(mode) {
       labels: trendData.labels,
       datasets: [{
         label, data,
-        borderColor: '#22c55e',
+        borderColor: '#d4a574',
         borderWidth: 2,
         backgroundColor: grad,
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#22c55e',
-        pointBorderColor: isLight ? '#ffffff' : '#060f0a',
+        pointBackgroundColor: '#d4a574',
+        pointBorderColor: isLight ? '#ffffff' : '#0a1628',
         pointBorderWidth: 2,
         pointRadius: 3,
         pointHoverRadius: 5,
@@ -6744,9 +6752,9 @@ function renderMobileChart(mode) {
         legend: { display: false },
         tooltip: {
           backgroundColor: isLight ? 'rgba(255,255,255,0.95)' : 'rgba(6,15,10,0.95)',
-          borderColor: 'rgba(34,197,94,0.2)',
+          borderColor: 'rgba(212,165,116,0.2)',
           borderWidth: 1,
-          titleColor: '#22c55e',
+          titleColor: '#d4a574',
           bodyColor: isLight ? '#0f172a' : '#f0fdf4',
           callbacks: { label: ctx => ` ${formatCurrency(ctx.raw)}` }
         }
@@ -6768,9 +6776,9 @@ function switchMobileChart(mode, btn) {
     b.style.borderColor = 'rgba(255,255,255,0.1)';
   });
   if (btn) {
-    btn.style.background = 'rgba(34,197,94,0.15)';
-    btn.style.color = '#22c55e';
-    btn.style.borderColor = 'rgba(34,197,94,0.3)';
+    btn.style.background = 'rgba(212,165,116,0.15)';
+    btn.style.color = '#d4a574';
+    btn.style.borderColor = 'rgba(212,165,116,0.3)';
   }
   renderMobileChart(mode);
 }
@@ -6830,7 +6838,7 @@ function renderAssetSparkline(){
       labels:trendData.labels,
       datasets:[{
         data,
-        borderColor:'#4ade80',
+        borderColor:'#e8b4a0',
         borderWidth:2,
         backgroundColor:grad,
         fill:true,
@@ -7340,18 +7348,18 @@ function promptGeminiKey() {
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
 
     modal.innerHTML = `
-      <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:340px;border:1px solid rgba(34,197,94,0.2);">
+      <div style="background:#142838;border-radius:20px;padding:24px;width:100%;max-width:340px;border:1px solid rgba(212,165,116,0.2);">
         <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:6px;">✦ AI 財富洞察</div>
         <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;">請輸入你的 Google Gemini API Key</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.28);margin-bottom:16px;">Key 只會儲存在你的手機，不會上傳。<br>取得方式：aistudio.google.com → Get API Key</div>
         <input id="gemini-key-input" type="password"
           placeholder="AIza..."
-          style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:14px;box-sizing:border-box;outline:none;margin-bottom:14px;font-family:'DM Mono',monospace;">
+          style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(212,165,116,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:14px;box-sizing:border-box;outline:none;margin-bottom:14px;font-family:'DM Mono',monospace;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <button onclick="document.getElementById('gemini-key-modal').remove(); window._geminiKeyResolve && window._geminiKeyResolve(null);"
             style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
           <button onclick="saveGeminiKey()"
-            style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+            style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#d4a574,#c98a6f);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
         </div>
       </div>`;
 
@@ -7746,7 +7754,7 @@ function showCelebration(assetName, newPct, newMonthlyIncome, category, premiumM
   // confetti
   const confetti = document.getElementById('celebrate-confetti');
   confetti.innerHTML = '';
-  const colors = ['#22c55e','#86efac','#f0d060','#ffffff','#16a34a','#fbbf24'];
+  const colors = ['#d4a574','#f0d6c0','#f0d060','#ffffff','#c98a6f','#fbbf24'];
   for (let i = 0; i < 40; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
@@ -8858,8 +8866,8 @@ function updateEsbiQuadrant() {
   // Highlight dominant quadrant (both mobile and desktop)
   const vals = { e, s, b, i };
   const dominant = Object.entries(vals).sort((a, b) => b[1] - a[1])[0][0];
-  const bgMap = { e: 'rgba(255,255,255,0.05)', s: 'rgba(255,255,255,0.05)', b: 'rgba(240,208,96,0.08)', i: 'rgba(34,197,94,0.12)' };
-  const baseBg = { e: '#0b140e', s: '#0b140e', b: '#0b140e', i: 'rgba(34,197,94,0.05)' };
+  const bgMap = { e: 'rgba(255,255,255,0.05)', s: 'rgba(255,255,255,0.05)', b: 'rgba(240,208,96,0.08)', i: 'rgba(212,165,116,0.12)' };
+  const baseBg = { e: 'var(--s2)', s: 'var(--s2)', b: 'var(--s2)', i: 'rgba(212,165,116,0.05)' };
   ['', 'd-'].forEach(pfx => {
     ['e','s','b','i'].forEach(q => {
       const el = document.getElementById(pfx + 'esbi-' + q + '-cell');
@@ -9437,7 +9445,7 @@ function drawWealthTree(levelIdx, leafCount, pct, gp){
       // Leaf clusters
       const layers=Math.max(1,Math.round(leafLayers));
       const baseL=5+Math.floor(gp*3.5);
-      const greens=['#14532d','#166534','#15803d','#16a34a','#22c55e','#4ade80'];
+      const greens=['#14532d','#166534','#15803d','#c98a6f','#d4a574','#e8b4a0'];
       for(let layer=0;layer<layers;layer++){
         const lr=crownR*(0.44+layer*0.28);
         const lc=Math.floor(baseL*(0.5+layer*0.25));
@@ -9641,7 +9649,7 @@ function playWateringAnimation() {
     // 地面光暈脈動
     if (entered) {
       const pulse = Math.sin(frame * 0.08) * 0.3 + 0.7;
-      ctx.strokeStyle = `rgba(34,197,94,${0.25 * pulse})`;
+      ctx.strokeStyle = `rgba(212,165,116,${0.25 * pulse})`;
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.ellipse(cx, H-22, 48+Math.sin(frame*0.05)*6, 8, 0, 0, Math.PI*2); ctx.stroke();
     }
@@ -9652,7 +9660,7 @@ function playWateringAnimation() {
       const bf = frame - burstPhase;
       if (bf < 60) {
         const r = bf * 1.8;
-        ctx.strokeStyle = `rgba(34,197,94,${0.55*(1-bf/60)})`;
+        ctx.strokeStyle = `rgba(212,165,116,${0.55*(1-bf/60)})`;
         ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.arc(cx, H/2-20, r*0.7, 0, Math.PI*2); ctx.stroke();
         ctx.strokeStyle = `rgba(253,224,71,${0.35*(1-bf/60)})`;
@@ -10026,11 +10034,11 @@ function pickDreamEmoji(el, idx) {
   document.getElementById('dpp-photos').innerHTML = d.c.map(c => {
     const title = c.t[currentLang] || c.t['zh-TW'];
     return `
-    <div style="position:relative;overflow:hidden;cursor:pointer;${d.c.indexOf(c)>0?'border-left:2px solid #060f0a':''}"
+    <div style="position:relative;overflow:hidden;cursor:pointer;${d.c.indexOf(c)>0?'border-left:2px solid #0a1628':''}"
          onclick="document.getElementById('dream-input').value='${title.replace(/'/g,"\\'")}';document.getElementById('dream-input').focus()">
       <img src="${c.img}" alt="${title}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;display:block;opacity:1"
            onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
-           onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0d2318,#1a3a25)'">
+           onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#152a3c,#1a3a25)'">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(6,15,10,0.92) 0%,transparent 55%);pointer-events:none"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:7px 8px;pointer-events:none">
         <div style="width:4px;height:4px;border-radius:50%;background:#f0d060;margin-bottom:3px"></div>
@@ -10628,8 +10636,8 @@ function showDesktopFormAsModal(cardId, title, closeCallback) {
   const wrapper = document.createElement('div');
   wrapper.id = 'mobile-form-wrapper';
   wrapper.style.cssText = isDesktop
-    ? 'background:#0d1f14;border-radius:20px;width:100%;max-width:560px;border:1px solid rgba(34,197,94,0.2);max-height:88vh;display:flex;flex-direction:column;'
-    : 'background:#0d1f14;border-radius:20px 20px 0 0;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:88vh;display:flex;flex-direction:column;';
+    ? 'background:#142838;border-radius:20px;width:100%;max-width:560px;border:1px solid rgba(212,165,116,0.2);max-height:88vh;display:flex;flex-direction:column;'
+    : 'background:#142838;border-radius:20px 20px 0 0;width:100%;border-top:1px solid rgba(212,165,116,0.2);max-height:88vh;display:flex;flex-direction:column;';
 
   // 標題列
   const header = document.createElement('div');
@@ -10683,7 +10691,7 @@ function openTxDesktopModal() {
 
   const wrapper = document.createElement('div');
   wrapper.id = 'desktop-tx-wrapper';
-  wrapper.style.cssText = 'background:#0d1f14;border-radius:20px;width:100%;max-width:520px;border:1px solid rgba(34,197,94,0.2);display:flex;flex-direction:column;overflow:hidden;margin-bottom:40px;';
+  wrapper.style.cssText = 'background:#142838;border-radius:20px;width:100%;max-width:520px;border:1px solid rgba(212,165,116,0.2);display:flex;flex-direction:column;overflow:hidden;margin-bottom:40px;';
 
   const header = document.createElement('div');
   header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;';
@@ -10958,10 +10966,10 @@ function showPersonalityModal() {
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;display:flex;align-items:flex-end;';
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+    <div style="background:var(--s1,#142838);border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <div style="font-size:16px;font-weight:700;color:#f0d060;">✦ ${t('profile.personalitySection')}</div>
-        <div onclick="document.getElementById('personality-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+        <div onclick="document.getElementById('personality-modal').remove()" style="font-size:24px;color:var(--fg3,rgba(255,255,255,0.4));cursor:pointer;padding:4px 8px;">✕</div>
       </div>
       ${Object.entries(badgeMap).map(([k, badge]) => {
         const isMe = k === key;
@@ -10970,12 +10978,12 @@ function showPersonalityModal() {
         return `<div style="display:flex;align-items:flex-start;gap:10px;padding:11px;background:${isMe?'rgba(240,208,96,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isMe?'rgba(240,208,96,0.25)':'rgba(255,255,255,0.06)'};border-radius:14px;margin-bottom:8px;">
           <div style="font-size:20px;flex-shrink:0">${badge}</div>
           <div style="flex:1">
-            <div style="font-size:12px;font-weight:600;color:${isMe?'#f0d060':'rgba(255,255,255,0.65)'};margin-bottom:2px">${name}${isMe?' <span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 6px;border-radius:8px">'+t('personality.yourBadge')+'</span>':''}</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">${desc}</div>
+            <div style="font-size:12px;font-weight:600;color:${isMe?'#f0d060':'var(--fg2,rgba(255,255,255,0.65))'};margin-bottom:2px">${name}${isMe?' <span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 6px;border-radius:8px">'+t('personality.yourBadge')+'</span>':''}</div>
+            <div style="font-size:10px;color:var(--fg3,rgba(255,255,255,0.35));line-height:1.5">${desc}</div>
           </div>
         </div>`;
       }).join('')}
-      <div style="font-size:10px;color:rgba(255,255,255,0.2);text-align:center;padding-top:8px">${t('personality.mobileFooter')}</div>
+      <div style="font-size:10px;color:var(--fg3,rgba(255,255,255,0.2));text-align:center;padding-top:8px">${t('personality.mobileFooter')}</div>
     </div>`;
 
   document.body.appendChild(modal);
@@ -11005,23 +11013,23 @@ function showWealthLevelModal() {
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;display:flex;align-items:flex-end;';
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+    <div style="background:var(--s1,#142838);border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(240,208,96,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <div style="font-size:16px;font-weight:700;color:#f0d060;">💰 六大財富等級</div>
-        <div onclick="document.getElementById('wealth-level-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
+        <div onclick="document.getElementById('wealth-level-modal').remove()" style="font-size:24px;color:var(--fg3,rgba(255,255,255,0.4));cursor:pointer;padding:4px 8px;">✕</div>
       </div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:14px;">依月被動收入自動升級 · 點擊查看說明</div>
+      <div style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.35));margin-bottom:14px;">依月被動收入自動升級 · 點擊查看說明</div>
       ${LEVELS.map(l => {
         const isActive = l.name === currentName;
         return `<div style="display:flex;gap:12px;padding:13px;background:${isActive?'rgba(240,208,96,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isActive?'rgba(240,208,96,0.25)':'rgba(255,255,255,0.06)'};border-radius:14px;margin-bottom:8px;">
           <div style="font-size:28px;flex-shrink:0;">${l.icon}</div>
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-              <span style="font-size:13px;font-weight:700;color:${isActive?'#f0d060':'#f0fdf4'};">${l.name} ${l.zh}</span>
+              <span style="font-size:13px;font-weight:700;color:${isActive?'#f0d060':'var(--fg,#f0fdf4)'};">${l.name} ${l.zh}</span>
               ${isActive?'<span style="font-size:9px;background:rgba(240,208,96,0.15);color:#f0d060;padding:1px 7px;border-radius:8px;font-weight:700;">目前等級</span>':''}
             </div>
-            <div style="font-size:11px;color:#22c55e;font-family:monospace;margin-bottom:4px;">${l.req}</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;">${l.desc}</div>
+            <div style="font-size:11px;color:#d4a574;font-family:monospace;margin-bottom:4px;">${l.req}</div>
+            <div style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.4));line-height:1.5;">${l.desc}</div>
           </div>
         </div>`;
       }).join('')}
@@ -11043,17 +11051,17 @@ function editMobileUsername() {
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(34,197,94,0.2);">
+    <div style="background:#142838;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(212,165,116,0.2);">
       <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:16px;text-align:center;">✏️ 修改暱稱</div>
       <input id="nickname-input" type="text" maxlength="20"
         value="${current}"
-        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;"
+        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(212,165,116,0.25);color:#f0fdf4;padding:12px 14px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;font-family:'DM Sans',sans-serif;"
         placeholder="輸入你的暱稱">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
         <button onclick="document.getElementById('nickname-modal').remove()"
           style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
         <button onclick="saveNickname()"
-          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#d4a574,#c98a6f);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
       </div>
     </div>`;
 
@@ -11169,7 +11177,7 @@ function showTreeStagesModal() {
   const currentDeco = localStorage.getItem('wa_tree_deco_last') || '';
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+    <div style="background:#142838;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(212,165,116,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <div style="font-size:16px;font-weight:700;color:#f0fdf4;">${t('tree.modal.title')}</div>
         <div onclick="document.getElementById('tree-stages-modal').remove()" style="font-size:24px;color:rgba(255,255,255,0.4);cursor:pointer;padding:4px 8px;">✕</div>
@@ -11179,15 +11187,15 @@ function showTreeStagesModal() {
         const desc = t(s.descKey);
         const stageName = name.split(' ').slice(1).join(' ');
         const isActive = currentBadge.includes(stageName);
-        return '<div style="display:flex;gap:12px;padding:13px;background:' + (isActive?'rgba(34,197,94,0.08)':'rgba(255,255,255,0.02)') + ';border:1px solid ' + (isActive?'rgba(34,197,94,0.25)':'rgba(255,255,255,0.06)') + ';border-radius:14px;margin-bottom:8px;">' +
+        return '<div style="display:flex;gap:12px;padding:13px;background:' + (isActive?'rgba(212,165,116,0.08)':'rgba(255,255,255,0.02)') + ';border:1px solid ' + (isActive?'rgba(212,165,116,0.25)':'rgba(255,255,255,0.06)') + ';border-radius:14px;margin-bottom:8px;">' +
           '<div style="font-size:28px;flex-shrink:0;">' + name.split(' ')[0] + '</div>' +
           '<div style="flex:1;">' +
             '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">' +
-              '<span style="font-size:13px;font-weight:700;color:' + (isActive?'#22c55e':'#f0fdf4') + ';">' + name + '</span>' +
-              (isActive?'<span style="font-size:9px;background:rgba(34,197,94,0.15);color:#22c55e;padding:1px 7px;border-radius:8px;font-weight:700;">'+t('tree.modal.currentStage')+'</span>':'') +
+              '<span style="font-size:13px;font-weight:700;color:' + (isActive?'#d4a574':'#f0fdf4') + ';">' + name + '</span>' +
+              (isActive?'<span style="font-size:9px;background:rgba(212,165,116,0.15);color:#d4a574;padding:1px 7px;border-radius:8px;font-weight:700;">'+t('tree.modal.currentStage')+'</span>':'') +
             '</div>' +
             '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;">' + desc + '</div>' +
-            '<div style="font-size:10px;color:rgba(34,197,94,0.5);font-family:monospace;">' + t('tree.modal.statFmt').replace('{assets}', s.minAssets).replace('{days}', s.minDays).replace('{leaves}', s.leaves) + '</div>' +
+            '<div style="font-size:10px;color:rgba(212,165,116,0.5);font-family:monospace;">' + t('tree.modal.statFmt').replace('{assets}', s.minAssets).replace('{days}', s.minDays).replace('{leaves}', s.leaves) + '</div>' +
           '</div>' +
         '</div>';
       }).join('')}
@@ -11232,16 +11240,16 @@ function setTreeStartDate() {
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(34,197,94,0.2);">
+    <div style="background:#142838;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(212,165,116,0.2);">
       <div style="font-size:15px;font-weight:700;color:#f0fdf4;margin-bottom:6px;">⚙️ 設定開始記錄日期</div>
       <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:16px;">財富樹的天數將從這天開始計算</div>
       <input id="tree-start-date-input" type="date" value="${currentDate}"
-        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(34,197,94,0.25);color:#f0fdf4;padding:12px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;margin-bottom:14px;">
+        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(212,165,116,0.25);color:#f0fdf4;padding:12px;border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;margin-bottom:14px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <button onclick="document.getElementById('tree-date-modal').remove()"
           style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;">取消</button>
         <button onclick="saveTreeStartDate()"
-          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
+          style="padding:12px;border-radius:12px;background:linear-gradient(135deg,#d4a574,#c98a6f);border:none;color:#052e16;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">確定</button>
       </div>
     </div>`;
 
@@ -11266,14 +11274,14 @@ window.saveTreeStartDate = saveTreeStartDate;
 // 主題系統
 // ══════════════════════════════════════
 const THEMES = {
-  'dark-green':  { '--bg':'#060f0a','--s1':'#0d1f14','--s2':'#0f2318','--fg':'#f0fdf4','--accent':'#22c55e','--accent-hi':'#4ade80','--accent-lo':'#16a34a','--card-bg':'rgba(255,255,255,0.025)' },
+  'dark-green':  { '--bg':'#0a1628','--s1':'#142838','--s2':'#1a3244','--fg':'#f0f4f8','--accent':'#d4a574','--accent-hi':'#e8b4a0','--accent-lo':'#c98a6f','--card-bg':'rgba(255,255,255,0.035)' },
   'dark-purple': { '--bg':'#0a0614','--s1':'#160c2a','--s2':'#1c1036','--fg':'#f5f0ff','--accent':'#a78bfa','--accent-hi':'#c4b5fd','--accent-lo':'#7c3aed','--card-bg':'rgba(255,255,255,0.025)' },
   'dark-blue':   { '--bg':'#060a14','--s1':'#0c1428','--s2':'#0f1a36','--fg':'#eff6ff','--accent':'#60a5fa','--accent-hi':'#93c5fd','--accent-lo':'#2563eb','--card-bg':'rgba(255,255,255,0.025)' },
   'dark-gold':   { '--bg':'#0f0a02','--s1':'#1e1405','--s2':'#241808','--fg':'#fffbeb','--accent':'#f59e0b','--accent-hi':'#fbbf24','--accent-lo':'#d97706','--card-bg':'rgba(255,255,255,0.025)' },
-  'light-white': { '--bg':'#f8fafc','--s1':'#ffffff','--s2':'#f1f5f9','--fg':'#0f172a','--accent':'#22c55e','--accent-hi':'#16a34a','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-white': { '--bg':'#f8fafc','--s1':'#ffffff','--s2':'#f1f5f9','--fg':'#0f172a','--accent':'#d4a574','--accent-hi':'#c98a6f','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
   'light-cream': { '--bg':'#faf8f5','--s1':'#ffffff','--s2':'#f3efe9','--fg':'#1c1408','--accent':'#ea580c','--accent-hi':'#fb923c','--accent-lo':'#c2410c','--card-bg':'rgba(0,0,0,0.03)' },
   'light-blue':  { '--bg':'#eff6ff','--s1':'#ffffff','--s2':'#dbeafe','--fg':'#0f172a','--accent':'#3b82f6','--accent-hi':'#60a5fa','--accent-lo':'#2563eb','--card-bg':'rgba(0,0,0,0.03)' },
-  'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#16a34a','--accent-hi':'#22c55e','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#c98a6f','--accent-hi':'#d4a574','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
 };
 
 function toggleThemePanel() {
@@ -11418,15 +11426,18 @@ function updateColorPickers(themeName) {
     'cp-s1': '--s1', 'cp-fg': '--fg', 'cp-card': '--card-bg'
   };
   Object.entries(map).forEach(([id, cssVar]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
     let val = theme[cssVar] || '#000000';
     // 如果是 rgba，轉成 hex
     if (val.startsWith('rgba')) {
       const m = val.match(/rgba?\((\d+),(\d+),(\d+)/);
       if (m) val = '#' + [m[1],m[2],m[3]].map(n => parseInt(n).toString(16).padStart(2,'0')).join('');
     }
-    if (val.startsWith('#') && val.length === 7) el.value = val;
+    if (!(val.startsWith('#') && val.length === 7)) return;
+    // 桌面版色票 id 多加了 -d 後綴，行動版沒有，兩邊都要更新
+    [id, id + '-d'].forEach(realId => {
+      const el = document.getElementById(realId);
+      if (el) el.value = val;
+    });
   });
 }
 
@@ -11484,7 +11495,7 @@ async function deleteMobileAsset(idx) {
   modal.id = 'mobile-delete-confirm-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(248,113,113,0.2);">
+    <div style="background:#142838;border-radius:20px;padding:24px;width:100%;max-width:320px;border:1px solid rgba(248,113,113,0.2);">
       <div style="font-size:16px;font-weight:700;color:#f0fdf4;margin-bottom:8px;">刪除資產</div>
       <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;">確定要刪除「${a.name}」嗎？此操作無法復原。</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -11550,7 +11561,7 @@ function initMobileHome() {
   </div>
   <div class="app-topbar-right">
     <div id="mobile-topbar-personality" class="app-topbar-badge" style="display:none"></div>
-    <div onclick="refreshMobilePrices()" style="width:30px;height:30px;border-radius:50%;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;" id="mobile-refresh-btn" title="更新價格">🔄</div>
+    <div onclick="refreshMobilePrices()" style="width:30px;height:30px;border-radius:50%;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;" id="mobile-refresh-btn" title="更新價格">🔄</div>
     <div class="app-topbar-avatar" onclick="switchTab('profile')">👤</div>
   </div>
 </div>
@@ -11581,7 +11592,7 @@ function initMobileHome() {
   if (header) header.style.display = 'none';
 
   // body 背景
-  document.body.style.background = '#060f0a';
+  document.body.style.background = '#0a1628';
 })();
 </script>
 
@@ -11596,7 +11607,7 @@ function initMobileHome() {
     <div class="home-greeting" id="mobile-greeting">早安 ☕️</div>
     <div style="display:flex;align-items:center;gap:8px">
       <div class="home-username" id="mobile-username" onclick="editMobileUsername()" style="cursor:pointer;">財富覺醒者</div>
-      <div onclick="editMobileUsername()" data-i18n="home.editNickname" style="font-size:11px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;padding:3px 8px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✏️ 修改暱稱</div>
+      <div onclick="editMobileUsername()" data-i18n="home.editNickname" style="font-size:11px;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#d4a574;padding:3px 8px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✏️ 修改暱稱</div>
     </div>
     <div class="home-freedom-row">
       <div class="home-freedom-ring">
@@ -11609,15 +11620,15 @@ function initMobileHome() {
             style="transition:stroke-dashoffset 1s ease"/>
           <defs>
             <linearGradient id="mobileRingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#16a34a"/>
-              <stop offset="100%" stop-color="#86efac"/>
+              <stop offset="0%" stop-color="#c98a6f"/>
+              <stop offset="100%" stop-color="#f0d6c0"/>
             </linearGradient>
           </defs>
         </svg>
         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;margin-top:-45px;margin-left:0px">
         </div>
         <div style="text-align:center;margin-top:-68px;position:relative;z-index:1">
-          <div id="mobile-freedom-pct" style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:#22c55e">0%</div>
+          <div id="mobile-freedom-pct" style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:#d4a574">0%</div>
           <div id="mobile-freedom-stage-label" style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">AWAKENING</div>
         </div>
       </div>
@@ -11640,8 +11651,8 @@ function initMobileHome() {
 
   <div class="page-content">
     <!-- 今日金句 -->
-    <div class="v2-card" style="padding:10px 13px;background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.14);margin-bottom:8px">
-      <div style="font-family:ui-monospace,'DM Mono',monospace;font-size:8px;color:rgba(34,197,94,0.45);text-transform:uppercase;letter-spacing:0.10em;margin-bottom:5px" data-i18n="home.dailyQuote.label">TODAY'S WEALTH FREQUENCY</div>
+    <div class="v2-card" style="padding:10px 13px;background:rgba(212,165,116,0.05);border-color:rgba(212,165,116,0.14);margin-bottom:8px">
+      <div style="font-family:ui-monospace,'DM Mono',monospace;font-size:8px;color:rgba(212,165,116,0.45);text-transform:uppercase;letter-spacing:0.10em;margin-bottom:5px" data-i18n="home.dailyQuote.label">TODAY'S WEALTH FREQUENCY</div>
       <div class="freq-card-scene freq-card-scene-mobile" id="freq-card-scene-mobile" onclick="drawDailyCard()">
         <div class="freq-card-inner" id="freq-card-inner-mobile">
           <div class="freq-card-front" style="padding:12px 8px">
@@ -11656,7 +11667,7 @@ function initMobileHome() {
     </div>
 
     <!-- 手機版 Insight Card -->
-    <div id="m-insight-card" class="v2-card" style="display:none;padding:12px 14px;margin-bottom:8px;background:linear-gradient(135deg,rgba(34,197,94,0.07),rgba(34,197,94,0.02));border-color:rgba(34,197,94,0.2);position:relative;animation:insightIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both">
+    <div id="m-insight-card" class="v2-card" style="display:none;padding:12px 14px;margin-bottom:8px;background:linear-gradient(135deg,rgba(212,165,116,0.07),rgba(212,165,116,0.02));border-color:rgba(212,165,116,0.2);position:relative;animation:insightIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both">
       <div style="display:flex;align-items:flex-start;gap:10px">
         <div style="font-size:18px;flex-shrink:0;padding-top:1px" id="m-insight-icon">💡</div>
         <div style="flex:1;padding-right:20px">
@@ -11714,7 +11725,7 @@ function initMobileHome() {
       </div>
       <div class="quick-card">
         <div class="quick-card-label" data-i18n="home.quick.pnl">🌿 資產增益</div>
-        <div class="quick-card-val" id="mobile-pnl2" style="color:#22c55e">+NT$0</div>
+        <div class="quick-card-val" id="mobile-pnl2" style="color:#d4a574">+NT$0</div>
         <div class="quick-card-sub" data-i18n="home.quick.pnlSub">累積總損益</div>
       </div>
       <div class="quick-card">
@@ -11737,12 +11748,12 @@ function initMobileHome() {
     <div class="ai-mobile-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:6px">
-          <div style="width:22px;height:22px;background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.20);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;animation:aiPulse 3s ease-in-out infinite">✦</div>
+          <div style="width:22px;height:22px;background:rgba(212,165,116,0.10);border:1px solid rgba(212,165,116,0.20);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;animation:aiPulse 3s ease-in-out infinite">✦</div>
           <span style="font-size:12px;font-weight:700;color:#f0fdf4;letter-spacing:-0.01em">AI WEALTH INSIGHT</span>
         </div>
-        <span onclick="fetchAIInsight()" data-i18n="home.aiUpdateAnalysis" style="font-family:ui-monospace,'DM Mono',monospace;font-size:8.5px;color:rgba(34,197,94,0.40);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer">更新分析</span>
+        <span onclick="fetchAIInsight()" data-i18n="home.aiUpdateAnalysis" style="font-family:ui-monospace,'DM Mono',monospace;font-size:8.5px;color:rgba(212,165,116,0.40);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer">更新分析</span>
       </div>
-      <div id="mobile-ai-insight-text" data-i18n="home.aiPlaceholder" style="background:rgba(255,255,255,0.02);border:1px solid rgba(34,197,94,0.06);border-radius:8px;padding:8px 10px;font-size:11px;color:rgba(240,253,244,0.55);line-height:1.6;white-space:pre-line">點擊「更新分析」，AI 將分析您的財務狀況。</div>
+      <div id="mobile-ai-insight-text" data-i18n="home.aiPlaceholder" style="background:rgba(255,255,255,0.02);border:1px solid rgba(212,165,116,0.06);border-radius:8px;padding:8px 10px;font-size:11px;color:rgba(240,253,244,0.55);line-height:1.6;white-space:pre-line">點擊「更新分析」，AI 將分析您的財務狀況。</div>
     </div>
   </div>
 </div>
@@ -11757,7 +11768,7 @@ function initMobileHome() {
   <div class="page-content">
     <!-- 現金流兩卡 -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div id="mobile-cf-card" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
+      <div id="mobile-cf-card" style="background:rgba(212,165,116,0.05);border:1px solid rgba(212,165,116,0.15);border-radius:14px;padding:12px"></div>
       <div id="mobile-av-card" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
     </div>
 
@@ -11769,7 +11780,7 @@ function initMobileHome() {
       <div id="mobile-cf-breakdown-inner"></div>
       <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px">
         <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6)" data-i18n="cf.total">合計</span>
-        <span id="mobile-cf-total" style="font-size:12px;font-family:monospace;color:#22c55e">NT$0 / 月</span>
+        <span id="mobile-cf-total" style="font-size:12px;font-family:monospace;color:#d4a574">NT$0 / 月</span>
       </div>
     </div>
 
@@ -11796,10 +11807,10 @@ function initMobileHome() {
 
 <!-- 夢想頁 -->
 <div class="app-page" id="page-dreams">
-  <div style="background:linear-gradient(160deg,#0d1a0a,#060f0a);padding:20px 14px">
-    <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px" data-i18n="dreams.page.label">我的夢想</div>
+  <div style="background:linear-gradient(160deg,var(--s2,#0d1a0a),var(--bg,#0a1628));padding:20px 14px">
+    <div style="font-size:11px;color:var(--fg3,rgba(255,255,255,0.4));text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px" data-i18n="dreams.page.label">我的夢想</div>
     <div style="font-family:'DM Serif Display',serif;font-size:22px;color:#f0d060" data-i18n="dreams.page.title">夢想成就殿堂</div>
-    <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:4px" data-i18n="dreams.page.subtitle">每一筆資產，都在帶你靠近夢想</div>
+    <div style="font-size:12px;color:var(--fg3,rgba(255,255,255,0.35));margin-top:4px" data-i18n="dreams.page.subtitle">每一筆資產，都在帶你靠近夢想</div>
   </div>
   <div class="page-content">
     <div id="mobile-main-dream" style="margin-bottom:14px"></div>
@@ -11809,7 +11820,7 @@ function initMobileHome() {
     </div>
     <div id="mobile-dreams-list" style="margin-bottom:14px"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <button onclick="openDreamComplete()" style="padding:13px;border-radius:14px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="dreams.page.achievedBtn">🎉 我實現了！</button>
+      <button onclick="openDreamComplete()" style="padding:13px;border-radius:14px;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);color:#d4a574;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="dreams.page.achievedBtn">🎉 我實現了！</button>
       <button onclick="openCompletedDreams()" style="padding:13px;border-radius:14px;background:rgba(240,208,96,0.08);border:1px solid rgba(240,208,96,0.2);color:#f0d060;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="dreams.page.hallBtn">🏆 成就殿堂</button>
     </div>
     <button onclick="openDreamManager()" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:14px" data-i18n="dreams.page.manageBtn">✏️ 夢想管理</button>
@@ -11817,7 +11828,7 @@ function initMobileHome() {
     <!-- 財富樹 -->
     <div class="mobile-section-header">
       <div class="mobile-section-title" data-i18n="tree.title">🌳 財富之樹</div>
-      <div id="mobile-tree-badge" onclick="showTreeStagesModal()" style="font-size:11px;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;border-radius:8px;cursor:pointer;" data-i18n="tree.level.0">🌟 覺醒種子 ›</div>
+      <div id="mobile-tree-badge" onclick="showTreeStagesModal()" style="font-size:11px;color:#d4a574;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.2);padding:3px 8px;border-radius:8px;cursor:pointer;" data-i18n="tree.level.0">🌟 覺醒種子 ›</div>
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;margin-bottom:10px">
       <div id="mobile-tree-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:6px;min-height:200px;align-items:center">
@@ -11858,11 +11869,11 @@ function initMobileHome() {
       <div>
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:5px" data-i18n="tree.growthProgress">成長進度</div>
         <div style="height:5px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden">
-          <div id="mobile-tree-progress" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#86efac);width:0%;transition:width 1.2s ease"></div>
+          <div id="mobile-tree-progress" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#c98a6f,#f0d6c0);width:0%;transition:width 1.2s ease"></div>
         </div>
         <div id="mobile-tree-next" style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px" data-i18n="tree.nextDefault">累積更多資產讓樹成長</div>
         <div style="margin-top:10px;text-align:center">
-          <span onclick="setTreeStartDate()" style="font-size:10px;color:rgba(34,197,94,0.4);cursor:pointer;border-bottom:1px dashed rgba(34,197,94,0.2);padding-bottom:1px;" data-i18n="tree.setStartDate">⚙️ 設定開始記錄日期</span>
+          <span onclick="setTreeStartDate()" style="font-size:10px;color:rgba(212,165,116,0.4);cursor:pointer;border-bottom:1px dashed rgba(212,165,116,0.2);padding-bottom:1px;" data-i18n="tree.setStartDate">⚙️ 設定開始記錄日期</span>
         </div>
       </div>
     </div>
@@ -11891,7 +11902,7 @@ function initMobileHome() {
           <span class="jars-income-label" data-i18n="goals.jars.incomeLabel">💰 這個月的總收入</span>
           <input id="jars-income" type="text" inputmode="numeric" class="jars-income-input" placeholder="50000" oninput="updateJars()" onchange="updateJars()">
           <span class="jars-income-unit" id="jars-income-unit" style="font-size:12px;color:rgba(255,255,255,0.35)">NT$</span>
-          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);border-radius:8px;color:#4ade80;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
+          <button onclick="updateJars()" style="padding:4px 12px;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);border-radius:8px;color:#e8b4a0;font-size:12px;cursor:pointer" data-i18n="goals.jars.calculate">計算</button>
         </div>
         <!-- 合計提示 -->
         <div class="jars-total-row ok" id="jars-total-row">
@@ -12066,7 +12077,7 @@ function initMobileHome() {
       <div class="mobile-section-title" data-i18n="goals.cashflowMetrics">現金流指標</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div id="mobile-cf-card2" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:12px"></div>
+      <div id="mobile-cf-card2" style="background:rgba(212,165,116,0.05);border:1px solid rgba(212,165,116,0.15);border-radius:14px;padding:12px"></div>
       <div id="mobile-av-card2" style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:14px;padding:12px"></div>
     </div>
 
@@ -12077,9 +12088,9 @@ function initMobileHome() {
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;margin-bottom:12px">
       <div class="esbi-grid">
         <div class="esbi-cell" id="esbi-e-cell">
-          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">E</div>
+          <div class="esbi-letter" style="color:var(--fg3,rgba(255,255,255,0.4))">E</div>
           <div class="esbi-qname"><span data-i18n="esbi.e.name">員工</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('e')">ⓘ</span></div>
-          <div class="esbi-income" id="esbi-e-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-income" id="esbi-e-disp" style="color:var(--fg2,rgba(255,255,255,0.5))">NT$ 0</div>
           <div class="esbi-desc" id="esbi-e-desc" style="display:none" data-i18n="esbi.e.desc">用時間換薪資<br>停工就停收入</div>
         </div>
         <div class="esbi-cell" id="esbi-b-cell">
@@ -12089,36 +12100,36 @@ function initMobileHome() {
           <div class="esbi-desc" id="esbi-b-desc" style="display:none" data-i18n="esbi.b.desc">系統為你工作<br>可以放假賺錢</div>
         </div>
         <div class="esbi-cell" id="esbi-s-cell">
-          <div class="esbi-letter" style="color:rgba(255,255,255,0.4)">S</div>
+          <div class="esbi-letter" style="color:var(--fg3,rgba(255,255,255,0.4))">S</div>
           <div class="esbi-qname"><span data-i18n="esbi.s.name">自僱者</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('s')">ⓘ</span></div>
-          <div class="esbi-income" id="esbi-s-disp" style="color:rgba(255,255,255,0.5)">NT$ 0</div>
+          <div class="esbi-income" id="esbi-s-disp" style="color:var(--fg2,rgba(255,255,255,0.5))">NT$ 0</div>
           <div class="esbi-desc" id="esbi-s-desc" style="display:none" data-i18n="esbi.s.desc">靠自己的技能<br>但仍需親力親為</div>
         </div>
-        <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(34,197,94,0.05)">
-          <div class="esbi-letter" style="color:#22c55e">I</div>
+        <div class="esbi-cell" id="esbi-i-cell" style="background:rgba(212,165,116,0.05)">
+          <div class="esbi-letter" style="color:#d4a574">I</div>
           <div class="esbi-qname"><span data-i18n="esbi.i.name">投資者</span><span class="jars-setup-info" onclick="event.stopPropagation();toggleEsbiDesc('i')">ⓘ</span></div>
-          <div class="esbi-income" id="esbi-i-disp" style="color:#22c55e">NT$ 0</div>
+          <div class="esbi-income" id="esbi-i-disp" style="color:#d4a574">NT$ 0</div>
           <div class="esbi-desc" id="esbi-i-desc" style="display:none" data-i18n="esbi.i.desc">錢替你工作<br>睡覺也在賺錢</div>
           <div class="esbi-goal-tag" data-i18n="esbi.goalTag">目標</div>
         </div>
       </div>
       <!-- 被動收入佔比 -->
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--fg3,rgba(255,255,255,0.3));margin-bottom:5px">
         <span data-i18n="esbi.activeLabel">主動 E+S</span>
-        <span id="esbi-passive-pct-label" style="color:rgba(34,197,94,0.7)">被動 B+I 0%</span>
+        <span id="esbi-passive-pct-label" style="color:rgba(212,165,116,0.7)">被動 B+I 0%</span>
       </div>
       <div class="esbi-ratio-bar"><div class="esbi-ratio-fill" id="esbi-ratio-fill" style="width:0%"></div></div>
       <div class="esbi-divider" style="margin-top:10px"></div>
       <!-- 主動收入輸入 -->
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--fg3,rgba(255,255,255,0.3));margin-bottom:8px" data-i18n="esbi.inputHint">輸入你的主動收入（月）</div>
       <div class="esbi-active-input">
         <div class="esbi-input-row">
-          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">E</span>
+          <span class="esbi-q-badge" style="color:var(--fg2,rgba(255,255,255,0.45))">E</span>
           <span class="esbi-input-label" data-i18n="esbi.input.e">薪資收入</span>
           <input id="esbi-e-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
         </div>
         <div class="esbi-input-row">
-          <span class="esbi-q-badge" style="color:rgba(255,255,255,0.45)">S</span>
+          <span class="esbi-q-badge" style="color:var(--fg2,rgba(255,255,255,0.45))">S</span>
           <span class="esbi-input-label" data-i18n="esbi.input.s">副業 / 接案</span>
           <input id="esbi-s-input" type="number" class="esbi-num-input" placeholder="0" oninput="saveAndUpdateEsbi()">
         </div>
@@ -12189,7 +12200,7 @@ function initMobileHome() {
       </div>
       <div class="jars-body" id="trend-body">
         <div style="display:flex;gap:6px;margin-bottom:10px;margin-top:14px">
-          <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
+          <button class="chart-tab-mobile" onclick="switchMobileChart('total',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.3);color:#d4a574;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.total">總資產</button>
           <button class="chart-tab-mobile" onclick="switchMobileChart('income',this)" style="flex:1;padding:6px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif" data-i18n="goals.chart.income">被動收入</button>
         </div>
         <div id="mobile-trend-area" style="height:160px;position:relative;">
@@ -12308,9 +12319,9 @@ function initMobileHome() {
     <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;">
       <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">深色系</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
-        <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="深綠">
-          <div style="background:linear-gradient(135deg,#060f0a 50%,#22c55e 50%);"></div>
-          <span>深綠</span>
+        <div class="theme-swatch" data-theme="dark-green" onclick="applyTheme('dark-green')" title="夜寧">
+          <div style="background:linear-gradient(135deg,#0a1628 50%,#d4a574 50%);"></div>
+          <span>夜寧</span>
         </div>
         <div class="theme-swatch" data-theme="dark-purple" onclick="applyTheme('dark-purple')" title="深紫">
           <div style="background:linear-gradient(135deg,#0a0614 50%,#a78bfa 50%);"></div>
@@ -12328,7 +12339,7 @@ function initMobileHome() {
       <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;">亮色系</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
         <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白">
-          <div style="background:linear-gradient(135deg,#f8fafc 50%,#22c55e 50%);"></div>
+          <div style="background:linear-gradient(135deg,#f8fafc 50%,#d4a574 50%);"></div>
           <span>純白</span>
         </div>
         <div class="theme-swatch" data-theme="light-cream" onclick="applyTheme('light-cream')" title="暖米">
@@ -12340,7 +12351,7 @@ function initMobileHome() {
           <span>柔藍</span>
         </div>
         <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷">
-          <div style="background:linear-gradient(135deg,#f0fdf4 50%,#16a34a 50%);"></div>
+          <div style="background:linear-gradient(135deg,#f0fdf4 50%,#c98a6f 50%);"></div>
           <span>薄荷</span>
         </div>
       </div>
@@ -12524,12 +12535,12 @@ function syncMobileUI() {
     mCfCard.innerHTML=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
       '<div style="font-size:18px">💧</div>'+
-      '<div><div style="font-size:11px;font-weight:600;color:#22c55e">現金流：生存之泉</div>'+
+      '<div><div style="font-size:11px;font-weight:600;color:#d4a574">現金流：生存之泉</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">持續性月現金流</div></div></div>'+
       '<div id="cf-card-num" style="font-family:monospace;font-size:22px;font-weight:700;margin-bottom:4px">'+(cfDisplay?cfDisplay.textContent:'NT$ 0')+'</div>'+
       '<div style="font-size:10px;color:'+cfTextColor+'">'+(cfLabel?cfLabel.textContent:'目標 NT$0 / 月')+'</div>';
     const cfNum = document.getElementById('cf-card-num');
-    if(cfNum) cfNum.style.setProperty('color','#22c55e','important');
+    if(cfNum) cfNum.style.setProperty('color','#d4a574','important');
   }
   const mAvCard=document.getElementById('mobile-av-card');
   if(mAvCard) {
@@ -12564,7 +12575,7 @@ function syncMobileUI() {
         const label = LABELS[cat] || cat;
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)">' +
           '<span style="font-size:12px;color:rgba(255,255,255,0.7)">' + icon + ' ' + label + '</span>' +
-          '<span style="font-size:12px;font-family:monospace;color:#22c55e">' + t('cf.perMonthFmt').replace('{amount}', formatCurrency(amt)) + '</span></div>';
+          '<span style="font-size:12px;font-family:monospace;color:#d4a574">' + t('cf.perMonthFmt').replace('{amount}', formatCurrency(amt)) + '</span></div>';
       }).join('');
     }
     const totalCF = window.assets.reduce((s,a) => s + (a.monthlyIncome||0), 0);
@@ -12641,10 +12652,10 @@ function syncMobileWealthLevels() {
   if(!container) return;
   // 只顯示目前等級一行，完整 6 個等級點擊後由 showWealthLevelModal() 彈窗顯示
   const l=LEVELS.find(x=>x.name===currentLevelName)||LEVELS[0];
-  container.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:12px;cursor:pointer">'+
+  container.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(212,165,116,0.08);border:1px solid rgba(212,165,116,0.25);border-radius:12px;cursor:pointer">'+
     '<div style="font-size:20px;flex-shrink:0">'+l.icon+'</div>'+
     '<div style="flex:1">'+
-    '<div style="font-size:12px;font-weight:600;color:#22c55e">'+l.name+' '+l.zh+'</div>'+
+    '<div style="font-size:12px;font-weight:600;color:#d4a574">'+l.name+' '+l.zh+'</div>'+
     '<div style="font-size:10px;color:rgba(255,255,255,0.3)">'+l.label+'</div></div>'+
     '<div style="font-size:11px;color:rgba(255,255,255,0.3)">查看全部 ›</div>'+
   '</div>';
@@ -12788,7 +12799,7 @@ function syncMobileAssets() {
     etf:'rgba(234,179,8,0.2)', gold:'rgba(251,191,36,0.2)',
     silver:'rgba(148,163,184,0.2)', realestate:'rgba(249,115,22,0.2)',
     fund:'rgba(167,139,250,0.2)', insurance:'rgba(248,113,113,0.2)',
-    lending:'rgba(34,197,94,0.2)', deposit:'rgba(96,165,250,0.2)',
+    lending:'rgba(212,165,116,0.2)', deposit:'rgba(96,165,250,0.2)',
     bond:'rgba(52,211,153,0.2)', business:'rgba(250,204,21,0.2)'
   };
   const catNames = {
@@ -12872,7 +12883,7 @@ function showMobileAssetDetail(idx) {
   if (isRE && a.reLocation) rows.push(['地點', a.reLocation]);
 
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
+    <div style="background:#142838;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(212,165,116,0.2);max-height:85vh;overflow-y:auto;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="font-size:28px;">${icon}</div>
@@ -12939,7 +12950,7 @@ function showMobileDebtForm() {
   modal.id = 'mobile-debt-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:flex-end;';
   modal.innerHTML = `
-    <div style="background:#0d1f14;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(34,197,94,0.2)">
+    <div style="background:#142838;border-radius:20px 20px 0 0;padding:20px;width:100%;border-top:1px solid rgba(212,165,116,0.2)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div style="font-size:16px;font-weight:700;color:#f0fdf4">新增債務</div>
         <div onclick="document.getElementById('mobile-debt-modal').remove()" style="font-size:20px;color:rgba(255,255,255,0.4);cursor:pointer">✕</div>
@@ -12947,7 +12958,7 @@ function showMobileDebtForm() {
       <input id="m-debt-name" placeholder="債務名稱（例：房貸）" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box">
       <input id="m-debt-amount" type="number" placeholder="總金額" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:10px;box-sizing:border-box">
       <input id="m-debt-monthly" type="number" placeholder="每月還款額" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;margin-bottom:16px;box-sizing:border-box">
-      <button onclick="submitMobileDebt()" style="width:100%;padding:14px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#052e16;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">新增債務</button>
+      <button onclick="submitMobileDebt()" style="width:100%;padding:14px;background:linear-gradient(135deg,#d4a574,#c98a6f);color:#052e16;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">新增債務</button>
     </div>`;
   document.body.appendChild(modal);
 }
