@@ -1497,7 +1497,7 @@ select option { background: #152a3c; }
 [data-theme="light-white"]{
   --bg:#f8fafc;--s1:#ffffff;--s2:#f1f5f9;
   --fg:#0f172a;--fg2:rgba(15,23,42,0.60);--fg3:rgba(15,23,42,0.38);
-  --accent:#d4a574;--accent-hi:#c98a6f;--accent-lo:#15803d;
+  --accent:#d4a574;--accent-hi:#c98a6f;--accent-lo:#a8663f;
   --accent-dim:rgba(212,165,116,0.10);--accent-glow:rgba(212,165,116,0.15);
   --card-bg:#ffffff;--border:rgba(212,165,116,0.15);
 }
@@ -1518,9 +1518,16 @@ select option { background: #152a3c; }
 [data-theme="light-mint"]{
   --bg:#f0fdf4;--s1:#ffffff;--s2:#dcfce7;
   --fg:#052e16;--fg2:rgba(5,46,22,0.60);--fg3:rgba(5,46,22,0.38);
-  --accent:#c98a6f;--accent-hi:#d4a574;--accent-lo:#15803d;
+  --accent:#16a34a;--accent-hi:#22c55e;--accent-lo:#15803d;
   --accent-dim:rgba(22,163,74,0.10);--accent-glow:rgba(22,163,74,0.15);
   --card-bg:#ffffff;--border:rgba(22,163,74,0.15);
+}
+[data-theme="light-sage"]{
+  --bg:#f7f2e8;--s1:#ffffff;--s2:#efe7d6;
+  --fg:#2b2b26;--fg2:rgba(43,43,38,0.60);--fg3:rgba(43,43,38,0.38);
+  --accent:#5c7a5f;--accent-hi:#7a9a7d;--accent-lo:#46614a;
+  --accent-dim:rgba(92,122,95,0.10);--accent-glow:rgba(92,122,95,0.15);
+  --card-bg:#ffffff;--border:rgba(92,122,95,0.15);
 }
 
 /* 主題過渡動畫 */
@@ -3257,7 +3264,8 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       <div class="theme-swatch" data-theme="light-white" onclick="applyTheme('light-white')" title="純白"><div style="background:linear-gradient(135deg,#f8fafc 50%,#d4a574 50%);"></div><span>純白</span></div>
       <div class="theme-swatch" data-theme="light-cream" onclick="applyTheme('light-cream')" title="暖米"><div style="background:linear-gradient(135deg,#faf8f5 50%,#ea580c 50%);"></div><span>暖米</span></div>
       <div class="theme-swatch" data-theme="light-blue" onclick="applyTheme('light-blue')" title="柔藍"><div style="background:linear-gradient(135deg,#eff6ff 50%,#3b82f6 50%);"></div><span>柔藍</span></div>
-      <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷"><div style="background:linear-gradient(135deg,#f0fdf4 50%,#c98a6f 50%);"></div><span>薄荷</span></div>
+      <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷"><div style="background:linear-gradient(135deg,#f0fdf4 50%,#22c55e 50%);"></div><span>薄荷</span></div>
+      <div class="theme-swatch" data-theme="light-sage" onclick="applyTheme('light-sage')" title="抹茶"><div style="background:linear-gradient(135deg,#f7f2e8 50%,#5c7a5f 50%);"></div><span>抹茶</span></div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -11278,10 +11286,11 @@ const THEMES = {
   'dark-purple': { '--bg':'#0a0614','--s1':'#160c2a','--s2':'#1c1036','--fg':'#f5f0ff','--accent':'#a78bfa','--accent-hi':'#c4b5fd','--accent-lo':'#7c3aed','--card-bg':'rgba(255,255,255,0.025)' },
   'dark-blue':   { '--bg':'#060a14','--s1':'#0c1428','--s2':'#0f1a36','--fg':'#eff6ff','--accent':'#60a5fa','--accent-hi':'#93c5fd','--accent-lo':'#2563eb','--card-bg':'rgba(255,255,255,0.025)' },
   'dark-gold':   { '--bg':'#0f0a02','--s1':'#1e1405','--s2':'#241808','--fg':'#fffbeb','--accent':'#f59e0b','--accent-hi':'#fbbf24','--accent-lo':'#d97706','--card-bg':'rgba(255,255,255,0.025)' },
-  'light-white': { '--bg':'#f8fafc','--s1':'#ffffff','--s2':'#f1f5f9','--fg':'#0f172a','--accent':'#d4a574','--accent-hi':'#c98a6f','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-white': { '--bg':'#f8fafc','--s1':'#ffffff','--s2':'#f1f5f9','--fg':'#0f172a','--accent':'#d4a574','--accent-hi':'#c98a6f','--accent-lo':'#a8663f','--card-bg':'rgba(0,0,0,0.03)' },
   'light-cream': { '--bg':'#faf8f5','--s1':'#ffffff','--s2':'#f3efe9','--fg':'#1c1408','--accent':'#ea580c','--accent-hi':'#fb923c','--accent-lo':'#c2410c','--card-bg':'rgba(0,0,0,0.03)' },
   'light-blue':  { '--bg':'#eff6ff','--s1':'#ffffff','--s2':'#dbeafe','--fg':'#0f172a','--accent':'#3b82f6','--accent-hi':'#60a5fa','--accent-lo':'#2563eb','--card-bg':'rgba(0,0,0,0.03)' },
-  'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#c98a6f','--accent-hi':'#d4a574','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-mint':  { '--bg':'#f0fdf4','--s1':'#ffffff','--s2':'#dcfce7','--fg':'#052e16','--accent':'#16a34a','--accent-hi':'#22c55e','--accent-lo':'#15803d','--card-bg':'rgba(0,0,0,0.03)' },
+  'light-sage':  { '--bg':'#f7f2e8','--s1':'#ffffff','--s2':'#efe7d6','--fg':'#2b2b26','--accent':'#5c7a5f','--accent-hi':'#7a9a7d','--accent-lo':'#46614a','--card-bg':'rgba(0,0,0,0.03)' },
 };
 
 function toggleThemePanel() {
@@ -12351,8 +12360,12 @@ function initMobileHome() {
           <span>柔藍</span>
         </div>
         <div class="theme-swatch" data-theme="light-mint" onclick="applyTheme('light-mint')" title="薄荷">
-          <div style="background:linear-gradient(135deg,#f0fdf4 50%,#c98a6f 50%);"></div>
+          <div style="background:linear-gradient(135deg,#f0fdf4 50%,#22c55e 50%);"></div>
           <span>薄荷</span>
+        </div>
+        <div class="theme-swatch" data-theme="light-sage" onclick="applyTheme('light-sage')" title="抹茶">
+          <div style="background:linear-gradient(135deg,#f7f2e8 50%,#5c7a5f 50%);"></div>
+          <span>抹茶</span>
         </div>
       </div>
     </div>
