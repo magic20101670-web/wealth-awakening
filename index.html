@@ -438,7 +438,7 @@ select option { background: #152a3c; }
   .jars-setup-currency, .goal-section-label { margin-bottom:2px; }
 }
 
-/* 六個罐子起始餘額設定 */
+/* 六個子帳戶起始餘額設定 */
 .jars-setup-currency { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#f0fdf4; padding:8px 14px; border-radius:10px; font-size:13px; font-family:'DM Sans',sans-serif; }
 .jars-setup-list { display:flex; flex-direction:column; gap:6px; margin:12px 0; }
 .jars-setup-row { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:7px 10px; }
@@ -2019,12 +2019,12 @@ body, .app-topbar, .app-bottom-nav, .app-page {
   </div>
 </div>
 
-<!-- 六個罐子起始餘額設定（首次登入） -->
+<!-- 六個子帳戶起始餘額設定（首次登入） -->
 <div class="dream-screen hidden" id="jars-balance-screen" style="z-index:1102">
   <div class="dream-intro">
     <div class="dream-setup-icon">🫙</div>
-    <div class="dream-intro-title" data-i18n="jarsSetup.title">設定你的六個罐子</div>
-    <div class="dream-intro-sub" data-i18n="jarsSetup.subtitle">六個罐子是你的財富分配系統。<br>先告訴我們你目前每個罐子裡大概有多少錢，<br>之後就能持續追蹤每個罐子的成長 📈</div>
+    <div class="dream-intro-title" data-i18n="jarsSetup.title">設定你的六個子帳戶</div>
+    <div class="dream-intro-sub" data-i18n="jarsSetup.subtitle">六個子帳戶是你的財富分配系統。<br>先告訴我們你目前每個子帳戶裡大概有多少錢，<br>之後就能持續追蹤每個子帳戶的成長 📈</div>
 
     <div style="display:flex;justify-content:flex-end;margin-bottom:4px">
       <select id="jars-setup-currency" class="jars-setup-currency" onchange="recalcJarsSetupBalances()">
@@ -2047,7 +2047,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
     <div class="jars-setup-list" id="jars-setup-list"></div>
 
-    <button class="dream-start-btn" onclick="saveJarsBalancesAndStart()" id="jars-setup-start-btn" data-i18n="jarsSetup.startBtn">開始追蹤我的罐子 🚀</button>
+    <button class="dream-start-btn" onclick="saveJarsBalancesAndStart()" id="jars-setup-start-btn" data-i18n="jarsSetup.startBtn">開始追蹤我的子帳戶 🚀</button>
     <button class="jars-setup-skip-btn" onclick="skipJarsBalanceSetup()" data-i18n="jarsSetup.skipBtn">稍後設定</button>
   </div>
 </div>
@@ -3491,11 +3491,11 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
     <button class="insight-card-dismiss" onclick="dismissPersonalityPrompt()">✕</button>
   </div>
 
-  <!-- 六個罐子 -->
+  <!-- 六個子帳戶 -->
   <div class="card" style="position:relative;z-index:1">
     <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none" onclick="toggleDesktopJars()">
       <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.jars.titleDesktop">💰🫙 六個罐子 · 收入分配系統</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.04em" data-i18n="goals.jars.titleDesktop">💰🫙 六個子帳戶 · 收入分配系統</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
@@ -3516,7 +3516,7 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
       </div>
       <div id="jars-visual-row" class="jar-visual-row"></div>
       <div id="jars-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"></div>
-      <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
+      <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個子帳戶</button>
       <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none;margin-top:12px"></div>
     </div>
   </div>
@@ -3870,10 +3870,14 @@ window.openPersonalityQuizFromPrompt = openPersonalityQuizFromPrompt;
               <div style="font-size:11px;color:var(--muted);margin-top:8px" data-i18n="asset.staking.hint">💡 自動換算：質押數量 × 當前幣價</div>
             </div>
           </div>
-          <!-- 基金/保險：年配息 -->
+          <!-- 基金/保險：配息（年配／月配） -->
           <div id="annual-fields" class="full" style="display:none">
             <div class="staking-box" style="border-color:rgba(167,139,250,0.2);background:rgba(139,92,246,0.05)">
               <div class="staking-label" style="color:#a78bfa" data-i18n="asset.annual.label">💼 配息設定</div>
+              <select id="annual-freq" class="full" style="margin-top:10px">
+                <option value="year" data-i18n="asset.annual.freq.year">📅 每年配息（填年度總額）</option>
+                <option value="month" data-i18n="asset.annual.freq.month">📆 每月配息（填每月金額）</option>
+              </select>
               <div class="form-grid" style="margin-top:10px">
                 <input type="number" id="annual-input" placeholder="每年配息金額（台幣）" data-i18n-placeholder="asset.annual.placeholder" min="0" step="any">
                 <div class="staking-preview" id="annual-preview" style="color:#a78bfa;border-color:rgba(167,139,250,0.2);background:rgba(139,92,246,0.08)">每月均攤：NT$ 0</div>
@@ -4151,8 +4155,7 @@ const firebaseApp = initializeApp({
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// TEMP 測試用：每次登入都重新顯示首次設定畫面（夢想設定／六個罐子）。測試完記得改回 false。
-const DEBUG_FORCE_ONBOARDING = true;
+const DEBUG_FORCE_ONBOARDING = false;
 
 let currentUser = null;
 let trendData = { labels:[], total:[], income:[] };
@@ -4594,24 +4597,24 @@ const TRANSLATIONS = {
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'萌芽中','home.stage.growing':'成長中','home.stage.flowing':'流動中','home.stage.almost':'快到了','home.stage.free':'✦ 自由',
     'home.dailyQuote.label':'今日財富頻率','home.dailyQuote.draw':'點擊抽取今日頻率',
     'home.personalityPrompt.title':'找出你的財富人格','home.personalityPrompt.desc':'5個問題，看看你是哪一種財富原型，讓建議更貼近你','home.personalityPrompt.cta':'立即測驗 →',
-    'goals.jars.sectionTitle':'六個罐子 · 收入分配',
-    'goals.jars.title':'💰🫙 六個罐子系統','goals.jars.titleDesktop':'💰🫙 六個罐子 · 收入分配系統',
+    'goals.jars.sectionTitle':'六個子帳戶 · 收入分配',
+    'goals.jars.title':'💰🫙 六個子帳戶系統','goals.jars.titleDesktop':'💰🫙 六個子帳戶 · 收入分配系統',
     'goals.jars.subtitle':'把每一塊錢分配到對的地方',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'計算',
     'goals.jars.totalOk':'合計 100% ✓','goals.jars.totalFmt':'合計 {pct}%',
     'goals.jars.diffMoreFmt':'多了 {pct}%','goals.jars.diffLessFmt':'少了 {pct}%',
-    'goals.jars.deposit':'存入六個罐子','goals.jars.depositToastFmt':'已將 {amt} 依比例存入六個罐子的餘額 🎉',
+    'goals.jars.deposit':'存入六個子帳戶','goals.jars.depositToastFmt':'已將 {amt} 依比例存入六個子帳戶的餘額 🎉',
     'goals.jars.adjust':'單筆存入','goals.jars.adjustPlaceholder':'+/-金額','goals.jars.adjustConfirm':'確認',
     'goals.jars.adjustToastFmt':'{jar} 單筆存入 {delta}，目前餘額 {balance} 🎉',
-    'jar.nec.name':'必要生活支出','jar.nec.desc':'房租、餐費、交通——維持生活的必要花費。如果這個數字超過 55%，代表生活負擔可能過重，值得重新審視固定支出。',
-    'jar.ffa.name':'財務自由帳戶','jar.ffa.desc':'只進不出。這筆錢專門用來投資——它產生的「收益」才能花，本金永遠留著讓錢替你工作。',
-    'jar.ltss.name':'長期儲蓄消費','jar.ltss.desc':'大型消費的備用金：旅遊、換車、換手機、裝修。專款專用，不跟日常費用混在一起。',
-    'jar.edu.name':'教育投資','jar.edu.desc':'投資你自己：線上課程、書籍、工作坊、技能培訓。你是你最重要的資產。',
-    'jar.play.name':'享樂帳戶','jar.play.desc':'不帶罪惡感地花掉，而且要全部花完。享樂帳戶讓你的大腦知道「有錢是好事」。',
-    'jar.give.name':'給予帳戶','jar.give.desc':'捐款、請朋友吃飯、幫助需要幫助的人。給予是財富循環的一部分。',
-    'jarsSetup.title':'設定你的六個罐子',
-    'jarsSetup.subtitle':'告訴我們每個罐子目前大概有多少錢 📈',
-    'jarsSetup.startBtn':'開始追蹤我的罐子 🚀','jarsSetup.skipBtn':'稍後設定','jarsSetup.currentBalance':'目前餘額',
+    'jar.nec.name':'必要支出','jar.nec.desc':'房租、餐費、交通——維持生活的必要花費。這類支出占比偏高時，值得重新檢視固定支出。',
+    'jar.ffa.name':'投資成長帳戶','jar.ffa.desc':'專門用於投資累積的資金，平時不挪用——投資產生的收益可以花用，本金持續留著繼續成長。',
+    'jar.ltss.name':'大額儲蓄','jar.ltss.desc':'規劃中的大筆花費準備金，例如換車、出國旅行、居家修繕，與日常開銷分開管理。',
+    'jar.edu.name':'自我成長','jar.edu.desc':'用於課程、書籍、講座與技能培養的投資，持續提升自己的能力與價值。',
+    'jar.play.name':'享樂','jar.play.desc':'設定一筆可以自由花用、不用有壓力的生活享受預算，讓理財也能兼顧生活品質。',
+    'jar.give.name':'公益','jar.give.desc':'捐款、請人吃飯、支持需要幫助的人——回饋也是理財習慣的一部分。',
+    'jarsSetup.title':'設定你的六個子帳戶',
+    'jarsSetup.subtitle':'告訴我們每個子帳戶目前大概有多少錢 📈',
+    'jarsSetup.startBtn':'開始追蹤我的子帳戶 🚀','jarsSetup.skipBtn':'稍後設定','jarsSetup.currentBalance':'目前餘額',
     'jarsSetup.totalAmountLabel':'💰 目前資產總額',
     'goalSetup.title':'設定月支出目標',
     'goalSetup.subtitle':'填寫每月支出，算出財務自由需要的現金流 💰',
@@ -4761,6 +4764,9 @@ const TRANSLATIONS = {
     'asset.gold.previewFmt':'💰 投入本金：{investment}<br>🥇 買入金價：{priceUsd} / oz（{priceTwd} / oz）<br>⚖️ 反推克重：<strong style="color:#fcd34d;font-size:14px">{oz} oz（{grams} 公克）</strong>',
     'asset.staking.label':'₿ 每月質押收益','asset.staking.placeholder':'每月獲得數量（如 0.002）','asset.staking.previewFmt':'≈ {amt} / 月','asset.staking.hint':'💡 自動換算：質押數量 × 當前幣價',
     'asset.annual.label':'💼 配息設定','asset.annual.placeholder':'每年配息金額（台幣）','asset.annual.previewFmt':'每月均攤：{amt}','asset.annual.hint':'💡 年配息 ÷ 12 = 每月均攤收益',
+    'asset.annual.freq.year':'📅 每年配息（填年度總額）','asset.annual.freq.month':'📆 每月配息（填每月金額）',
+    'asset.annual.placeholderMonth':'每月配息金額（台幣）','asset.annual.hintMonth':'💡 直接填寫每月配息金額',
+    'asset.fund.principalPlaceholder':'投入本金（台幣）',
     'asset.premium.label':'🛡️ 保費設定','asset.premium.placeholder':'保費金額（台幣）',
     'asset.premium.freq.month':'每月繳','asset.premium.freq.quarter':'每季繳（÷3）','asset.premium.freq.half':'每半年繳（÷6）','asset.premium.freq.year':'每年繳（÷12）',
     'asset.premium.previewFmt':'每月保費支出：{amt}','asset.premium.hint':'⚠️ 保費為支出，將從月現金流扣除',
@@ -4788,19 +4794,19 @@ const TRANSLATIONS = {
     'personality.magnet.name':'豐盛引力者','personality.magnet.tag':'直覺・感受力強','personality.magnet.desc':'擁有強大感受力，相信能量流動，豐盛自然吸引。',
     'personality.anchor.name':'穩定基石者','personality.anchor.tag':'穩健・重視安全','personality.anchor.desc':'重視安全感，腳踏實地，穩健也能走得很遠。',
     'personality.creator.name':'創造登峰者','personality.creator.tag':'創新・不走尋常路','personality.creator.desc':'有獨特想法，渴望突破，財富路徑由自己定義。',
-    'nav.tx':'交易','topbar.tx':'交易紀錄','nav.jarsTx':'罐子',
+    'nav.tx':'交易','topbar.tx':'交易紀錄','nav.jarsTx':'子帳戶',
     'tx.income':'💰 記錄收入','tx.expense':'💸 記錄支出',
-    'tx.modeAuto':'🔄 自動分配','tx.modeManual':'🫙 指定罐子',
+    'tx.modeAuto':'🔄 自動分配','tx.modeManual':'🫙 指定子帳戶',
     'tx.incomeTypeActive':'主動收入','tx.incomeTypePassive':'被動收入',
     'tx.expTypeVariable':'變動支出','tx.expTypeFixed':'固定支出',
     'tx.amount':'金額','tx.incomeType':'收入類型','tx.expenseType':'支出類型',
-    'tx.toJar':'存入罐子','tx.fromJar':'從哪個罐子','tx.date':'日期','tx.note':'備註（選填）',
+    'tx.toJar':'存入子帳戶','tx.fromJar':'從哪個子帳戶','tx.date':'日期','tx.note':'備註（選填）',
     'tx.notePlaceholder':'例：薪水、房租、餐費…',
-    'tx.distPreview':'分配預覽','tx.jarSummary':'罐子餘額',
+    'tx.distPreview':'分配預覽','tx.jarSummary':'子帳戶餘額',
     'tx.btnRecord':'記錄並分配','tx.btnRecordManual':'記錄收入','tx.btnRecordExp':'記錄支出',
     'tx.history':'交易紀錄','tx.noHistory':'尚無交易紀錄',
-    'tx.ffaLink':'💎 FFA 資金 → 前往新增資產',
-    'tx.toastAuto':'分配完成：{amt} 已存入六個罐子',
+    'tx.ffaLink':'💎 成長帳戶資金 → 前往新增資產',
+    'tx.toastAuto':'分配完成：{amt} 已存入六個子帳戶',
     'tx.toastManual':'已記錄 {amt} 至 {jar}',
     'tx.toastExp':'已從 {jar} 記錄支出 {amt}',
   },
@@ -4819,24 +4825,24 @@ const TRANSLATIONS = {
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'萌芽中','home.stage.growing':'成长中','home.stage.flowing':'流动中','home.stage.almost':'快到了','home.stage.free':'✦ 自由',
     'home.dailyQuote.label':'今日财富频率','home.dailyQuote.draw':'点击抽取今日频率',
     'home.personalityPrompt.title':'找出你的财富人格','home.personalityPrompt.desc':'5个问题，看看你是哪一种财富原型，让建议更贴近你','home.personalityPrompt.cta':'立即测验 →',
-    'goals.jars.sectionTitle':'六个罐子 · 收入分配',
-    'goals.jars.title':'💰🫙 六个罐子系统','goals.jars.titleDesktop':'💰🫙 六个罐子 · 收入分配系统',
+    'goals.jars.sectionTitle':'六个子账户 · 收入分配',
+    'goals.jars.title':'💰🫙 六个子账户系统','goals.jars.titleDesktop':'💰🫙 六个子账户 · 收入分配系统',
     'goals.jars.subtitle':'把每一块钱分配到对的地方',
     'goals.jars.incomeLabel':'💰 本次收入','goals.jars.calculate':'计算',
     'goals.jars.totalOk':'合计 100% ✓','goals.jars.totalFmt':'合计 {pct}%',
     'goals.jars.diffMoreFmt':'多了 {pct}%','goals.jars.diffLessFmt':'少了 {pct}%',
-    'goals.jars.deposit':'存入六个罐子','goals.jars.depositToastFmt':'已将 {amt} 按比例存入六个罐子的余额 🎉',
+    'goals.jars.deposit':'存入六个子账户','goals.jars.depositToastFmt':'已将 {amt} 按比例存入六个子账户的余额 🎉',
     'goals.jars.adjust':'单笔存入','goals.jars.adjustPlaceholder':'+/-金额','goals.jars.adjustConfirm':'确认',
     'goals.jars.adjustToastFmt':'{jar} 单笔存入 {delta}，目前余额 {balance} 🎉',
-    'jar.nec.name':'必要生活支出','jar.nec.desc':'房租、餐费、交通——维持生活的必要花费。如果这个数字超过 55%，代表生活负担可能过重，值得重新审视固定支出。',
-    'jar.ffa.name':'财务自由账户','jar.ffa.desc':'只进不出。这笔钱专门用来投资——它产生的「收益」才能花，本金永远留着让钱替你工作。',
-    'jar.ltss.name':'长期储蓄消费','jar.ltss.desc':'大型消费的备用金：旅游、换车、换手机、装修。专款专用，不跟日常费用混在一起。',
-    'jar.edu.name':'教育投资','jar.edu.desc':'投资你自己：在线课程、书籍、工作坊、技能培训。你是你最重要的资产。',
-    'jar.play.name':'享乐账户','jar.play.desc':'不带罪恶感地花掉，而且要全部花完。享乐账户让你的大脑知道「有钱是好事」。',
-    'jar.give.name':'给予账户','jar.give.desc':'捐款、请朋友吃饭、帮助需要帮助的人。给予是财富循环的一部分。',
-    'jarsSetup.title':'设置你的六个罐子',
-    'jarsSetup.subtitle':'告诉我们每个罐子目前大概有多少钱 📈',
-    'jarsSetup.startBtn':'开始追踪我的罐子 🚀','jarsSetup.skipBtn':'稍后设置','jarsSetup.currentBalance':'目前余额',
+    'jar.nec.name':'必要支出','jar.nec.desc':'房租、餐费、交通——维持生活的必要花费。这类支出占比偏高时，值得重新检视固定支出。',
+    'jar.ffa.name':'投资成长账户','jar.ffa.desc':'专门用于投资累积的资金，平时不挪用——投资产生的收益可以花用，本金持续留着继续成长。',
+    'jar.ltss.name':'大额储蓄','jar.ltss.desc':'规划中的大笔花费准备金，例如换车、出国旅行、居家装修，与日常开销分开管理。',
+    'jar.edu.name':'自我成长','jar.edu.desc':'用于课程、书籍、讲座与技能培养的投资，持续提升自己的能力与价值。',
+    'jar.play.name':'享乐','jar.play.desc':'设定一笔可以自由花用、不用有压力的生活享受预算，让理财也能兼顾生活品质。',
+    'jar.give.name':'公益','jar.give.desc':'捐款、请人吃饭、支持需要帮助的人——回馈也是理财习惯的一部分。',
+    'jarsSetup.title':'设置你的六个子账户',
+    'jarsSetup.subtitle':'告诉我们每个子账户目前大概有多少钱 📈',
+    'jarsSetup.startBtn':'开始追踪我的子账户 🚀','jarsSetup.skipBtn':'稍后设置','jarsSetup.currentBalance':'目前余额',
     'jarsSetup.totalAmountLabel':'💰 目前资产总额',
     'goalSetup.title':'设置月支出目标',
     'goalSetup.subtitle':'填写每月支出，算出财务自由需要的现金流 💰',
@@ -4986,6 +4992,9 @@ const TRANSLATIONS = {
     'asset.gold.previewFmt':'💰 投入本金：{investment}<br>🥇 买入金价：{priceUsd} / oz（{priceTwd} / oz）<br>⚖️ 反推克重：<strong style="color:#fcd34d;font-size:14px">{oz} oz（{grams} 克）</strong>',
     'asset.staking.label':'₿ 每月质押收益','asset.staking.placeholder':'每月获得数量（如 0.002）','asset.staking.previewFmt':'≈ {amt} / 月','asset.staking.hint':'💡 自动换算：质押数量 × 当前币价',
     'asset.annual.label':'💼 配息设置','asset.annual.placeholder':'每年配息金额（台币）','asset.annual.previewFmt':'每月均摊：{amt}','asset.annual.hint':'💡 年配息 ÷ 12 = 每月均摊收益',
+    'asset.annual.freq.year':'📅 每年配息（填年度总额）','asset.annual.freq.month':'📆 每月配息（填每月金额）',
+    'asset.annual.placeholderMonth':'每月配息金额（台币）','asset.annual.hintMonth':'💡 直接填写每月配息金额',
+    'asset.fund.principalPlaceholder':'投入本金（台币）',
     'asset.premium.label':'🛡️ 保费设置','asset.premium.placeholder':'保费金额（台币）',
     'asset.premium.freq.month':'每月缴','asset.premium.freq.quarter':'每季缴（÷3）','asset.premium.freq.half':'每半年缴（÷6）','asset.premium.freq.year':'每年缴（÷12）',
     'asset.premium.previewFmt':'每月保费支出：{amt}','asset.premium.hint':'⚠️ 保费为支出，将从月现金流扣除',
@@ -5013,19 +5022,19 @@ const TRANSLATIONS = {
     'personality.magnet.name':'丰盛引力者','personality.magnet.tag':'直觉・感受力强','personality.magnet.desc':'拥有强大感受力，相信能量流动，丰盛自然吸引。',
     'personality.anchor.name':'稳定基石者','personality.anchor.tag':'稳健・重视安全','personality.anchor.desc':'重视安全感，脚踏实地，稳健也能走得很远。',
     'personality.creator.name':'创造登峰者','personality.creator.tag':'创新・不走寻常路','personality.creator.desc':'有独特想法，渴望突破，财富路径由自己定义。',
-    'nav.tx':'交易','topbar.tx':'交易记录','nav.jarsTx':'罐子',
+    'nav.tx':'交易','topbar.tx':'交易记录','nav.jarsTx':'子账户',
     'tx.income':'💰 记录收入','tx.expense':'💸 记录支出',
-    'tx.modeAuto':'🔄 自动分配','tx.modeManual':'🫙 指定罐子',
+    'tx.modeAuto':'🔄 自动分配','tx.modeManual':'🫙 指定子账户',
     'tx.incomeTypeActive':'主动收入','tx.incomeTypePassive':'被动收入',
     'tx.expTypeVariable':'变动支出','tx.expTypeFixed':'固定支出',
     'tx.amount':'金额','tx.incomeType':'收入类型','tx.expenseType':'支出类型',
-    'tx.toJar':'存入罐子','tx.fromJar':'从哪个罐子','tx.date':'日期','tx.note':'备注（选填）',
+    'tx.toJar':'存入子账户','tx.fromJar':'从哪个子账户','tx.date':'日期','tx.note':'备注（选填）',
     'tx.notePlaceholder':'例：薪水、房租、餐费…',
-    'tx.distPreview':'分配预览','tx.jarSummary':'罐子余额',
+    'tx.distPreview':'分配预览','tx.jarSummary':'子账户余额',
     'tx.btnRecord':'记录并分配','tx.btnRecordManual':'记录收入','tx.btnRecordExp':'记录支出',
     'tx.history':'交易记录','tx.noHistory':'暂无交易记录',
-    'tx.ffaLink':'💎 FFA 资金 → 前往新增资产',
-    'tx.toastAuto':'分配完成：{amt} 已存入六个罐子',
+    'tx.ffaLink':'💎 成长账户资金 → 前往新增资产',
+    'tx.toastAuto':'分配完成：{amt} 已存入六个子账户',
     'tx.toastManual':'已记录 {amt} 至 {jar}',
     'tx.toastExp':'已从 {jar} 记录支出 {amt}',
   },
@@ -5044,24 +5053,24 @@ const TRANSLATIONS = {
     'home.stage.awakening':'AWAKENING','home.stage.sprouting':'Sprouting','home.stage.growing':'Growing','home.stage.flowing':'Flowing','home.stage.almost':'Almost there','home.stage.free':'✦ Free',
     'home.dailyQuote.label':"Today's Wealth Frequency",'home.dailyQuote.draw':'Tap to draw today\'s frequency',
     'home.personalityPrompt.title':'Discover Your Wealth Personality','home.personalityPrompt.desc':'Answer 5 quick questions to find your wealth archetype and get advice tailored to you','home.personalityPrompt.cta':'Take the Quiz →',
-    'goals.jars.sectionTitle':'Six Jars · Income Allocation',
-    'goals.jars.title':'💰🫙 The Six Jars System','goals.jars.titleDesktop':'💰🫙 Six Jars · Income Allocation System',
+    'goals.jars.sectionTitle':'Six Sub-Accounts · Income Allocation',
+    'goals.jars.title':'💰🫙 The Six Sub-Accounts System','goals.jars.titleDesktop':'💰🫙 Six Sub-Accounts · Income Allocation System',
     'goals.jars.subtitle':'Give every dollar a job',
     'goals.jars.incomeLabel':'💰 Income to Allocate','goals.jars.calculate':'Calculate',
     'goals.jars.totalOk':'Total 100% ✓','goals.jars.totalFmt':'Total {pct}%',
     'goals.jars.diffMoreFmt':'{pct}% over','goals.jars.diffLessFmt':'{pct}% short',
-    'goals.jars.deposit':'Deposit to Jars','goals.jars.depositToastFmt':'{amt} has been allocated into your Six Jars 🎉',
+    'goals.jars.deposit':'Deposit to Accounts','goals.jars.depositToastFmt':'{amt} has been allocated into your six accounts 🎉',
     'goals.jars.adjust':'Single Deposit','goals.jars.adjustPlaceholder':'+/- amount','goals.jars.adjustConfirm':'Confirm',
     'goals.jars.adjustToastFmt':'{jar} single deposit {delta}, new balance {balance} 🎉',
-    'jar.nec.name':'Necessities','jar.nec.desc':'Rent, food, transport — the essentials for daily life. If this exceeds 55%, your living costs may be too high, worth reviewing your fixed expenses.',
-    'jar.ffa.name':'Financial Freedom Account','jar.ffa.desc':'In, never out. This money is for investing only — only the returns it generates can be spent. The principal stays invested, working for you forever.',
-    'jar.ltss.name':'Long-Term Savings for Spending','jar.ltss.desc':'A reserve for big purchases: travel, a new car, a new phone, renovations. Keep it separate from everyday spending.',
-    'jar.edu.name':'Education','jar.edu.desc':'Invest in yourself: online courses, books, workshops, skill-building. You are your most important asset.',
-    'jar.play.name':'Play','jar.play.desc':'Spend it guilt-free, and spend it all. This jar trains your brain to know that having money is good.',
-    'jar.give.name':'Give','jar.give.desc':'Donate, treat a friend, help someone in need. Giving is part of the cycle of wealth.',
-    'jarsSetup.title':'Set Up Your Six Jars',
-    'jarsSetup.subtitle':'Tell us roughly how much is in each jar right now 📈',
-    'jarsSetup.startBtn':'Start Tracking My Jars 🚀','jarsSetup.skipBtn':'Set Up Later','jarsSetup.currentBalance':'Current Balance',
+    'jar.nec.name':'Necessities','jar.nec.desc':'Rent, food, transport — the essentials for daily life. If this share runs high, it may be worth reviewing your fixed expenses.',
+    'jar.ffa.name':'Growth Account','jar.ffa.desc':'Money set aside for investing and left alone — only the returns it generates get spent, while the principal keeps growing.',
+    'jar.ltss.name':'Big-Ticket Savings','jar.ltss.desc':'A reserve for planned big purchases — a new car, a trip, home renovations — kept separate from everyday spending.',
+    'jar.edu.name':'Self-Growth','jar.edu.desc':'Spent on courses, books, and workshops that build your skills and raise your own value over time.',
+    'jar.play.name':'Fun','jar.play.desc':'A budget you can spend freely on enjoying life, without guilt or pressure, to keep money management sustainable.',
+    'jar.give.name':'Giving','jar.give.desc':'Donations, treating someone, helping people in need — giving back is part of a healthy money habit too.',
+    'jarsSetup.title':'Set Up Your Six Sub-Accounts',
+    'jarsSetup.subtitle':'Tell us roughly how much is in each account right now 📈',
+    'jarsSetup.startBtn':'Start Tracking My Accounts 🚀','jarsSetup.skipBtn':'Set Up Later','jarsSetup.currentBalance':'Current Balance',
     'jarsSetup.totalAmountLabel':'💰 Current Total Assets',
     'goalSetup.title':'Set Monthly Expense Goal',
     'goalSetup.subtitle':'Fill in your monthly expenses to calculate your freedom target 💰',
@@ -5211,6 +5220,9 @@ const TRANSLATIONS = {
     'asset.gold.previewFmt':'💰 Capital invested: {investment}<br>🥇 Buy price: {priceUsd} / oz ({priceTwd} / oz)<br>⚖️ Calculated weight: <strong style="color:#fcd34d;font-size:14px">{oz} oz ({grams} g)</strong>',
     'asset.staking.label':'₿ Monthly Staking Rewards','asset.staking.placeholder':'Monthly amount received (e.g. 0.002)','asset.staking.previewFmt':'≈ {amt} / mo','asset.staking.hint':'💡 Auto-converted: staking quantity × current price',
     'asset.annual.label':'💼 Dividend Settings','asset.annual.placeholder':'Annual dividend amount (TWD)','asset.annual.previewFmt':'Monthly avg: {amt}','asset.annual.hint':'💡 Annual dividend ÷ 12 = monthly average income',
+    'asset.annual.freq.year':'📅 Annual dividend (enter yearly total)','asset.annual.freq.month':'📆 Monthly dividend (enter monthly amount)',
+    'asset.annual.placeholderMonth':'Monthly dividend amount (TWD)','asset.annual.hintMonth':'💡 Enter the monthly dividend amount directly',
+    'asset.fund.principalPlaceholder':'Principal invested (TWD)',
     'asset.premium.label':'🛡️ Premium Settings','asset.premium.placeholder':'Premium amount (TWD)',
     'asset.premium.freq.month':'Monthly','asset.premium.freq.quarter':'Quarterly (÷3)','asset.premium.freq.half':'Semi-annual (÷6)','asset.premium.freq.year':'Annual (÷12)',
     'asset.premium.previewFmt':'Monthly premium expense: {amt}','asset.premium.hint':'⚠️ Premium is an expense and will be deducted from monthly cash flow',
@@ -5238,18 +5250,18 @@ const TRANSLATIONS = {
     'personality.magnet.name':'THE MAGNET','personality.magnet.tag':'Intuitive · Highly Sensitive','personality.magnet.desc':'With strong intuition and trust in the flow of energy, abundance comes naturally to you.',
     'personality.anchor.name':'THE ANCHOR','personality.anchor.tag':'Steady · Security-Focused','personality.anchor.desc':'Security-minded and grounded — steady steps can take you just as far.',
     'personality.creator.name':'THE CREATOR','personality.creator.tag':'Innovative · Unconventional','personality.creator.desc':'With original ideas and a drive to break through, you define your own path to wealth.',
-    'nav.tx':'Record','topbar.tx':'Transactions','nav.jarsTx':'Jars',
+    'nav.tx':'Record','topbar.tx':'Transactions','nav.jarsTx':'Accounts',
     'tx.income':'💰 Log Income','tx.expense':'💸 Log Expense',
-    'tx.modeAuto':'🔄 Auto-Distribute','tx.modeManual':'🫙 To Specific Jar',
+    'tx.modeAuto':'🔄 Auto-Distribute','tx.modeManual':'🫙 To Specific Account',
     'tx.incomeTypeActive':'Active Income','tx.incomeTypePassive':'Passive Income',
     'tx.expTypeVariable':'Variable','tx.expTypeFixed':'Fixed',
     'tx.amount':'Amount','tx.incomeType':'Income Type','tx.expenseType':'Expense Type',
-    'tx.toJar':'To Jar','tx.fromJar':'From Jar','tx.date':'Date','tx.note':'Note (optional)',
+    'tx.toJar':'To Account','tx.fromJar':'From Account','tx.date':'Date','tx.note':'Note (optional)',
     'tx.notePlaceholder':'e.g. Salary, Rent, Groceries…',
-    'tx.distPreview':'Distribution Preview','tx.jarSummary':'Jar Balances',
+    'tx.distPreview':'Distribution Preview','tx.jarSummary':'Account Balances',
     'tx.btnRecord':'Record & Distribute','tx.btnRecordManual':'Record Income','tx.btnRecordExp':'Record Expense',
     'tx.history':'Transaction History','tx.noHistory':'No transactions yet',
-    'tx.ffaLink':'💎 FFA Funds → Add Asset',
+    'tx.ffaLink':'💎 Growth Account Funds → Add Asset',
     'tx.toastAuto':'Done: {amt} distributed to 6 jars',
     'tx.toastManual':'Recorded {amt} to {jar}',
     'tx.toastExp':'Expense of {amt} recorded from {jar}',
@@ -5804,10 +5816,12 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
   btn.disabled=true; btn.textContent=t('asset.addingBtn');
   try {
     const annualIncome = parseFloat(document.getElementById('annual-input')?.value)||0;
+    const annualFreq = document.getElementById('annual-freq')?.value || 'year';
     const income = isFundIns
-      ? Math.round(annualIncome / 12)
+      ? (annualFreq === 'month' ? Math.round(annualIncome) : Math.round(annualIncome / 12))
       : (parseFloat(document.getElementById('income-input').value)||0);
-    const annualDividend = isFundIns ? annualIncome : 0;
+    // annualDividend 一律記錄「年度總額」，方便資產卡片一致顯示「年配息」，不論填寫時是年配或月配
+    const annualDividend = isFundIns ? (annualFreq === 'month' ? Math.round(annualIncome * 12) : annualIncome) : 0;
 
     // 保費計算
     let premiumMonthly = 0;
@@ -5839,7 +5853,8 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
       : (curPrice||(await fetchPrice(selSym)));
     // 黃金存摺：用 XAUUSD 追蹤，記錄投入本金
     const storedSym = isGoldPassbook ? 'XAUUSD' : selSym;
-    const investment = isGoldPassbook ? (parseFloat(document.getElementById('gp-investment').value)||0) : 0;
+    // 基金：買入價格欄位即為「投入本金」（填總額，quantity 預設 1），沿用與黃金存摺相同的本金顯示欄位
+    const investment = isGoldPassbook ? (parseFloat(document.getElementById('gp-investment').value)||0) : (cat === 'fund' ? buyTWD : 0);
     const reason = (document.getElementById('reason-input')?.value || '').trim();
     const createdAt = Date.now();
     const ref=await addDoc(userCol(),{symbol:storedSym,name:selName,quantity:qty,qtyUnit,buyPrice:buyTWD,currentPrice:price,monthlyIncome:income,annualDividend,premiumMonthly,stakeQty,currency,category:cat,investment,reason,createdAt});
@@ -5863,6 +5878,8 @@ document.getElementById('add-btn').addEventListener('click', async ()=>{
     document.getElementById('buy-input').value='';
     document.getElementById('income-input').value='';
     document.getElementById('annual-input').value='';
+    document.getElementById('annual-freq').value='year';
+    syncAnnualFreqLabels();
     document.getElementById('annual-preview').textContent=t('asset.annual.previewFmt').replace('{amt}', formatCurrency(0));
     document.getElementById('premium-input').value='';
     document.getElementById('premium-preview').textContent=t('asset.premium.previewFmt').replace('{amt}', formatCurrency(0));
@@ -6117,11 +6134,17 @@ function toggleStakingFields() {
   }
   // 黃金存摺特殊欄位
   const isGoldPassbook = (selSym === 'GOLD_PASSBOOK');
+  const isFund = cat === 'fund';
   document.getElementById('gold-passbook-fields').style.display = isGoldPassbook ? 'block' : 'none';
   const qtyWrap = document.getElementById('qty-unit')?.closest('div');
-  if (qtyWrap) qtyWrap.style.display = isGoldPassbook ? 'none' : 'flex';
+  if (qtyWrap) qtyWrap.style.display = (isGoldPassbook || isFund) ? 'none' : 'flex';
   document.getElementById('buy-input').style.display = isGoldPassbook ? 'none' : 'block';
   if (!isGoldPassbook) { gpWeight = 0; document.getElementById('gp-preview').style.display='none'; }
+  // 基金：買入價格欄位改為「投入本金」（基金用投入本金，不追蹤單位/股數）
+  const buyInputEl = document.getElementById('buy-input');
+  const buyPlaceholderKey = isFund ? 'asset.fund.principalPlaceholder' : 'asset.buyPlaceholder';
+  buyInputEl.placeholder = t(buyPlaceholderKey);
+  buyInputEl.setAttribute('data-i18n-placeholder', buyPlaceholderKey);
   const unitMap = {
     crypto:'coin', stock:'share', etf:'share', gold:'oz',
     bond:'unit', deposit:'unit', lending:'unit',
@@ -6133,8 +6156,13 @@ function toggleStakingFields() {
   // 質押欄位（只有加密貨幣）
   document.getElementById('staking-fields').style.display = isCrypto ? 'block' : 'none';
 
-  // 年配息（基金/保險）
+  // 配息（基金/保險，年配／月配）
   document.getElementById('annual-fields').style.display = isFundIns ? 'block' : 'none';
+  if (isFundIns) {
+    const freqEl = document.getElementById('annual-freq');
+    if (freqEl) freqEl.value = 'year';
+    syncAnnualFreqLabels();
+  }
 
   // 保費（只有保險）
   document.getElementById('premium-fields').style.display = isInsurance ? 'block' : 'none';
@@ -6147,14 +6175,27 @@ function toggleStakingFields() {
 catSelectEl.addEventListener('change', toggleStakingFields);
 toggleStakingFields();
 
-// 年配息自動換算月均
+// 配息自動換算月均（年配 ÷12，月配直接採用）
 function updateAnnualPreview() {
   const annual = +document.getElementById('annual-input').value || 0;
-  const monthly = Math.round(annual / 12);
+  const freq = document.getElementById('annual-freq')?.value || 'year';
+  const monthly = freq === 'month' ? Math.round(annual) : Math.round(annual / 12);
   document.getElementById('annual-preview').textContent = t('asset.annual.previewFmt').replace('{amt}', formatCurrency(monthly));
   document.getElementById('income-input').value = monthly;
 }
 document.getElementById('annual-input').addEventListener('input', updateAnnualPreview);
+document.getElementById('annual-freq').addEventListener('change', ()=>{ syncAnnualFreqLabels(); updateAnnualPreview(); });
+
+// 切換年配／月配時，同步輸入框 placeholder 與提示文字
+function syncAnnualFreqLabels() {
+  const freq = document.getElementById('annual-freq')?.value || 'year';
+  const input = document.getElementById('annual-input');
+  const hint = input?.closest('.staking-box')?.querySelector('[data-i18n="asset.annual.hint"], [data-i18n="asset.annual.hintMonth"]');
+  const placeholderKey = freq === 'month' ? 'asset.annual.placeholderMonth' : 'asset.annual.placeholder';
+  const hintKey = freq === 'month' ? 'asset.annual.hintMonth' : 'asset.annual.hint';
+  if (input) { input.placeholder = t(placeholderKey); input.setAttribute('data-i18n-placeholder', placeholderKey); }
+  if (hint) { hint.textContent = t(hintKey); hint.setAttribute('data-i18n', hintKey); }
+}
 
 // 保費換算月均支出
 function updatePremiumPreview() {
@@ -6176,7 +6217,12 @@ function updateStakeTWD() {
 // 語言/幣別切換時，重新套用目前分類相關的預覽文字（不影響其他分類隱藏欄位）
 function refreshAssetPreviews() {
   const cat = catSelectEl.value;
-  if (cat === 'fund' || cat === 'insurance') updateAnnualPreview();
+  if (cat === 'fund' || cat === 'insurance') { syncAnnualFreqLabels(); updateAnnualPreview(); }
+  if (cat === 'fund') {
+    const buyInputEl = document.getElementById('buy-input');
+    buyInputEl.placeholder = t('asset.fund.principalPlaceholder');
+    buyInputEl.setAttribute('data-i18n-placeholder', 'asset.fund.principalPlaceholder');
+  }
   if (cat === 'insurance') updatePremiumPreview();
   if (cat === 'crypto') updateStakeTWD();
   if (selSym === 'GOLD_PASSBOOK') {
@@ -7893,18 +7939,18 @@ function _getRdInsight(cf, purpose) {
 // ── Six Jars System ──
 
 const JARS_DEFAULTS = [
-  { id:'nec', abbr:'NEC', name:'必要生活支出', pct:55, emoji:'🏠',
-    desc:'房租、餐費、交通——維持生活的必要花費。如果這個數字超過 55%，代表生活負擔可能過重，值得重新審視固定支出。' },
-  { id:'ffa', abbr:'FFA', name:'財務自由帳戶', pct:10, emoji:'📈',
-    desc:'只進不出。這筆錢專門用來投資——它產生的「收益」才能花，本金永遠留著讓錢替你工作。' },
-  { id:'ltss', abbr:'LTSS', name:'長期儲蓄消費', pct:10, emoji:'✈️',
-    desc:'大型消費的備用金：旅遊、換車、換手機、裝修。專款專用，不跟日常費用混在一起。' },
-  { id:'edu', abbr:'EDU', name:'教育投資', pct:10, emoji:'📚',
-    desc:'投資你自己：線上課程、書籍、工作坊、技能培訓。你是你最重要的資產。' },
-  { id:'play', abbr:'PLAY', name:'享樂帳戶', pct:10, emoji:'🎉',
-    desc:'不帶罪惡感地花掉，而且要全部花完。享樂帳戶讓你的大腦知道「有錢是好事」。' },
-  { id:'give', abbr:'GIVE', name:'給予帳戶', pct:5, emoji:'🤝',
-    desc:'捐款、請朋友吃飯、幫助需要幫助的人。給予是財富循環的一部分。' }
+  { id:'nec', abbr:'必要', name:'必要支出', pct:50, emoji:'🏠',
+    desc:'房租、餐費、交通——維持生活的必要花費。這類支出占比偏高時，值得重新檢視固定支出。' },
+  { id:'ffa', abbr:'成長', name:'投資成長帳戶', pct:15, emoji:'📈',
+    desc:'專門用於投資累積的資金，平時不挪用——投資產生的收益可以花用，本金持續留著繼續成長。' },
+  { id:'ltss', abbr:'儲蓄', name:'大額儲蓄', pct:12, emoji:'✈️',
+    desc:'規劃中的大筆花費準備金，例如換車、出國旅行、居家修繕，與日常開銷分開管理。' },
+  { id:'edu', abbr:'學習', name:'自我成長', pct:8, emoji:'📚',
+    desc:'用於課程、書籍、講座與技能培養的投資，持續提升自己的能力與價值。' },
+  { id:'play', abbr:'享樂', name:'享樂', pct:10, emoji:'🎉',
+    desc:'設定一筆可以自由花用、不用有壓力的生活享受預算，讓理財也能兼顧生活品質。' },
+  { id:'give', abbr:'公益', name:'公益', pct:5, emoji:'🤝',
+    desc:'捐款、請人吃飯、支持需要幫助的人——回饋也是理財習慣的一部分。' }
 ];
 
 // 各罐子「調整餘額」輸入框是否展開
@@ -8118,26 +8164,26 @@ function updateFfaTip(income) {
 
   let tip = '';
   if (ffaAmt < 1000) {
-    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：金額較小，先放入<strong>高利活存帳戶</strong>（如 Richart、將來銀行）累積。等到 NT$3,000 以上再開始投資，小額但持續才是最重要的習慣。`;
+    tip = `<strong>成長帳戶 NT$${ffaAmt.toLocaleString()}</strong>：金額較小，先放入<strong>高利活存帳戶</strong>（如 Richart、將來銀行）累積。等到 NT$3,000 以上再開始投資，小額但持續才是最重要的習慣。`;
   } else if (ffaAmt < 5000) {
-    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：可以開始 <strong>ETF 定期定額</strong>（如 0050）。每月固定投入，讓時間複利幫你工作。`;
+    tip = `<strong>成長帳戶 NT$${ffaAmt.toLocaleString()}</strong>：可以開始 <strong>ETF 定期定額</strong>（如 0050）。每月固定投入，讓時間複利幫你工作。`;
   } else if (ffaAmt < 20000) {
     const missing = [];
     if (!hasType('stock') && !hasType('etf')) missing.push('ETF（0050/0056）');
     if (!hasType('gold')) missing.push('黃金');
     if (!hasType('crypto')) missing.push('加密貨幣小倉位');
     const suggest = missing.length > 0 ? missing[0] : 'ETF 定期定額';
-    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：這個金額可以開始分散資產。你目前沒有持有 <strong>${suggest}</strong>，是個考慮佈局的時機。`;
+    tip = `<strong>成長帳戶 NT$${ffaAmt.toLocaleString()}</strong>：這個金額可以開始分散資產。你目前沒有持有 <strong>${suggest}</strong>，是個考慮佈局的時機。`;
   } else {
-    tip = `<strong>FFA NT$${ffaAmt.toLocaleString()}</strong>：金額夠大，可以考慮多元配置。查看你的資產頁面，找出最集中的類別，用 FFA 開始再平衡。`;
+    tip = `<strong>成長帳戶 NT$${ffaAmt.toLocaleString()}</strong>：金額夠大，可以考慮多元配置。查看你的資產頁面，找出最集中的類別，從成長帳戶開始再平衡。`;
   }
 
-  tip += `<br><span style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;display:block">小提醒：FFA 只進不出——投資產生的收益才能花，本金永遠留著。</span>`;
+  tip += `<br><span style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px;display:block">小提醒：成長帳戶的錢平時不挪用——投資產生的收益才能花，本金持續留著。</span>`;
   tipEl.innerHTML = tip;
   tipEl.style.display = 'block';
 }
 
-// ── 六個罐子 存入幣別換算系統 ──
+// ── 六個子帳戶 存入幣別換算系統 ──
 let jarDepositCurrency = currentCurrency || 'TWD';
 let _jarDepCurUserOverride = false;
 const _jarDepFxCache = {};
@@ -8196,7 +8242,7 @@ async function updateJarDepConvertPreview() {
 window.onJarDepCurChange = onJarDepCurChange;
 window.updateJarDepConvertPreview = updateJarDepConvertPreview;
 
-// 將輸入的收入（不論是每月固定收入或一次性獲利）依比例存入六個罐子的實際餘額
+// 將輸入的收入（不論是每月固定收入或一次性獲利）依比例存入六個子帳戶的實際餘額
 async function depositJarsIncome() {
   if (!currentUser) return;
   let incomeRaw = 0;
@@ -8315,7 +8361,7 @@ window.onJarPctChange = onJarPctChange;
 window.toggleJars = toggleJars;
 window.toggleDesktopJars = toggleDesktopJars;
 
-// ── 六個罐子起始餘額設定（首次登入） ──
+// ── 六個子帳戶起始餘額設定（首次登入） ──
 
 function renderJarsBalanceSetup() {
   const list = document.getElementById('jars-setup-list');
@@ -8564,7 +8610,7 @@ function initTxAssetListeners() {
 async function recordBuyAsset() {
   if (!currentUser) return;
   const jarId = document.getElementById('tx-asset-jar')?.value;
-  if (!jarId) { showWaToast('⚠️','請選擇罐子',''); return; }
+  if (!jarId) { showWaToast('⚠️','請選擇子帳戶',''); return; }
   const raw = parseFloat((document.getElementById('tx-asset-amount')?.value || '').replace(/[,，\s]/g,''));
   if (!raw || raw <= 0) { showWaToast('⚠️','請輸入投入金額',''); return; }
   const cat = document.getElementById('tx-asset-cat')?.value || 'crypto';
@@ -8682,7 +8728,7 @@ async function recordIncome() {
     const raw = parseFloat((document.getElementById('tx-manual-amount')?.value || '').replace(/[,，\s]/g,''));
     if (!raw || raw <= 0) { showWaToast('⚠️','請輸入金額',''); return; }
     const jarId = document.getElementById('tx-manual-jar')?.value;
-    if (!jarId) { showWaToast('⚠️','請選擇罐子',''); return; }
+    if (!jarId) { showWaToast('⚠️','請選擇子帳戶',''); return; }
     const note = document.getElementById('tx-manual-note')?.value || '';
     const dateVal = document.getElementById('tx-manual-date')?.value || new Date().toISOString().slice(0,10);
     const inTWD = currentCurrency === 'USD' ? raw * usdTwd : currentCurrency === 'MYR' ? raw * usdTwd / usdMyr : raw;
@@ -8711,7 +8757,7 @@ async function recordExpense() {
   const raw = parseFloat((document.getElementById('tx-exp-amount')?.value || '').replace(/[,，\s]/g,''));
   if (!raw || raw <= 0) { showWaToast('⚠️','請輸入金額',''); return; }
   const jarId = document.getElementById('tx-exp-jar')?.value;
-  if (!jarId) { showWaToast('⚠️','請選擇罐子',''); return; }
+  if (!jarId) { showWaToast('⚠️','請選擇子帳戶',''); return; }
   const note = document.getElementById('tx-exp-note')?.value || '';
   const dateVal = document.getElementById('tx-exp-date')?.value || new Date().toISOString().slice(0,10);
   const inTWD = currentCurrency === 'USD' ? raw * usdTwd : currentCurrency === 'MYR' ? raw * usdTwd / usdMyr : raw;
@@ -9944,7 +9990,7 @@ function renderDebts() {
 let dreams = [];         // 所有夢想
 window.dreams = dreams;
 let completedDreams = []; // 已達成夢想
-let jarBalances = {};     // 六個罐子目前餘額（TWD）
+let jarBalances = {};     // 六個子帳戶目前餘額（TWD）
 window.jarBalances = jarBalances;
 let selectedEmoji = '⭐';
 let completingDreamId = null;
@@ -10152,7 +10198,7 @@ async function loadDreams() {
     completedDreams = compSnap.docs.map(d=>({id:d.id,...d.data()}));
     // 檢查是否已設定夢想
     const setup = await getDoc(doc(db,'users',currentUser.uid,'settings','dreamSetup'));
-    if (DEBUG_FORCE_ONBOARDING || !setup.exists() || !dreams.length) {
+    if (DEBUG_FORCE_ONBOARDING || !setup.exists()) {
       renderDreamSetup();
       document.getElementById('dream-screen').classList.remove('hidden');
     } else {
@@ -11893,14 +11939,14 @@ function initMobileHome() {
 <div class="app-page" id="page-tx">
   <div class="page-content">
 
-    <!-- 六個罐子 -->
+    <!-- 六個子帳戶 -->
     <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個罐子 · 收入分配</div>
+      <div class="mobile-section-title" data-i18n="goals.jars.sectionTitle">六個子帳戶 · 收入分配</div>
     </div>
     <div class="jars-section">
       <div class="jars-header" onclick="toggleJars()">
         <div>
-          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個罐子系統</div>
+          <div class="jars-title" data-i18n="goals.jars.title">🫙 六個子帳戶系統</div>
           <div class="jars-subtitle" data-i18n="goals.jars.subtitle">把每一塊錢分配到對的地方</div>
         </div>
         <div class="jars-toggle" id="jars-toggle-icon">▾</div>
@@ -11920,9 +11966,9 @@ function initMobileHome() {
         </div>
         <!-- 罐子圖式 -->
         <div id="jars-visual-row" class="jar-visual-row"></div>
-        <!-- 六個罐子卡片 -->
+        <!-- 六個子帳戶卡片 -->
         <div id="jars-cards"></div>
-        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個罐子</button>
+        <button class="jars-deposit-btn" onclick="depositJarsIncome()" data-i18n="goals.jars.deposit">存入六個子帳戶</button>
         <!-- FFA 建議 -->
         <div class="jars-ffa-tip" id="jars-ffa-tip" style="display:none"></div>
       </div>
@@ -11930,7 +11976,7 @@ function initMobileHome() {
 
     <!-- 罐子餘額總覽 -->
     <div class="mobile-section-header">
-      <div class="mobile-section-title" data-i18n="tx.jarSummary">罐子餘額</div>
+      <div class="mobile-section-title" data-i18n="tx.jarSummary">子帳戶餘額</div>
     </div>
     <div id="tx-jar-summary" class="tx-jar-summary"></div>
 
@@ -11946,7 +11992,7 @@ function initMobileHome() {
       <!-- 模式切換 -->
       <div class="tx-mode-row">
         <button class="tx-mode-btn active" id="tx-mode-auto" onclick="switchTxMode('auto')" data-i18n="tx.modeAuto">🔄 自動分配</button>
-        <button class="tx-mode-btn" id="tx-mode-manual" onclick="switchTxMode('manual')" data-i18n="tx.modeManual">🫙 指定罐子</button>
+        <button class="tx-mode-btn" id="tx-mode-manual" onclick="switchTxMode('manual')" data-i18n="tx.modeManual">🫙 指定子帳戶</button>
       </div>
 
       <!-- 自動分配模式 -->
@@ -11971,7 +12017,7 @@ function initMobileHome() {
 
       <!-- 指定罐子模式 -->
       <div id="tx-manual-fields" class="tx-form-section" style="display:none">
-        <div class="tx-field-label" data-i18n="tx.toJar">存入罐子</div>
+        <div class="tx-field-label" data-i18n="tx.toJar">存入子帳戶</div>
         <select id="tx-manual-jar" style="margin-bottom:14px"></select>
         <div class="tx-field-label" data-i18n="tx.amount">金額</div>
         <input id="tx-manual-amount" type="number" inputmode="decimal" style="margin-bottom:14px" placeholder="0">
@@ -11990,7 +12036,7 @@ function initMobileHome() {
 
     <!-- 支出表單 -->
     <div id="tx-expense-form" class="tx-form-section" style="display:none">
-      <div class="tx-field-label" data-i18n="tx.fromJar">從哪個罐子</div>
+      <div class="tx-field-label" data-i18n="tx.fromJar">從哪個子帳戶</div>
       <select id="tx-exp-jar" style="margin-bottom:14px"></select>
       <div class="tx-field-label" data-i18n="tx.expenseType">支出類型</div>
       <div class="tx-toggle-row" style="margin-bottom:14px">
@@ -12007,14 +12053,14 @@ function initMobileHome() {
       <!-- FFA → 買資產 捷徑 -->
       <button class="ffa-goto-btn" onclick="switchTab('assets');setTimeout(()=>openAddAsset(),200)">
         <span style="font-size:18px">💎</span>
-        <span class="ffa-goto-label" data-i18n="tx.ffaLink">FFA 資金 → 前往新增資產</span>
+        <span class="ffa-goto-label" data-i18n="tx.ffaLink">💎 成長帳戶資金 → 前往新增資產</span>
         <span style="color:rgba(255,255,255,0.3)">›</span>
       </button>
     </div>
 
     <!-- 買入資產表單 -->
     <div id="tx-asset-form" class="tx-form-section" style="display:none">
-      <div class="tx-field-label">從哪個罐子</div>
+      <div class="tx-field-label">從哪個子帳戶</div>
       <select id="tx-asset-jar" style="margin-bottom:14px"></select>
       <div class="tx-field-label">資產類別</div>
       <select id="tx-asset-cat" style="margin-bottom:14px" onchange="onTxAssetCatChange()">
@@ -12075,7 +12121,7 @@ function initMobileHome() {
       </div>
     </div>
 
-    <!-- ══ 以下併入自原「目標」頁（六個罐子/ESBI/財務目標/負債），2026-07-18 ══ -->
+    <!-- ══ 以下併入自原「目標」頁（六個子帳戶/ESBI/財務目標/負債），2026-07-18 ══ -->
 
     <div style="margin:4px 0 14px;text-align:center;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em" data-i18n="goal.mobile.header">財務自由目標</div>
     <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:600;color:#f0fdf4;text-align:center;margin-bottom:4px" id="mobile-goal-amount">NT$0/月</div>
@@ -12439,7 +12485,7 @@ function initMobileHome() {
         <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="18" y2="15"/>
       </svg>
     </div>
-    <div class="nav-label" data-i18n="nav.jarsTx">罐子</div>
+    <div class="nav-label" data-i18n="nav.jarsTx">子帳戶</div>
   </div>
   <div class="nav-item" id="nav-dreams" onclick="switchTab('dreams')">
     <div class="nav-icon">
@@ -13079,7 +13125,7 @@ const TIPS_GENERIC = [
   '每月收入至少存10%，時間是你最好的朋友！',
   '財務自由帳戶每月固定存入，讓錢幫你工作 💰',
   '先還高利息的債務，省下的利息就是獲利！',
-  '六個罐子系統幫你掌握每一分錢的流向！',
+  '六個子帳戶系統幫你掌握每一分錢的流向！',
   '投資前先備好3到6個月的緊急備用金！',
   '複利是財富最強大的力量，越早開始越好！',
   '消費前問自己：這是需要，還是只是想要？',
@@ -13364,8 +13410,8 @@ const GUIDE_TOPICS = [
     answer:'嗨！歡迎來到財富覺醒 👋\n\n你是不是每個月薪水一進來，繳完房租、吃飯、買東西，就不知道錢跑去哪了？\n\n這很正常，大部分人都是這樣。但問題是——如果有一天你不想上班了，或是沒辦法工作了，你的收入就歸零了。\n\n財富覺醒想幫你改變這件事。\n\n簡單來說，這個平台幫你：\n\n① 搞清楚你的錢 — 你有哪些資產？每個月有多少錢是不用工作也會進來的？\n\n② 學會分配收入 — 不是叫你省吃儉用，而是讓每一塊錢都有它該去的地方。該花的花，該存的存，該投資的投資。\n\n③ 看到你的進步 — 一個數字告訴你離「不用為錢煩惱」還有多遠，每新增一筆收入來源，這個數字就會成長。\n\n你不需要懂投資、不需要很有錢，你只需要「開始記錄」。\n\n點擊下方的功能，我會一個一個告訴你怎麼用 👇' },
   { icon:'🎯', title:'Freedom Degree（財務自由度）',
     answer:'Freedom Degree 是你的「財務自由進度條」。它計算你的非工資收入佔每月支出的比例。當這個數字到達 100%，代表你不用工作也能維持生活——這就是「財務自由」的定義。每新增一筆有現金流的資產，這個數字就會往上爬。' },
-  { icon:'🏦', title:'六個罐子系統',
-    answer:'六個罐子是一套收入分配系統。每月收入按比例分配到 6 個帳戶：生活必需（NEC 55%）、財務自由（FFA 10%）、長期儲蓄（LTSS 10%）、教育（EDU 10%）、玩樂（PLAY 10%）、給予（GIVE 5%）。這不是記帳工具，是「讓每一塊錢都有任務」的系統。FFA 帳戶裡的錢只進不出，專門用來買入會產生現金流的資產。比例可以自行調整，更符合你的實際需求。' },
+  { icon:'🏦', title:'六個子帳戶系統',
+    answer:'六個子帳戶是一套收入分配系統。每月收入依比例分配到 6 個用途：必要支出、投資成長、大額儲蓄、自我成長、享樂、公益，各自有預設比例，但完全可以依你的狀況自行調整。這不是記帳工具，是「讓每一塊錢都有任務」的系統。投資成長帳戶裡的錢平時不挪用，專門用來買入會產生現金流的資產。' },
   { icon:'📊', title:'ESBI 象限',
     answer:'ESBI 是四種收入象限的分類。E（員工）用時間換錢、S（自僱者）擁有一份工作、B（企業主）擁有一個系統、I（投資者）讓錢替你工作。大多數人一輩子待在 E 和 S，但真正的財務自由在 B 和 I。這個功能追蹤你在四個象限的收入比例，目標是讓 B+I 的比例持續成長。' },
   { icon:'🌳', title:'財富之樹',
