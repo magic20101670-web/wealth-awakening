@@ -454,6 +454,9 @@ select option { background: #152a3c; }
 }
 .jars-setup-input:focus { border-color:rgba(240,208,96,0.4); }
 .jars-setup-skip-btn { background:none; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); border-radius:16px; padding:14px 40px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:10px; width:100%; }
+.ledger-amt-income { color:var(--green); }
+.ledger-amt-expense { color:#f87171; }
+.ledger-entry-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:13px; }
 .jar-current-balance { font-size:11px; color:rgba(134,239,172,0.6); margin-top:4px; }
 .jar-balance-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px; }
 .jar-adjust-toggle { background:none; border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:rgba(255,255,255,0.4); font-size:11px; padding:2px 8px; cursor:pointer; font-family:'DM Sans',sans-serif; line-height:1.5; flex-shrink:0; }
@@ -1843,6 +1846,20 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] #goal-setup-screen .goal-section-label { color: var(--fg) !important; }
 [data-theme^="light"] #goal-setup-screen .expense-item label { color: var(--fg2) !important; }
 
+/* ── 記帳本 亮色修正 ── */
+[data-theme^="light"] #ledger-screen { background: var(--bg) !important; }
+[data-theme^="light"] #ledger-screen * { color: var(--fg) !important; }
+[data-theme^="light"] #ledger-screen .dream-intro-title { color: var(--accent) !important; }
+[data-theme^="light"] #ledger-screen .dream-intro-sub { color: var(--fg2) !important; }
+[data-theme^="light"] #ledger-screen .dream-start-btn { color: #052e16 !important; }
+[data-theme^="light"] #ledger-screen .dream-emoji-btn { background: rgba(0,0,0,0.04) !important; border-color: var(--border) !important; }
+[data-theme^="light"] #ledger-screen .dream-emoji-btn.selected { background: rgba(240,208,96,0.15) !important; border-color: rgba(240,208,96,0.5) !important; }
+[data-theme^="light"] #ledger-screen input { background: rgba(0,0,0,0.05) !important; border-color: var(--border) !important; color: var(--fg) !important; }
+[data-theme^="light"] #ledger-screen .card { background: rgba(0,0,0,0.03) !important; border-color: var(--border) !important; }
+[data-theme^="light"] #ledger-screen .ledger-amt-income,
+[data-theme^="light"] #ledger-month-total { color: var(--green) !important; }
+[data-theme^="light"] #ledger-screen .ledger-amt-expense { color: #dc2626 !important; }
+
 /* ── 夢想設定畫面 亮色修正（dream-screen 不在 app-page 內，需獨立覆蓋） ── */
 [data-theme^="light"] #dream-screen { background: var(--bg) !important; }
 [data-theme^="light"] #dream-screen * { color: var(--fg) !important; }
@@ -2090,6 +2107,46 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
     <button class="dream-start-btn" onclick="saveGoalSetupAndContinue()" id="goal-setup-start-btn" data-i18n="goalSetup.startBtn">儲存並繼續 🚀</button>
     <button class="jars-setup-skip-btn" onclick="skipGoalSetup()" data-i18n="goalSetup.skipBtn">稍後設定</button>
+  </div>
+</div>
+
+<!-- 記帳本（全新用戶的前導入口，與財富 APP 主系統資料完全獨立） -->
+<div class="dream-screen hidden" id="ledger-screen" style="z-index:1105">
+  <!-- 歡迎畫面 -->
+  <div class="dream-intro" id="ledger-welcome">
+    <div class="dream-setup-icon">📒</div>
+    <div class="dream-intro-title" data-i18n="ledger.welcome.title">歡迎來到這裡 👋</div>
+    <div class="dream-intro-sub" data-i18n="ledger.welcome.subtitle">每一筆支出，都是你認識自己財富的開始。<br>不用懂投資、不用很有錢，先從看清楚「錢去了哪裡」開始——<br>這是你對自己財富負責的第一步。</div>
+    <button class="dream-start-btn" onclick="startLedgerHome()" data-i18n="ledger.welcome.startBtn">開始記帳 🚀</button>
+  </div>
+
+  <!-- 記帳本首頁 -->
+  <div class="dream-intro" id="ledger-home" style="display:none;max-width:420px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="dream-intro-title" style="font-size:22px;margin:0" data-i18n="ledger.home.title">我的記帳本</div>
+      <button onclick="openLedgerAddForm()" style="background:linear-gradient(135deg,#f0d060,#d4af37);color:#052e16;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">＋ <span data-i18n="ledger.home.addBtn">記一筆</span></button>
+    </div>
+    <div class="card" style="text-align:left;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--muted)" data-i18n="ledger.home.monthLabel">本月支出</div>
+      <div id="ledger-month-total" style="font-size:26px;font-family:'DM Mono',monospace;color:var(--green)">NT$ 0</div>
+      <div id="ledger-category-breakdown" style="margin-top:10px;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+    <div id="ledger-entries-list" style="text-align:left;display:flex;flex-direction:column;gap:2px;max-height:260px;overflow-y:auto"></div>
+    <button class="jars-setup-skip-btn" onclick="goToFullApp()" style="margin-top:16px" data-i18n="ledger.home.upgradeBtn">想讓錢更有方向？了解財富覺醒 →</button>
+  </div>
+
+  <!-- 新增一筆 -->
+  <div class="dream-intro" id="ledger-add-form" style="display:none;max-width:420px">
+    <div class="dream-intro-title" style="font-size:22px" data-i18n="ledger.add.title">記一筆</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button class="tx-mode-btn active" id="ledger-type-expense" onclick="setLedgerType('expense')" data-i18n="ledger.add.expense">💸 支出</button>
+      <button class="tx-mode-btn" id="ledger-type-income" onclick="setLedgerType('income')" data-i18n="ledger.add.income">💰 收入</button>
+    </div>
+    <input type="number" id="ledger-amount-input" placeholder="金額" data-i18n-placeholder="ledger.add.amountPlaceholder" min="0" step="any" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;font-size:16px;color:#f0fdf4;outline:none;box-sizing:border-box;margin-bottom:12px;font-family:'DM Sans',sans-serif">
+    <div class="dream-emoji-grid" id="ledger-category-grid" style="grid-template-columns:repeat(4,1fr)"></div>
+    <input type="text" id="ledger-note-input" placeholder="備註（選填）" data-i18n-placeholder="ledger.add.notePlaceholder" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;font-size:14px;color:#f0fdf4;outline:none;box-sizing:border-box;margin:12px 0;font-family:'DM Sans',sans-serif">
+    <button class="dream-start-btn" onclick="saveLedgerEntry()" data-i18n="ledger.add.saveBtn">儲存</button>
+    <button class="jars-setup-skip-btn" onclick="closeLedgerAddForm()" data-i18n="ledger.add.cancelBtn">取消</button>
   </div>
 </div>
 
@@ -4271,6 +4328,187 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
   assets = []; render();
 });
 
+// ══════════════════════════════
+// 記帳本（全新用戶前導入口，獨立於財富 APP 主系統）
+// ══════════════════════════════
+const LEDGER_CATEGORIES = {
+  expense: [
+    { id:'food', emoji:'🍚', nameKey:'ledger.cat.food' },
+    { id:'transport', emoji:'🚗', nameKey:'ledger.cat.transport' },
+    { id:'shopping', emoji:'🛍️', nameKey:'ledger.cat.shopping' },
+    { id:'fun', emoji:'🎮', nameKey:'ledger.cat.fun' },
+    { id:'housing', emoji:'🏠', nameKey:'ledger.cat.housing' },
+    { id:'medical', emoji:'💊', nameKey:'ledger.cat.medical' },
+    { id:'education', emoji:'📚', nameKey:'ledger.cat.education' },
+    { id:'daily', emoji:'🧴', nameKey:'ledger.cat.daily' },
+    { id:'comm', emoji:'📱', nameKey:'ledger.cat.comm' },
+    { id:'social', emoji:'🎁', nameKey:'ledger.cat.social' },
+    { id:'other', emoji:'❓', nameKey:'ledger.cat.other' },
+  ],
+  income: [
+    { id:'salary', emoji:'💰', nameKey:'ledger.cat.salary' },
+    { id:'bonus', emoji:'🎁', nameKey:'ledger.cat.bonus' },
+    { id:'otherIncome', emoji:'💵', nameKey:'ledger.cat.otherIncome' },
+  ]
+};
+const LEDGER_CAT_MAP = Object.fromEntries([...LEDGER_CATEGORIES.expense, ...LEDGER_CATEGORIES.income].map(c=>[c.id,c]));
+const ledgerCol = () => collection(db,'users',currentUser.uid,'ledgerEntries');
+let ledgerType = 'expense';
+let ledgerSelectedCat = null;
+let ledgerEntries = [];
+window.ledgerEntries = ledgerEntries;
+
+function renderLedgerCategoryGrid() {
+  const grid = document.getElementById('ledger-category-grid');
+  if (!grid) return;
+  grid.innerHTML = LEDGER_CATEGORIES[ledgerType].map(c =>
+    `<div class="dream-emoji-btn${ledgerSelectedCat===c.id?' selected':''}" onclick="pickLedgerCategory('${c.id}')" title="${t(c.nameKey)}">${c.emoji}</div>`
+  ).join('');
+}
+function setLedgerType(type) {
+  ledgerType = type;
+  ledgerSelectedCat = null;
+  document.getElementById('ledger-type-expense').classList.toggle('active', type==='expense');
+  document.getElementById('ledger-type-income').classList.toggle('active', type==='income');
+  renderLedgerCategoryGrid();
+}
+window.setLedgerType = setLedgerType;
+function pickLedgerCategory(id) { ledgerSelectedCat = id; renderLedgerCategoryGrid(); }
+window.pickLedgerCategory = pickLedgerCategory;
+
+function openLedgerAddForm() {
+  document.getElementById('ledger-home').style.display = 'none';
+  document.getElementById('ledger-add-form').style.display = 'block';
+  document.getElementById('ledger-amount-input').value = '';
+  document.getElementById('ledger-note-input').value = '';
+  setLedgerType('expense');
+}
+window.openLedgerAddForm = openLedgerAddForm;
+function closeLedgerAddForm() {
+  document.getElementById('ledger-add-form').style.display = 'none';
+  document.getElementById('ledger-home').style.display = 'block';
+}
+window.closeLedgerAddForm = closeLedgerAddForm;
+
+async function saveLedgerEntry() {
+  const amount = parseFloat(document.getElementById('ledger-amount-input').value) || 0;
+  if (amount <= 0 || !ledgerSelectedCat) { showWaToast('⚠️', t('ledger.add.err'), ''); return; }
+  const note = document.getElementById('ledger-note-input').value.trim();
+  const entry = { amount, type: ledgerType, category: ledgerSelectedCat, note, createdAt: Date.now() };
+  try {
+    const ref = await addDoc(ledgerCol(), entry);
+    ledgerEntries.unshift({ id: ref.id, ...entry });
+    closeLedgerAddForm();
+    renderLedgerHome();
+  } catch(e) { console.error(e); }
+}
+window.saveLedgerEntry = saveLedgerEntry;
+
+async function loadLedgerEntries() {
+  if (!currentUser) return;
+  try {
+    const snap = await getDocs(ledgerCol());
+    ledgerEntries = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
+  } catch(e) { console.error(e); ledgerEntries = []; }
+  window.ledgerEntries = ledgerEntries;
+}
+window.renderLedgerHome = renderLedgerHome;
+
+function renderLedgerHome() {
+  const now = new Date();
+  const monthEntries = ledgerEntries.filter(e => {
+    const d = new Date(e.createdAt);
+    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+  });
+  const monthExpense = monthEntries.filter(e=>e.type==='expense').reduce((s,e)=>s+e.amount,0);
+  const totalEl = document.getElementById('ledger-month-total');
+  if (totalEl) totalEl.textContent = formatCurrency(monthExpense);
+
+  const byCat = {};
+  monthEntries.filter(e=>e.type==='expense').forEach(e=>{ byCat[e.category] = (byCat[e.category]||0) + e.amount; });
+  const breakdown = document.getElementById('ledger-category-breakdown');
+  if (breakdown) {
+    const rows = Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([cid,amt])=>{
+      const c = LEDGER_CAT_MAP[cid]; if (!c) return '';
+      return `<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>${c.emoji} ${t(c.nameKey)}</span><span>${formatCurrency(amt)}</span></div>`;
+    }).join('');
+    breakdown.innerHTML = rows || `<div style="font-size:12px;color:var(--muted)">${t('ledger.home.empty')}</div>`;
+  }
+
+  const list = document.getElementById('ledger-entries-list');
+  if (list) {
+    list.innerHTML = ledgerEntries.slice(0,30).map(e=>{
+      const c = LEDGER_CAT_MAP[e.category];
+      const label = e.note || (c ? t(c.nameKey) : '');
+      const sign = e.type==='income' ? '+' : '-';
+      const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
+      return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
+    }).join('');
+  }
+}
+
+function startLedgerHome() {
+  document.getElementById('ledger-welcome').style.display = 'none';
+  document.getElementById('ledger-home').style.display = 'block';
+  renderLedgerHome();
+}
+window.startLedgerHome = startLedgerHome;
+
+function enterLedgerMode() {
+  document.getElementById('ledger-screen').classList.remove('hidden');
+  document.getElementById('user-bar').style.display = 'none';
+  loadLangCurrencyPrefs();
+  loadLedgerEntries().then(() => {
+    if (ledgerEntries.length > 0) {
+      document.getElementById('ledger-welcome').style.display = 'none';
+      document.getElementById('ledger-home').style.display = 'block';
+      renderLedgerHome();
+    }
+  });
+}
+
+// 進入財富 APP 主系統（原本就有的夢想/子帳戶/月支出目標設定鏈，只是入口從「強制首次登入」改成「使用者自己點進階」）
+function enterFullApp(user) {
+  document.getElementById('ledger-screen').classList.add('hidden');
+  document.getElementById('user-bar').style.display = 'flex';
+  document.getElementById('user-name').textContent = user.email;
+  loadAssets();
+  loadGoalSettings();
+  loadDebts();
+  loadDreams();
+  initJars();
+  loadJarsBalances().then(() => initDesktopTxPanel());
+  loadGoalSetupScreen();
+  loadEsbiInputs();
+  loadPersonalityFromFirebase();
+  loadLangCurrencyPrefs();
+  setTimeout(() => { if (window.syncMobileUI) syncMobileUI(); if (window.initMobileHome) initMobileHome(); }, 500);
+}
+
+async function goToFullApp() {
+  try { await setDoc(doc(db,'users',currentUser.uid,'settings','graduated'), { value:true, markedAt:Date.now() }); } catch(e) { console.error(e); }
+  enterFullApp(currentUser);
+}
+window.goToFullApp = goToFullApp;
+
+// 判斷使用者是否已經在用財富 APP 主系統（含既有使用者的回溯判斷：只要有夢想/子帳戶資料或任何資產，一律視為已進階）
+async function checkGraduatedStatus() {
+  try {
+    const gradSnap = await getDoc(doc(db,'users',currentUser.uid,'settings','graduated'));
+    if (gradSnap.exists() && gradSnap.data().value) return true;
+    const [dreamSetup, jarsBal, assetsSnap] = await Promise.all([
+      getDoc(doc(db,'users',currentUser.uid,'settings','dreamSetup')),
+      getDoc(doc(db,'users',currentUser.uid,'settings','jarsBalances')),
+      getDocs(userCol())
+    ]);
+    if (dreamSetup.exists() || jarsBal.exists() || !assetsSnap.empty) {
+      setDoc(doc(db,'users',currentUser.uid,'settings','graduated'), { value:true, markedAt:Date.now() }).catch(()=>{});
+      return true;
+    }
+    return false;
+  } catch(e) { console.error(e); return true; }
+}
+
 // 監聽登入狀態
 onAuthStateChanged(auth, user => {
   if (user) {
@@ -4279,26 +4517,14 @@ onAuthStateChanged(auth, user => {
     const soulScreen = document.getElementById('soul-quiz-screen');
     if (soulScreen) soulScreen.style.display = 'none';
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('user-bar').style.display = 'flex';
-    document.getElementById('user-name').textContent = user.email;
-    loadAssets();
-    loadGoalSettings();
-    loadDebts();
-    loadDreams();
-    initJars();
-    loadJarsBalances().then(() => initDesktopTxPanel());
-    loadGoalSetupScreen();
-    loadEsbiInputs();
-    // 從 Firebase 載入人格設定
-    loadPersonalityFromFirebase();
-    // 載入語言/幣別偏好設定
-    loadLangCurrencyPrefs();
-    // 手機版 UI 初始化
-    setTimeout(() => { if (window.syncMobileUI) syncMobileUI(); if (window.initMobileHome) initMobileHome(); }, 500);
+    checkGraduatedStatus().then(graduated => {
+      if (graduated) { enterFullApp(user); } else { enterLedgerMode(); }
+    });
   } else {
     currentUser = null;
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('user-bar').style.display = 'none';
+    document.getElementById('ledger-screen').classList.add('hidden');
     assets = []; render();
   }
 });
@@ -4612,6 +4838,10 @@ const TRANSLATIONS = {
     'jar.edu.name':'自我成長','jar.edu.desc':'用於課程、書籍、講座與技能培養的投資，持續提升自己的能力與價值。',
     'jar.play.name':'享樂','jar.play.desc':'設定一筆可以自由花用、不用有壓力的生活享受預算，讓理財也能兼顧生活品質。',
     'jar.give.name':'公益','jar.give.desc':'捐款、請人吃飯、支持需要幫助的人——回饋也是理財習慣的一部分。',
+    'ledger.welcome.title':'歡迎來到這裡 👋','ledger.welcome.subtitle':'每一筆支出，都是你認識自己財富的開始。<br>不用懂投資、不用很有錢，先從看清楚「錢去了哪裡」開始——<br>這是你對自己財富負責的第一步。','ledger.welcome.startBtn':'開始記帳 🚀',
+    'ledger.home.title':'我的記帳本','ledger.home.addBtn':'記一筆','ledger.home.monthLabel':'本月支出','ledger.home.empty':'這個月還沒有紀錄','ledger.home.upgradeBtn':'想讓錢更有方向？了解財富覺醒 →',
+    'ledger.add.title':'記一筆','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金額','ledger.add.notePlaceholder':'備註（選填）','ledger.add.saveBtn':'儲存','ledger.add.cancelBtn':'取消','ledger.add.err':'請輸入金額並選擇分類',
+    'ledger.cat.food':'餐飲','ledger.cat.transport':'交通','ledger.cat.shopping':'購物','ledger.cat.fun':'娛樂','ledger.cat.housing':'居住','ledger.cat.medical':'醫療','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通訊','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪資','ledger.cat.bonus':'獎金','ledger.cat.otherIncome':'其他收入',
     'jarsSetup.title':'設定你的六個子帳戶',
     'jarsSetup.subtitle':'告訴我們每個子帳戶目前大概有多少錢 📈',
     'jarsSetup.startBtn':'開始追蹤我的子帳戶 🚀','jarsSetup.skipBtn':'稍後設定','jarsSetup.currentBalance':'目前餘額',
@@ -4840,6 +5070,10 @@ const TRANSLATIONS = {
     'jar.edu.name':'自我成长','jar.edu.desc':'用于课程、书籍、讲座与技能培养的投资，持续提升自己的能力与价值。',
     'jar.play.name':'享乐','jar.play.desc':'设定一笔可以自由花用、不用有压力的生活享受预算，让理财也能兼顾生活品质。',
     'jar.give.name':'公益','jar.give.desc':'捐款、请人吃饭、支持需要帮助的人——回馈也是理财习惯的一部分。',
+    'ledger.welcome.title':'欢迎来到这里 👋','ledger.welcome.subtitle':'每一笔支出，都是你认识自己财富的开始。<br>不用懂投资、不用很有钱，先从看清楚「钱去了哪里」开始——<br>这是你对自己财富负责的第一步。','ledger.welcome.startBtn':'开始记账 🚀',
+    'ledger.home.title':'我的记账本','ledger.home.addBtn':'记一笔','ledger.home.monthLabel':'本月支出','ledger.home.empty':'这个月还没有纪录','ledger.home.upgradeBtn':'想让钱更有方向？了解财富觉醒 →',
+    'ledger.add.title':'记一笔','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金额','ledger.add.notePlaceholder':'备注（选填）','ledger.add.saveBtn':'储存','ledger.add.cancelBtn':'取消','ledger.add.err':'请输入金额并选择分类',
+    'ledger.cat.food':'餐饮','ledger.cat.transport':'交通','ledger.cat.shopping':'购物','ledger.cat.fun':'娱乐','ledger.cat.housing':'居住','ledger.cat.medical':'医疗','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通讯','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪资','ledger.cat.bonus':'奖金','ledger.cat.otherIncome':'其他收入',
     'jarsSetup.title':'设置你的六个子账户',
     'jarsSetup.subtitle':'告诉我们每个子账户目前大概有多少钱 📈',
     'jarsSetup.startBtn':'开始追踪我的子账户 🚀','jarsSetup.skipBtn':'稍后设置','jarsSetup.currentBalance':'目前余额',
@@ -5068,6 +5302,10 @@ const TRANSLATIONS = {
     'jar.edu.name':'Self-Growth','jar.edu.desc':'Spent on courses, books, and workshops that build your skills and raise your own value over time.',
     'jar.play.name':'Fun','jar.play.desc':'A budget you can spend freely on enjoying life, without guilt or pressure, to keep money management sustainable.',
     'jar.give.name':'Giving','jar.give.desc':'Donations, treating someone, helping people in need — giving back is part of a healthy money habit too.',
+    'ledger.welcome.title':'Welcome 👋','ledger.welcome.subtitle':'Every expense you log is the start of understanding your own money.<br>You don\'t need to know investing, and you don\'t need to be rich — start by seeing clearly where your money goes.<br>That\'s the first step to taking responsibility for your own wealth.','ledger.welcome.startBtn':'Start Tracking 🚀',
+    'ledger.home.title':'My Ledger','ledger.home.addBtn':'Add Entry','ledger.home.monthLabel':'This Month\'s Spending','ledger.home.empty':'No entries yet this month','ledger.home.upgradeBtn':'Want your money to have a direction? Learn about Wealth Awakening →',
+    'ledger.add.title':'Add Entry','ledger.add.expense':'💸 Expense','ledger.add.income':'💰 Income','ledger.add.amountPlaceholder':'Amount','ledger.add.notePlaceholder':'Note (optional)','ledger.add.saveBtn':'Save','ledger.add.cancelBtn':'Cancel','ledger.add.err':'Please enter an amount and pick a category',
+    'ledger.cat.food':'Food','ledger.cat.transport':'Transport','ledger.cat.shopping':'Shopping','ledger.cat.fun':'Fun','ledger.cat.housing':'Housing','ledger.cat.medical':'Medical','ledger.cat.education':'Education','ledger.cat.daily':'Daily Needs','ledger.cat.comm':'Phone/Internet','ledger.cat.social':'Social','ledger.cat.other':'Other','ledger.cat.salary':'Salary','ledger.cat.bonus':'Bonus','ledger.cat.otherIncome':'Other Income',
     'jarsSetup.title':'Set Up Your Six Sub-Accounts',
     'jarsSetup.subtitle':'Tell us roughly how much is in each account right now 📈',
     'jarsSetup.startBtn':'Start Tracking My Accounts 🚀','jarsSetup.skipBtn':'Set Up Later','jarsSetup.currentBalance':'Current Balance',
