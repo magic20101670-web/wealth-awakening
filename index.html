@@ -4214,7 +4214,7 @@ const auth = getAuth(firebaseApp);
 
 const DEBUG_FORCE_ONBOARDING = false;
 // TEMP 測試用：用自己的既有帳號強制看到記帳本（跳過 checkGraduatedStatus 的判斷）。測試完記得改回 false。
-const DEBUG_FORCE_LEDGER = false;
+const DEBUG_FORCE_LEDGER = true;
 
 let currentUser = null;
 let trendData = { labels:[], total:[], income:[] };
