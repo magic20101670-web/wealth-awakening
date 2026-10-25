@@ -4213,6 +4213,8 @@ const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
 const DEBUG_FORCE_ONBOARDING = false;
+// TEMP 測試用：用自己的既有帳號強制看到記帳本（跳過 checkGraduatedStatus 的判斷）。測試完記得改回 false。
+const DEBUG_FORCE_LEDGER = false;
 
 let currentUser = null;
 let trendData = { labels:[], total:[], income:[] };
@@ -4493,6 +4495,7 @@ window.goToFullApp = goToFullApp;
 
 // 判斷使用者是否已經在用財富 APP 主系統（含既有使用者的回溯判斷：只要有夢想/子帳戶資料或任何資產，一律視為已進階）
 async function checkGraduatedStatus() {
+  if (DEBUG_FORCE_LEDGER) return false;
   try {
     const gradSnap = await getDoc(doc(db,'users',currentUser.uid,'settings','graduated'));
     if (gradSnap.exists() && gradSnap.data().value) return true;
