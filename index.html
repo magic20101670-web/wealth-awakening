@@ -454,9 +454,6 @@ select option { background: #152a3c; }
 }
 .jars-setup-input:focus { border-color:rgba(240,208,96,0.4); }
 .jars-setup-skip-btn { background:none; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); border-radius:16px; padding:14px 40px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:10px; width:100%; }
-.ledger-amt-income { color:var(--green); }
-.ledger-amt-expense { color:#f87171; }
-.ledger-entry-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:13px; }
 .jar-current-balance { font-size:11px; color:rgba(134,239,172,0.6); margin-top:4px; }
 .jar-balance-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px; }
 .jar-adjust-toggle { background:none; border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:rgba(255,255,255,0.4); font-size:11px; padding:2px 8px; cursor:pointer; font-family:'DM Sans',sans-serif; line-height:1.5; flex-shrink:0; }
@@ -1846,19 +1843,63 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 [data-theme^="light"] #goal-setup-screen .goal-section-label { color: var(--fg) !important; }
 [data-theme^="light"] #goal-setup-screen .expense-item label { color: var(--fg2) !important; }
 
-/* ── 記帳本 亮色修正 ── */
-[data-theme^="light"] #ledger-screen { background: var(--bg) !important; }
-[data-theme^="light"] #ledger-screen * { color: var(--fg) !important; }
-[data-theme^="light"] #ledger-screen .dream-intro-title { color: var(--accent) !important; }
-[data-theme^="light"] #ledger-screen .dream-intro-sub { color: var(--fg2) !important; }
-[data-theme^="light"] #ledger-screen .dream-start-btn { color: #052e16 !important; }
-[data-theme^="light"] #ledger-screen .dream-emoji-btn { background: rgba(0,0,0,0.04) !important; border-color: var(--border) !important; }
-[data-theme^="light"] #ledger-screen .dream-emoji-btn.selected { background: rgba(240,208,96,0.15) !important; border-color: rgba(240,208,96,0.5) !important; }
-[data-theme^="light"] #ledger-screen input { background: rgba(0,0,0,0.05) !important; border-color: var(--border) !important; color: var(--fg) !important; }
-[data-theme^="light"] #ledger-screen .card { background: rgba(0,0,0,0.03) !important; border-color: var(--border) !important; }
-[data-theme^="light"] #ledger-screen .ledger-amt-income,
-[data-theme^="light"] #ledger-month-total { color: var(--green) !important; }
-[data-theme^="light"] #ledger-screen .ledger-amt-expense { color: #dc2626 !important; }
+/* ══════════════════════════════════════════════════════
+   記帳本：獨立暖色系視覺（刻意不跟隨財富 APP 的深色/金色主題，
+   不受 [data-theme] 切換影響，永遠是這組暖黃米色）
+   ══════════════════════════════════════════════════════ */
+#ledger-screen.ledger-world {
+  --lbg: #FBF3DE; --lcard: #FFFFFF; --laccent: #F4A024; --laccent2: #FF8F6B;
+  --ltext: #3A2E1F; --lmuted: #A3956F; --lborder: rgba(61,46,25,0.08);
+  --lincome: #2FAE7A; --lexpense: #F2684B;
+  background: var(--lbg) !important; color: var(--ltext) !important;
+}
+#ledger-screen.ledger-world * { font-family:'DM Sans',sans-serif; box-sizing:border-box; }
+.ledger-intro, .ledger-page { max-width:420px; margin:0 auto; padding:48px 24px 32px; text-align:center; }
+.ledger-page { text-align:left; padding-top:28px; }
+.ledger-setup-icon { font-size:44px; margin-bottom:12px; }
+.ledger-title-xl { font-family:'DM Serif Display',serif; font-size:32px; color:var(--ltext); margin-bottom:8px; }
+.ledger-title-md { font-family:'DM Serif Display',serif; font-size:22px; color:var(--ltext); margin:0; }
+.ledger-sub { font-size:14px; color:var(--lmuted); line-height:1.7; margin-bottom:28px; }
+.ledger-btn-primary { background:linear-gradient(135deg,var(--laccent),var(--laccent2)); color:#fff; border:none; border-radius:16px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; width:100%; letter-spacing:0.02em; box-shadow:0 6px 16px rgba(244,160,36,0.25); }
+.ledger-btn-sm { width:auto; padding:8px 14px; font-size:13px; border-radius:10px; box-shadow:none; }
+.ledger-btn-ghost { background:none; border:1px solid var(--lborder); color:var(--lmuted); border-radius:14px; padding:12px 20px; font-size:12px; cursor:pointer; width:100%; margin-top:14px; }
+.ledger-topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.ledger-card { background:var(--lcard); border-radius:18px; padding:16px 18px; box-shadow:0 2px 10px rgba(61,46,25,0.06); margin-bottom:16px; }
+.ledger-label { font-size:11px; color:var(--lmuted); margin-bottom:4px; }
+.ledger-amount-xl { font-size:28px; font-family:'DM Mono',monospace; color:var(--lexpense); font-weight:700; }
+.ledger-breakdown { margin-top:10px; display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--lmuted); }
+.ledger-breakdown-row { display:flex; justify-content:space-between; }
+.ledger-quick-section { margin-bottom:16px; }
+.ledger-type-toggle { flex:1; padding:9px; border-radius:12px; border:1px solid var(--lborder); background:var(--lcard); color:var(--lmuted); font-size:12px; font-weight:600; cursor:pointer; }
+.ledger-type-toggle.active { background:var(--laccent); border-color:var(--laccent); color:#fff; }
+.ledger-cat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.ledger-cat-card { display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; padding:4px 0; background:none; border:none; }
+.ledger-cat-circle { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; transition:transform 0.15s; box-shadow:0 3px 8px rgba(61,46,25,0.12); }
+.ledger-cat-card:hover .ledger-cat-circle, .ledger-cat-card.selected .ledger-cat-circle { transform:scale(1.08); }
+.ledger-cat-card.selected .ledger-cat-circle { box-shadow:0 0 0 3px rgba(244,160,36,0.45); }
+.ledger-cat-name { font-size:10px; color:var(--lmuted); }
+.ledger-view-toggle { display:flex; gap:6px; margin:4px 0 10px; }
+.ledger-view-btn { flex:1; padding:7px; border-radius:10px; border:1px solid var(--lborder); background:var(--lcard); color:var(--lmuted); font-size:11px; font-weight:600; cursor:pointer; }
+.ledger-view-btn.active { background:var(--ltext); border-color:var(--ltext); color:var(--lbg); }
+.ledger-entries-list { display:flex; flex-direction:column; gap:2px; max-height:300px; overflow-y:auto; }
+.ledger-date-group { margin-bottom:6px; }
+.ledger-date-header { display:flex; justify-content:space-between; padding:10px 2px 4px; font-size:11px; color:var(--lmuted); letter-spacing:0.04em; }
+.ledger-entry-row { display:flex; justify-content:space-between; padding:9px 10px; border-radius:10px; font-size:13px; background:var(--lcard); margin-bottom:4px; }
+.ledger-amt-income { color:var(--lincome); font-weight:600; }
+.ledger-amt-expense { color:var(--lexpense); font-weight:600; }
+.ledger-input { width:100%; background:var(--lcard); border:1px solid var(--lborder); border-radius:12px; padding:12px 14px; font-size:15px; color:var(--ltext); outline:none; margin-bottom:12px; }
+.ledger-calendar-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.ledger-cal-nav-btn { background:none; border:none; color:var(--lmuted); font-size:16px; cursor:pointer; padding:4px 10px; }
+.ledger-cal-label { font-size:13px; font-weight:600; color:var(--ltext); }
+.ledger-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+.ledger-cal-dow { font-size:10px; color:var(--lmuted); text-align:center; padding-bottom:4px; }
+.ledger-cal-day { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:10px; font-size:12px; color:var(--ltext); background:var(--lcard); cursor:pointer; gap:2px; }
+.ledger-cal-day.empty { background:none; cursor:default; }
+.ledger-cal-day.today { box-shadow:0 0 0 2px var(--laccent); }
+.ledger-cal-day.selected { background:var(--laccent); color:#fff; }
+.ledger-cal-dot { width:5px; height:5px; border-radius:50%; background:var(--lexpense); }
+.ledger-cal-day.selected .ledger-cal-dot { background:#fff; }
+.ledger-cal-day-detail { margin-top:10px; }
 
 /* ── 夢想設定畫面 亮色修正（dream-screen 不在 app-page 內，需獨立覆蓋） ── */
 [data-theme^="light"] #dream-screen { background: var(--bg) !important; }
@@ -2111,42 +2152,60 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 </div>
 
 <!-- 記帳本（全新用戶的前導入口，與財富 APP 主系統資料完全獨立） -->
-<div class="dream-screen hidden" id="ledger-screen" style="z-index:1105">
+<div class="dream-screen hidden ledger-world" id="ledger-screen" style="z-index:1105">
   <!-- 歡迎畫面 -->
-  <div class="dream-intro" id="ledger-welcome">
-    <div class="dream-setup-icon">📒</div>
-    <div class="dream-intro-title" data-i18n="ledger.welcome.title">歡迎來到這裡 👋</div>
-    <div class="dream-intro-sub" data-i18n="ledger.welcome.subtitle">每一筆支出，都是你認識自己財富的開始。<br>不用懂投資、不用很有錢，先從看清楚「錢去了哪裡」開始——<br>這是你對自己財富負責的第一步。</div>
-    <button class="dream-start-btn" onclick="startLedgerHome()" data-i18n="ledger.welcome.startBtn">開始記帳 🚀</button>
+  <div class="ledger-intro" id="ledger-welcome">
+    <div class="ledger-setup-icon">📒</div>
+    <div class="ledger-title-xl" data-i18n="ledger.welcome.title">歡迎來到這裡 👋</div>
+    <div class="ledger-sub" data-i18n="ledger.welcome.subtitle">每一筆支出，都是你認識自己財富的開始。<br>不用懂投資、不用很有錢，先從看清楚「錢去了哪裡」開始——<br>這是你對自己財富負責的第一步。</div>
+    <button class="ledger-btn-primary" onclick="startLedgerHome()" data-i18n="ledger.welcome.startBtn">開始記帳 🚀</button>
   </div>
 
   <!-- 記帳本首頁 -->
-  <div class="dream-intro" id="ledger-home" style="display:none;max-width:420px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div class="dream-intro-title" style="font-size:22px;margin:0" data-i18n="ledger.home.title">我的記帳本</div>
-      <button onclick="openLedgerAddForm()" style="background:linear-gradient(135deg,#f0d060,#d4af37);color:#052e16;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">＋ <span data-i18n="ledger.home.addBtn">記一筆</span></button>
+  <div class="ledger-page" id="ledger-home" style="display:none">
+    <div class="ledger-topbar">
+      <div class="ledger-title-md" data-i18n="ledger.home.title">我的記帳本</div>
+      <button class="ledger-btn-primary ledger-btn-sm" onclick="openLedgerAddForm()">＋ <span data-i18n="ledger.home.addBtn">記一筆</span></button>
     </div>
-    <div class="card" style="text-align:left;margin-bottom:12px">
-      <div style="font-size:11px;color:var(--muted)" data-i18n="ledger.home.monthLabel">本月支出</div>
-      <div id="ledger-month-total" style="font-size:26px;font-family:'DM Mono',monospace;color:var(--green)">NT$ 0</div>
-      <div id="ledger-category-breakdown" style="margin-top:10px;display:flex;flex-direction:column;gap:6px"></div>
+
+    <div class="ledger-card">
+      <div class="ledger-label" data-i18n="ledger.home.monthLabel">本月支出</div>
+      <div id="ledger-month-total" class="ledger-amount-xl">NT$ 0</div>
+      <div id="ledger-category-breakdown" class="ledger-breakdown"></div>
     </div>
-    <div id="ledger-entries-list" style="text-align:left;display:flex;flex-direction:column;gap:2px;max-height:260px;overflow-y:auto"></div>
-    <button class="jars-setup-skip-btn" onclick="goToFullApp()" style="margin-top:16px" data-i18n="ledger.home.upgradeBtn">想讓錢更有方向？了解財富覺醒 →</button>
+
+    <!-- 快速記一筆：點卡片直接開始 -->
+    <div class="ledger-quick-section">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="ledger-type-toggle active" id="ledger-quick-expense" onclick="setLedgerQuickType('expense')" data-i18n="ledger.add.expense">💸 支出</button>
+        <button class="ledger-type-toggle" id="ledger-quick-income" onclick="setLedgerQuickType('income')" data-i18n="ledger.add.income">💰 收入</button>
+      </div>
+      <div class="ledger-cat-grid" id="ledger-quick-cat-grid"></div>
+    </div>
+
+    <!-- 檢視切換：列表／日曆 -->
+    <div class="ledger-view-toggle">
+      <button class="ledger-view-btn active" id="ledger-view-list" onclick="setLedgerView('list')" data-i18n="ledger.view.list">📋 列表</button>
+      <button class="ledger-view-btn" id="ledger-view-cal" onclick="setLedgerView('calendar')" data-i18n="ledger.view.calendar">📅 日曆</button>
+    </div>
+    <div id="ledger-entries-list" class="ledger-entries-list"></div>
+    <div id="ledger-calendar" class="ledger-calendar" style="display:none"></div>
+
+    <button class="ledger-btn-ghost" onclick="goToFullApp()" data-i18n="ledger.home.upgradeBtn">想讓錢更有方向？了解財富覺醒 →</button>
   </div>
 
-  <!-- 新增一筆 -->
-  <div class="dream-intro" id="ledger-add-form" style="display:none;max-width:420px">
-    <div class="dream-intro-title" style="font-size:22px" data-i18n="ledger.add.title">記一筆</div>
+  <!-- 新增一筆（細項表單，含備註） -->
+  <div class="ledger-page" id="ledger-add-form" style="display:none">
+    <div class="ledger-title-md" style="margin-bottom:14px" data-i18n="ledger.add.title">記一筆</div>
     <div style="display:flex;gap:8px;margin-bottom:14px">
-      <button class="tx-mode-btn active" id="ledger-type-expense" onclick="setLedgerType('expense')" data-i18n="ledger.add.expense">💸 支出</button>
-      <button class="tx-mode-btn" id="ledger-type-income" onclick="setLedgerType('income')" data-i18n="ledger.add.income">💰 收入</button>
+      <button class="ledger-type-toggle active" id="ledger-type-expense" onclick="setLedgerType('expense')" data-i18n="ledger.add.expense">💸 支出</button>
+      <button class="ledger-type-toggle" id="ledger-type-income" onclick="setLedgerType('income')" data-i18n="ledger.add.income">💰 收入</button>
     </div>
-    <input type="number" id="ledger-amount-input" placeholder="金額" data-i18n-placeholder="ledger.add.amountPlaceholder" min="0" step="any" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;font-size:16px;color:#f0fdf4;outline:none;box-sizing:border-box;margin-bottom:12px;font-family:'DM Sans',sans-serif">
-    <div class="dream-emoji-grid" id="ledger-category-grid" style="grid-template-columns:repeat(4,1fr)"></div>
-    <input type="text" id="ledger-note-input" placeholder="備註（選填）" data-i18n-placeholder="ledger.add.notePlaceholder" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;font-size:14px;color:#f0fdf4;outline:none;box-sizing:border-box;margin:12px 0;font-family:'DM Sans',sans-serif">
-    <button class="dream-start-btn" onclick="saveLedgerEntry()" data-i18n="ledger.add.saveBtn">儲存</button>
-    <button class="jars-setup-skip-btn" onclick="closeLedgerAddForm()" data-i18n="ledger.add.cancelBtn">取消</button>
+    <div class="ledger-cat-grid" id="ledger-category-grid" style="margin-bottom:14px"></div>
+    <input type="number" id="ledger-amount-input" class="ledger-input" placeholder="金額" data-i18n-placeholder="ledger.add.amountPlaceholder" min="0" step="any">
+    <input type="text" id="ledger-note-input" class="ledger-input" placeholder="備註（選填）" data-i18n-placeholder="ledger.add.notePlaceholder">
+    <button class="ledger-btn-primary" onclick="saveLedgerEntry()" data-i18n="ledger.add.saveBtn">儲存</button>
+    <button class="ledger-btn-ghost" onclick="closeLedgerAddForm()" data-i18n="ledger.add.cancelBtn">取消</button>
   </div>
 </div>
 
@@ -4335,38 +4394,70 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
 // ══════════════════════════════
 const LEDGER_CATEGORIES = {
   expense: [
-    { id:'food', emoji:'🍚', nameKey:'ledger.cat.food' },
-    { id:'transport', emoji:'🚗', nameKey:'ledger.cat.transport' },
-    { id:'shopping', emoji:'🛍️', nameKey:'ledger.cat.shopping' },
-    { id:'fun', emoji:'🎮', nameKey:'ledger.cat.fun' },
-    { id:'housing', emoji:'🏠', nameKey:'ledger.cat.housing' },
-    { id:'medical', emoji:'💊', nameKey:'ledger.cat.medical' },
-    { id:'education', emoji:'📚', nameKey:'ledger.cat.education' },
-    { id:'daily', emoji:'🧴', nameKey:'ledger.cat.daily' },
-    { id:'comm', emoji:'📱', nameKey:'ledger.cat.comm' },
-    { id:'social', emoji:'🎁', nameKey:'ledger.cat.social' },
-    { id:'other', emoji:'❓', nameKey:'ledger.cat.other' },
+    { id:'food', emoji:'🍚', color:'#F2684B', nameKey:'ledger.cat.food' },
+    { id:'transport', emoji:'🚗', color:'#5B9BD5', nameKey:'ledger.cat.transport' },
+    { id:'shopping', emoji:'🛍️', color:'#F283A8', nameKey:'ledger.cat.shopping' },
+    { id:'fun', emoji:'🎮', color:'#9B7FD4', nameKey:'ledger.cat.fun' },
+    { id:'housing', emoji:'🏠', color:'#F6A823', nameKey:'ledger.cat.housing' },
+    { id:'medical', emoji:'💊', color:'#E85D75', nameKey:'ledger.cat.medical' },
+    { id:'education', emoji:'📚', color:'#7E8CE0', nameKey:'ledger.cat.education' },
+    { id:'daily', emoji:'🧴', color:'#4DD0C0', nameKey:'ledger.cat.daily' },
+    { id:'comm', emoji:'📱', color:'#6E7B8B', nameKey:'ledger.cat.comm' },
+    { id:'social', emoji:'🎁', color:'#E0A800', nameKey:'ledger.cat.social' },
+    { id:'other', emoji:'❓', color:'#B0A98F', nameKey:'ledger.cat.other' },
   ],
   income: [
-    { id:'salary', emoji:'💰', nameKey:'ledger.cat.salary' },
-    { id:'bonus', emoji:'🎁', nameKey:'ledger.cat.bonus' },
-    { id:'otherIncome', emoji:'💵', nameKey:'ledger.cat.otherIncome' },
+    { id:'salary', emoji:'💰', color:'#3FBFAD', nameKey:'ledger.cat.salary' },
+    { id:'bonus', emoji:'🎁', color:'#F6A823', nameKey:'ledger.cat.bonus' },
+    { id:'otherIncome', emoji:'💵', color:'#8BC34A', nameKey:'ledger.cat.otherIncome' },
   ]
 };
 const LEDGER_CAT_MAP = Object.fromEntries([...LEDGER_CATEGORIES.expense, ...LEDGER_CATEGORIES.income].map(c=>[c.id,c]));
 const ledgerCol = () => collection(db,'users',currentUser.uid,'ledgerEntries');
 let ledgerType = 'expense';
 let ledgerSelectedCat = null;
+let ledgerQuickType = 'expense';
+let ledgerView = 'list';
+let ledgerCalMonth = new Date();
+let ledgerCalSelectedDay = null;
 let ledgerEntries = [];
 window.ledgerEntries = ledgerEntries;
 
+function buildLedgerCatGridHTML(categories, selectedId, onClickFn) {
+  return categories.map(c =>
+    `<div class="ledger-cat-card${selectedId===c.id?' selected':''}" onclick="${onClickFn}('${c.id}')">
+      <div class="ledger-cat-circle" style="background:${c.color}">${c.emoji}</div>
+      <div class="ledger-cat-name">${t(c.nameKey)}</div>
+    </div>`
+  ).join('');
+}
 function renderLedgerCategoryGrid() {
   const grid = document.getElementById('ledger-category-grid');
   if (!grid) return;
-  grid.innerHTML = LEDGER_CATEGORIES[ledgerType].map(c =>
-    `<div class="dream-emoji-btn${ledgerSelectedCat===c.id?' selected':''}" onclick="pickLedgerCategory('${c.id}')" title="${t(c.nameKey)}">${c.emoji}</div>`
-  ).join('');
+  grid.innerHTML = buildLedgerCatGridHTML(LEDGER_CATEGORIES[ledgerType], ledgerSelectedCat, 'pickLedgerCategory');
 }
+function renderLedgerQuickGrid() {
+  const grid = document.getElementById('ledger-quick-cat-grid');
+  if (!grid) return;
+  grid.innerHTML = buildLedgerCatGridHTML(LEDGER_CATEGORIES[ledgerQuickType], null, 'quickStartLedgerEntry');
+}
+function setLedgerQuickType(type) {
+  ledgerQuickType = type;
+  document.getElementById('ledger-quick-expense').classList.toggle('active', type==='expense');
+  document.getElementById('ledger-quick-income').classList.toggle('active', type==='income');
+  renderLedgerQuickGrid();
+}
+window.setLedgerQuickType = setLedgerQuickType;
+// 點卡片直接開始記一筆：預帶分類+收支類型，直接跳進細項表單聚焦金額欄位
+function quickStartLedgerEntry(id) {
+  openLedgerAddForm();
+  setLedgerType(ledgerQuickType);
+  pickLedgerCategory(id);
+  const amt = document.getElementById('ledger-amount-input');
+  if (amt) setTimeout(() => amt.focus(), 50);
+}
+window.quickStartLedgerEntry = quickStartLedgerEntry;
+
 function setLedgerType(type) {
   ledgerType = type;
   ledgerSelectedCat = null;
@@ -4416,7 +4507,82 @@ async function loadLedgerEntries() {
 }
 window.renderLedgerHome = renderLedgerHome;
 
+function setLedgerView(view) {
+  ledgerView = view;
+  document.getElementById('ledger-view-list').classList.toggle('active', view==='list');
+  document.getElementById('ledger-view-cal').classList.toggle('active', view==='calendar');
+  document.getElementById('ledger-entries-list').style.display = view==='list' ? 'flex' : 'none';
+  document.getElementById('ledger-calendar').style.display = view==='calendar' ? 'block' : 'none';
+  if (view==='calendar') renderLedgerCalendar();
+}
+window.setLedgerView = setLedgerView;
+
+function ledgerChangeCalMonth(delta) {
+  ledgerCalMonth.setMonth(ledgerCalMonth.getMonth()+delta);
+  ledgerCalSelectedDay = null;
+  renderLedgerCalendar();
+}
+window.ledgerChangeCalMonth = ledgerChangeCalMonth;
+
+function ledgerPickCalDay(key) {
+  ledgerCalSelectedDay = (ledgerCalSelectedDay===key) ? null : key;
+  renderLedgerCalendar();
+}
+window.ledgerPickCalDay = ledgerPickCalDay;
+
+function renderLedgerCalendar() {
+  const cal = document.getElementById('ledger-calendar');
+  if (!cal) return;
+  const year = ledgerCalMonth.getFullYear();
+  const month = ledgerCalMonth.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const today = new Date();
+
+  const byDay = {};
+  ledgerEntries.forEach(e => {
+    const d = new Date(e.createdAt);
+    if (d.getFullYear()!==year || d.getMonth()!==month) return;
+    const key = ledgerDateKey(e.createdAt);
+    (byDay[key] = byDay[key] || []).push(e);
+  });
+
+  const dows = ['ledger.cal.sun','ledger.cal.mon','ledger.cal.tue','ledger.cal.wed','ledger.cal.thu','ledger.cal.fri','ledger.cal.sat'].map(t);
+  let cells = dows.map(d=>`<div class="ledger-cal-dow">${d}</div>`).join('');
+  for (let i=0; i<firstDay; i++) cells += `<div class="ledger-cal-day empty"></div>`;
+  for (let day=1; day<=daysInMonth; day++) {
+    const key = year+'-'+month+'-'+day;
+    const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===day;
+    const isSelected = ledgerCalSelectedDay===key;
+    const hasEntries = !!byDay[key];
+    cells += `<div class="ledger-cal-day${isToday?' today':''}${isSelected?' selected':''}" onclick="ledgerPickCalDay('${key}')">
+      <span>${day}</span>${hasEntries?'<span class="ledger-cal-dot"></span>':''}
+    </div>`;
+  }
+
+  let detailHTML = '';
+  if (ledgerCalSelectedDay && byDay[ledgerCalSelectedDay]) {
+    detailHTML = `<div class="ledger-cal-day-detail">` + byDay[ledgerCalSelectedDay].map(e=>{
+      const c = LEDGER_CAT_MAP[e.category];
+      const label = e.note || (c ? t(c.nameKey) : '');
+      const sign = e.type==='income' ? '+' : '-';
+      const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
+      return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
+    }).join('') + `</div>`;
+  }
+
+  cal.innerHTML = `
+    <div class="ledger-calendar-head">
+      <button class="ledger-cal-nav-btn" onclick="ledgerChangeCalMonth(-1)">‹</button>
+      <div class="ledger-cal-label">${year} / ${month+1}</div>
+      <button class="ledger-cal-nav-btn" onclick="ledgerChangeCalMonth(1)">›</button>
+    </div>
+    <div class="ledger-cal-grid">${cells}</div>
+    ${detailHTML}`;
+}
+
 function renderLedgerHome() {
+  renderLedgerQuickGrid();
   const now = new Date();
   const monthEntries = ledgerEntries.filter(e => {
     const d = new Date(e.createdAt);
@@ -4432,21 +4598,52 @@ function renderLedgerHome() {
   if (breakdown) {
     const rows = Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([cid,amt])=>{
       const c = LEDGER_CAT_MAP[cid]; if (!c) return '';
-      return `<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>${c.emoji} ${t(c.nameKey)}</span><span>${formatCurrency(amt)}</span></div>`;
+      return `<div class="ledger-breakdown-row"><span>${c.emoji} ${t(c.nameKey)}</span><span>${formatCurrency(amt)}</span></div>`;
     }).join('');
-    breakdown.innerHTML = rows || `<div style="font-size:12px;color:var(--muted)">${t('ledger.home.empty')}</div>`;
+    breakdown.innerHTML = rows || `<div style="font-size:12px;color:var(--lmuted)">${t('ledger.home.empty')}</div>`;
   }
 
   const list = document.getElementById('ledger-entries-list');
   if (list) {
-    list.innerHTML = ledgerEntries.slice(0,30).map(e=>{
-      const c = LEDGER_CAT_MAP[e.category];
-      const label = e.note || (c ? t(c.nameKey) : '');
-      const sign = e.type==='income' ? '+' : '-';
-      const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
-      return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
-    }).join('');
+    // 按日分組（ledgerEntries 已經是依 createdAt 新到舊排序，同一天的紀錄本來就會排在一起）
+    const groups = [];
+    let lastKey = null;
+    ledgerEntries.slice(0,100).forEach(e => {
+      const key = ledgerDateKey(e.createdAt);
+      if (key !== lastKey) { groups.push({ date: e.createdAt, items: [] }); lastKey = key; }
+      groups[groups.length-1].items.push(e);
+    });
+    list.innerHTML = groups.map(g => {
+      const dayNet = g.items.reduce((s,e) => s + (e.type==='income' ? e.amount : -e.amount), 0);
+      const netSign = dayNet >= 0 ? '+' : '-';
+      const netCls = dayNet >= 0 ? 'ledger-amt-income' : 'ledger-amt-expense';
+      const rows = g.items.map(e=>{
+        const c = LEDGER_CAT_MAP[e.category];
+        const label = e.note || (c ? t(c.nameKey) : '');
+        const sign = e.type==='income' ? '+' : '-';
+        const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
+        return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
+      }).join('');
+      return `<div class="ledger-date-group">
+        <div class="ledger-date-header"><span>${ledgerDateLabel(g.date)}</span><span class="${netCls}">${netSign}${formatCurrency(Math.abs(dayNet))}</span></div>
+        ${rows}
+      </div>`;
+    }).join('') || `<div style="font-size:12px;color:var(--lmuted);text-align:center;padding:12px 0">${t('ledger.home.empty')}</div>`;
   }
+  if (ledgerView === 'calendar') renderLedgerCalendar();
+}
+
+function ledgerDateKey(ts) {
+  const d = new Date(ts);
+  return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+}
+function ledgerDateLabel(ts) {
+  const d = new Date(ts);
+  const today = new Date();
+  if (d.toDateString() === today.toDateString()) return t('ledger.date.today');
+  const yest = new Date(today); yest.setDate(yest.getDate()-1);
+  if (d.toDateString() === yest.toDateString()) return t('ledger.date.yesterday');
+  return (d.getMonth()+1) + '/' + d.getDate();
 }
 
 function startLedgerHome() {
@@ -4845,6 +5042,9 @@ const TRANSLATIONS = {
     'ledger.home.title':'我的記帳本','ledger.home.addBtn':'記一筆','ledger.home.monthLabel':'本月支出','ledger.home.empty':'這個月還沒有紀錄','ledger.home.upgradeBtn':'想讓錢更有方向？了解財富覺醒 →',
     'ledger.add.title':'記一筆','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金額','ledger.add.notePlaceholder':'備註（選填）','ledger.add.saveBtn':'儲存','ledger.add.cancelBtn':'取消','ledger.add.err':'請輸入金額並選擇分類',
     'ledger.cat.food':'餐飲','ledger.cat.transport':'交通','ledger.cat.shopping':'購物','ledger.cat.fun':'娛樂','ledger.cat.housing':'居住','ledger.cat.medical':'醫療','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通訊','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪資','ledger.cat.bonus':'獎金','ledger.cat.otherIncome':'其他收入',
+    'ledger.date.today':'今天','ledger.date.yesterday':'昨天',
+    'ledger.view.list':'📋 列表','ledger.view.calendar':'📅 日曆',
+    'ledger.cal.sun':'日','ledger.cal.mon':'一','ledger.cal.tue':'二','ledger.cal.wed':'三','ledger.cal.thu':'四','ledger.cal.fri':'五','ledger.cal.sat':'六',
     'jarsSetup.title':'設定你的六個子帳戶',
     'jarsSetup.subtitle':'告訴我們每個子帳戶目前大概有多少錢 📈',
     'jarsSetup.startBtn':'開始追蹤我的子帳戶 🚀','jarsSetup.skipBtn':'稍後設定','jarsSetup.currentBalance':'目前餘額',
@@ -5077,6 +5277,9 @@ const TRANSLATIONS = {
     'ledger.home.title':'我的记账本','ledger.home.addBtn':'记一笔','ledger.home.monthLabel':'本月支出','ledger.home.empty':'这个月还没有纪录','ledger.home.upgradeBtn':'想让钱更有方向？了解财富觉醒 →',
     'ledger.add.title':'记一笔','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金额','ledger.add.notePlaceholder':'备注（选填）','ledger.add.saveBtn':'储存','ledger.add.cancelBtn':'取消','ledger.add.err':'请输入金额并选择分类',
     'ledger.cat.food':'餐饮','ledger.cat.transport':'交通','ledger.cat.shopping':'购物','ledger.cat.fun':'娱乐','ledger.cat.housing':'居住','ledger.cat.medical':'医疗','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通讯','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪资','ledger.cat.bonus':'奖金','ledger.cat.otherIncome':'其他收入',
+    'ledger.date.today':'今天','ledger.date.yesterday':'昨天',
+    'ledger.view.list':'📋 列表','ledger.view.calendar':'📅 日历',
+    'ledger.cal.sun':'日','ledger.cal.mon':'一','ledger.cal.tue':'二','ledger.cal.wed':'三','ledger.cal.thu':'四','ledger.cal.fri':'五','ledger.cal.sat':'六',
     'jarsSetup.title':'设置你的六个子账户',
     'jarsSetup.subtitle':'告诉我们每个子账户目前大概有多少钱 📈',
     'jarsSetup.startBtn':'开始追踪我的子账户 🚀','jarsSetup.skipBtn':'稍后设置','jarsSetup.currentBalance':'目前余额',
@@ -5309,6 +5512,9 @@ const TRANSLATIONS = {
     'ledger.home.title':'My Ledger','ledger.home.addBtn':'Add Entry','ledger.home.monthLabel':'This Month\'s Spending','ledger.home.empty':'No entries yet this month','ledger.home.upgradeBtn':'Want your money to have a direction? Learn about Wealth Awakening →',
     'ledger.add.title':'Add Entry','ledger.add.expense':'💸 Expense','ledger.add.income':'💰 Income','ledger.add.amountPlaceholder':'Amount','ledger.add.notePlaceholder':'Note (optional)','ledger.add.saveBtn':'Save','ledger.add.cancelBtn':'Cancel','ledger.add.err':'Please enter an amount and pick a category',
     'ledger.cat.food':'Food','ledger.cat.transport':'Transport','ledger.cat.shopping':'Shopping','ledger.cat.fun':'Fun','ledger.cat.housing':'Housing','ledger.cat.medical':'Medical','ledger.cat.education':'Education','ledger.cat.daily':'Daily Needs','ledger.cat.comm':'Phone/Internet','ledger.cat.social':'Social','ledger.cat.other':'Other','ledger.cat.salary':'Salary','ledger.cat.bonus':'Bonus','ledger.cat.otherIncome':'Other Income',
+    'ledger.date.today':'Today','ledger.date.yesterday':'Yesterday',
+    'ledger.view.list':'📋 List','ledger.view.calendar':'📅 Calendar',
+    'ledger.cal.sun':'Su','ledger.cal.mon':'Mo','ledger.cal.tue':'Tu','ledger.cal.wed':'We','ledger.cal.thu':'Th','ledger.cal.fri':'Fr','ledger.cal.sat':'Sa',
     'jarsSetup.title':'Set Up Your Six Sub-Accounts',
     'jarsSetup.subtitle':'Tell us roughly how much is in each account right now 📈',
     'jarsSetup.startBtn':'Start Tracking My Accounts 🚀','jarsSetup.skipBtn':'Set Up Later','jarsSetup.currentBalance':'Current Balance',
@@ -5560,6 +5766,8 @@ function applyTranslations() {
     renderMobileChart();
   } catch (e) { console.error('chart refresh failed:', e); }
   try { if (window.syncMobileUI) window.syncMobileUI(); } catch (e) { console.error('syncMobileUI failed:', e); }
+  try { if (document.getElementById('ledger-home')?.style.display !== 'none') renderLedgerHome(); } catch (e) { console.error('renderLedgerHome failed:', e); }
+  try { if (document.getElementById('ledger-add-form')?.style.display !== 'none') renderLedgerCategoryGrid(); } catch (e) { console.error('renderLedgerCategoryGrid failed:', e); }
 }
 
 // ── 顯示幣別匯率（12 種幣別，Frankfurter API，6小時快取）──
@@ -5644,6 +5852,7 @@ async function setCurrency(cur) {
   try { refreshAssetPreviews(); } catch (e) { console.error('asset preview refresh failed:', e); }
   try { renderDebts(); } catch (e) { console.error('renderDebts failed:', e); }
   try { if (window.syncMobileUI) window.syncMobileUI(); } catch (e) { console.error('syncMobileUI failed:', e); }
+  try { if (document.getElementById('ledger-home')?.style.display !== 'none') renderLedgerHome(); } catch (e) { console.error('renderLedgerHome failed:', e); }
   await saveLangCurrencyPrefs();
 }
 
