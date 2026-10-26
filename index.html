@@ -2196,7 +2196,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
 
   <!-- 新增一筆（細項表單，含備註） -->
   <div class="ledger-page" id="ledger-add-form" style="display:none">
-    <div class="ledger-title-md" style="margin-bottom:14px" data-i18n="ledger.add.title">記一筆</div>
+    <div class="ledger-title-md" id="ledger-add-form-title" style="margin-bottom:14px" data-i18n="ledger.add.title">記一筆</div>
     <div style="display:flex;gap:8px;margin-bottom:14px">
       <button class="ledger-type-toggle active" id="ledger-type-expense" onclick="setLedgerType('expense')" data-i18n="ledger.add.expense">💸 支出</button>
       <button class="ledger-type-toggle" id="ledger-type-income" onclick="setLedgerType('income')" data-i18n="ledger.add.income">💰 收入</button>
@@ -2205,6 +2205,7 @@ body, .app-topbar, .app-bottom-nav, .app-page {
     <input type="number" id="ledger-amount-input" class="ledger-input" placeholder="金額" data-i18n-placeholder="ledger.add.amountPlaceholder" min="0" step="any">
     <input type="text" id="ledger-note-input" class="ledger-input" placeholder="備註（選填）" data-i18n-placeholder="ledger.add.notePlaceholder">
     <button class="ledger-btn-primary" onclick="saveLedgerEntry()" data-i18n="ledger.add.saveBtn">儲存</button>
+    <button class="ledger-btn-ghost" id="ledger-delete-btn" onclick="deleteLedgerEntry()" style="display:none;color:var(--lexpense);border-color:var(--lexpense)" data-i18n="ledger.add.deleteBtn">🗑 刪除這筆</button>
     <button class="ledger-btn-ghost" onclick="closeLedgerAddForm()" data-i18n="ledger.add.cancelBtn">取消</button>
   </div>
 </div>
@@ -4469,7 +4470,14 @@ window.setLedgerType = setLedgerType;
 function pickLedgerCategory(id) { ledgerSelectedCat = id; renderLedgerCategoryGrid(); }
 window.pickLedgerCategory = pickLedgerCategory;
 
+let ledgerEditingId = null;
+
 function openLedgerAddForm() {
+  ledgerEditingId = null;
+  const titleEl = document.getElementById('ledger-add-form-title');
+  titleEl.textContent = t('ledger.add.title');
+  titleEl.setAttribute('data-i18n', 'ledger.add.title');
+  document.getElementById('ledger-delete-btn').style.display = 'none';
   document.getElementById('ledger-home').style.display = 'none';
   document.getElementById('ledger-add-form').style.display = 'block';
   document.getElementById('ledger-amount-input').value = '';
@@ -4477,6 +4485,25 @@ function openLedgerAddForm() {
   setLedgerType('expense');
 }
 window.openLedgerAddForm = openLedgerAddForm;
+
+// 點某一筆既有紀錄：開啟同一個表單，預填內容，切換成編輯/刪除模式
+function editLedgerEntry(id) {
+  const entry = ledgerEntries.find(e => e.id === id);
+  if (!entry) return;
+  ledgerEditingId = id;
+  document.getElementById('ledger-home').style.display = 'none';
+  document.getElementById('ledger-add-form').style.display = 'block';
+  const titleEl = document.getElementById('ledger-add-form-title');
+  titleEl.textContent = t('ledger.add.editTitle');
+  titleEl.setAttribute('data-i18n', 'ledger.add.editTitle');
+  document.getElementById('ledger-delete-btn').style.display = 'block';
+  document.getElementById('ledger-amount-input').value = entry.amount;
+  document.getElementById('ledger-note-input').value = entry.note || '';
+  setLedgerType(entry.type);
+  pickLedgerCategory(entry.category);
+}
+window.editLedgerEntry = editLedgerEntry;
+
 function closeLedgerAddForm() {
   document.getElementById('ledger-add-form').style.display = 'none';
   document.getElementById('ledger-home').style.display = 'block';
@@ -4487,15 +4514,36 @@ async function saveLedgerEntry() {
   const amount = parseFloat(document.getElementById('ledger-amount-input').value) || 0;
   if (amount <= 0 || !ledgerSelectedCat) { showWaToast('⚠️', t('ledger.add.err'), ''); return; }
   const note = document.getElementById('ledger-note-input').value.trim();
-  const entry = { amount, type: ledgerType, category: ledgerSelectedCat, note, createdAt: Date.now() };
   try {
-    const ref = await addDoc(ledgerCol(), entry);
-    ledgerEntries.unshift({ id: ref.id, ...entry });
+    if (ledgerEditingId) {
+      const original = ledgerEntries.find(e => e.id === ledgerEditingId);
+      const entry = { amount, type: ledgerType, category: ledgerSelectedCat, note, createdAt: original ? original.createdAt : Date.now() };
+      await setDoc(doc(db,'users',currentUser.uid,'ledgerEntries',ledgerEditingId), entry);
+      const idx = ledgerEntries.findIndex(e => e.id === ledgerEditingId);
+      if (idx >= 0) ledgerEntries[idx] = { id: ledgerEditingId, ...entry };
+    } else {
+      const entry = { amount, type: ledgerType, category: ledgerSelectedCat, note, createdAt: Date.now() };
+      const ref = await addDoc(ledgerCol(), entry);
+      ledgerEntries.unshift({ id: ref.id, ...entry });
+    }
     closeLedgerAddForm();
     renderLedgerHome();
   } catch(e) { console.error(e); }
 }
 window.saveLedgerEntry = saveLedgerEntry;
+
+async function deleteLedgerEntry() {
+  if (!ledgerEditingId) return;
+  if (!confirm(t('ledger.add.confirmDelete'))) return;
+  try {
+    await deleteDoc(doc(db,'users',currentUser.uid,'ledgerEntries',ledgerEditingId));
+    ledgerEntries = ledgerEntries.filter(e => e.id !== ledgerEditingId);
+    window.ledgerEntries = ledgerEntries;
+    closeLedgerAddForm();
+    renderLedgerHome();
+  } catch(e) { console.error(e); }
+}
+window.deleteLedgerEntry = deleteLedgerEntry;
 
 async function loadLedgerEntries() {
   if (!currentUser) return;
@@ -4567,7 +4615,7 @@ function renderLedgerCalendar() {
       const label = e.note || (c ? t(c.nameKey) : '');
       const sign = e.type==='income' ? '+' : '-';
       const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
-      return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
+      return `<div class="ledger-entry-row" style="cursor:pointer" onclick="editLedgerEntry('${e.id}')"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
     }).join('') + `</div>`;
   }
 
@@ -4622,7 +4670,7 @@ function renderLedgerHome() {
         const label = e.note || (c ? t(c.nameKey) : '');
         const sign = e.type==='income' ? '+' : '-';
         const cls = e.type==='income' ? 'ledger-amt-income' : 'ledger-amt-expense';
-        return `<div class="ledger-entry-row"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
+        return `<div class="ledger-entry-row" style="cursor:pointer" onclick="editLedgerEntry('${e.id}')"><span>${c?c.emoji:'❓'} ${label}</span><span class="${cls}">${sign}${formatCurrency(e.amount)}</span></div>`;
       }).join('');
       return `<div class="ledger-date-group">
         <div class="ledger-date-header"><span>${ledgerDateLabel(g.date)}</span><span class="${netCls}">${netSign}${formatCurrency(Math.abs(dayNet))}</span></div>
@@ -5041,6 +5089,7 @@ const TRANSLATIONS = {
     'ledger.welcome.title':'歡迎來到這裡 👋','ledger.welcome.subtitle':'每一筆支出，都是你認識自己財富的開始。<br>不用懂投資、不用很有錢，先從看清楚「錢去了哪裡」開始——<br>這是你對自己財富負責的第一步。','ledger.welcome.startBtn':'開始記帳 🚀',
     'ledger.home.title':'我的記帳本','ledger.home.addBtn':'記一筆','ledger.home.monthLabel':'本月支出','ledger.home.empty':'這個月還沒有紀錄','ledger.home.upgradeBtn':'想讓錢更有方向？了解財富覺醒 →',
     'ledger.add.title':'記一筆','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金額','ledger.add.notePlaceholder':'備註（選填）','ledger.add.saveBtn':'儲存','ledger.add.cancelBtn':'取消','ledger.add.err':'請輸入金額並選擇分類',
+    'ledger.add.editTitle':'編輯這筆','ledger.add.deleteBtn':'🗑 刪除這筆','ledger.add.confirmDelete':'確定要刪除這筆紀錄嗎？',
     'ledger.cat.food':'餐飲','ledger.cat.transport':'交通','ledger.cat.shopping':'購物','ledger.cat.fun':'娛樂','ledger.cat.housing':'居住','ledger.cat.medical':'醫療','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通訊','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪資','ledger.cat.bonus':'獎金','ledger.cat.otherIncome':'其他收入',
     'ledger.date.today':'今天','ledger.date.yesterday':'昨天',
     'ledger.view.list':'📋 列表','ledger.view.calendar':'📅 日曆',
@@ -5276,6 +5325,7 @@ const TRANSLATIONS = {
     'ledger.welcome.title':'欢迎来到这里 👋','ledger.welcome.subtitle':'每一笔支出，都是你认识自己财富的开始。<br>不用懂投资、不用很有钱，先从看清楚「钱去了哪里」开始——<br>这是你对自己财富负责的第一步。','ledger.welcome.startBtn':'开始记账 🚀',
     'ledger.home.title':'我的记账本','ledger.home.addBtn':'记一笔','ledger.home.monthLabel':'本月支出','ledger.home.empty':'这个月还没有纪录','ledger.home.upgradeBtn':'想让钱更有方向？了解财富觉醒 →',
     'ledger.add.title':'记一笔','ledger.add.expense':'💸 支出','ledger.add.income':'💰 收入','ledger.add.amountPlaceholder':'金额','ledger.add.notePlaceholder':'备注（选填）','ledger.add.saveBtn':'储存','ledger.add.cancelBtn':'取消','ledger.add.err':'请输入金额并选择分类',
+    'ledger.add.editTitle':'编辑这笔','ledger.add.deleteBtn':'🗑 删除这笔','ledger.add.confirmDelete':'确定要删除这笔记录吗？',
     'ledger.cat.food':'餐饮','ledger.cat.transport':'交通','ledger.cat.shopping':'购物','ledger.cat.fun':'娱乐','ledger.cat.housing':'居住','ledger.cat.medical':'医疗','ledger.cat.education':'教育','ledger.cat.daily':'日用品','ledger.cat.comm':'通讯','ledger.cat.social':'人情','ledger.cat.other':'其他','ledger.cat.salary':'薪资','ledger.cat.bonus':'奖金','ledger.cat.otherIncome':'其他收入',
     'ledger.date.today':'今天','ledger.date.yesterday':'昨天',
     'ledger.view.list':'📋 列表','ledger.view.calendar':'📅 日历',
@@ -5511,6 +5561,7 @@ const TRANSLATIONS = {
     'ledger.welcome.title':'Welcome 👋','ledger.welcome.subtitle':'Every expense you log is the start of understanding your own money.<br>You don\'t need to know investing, and you don\'t need to be rich — start by seeing clearly where your money goes.<br>That\'s the first step to taking responsibility for your own wealth.','ledger.welcome.startBtn':'Start Tracking 🚀',
     'ledger.home.title':'My Ledger','ledger.home.addBtn':'Add Entry','ledger.home.monthLabel':'This Month\'s Spending','ledger.home.empty':'No entries yet this month','ledger.home.upgradeBtn':'Want your money to have a direction? Learn about Wealth Awakening →',
     'ledger.add.title':'Add Entry','ledger.add.expense':'💸 Expense','ledger.add.income':'💰 Income','ledger.add.amountPlaceholder':'Amount','ledger.add.notePlaceholder':'Note (optional)','ledger.add.saveBtn':'Save','ledger.add.cancelBtn':'Cancel','ledger.add.err':'Please enter an amount and pick a category',
+    'ledger.add.editTitle':'Edit Entry','ledger.add.deleteBtn':'🗑 Delete This Entry','ledger.add.confirmDelete':'Delete this entry? This cannot be undone.',
     'ledger.cat.food':'Food','ledger.cat.transport':'Transport','ledger.cat.shopping':'Shopping','ledger.cat.fun':'Fun','ledger.cat.housing':'Housing','ledger.cat.medical':'Medical','ledger.cat.education':'Education','ledger.cat.daily':'Daily Needs','ledger.cat.comm':'Phone/Internet','ledger.cat.social':'Social','ledger.cat.other':'Other','ledger.cat.salary':'Salary','ledger.cat.bonus':'Bonus','ledger.cat.otherIncome':'Other Income',
     'ledger.date.today':'Today','ledger.date.yesterday':'Yesterday',
     'ledger.view.list':'📋 List','ledger.view.calendar':'📅 Calendar',
